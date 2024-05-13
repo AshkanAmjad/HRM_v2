@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IOC\IOC.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\" />
+    <Folder Include="Areas\County\Controllers\" />
+    <Folder Include="Areas\County\Data\" />
+    <Folder Include="Areas\County\Models\" />
+    <Folder Include="Areas\County\Views\" />
+    <Folder Include="Areas\District\Controllers\" />
+    <Folder Include="Areas\District\Data\" />
+    <Folder Include="Areas\District\Models\" />
+    <Folder Include="Areas\District\Views\" />
+    <Folder Include="Areas\Province\Controllers\" />
+    <Folder Include="Areas\Province\Data\" />
+    <Folder Include="Areas\Province\Models\" />
+    <Folder Include="Areas\Province\Views\" />
+    <Folder Include="Views\Shared\Partials\Login\" />
+    <Folder Include="wwwroot\icons\login\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.18">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.12" />
+  </ItemGroup>
+
+</Project>

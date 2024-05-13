@@ -1,0 +1,34 @@
+﻿@*کوئری نمایش ساعت و تاریخ*@
+@using System.Globalization
+
+<script>
+    setInterval(dateShow, 1000)
+    function dateShow() {
+        let date = new Date();
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+        let seconds = date.getSeconds();
+        if (hours < 10) {
+            hours = `0${hours}`;
+        }
+        if (minutes < 10) {
+            minutes = `0${minutes}`;
+        }
+        if (seconds < 10) {
+            seconds = `0${seconds}`;
+        }
+        
+        document.querySelector("#clock").innerHTML = hours + ":" + minutes + ":" + seconds;
+    }
+</script>
+
+
+
+@{
+    PersianCalendar persianCalendar = new PersianCalendar();
+    string persianDate = persianCalendar.GetYear(DateTime.Now) + "/" +
+    persianCalendar.GetMonth(DateTime.Now).ToString("00") + "/" +
+    persianCalendar.GetDayOfMonth(DateTime.Now).ToString("00");
+}
+
+<span>@persianDate<br /><span id="clock"></span></span>
