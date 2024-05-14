@@ -25,7 +25,6 @@
     <Folder Include="Areas\Province\Models\" />
     <Folder Include="Areas\Province\Views\" />
     <Folder Include="Views\Shared\Partials\Login\" />
-    <Folder Include="wwwroot\icons\login\" />
   </ItemGroup>
 
   <ItemGroup>

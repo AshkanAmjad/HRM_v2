@@ -6,25 +6,28 @@
     <title>@ViewData["Title"] - HRM</title>
     <link rel="icon" href="~/icons/general/title/management.png" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/custom/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/HRM.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/icons/general/fontawesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/css/animate/animate.css"/>
+
 </head>
-<body>
-    <header>
+<body class="position-relative">
+    <header class="mb-5">
         <partial name="~/Views/Shared/Partials/General/Header/_HeaderPartial.cshtml" />
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main class="pb-3 ">
             @RenderBody()
         </main>
     </div>
-    <footer class="row m-0 border footer bg-info shadow-lg text-muted">
+    <footer class="row m-0 border bg-info shadow-lg text-muted position-absolute bottom-0 w-100">
         <partial name="~/Views/Shared/Partials/General/Footer/_FooterPartial.cshtml" />
     </footer>
 </body>
+
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/js/custom/site.js" asp-append-version="true"></script>
 @await RenderSectionAsync("Scripts", required: false)
 </html>

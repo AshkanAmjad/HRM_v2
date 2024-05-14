@@ -1,26 +1,42 @@
-﻿using HRM.Models;
+﻿using Domain.DTOs.Security.Login;
+using HRM.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
 
 namespace HRM.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
 
         public IActionResult Index()
         {
+            List<SelectListItem> areas = new();
+            areas.Add(new SelectListItem
+            {
+                Text = "استان",
+                Value = 0.ToString()
+            });
+            areas.Add(new SelectListItem
+            {
+                Text = "شهرستان",
+                Value = 1.ToString()
+            });
+            areas.Add(new SelectListItem
+            {
+                Text = "بخش",
+                Value = 3.ToString()
+            });
+            ViewBag.areas = areas;
             return View();
         }
 
-        public IActionResult Privacy()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Login(LoginViewModel model)
         {
-            return View();
+            return View(model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

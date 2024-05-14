@@ -1,3 +1,54 @@
-﻿@{
+﻿@model Domain.DTOs.Security.Login.LoginViewModel
+@{
     ViewData["Title"] = "ورود";
+    var areas = ViewBag.areas != null
+    ? ViewBag.areas as List<SelectListItem>
+    : new List<SelectListItem>();
 }
+<div class="row ">
+    <div class="card shadow mx-auto col-11 col-sm-8 col-md-6 col-lg-5 col-xl-4 p-0 my-3 my-md-5">
+        <div class="card-header d-flex justify-content-center align-items-center">
+            <h6 class=" mb-0">ورود</h6>
+            <i class="fa fa-sign-in text-primary mx-2"></i>
+        </div>
+        <div class="card-body pb-0">
+            <div class="d-flex">
+                <i class="fa fa-warning fa-lg text-danger  p-1"></i>
+                <p class="fw-bold fs-7">اطلاعات خود را با دقت وارد کنید.</p>
+            </div>
+            <form asp-action="Login" asp-controller="Home"  id="login" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger fs-7" role="alert"></div>
+                @Html.AntiForgeryToken()
+                <div class="form-floating mb-3">
+                    <select asp-for="Area" class="form-select form-select-sm py-1" aria-label=".form-select-lg" asp-items="areas">
+                        <option selected class="fs-6">ناحیه شعبه را انتخاب کنید</option>
+                    </select>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="UserName" maxlength="10" class="form-control form-control-sm" autocomplete="off" aria-required="true" placeholder="کدملی خود را وارد کنید" />
+                    <label asp-for="UserName" class="form-label">کد ملی</label>
+                    <span asp-validation-for="UserName" class="text-danger fs-7"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Password" class="form-control " autocomplete="off" aria-required="true" placeholder="گذرواژه خور را وارد کنید" type="password" />
+                    <label asp-for="Password" class="form-label">گذر واژه</label>
+                    <span asp-validation-for="Password" class="text-danger fs-7"></span>
+                </div>
+
+                <div class="checkbox mb-2">
+                    <label asp-for="RememberMe" class="form-label">
+                        مرا به خاطر بسپار
+                        <input class="form-check-input" asp-for="RememberMe" />
+                    </label>
+                </div>
+                <div>
+                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">ورود</button>
+                </div>
+                <div class="my-3">
+                    <i class="fa fa-key text-primary"></i>
+                    <a asp-controller="" asp-action="" class="fs-8 text-decoration-none">گذر واژه خود را فراموش کرده ام</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

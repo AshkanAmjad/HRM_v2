@@ -1,0 +1,93 @@
+/*general*/
+@font-face {
+    font-family: 'koodak';
+    src: url('../fonts/KoodakBold.eot')format('eot'), url('../fonts/KoodakBold.ttf')format('truetype'), url('../../fonts/KoodakBold.woff')format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'nazanin';
+    src: url('../fonts/Nazanin.eot')format('eot'), url('../fonts/Nazanin.ttf')format('truetype'), url('../../fonts/Nazanin.woff')format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'yekan';
+    src: url('../fonts/Yekan.eot')format('eot'), url('../fonts/Yekan.ttf')format('truetype'), url('../../fonts/Yekan.woff')format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    font-family: yekan;
+    direction: rtl;
+}
+
+.fs-8 {
+    font-size: 0.8rem;
+}
+
+.cursor {
+    cursor: default;
+}
+
+body {
+    min-height: 93.5vh;
+} 
+
+.footer-animation , .header-animation {
+    display: inline-block;
+    animation: fadeIn;
+    animation-duration: 3s;
+}
+/*header*/
+header {
+    color: #005DA5;
+    box-sizing: border-box;
+}
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+.partial-time {
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+/*container*/
+.container {
+    padding-bottom: 2.5rem;
+}
+
+/*footer*/
+.footer {
+    font-size: 0.8rem;
+}
+
+
+/*media*/
+@media (max-width:767px) {
+    .footer {
+        font-size: 0.9rem;
+    }
+
+    .container {
+        margin-top: 8rem;
+    }
+
+    #copy {
+        order: 2;
+    }
+
+    #footer-logo {
+        order: 1;
+    }
+}
+
+@media (max-width:320px) {
+    body {
+        min-height: 120vh;
+    }
+}
