@@ -1,4 +1,8 @@
-﻿using Domain.DTOs.Security.Login;
+﻿using Application.Services.Interfaces;
+using Domain.DTOs.Security.Login;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using FluentValidation.Results;
 using HRM.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,27 +12,44 @@ namespace HRM.Controllers
 {
     public class HomeController : Controller
     {
+        #region Constructor
+        private readonly IManagementServices _managementServices;
+        private readonly IValidator<LoginViewModel> _validator;
 
+        public HomeController(IManagementServices managementServices, IValidator<LoginViewModel> validator)
+        {
+            _managementServices = managementServices;
+            _validator = validator;
+        }
+
+        #endregion
+        List<SelectListItem> Areas()
+        {
+            List<SelectListItem> areas = new()
+            {
+                new SelectListItem
+                {
+                    Text = "استان",
+                    Value = 0.ToString()
+                },
+                new SelectListItem
+                {
+                    Text = "شهرستان",
+                    Value = 1.ToString()
+                },
+                new SelectListItem
+                {
+                    Text = "بخش",
+                    Value = 3.ToString()
+                }
+            };
+            return areas;
+        }
 
         public IActionResult Index()
         {
-            List<SelectListItem> areas = new();
-            areas.Add(new SelectListItem
-            {
-                Text = "استان",
-                Value = 0.ToString()
-            });
-            areas.Add(new SelectListItem
-            {
-                Text = "شهرستان",
-                Value = 1.ToString()
-            });
-            areas.Add(new SelectListItem
-            {
-                Text = "بخش",
-                Value = 3.ToString()
-            });
-            ViewBag.areas = areas;
+            var areas = Areas();
+            ViewData["Areas"] = areas;
             return View();
         }
 
@@ -36,7 +57,26 @@ namespace HRM.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login(LoginViewModel model)
         {
-            return View(model);
+            ValidationResult result=_validator.Validate(model);
+            if (result.IsValid)
+            {
+            
+            }
+
+            #region Manual Validation
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+            result.AddToModelState(this.ModelState);
+            #endregion
+
+            #region Areas
+            var areas = Areas();
+            ViewData["Areas"] = areas;
+            #endregion
+
+            return View("Index",model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

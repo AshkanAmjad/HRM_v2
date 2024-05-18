@@ -1,21 +1,21 @@
 /*general*/
 @font-face {
     font-family: 'koodak';
-    src: url('../fonts/KoodakBold.eot')format('eot'), url('../fonts/KoodakBold.ttf')format('truetype'), url('../../fonts/KoodakBold.woff')format('woff');
+    src: url('../../fonts/KoodakBold.eot')format('eot'), url('../../fonts/KoodakBold.ttf')format('truetype'), url('../../fonts/KoodakBold.woff')format('woff');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'nazanin';
-    src: url('../fonts/Nazanin.eot')format('eot'), url('../fonts/Nazanin.ttf')format('truetype'), url('../../fonts/Nazanin.woff')format('woff');
+    src: url('../../fonts/Nazanin.eot')format('eot'), url('../../fonts/Nazanin.ttf')format('truetype'), url('../../fonts/Nazanin.woff')format('woff');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'yekan';
-    src: url('../fonts/Yekan.eot')format('eot'), url('../fonts/Yekan.ttf')format('truetype'), url('../../fonts/Yekan.woff')format('woff');
+    src: url('../../fonts/Yekan.eot')format('eot'), url('../../fonts/Yekan.ttf')format('truetype'), url('../../fonts/Yekan.woff')format('woff');
     font-weight: normal;
     font-style: normal;
 }
@@ -27,6 +27,15 @@
 
 .fs-8 {
     font-size: 0.8rem;
+}
+.fs-9{
+    font-size:0.7rem;
+}
+.fs-10{
+    font-size:0.6rem;
+}
+.fs-11{
+    font-size:0.1rem;
 }
 
 .cursor {

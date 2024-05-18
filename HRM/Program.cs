@@ -6,8 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-#region AddServices
+#region Add Services
 builder.Services.RegisterServices();
+builder.Services.ValidationServices();
 builder.Services.AddApplicationService(builder.Configuration);
 #endregion
 

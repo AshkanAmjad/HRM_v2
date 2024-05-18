@@ -1,11 +1,8 @@
 ﻿using Application.Services.Implrmentations;
 using Application.Services.Interfaces;
+using Domain.DTOs.Security.Login;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IOC.Dependencies
 {
@@ -16,6 +13,8 @@ namespace IOC.Dependencies
             #region Services
             services.AddScoped<IManagementServices,ManagementServices>();
             #endregion
+
+
 
             #region Repository
 
