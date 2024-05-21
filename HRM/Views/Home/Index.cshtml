@@ -1,4 +1,4 @@
-﻿@model Domain.DTOs.Security.Login.LoginViewModel
+﻿@model Domain.DTOs.Security.Login.LoginVM
 @{
     ViewData["Title"] = "ورود";
     var areas = ViewData["Areas"] != null
@@ -16,7 +16,7 @@
                 <i class="fa fa-warning fa-lg text-danger  p-1"></i>
                 <p class="fw-bold fs-7">اطلاعات خود را با دقت وارد کنید.</p>
             </div>
-            <form asp-action="Login" asp-controller="Home" id="login" method="post">
+            <form asp-action="Login" asp-controller="Account" id="login" method="post">
                 @Html.AntiForgeryToken()
                 <div class="form-floating mb-3">
                     <select asp-for="Area" class="form-select form-select-sm py-1" aria-label=".form-select-lg" asp-items="areas" id="areas">
@@ -55,7 +55,6 @@
 
 @section Scripts {
     <script>
-
         $(function () {
             $("#submit").off("click");
             $("#submit").on("click", function (e) {
@@ -84,6 +83,44 @@
                 }
                 else {
                     $("#areaError").text("تکمیل ورودی ناحیه شعبه ضروری است.");
+                }
+            });
+        });
+    </script>
+    Edit
+
+    markdown
+    Edit
+    Full Screen
+    Copy code
+    <script>
+        $(function () {
+            var areaError = $("#areaError");
+
+            $("#submit").off("click").on("click", function (e) {
+                var userName = $("input[name='UserName']").val();
+                var password = $("input[name='Password']").val();
+                var area = $("#areas").find(':selected').text();
+
+                if (area == "ناحیه شعبه را انتخاب کنید") {
+                    areaError.text("تکمیل ورودی ناحیه شعبه ضروری است.");
+                } else {
+                    areaError.text('');
+                }
+
+                if (area == "ناحیه شعبه را انتخاب کنید" && password != '' && userName != '') {
+                    areaError.text("تکمیل ورودی ناحیه شعبه ضروری است.");
+                    e.preventDefault();
+                }
+            });
+
+            $("#areas").change(function () {
+                var area = $("#areas").find(':selected').text();
+
+                if (area != "ناحیه شعبه را انتخاب کنید") {
+                    areaError.text('');
+                } else {
+                    areaError.text("تکمیل ورودی ناحیه شعبه ضروری است.");
                 }
             });
         });

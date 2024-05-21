@@ -60,7 +60,7 @@ namespace Data.Migrations
                 {
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    Password = table.Column<Guid>(type: "uniqueidentifier", maxLength: 15, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),

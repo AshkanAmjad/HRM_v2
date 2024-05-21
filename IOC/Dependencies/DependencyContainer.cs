@@ -11,7 +11,7 @@ namespace IOC.Dependencies
         public static void RegisterServices(this IServiceCollection services)
         {
             #region Services
-            services.AddScoped<IManagementServices,ManagementServices>();
+            services.AddScoped<IUserService,UserService>();
             #endregion
 
 

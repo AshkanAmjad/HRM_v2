@@ -14,7 +14,7 @@ namespace HRM.Extensions
             #endregion
 
             #region Life Time
-            services.AddScoped<IValidator<LoginViewModel>, LoginValidator>();
+            services.AddScoped<IValidator<LoginVM>, LoginValidator>();
             #endregion
         }
 

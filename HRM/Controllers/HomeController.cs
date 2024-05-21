@@ -12,18 +12,7 @@ namespace HRM.Controllers
 {
     public class HomeController : Controller
     {
-        #region Constructor
-        private readonly IManagementServices _managementServices;
-        private readonly IValidator<LoginViewModel> _validator;
-
-        public HomeController(IManagementServices managementServices, IValidator<LoginViewModel> validator)
-        {
-            _managementServices = managementServices;
-            _validator = validator;
-        }
-
-        #endregion
-        List<SelectListItem> Areas()
+        public List<SelectListItem> Areas()
         {
             List<SelectListItem> areas = new()
             {
@@ -52,33 +41,6 @@ namespace HRM.Controllers
             ViewData["Areas"] = areas;
             return View();
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Login(LoginViewModel model)
-        {
-            ValidationResult result=_validator.Validate(model);
-            if (result.IsValid)
-            {
-            
-            }
-
-            #region Manual Validation
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-            }
-            result.AddToModelState(this.ModelState);
-            #endregion
-
-            #region Areas
-            var areas = Areas();
-            ViewData["Areas"] = areas;
-            #endregion
-
-            return View("Index",model);
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

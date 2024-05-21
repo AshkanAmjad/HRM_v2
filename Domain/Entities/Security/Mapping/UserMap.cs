@@ -18,8 +18,7 @@ namespace Domain.Entities.Security.Mapping
                 .IsRequired()
                 .HasMaxLength(15);
             builder.Property(u => u.Password)
-                .IsRequired()
-                .HasMaxLength(15);
+                .IsRequired();
             builder.Property(u => u.FirstName)
                 .IsRequired();
             builder.Property(u => u.LastName)

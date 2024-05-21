@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace HRM.Models.Validation
 {
-    public class LoginValidator : AbstractValidator<LoginViewModel>
+    public class LoginValidator : AbstractValidator<LoginVM>
     {
         public LoginValidator()
         {

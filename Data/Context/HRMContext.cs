@@ -1,5 +1,4 @@
-﻿using Data.Extensions;
-using Domain.Entities.Portal.Mapping;
+﻿using Domain.Entities.Portal.Mapping;
 using Domain.Entities.Portal.Models;
 using Domain.Entities.Security.Mapping;
 using Domain.Entities.Security.Models;
@@ -20,12 +19,21 @@ namespace Data.Context
         public HRMContext(DbContextOptions<HRMContext>options):base(options) { }
         #endregion
 
+        #region Tables
+        public DbSet <User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Department> Departments { get; set; }  
+        public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Document> Documents { get; set; }
+        public DbSet<Transfer> Transfers { get; set; }  
+        public DbSet<DepartmentTransfer> DepartmentTransfers { get; set; }
+
+
+        #endregion
+
         #region OnModelCreating
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var entityAssembly = typeof(BaseEntity).Assembly;
-            modelBuilder.Verify<BaseEntity>(entityAssembly);
-
             #region Tables
             modelBuilder.ApplyConfiguration(new DepartmentTransferMap());
             modelBuilder.ApplyConfiguration(new DocumentMap());
