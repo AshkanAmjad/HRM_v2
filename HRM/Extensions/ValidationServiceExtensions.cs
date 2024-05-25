@@ -16,6 +16,18 @@ namespace HRM.Extensions
             #region Life Time
             services.AddScoped<IValidator<LoginVM>, LoginValidator>();
             #endregion
+
+            #region Authenication
+            services.AddAuthentication()
+                .AddCookie("HRM", options =>
+                {
+                    options.Cookie.Name = "HRM";
+                    options.LoginPath = "/Index";
+                    options.LogoutPath = "/Logout";
+                    options.ExpireTimeSpan = TimeSpan.FromHours(10);
+                });
+            
+            #endregion
         }
 
     }

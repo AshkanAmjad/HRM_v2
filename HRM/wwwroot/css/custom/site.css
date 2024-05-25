@@ -65,6 +65,19 @@ header {
     font-size: 0.9rem;
     box-sizing: border-box;
 }
+/*navbar*/
+.nav bar li a:active {
+    color: #fff;
+}
+.navBar-active, .navBar li a:hover{
+    background: rgb(0,123,255);
+    color: #fff;
+    border-radius: 3px;
+}
+
+
+
+
 /*container*/
 .container {
     padding-bottom: 2.5rem;

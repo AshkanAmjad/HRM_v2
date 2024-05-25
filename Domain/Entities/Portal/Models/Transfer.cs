@@ -1,5 +1,4 @@
-﻿using Domain.Interfaces.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 namespace Domain.Entities.Portal.Models
 {
     [Table("Transfers", Schema = "Portal")]
-    public class Transfer:BaseEntity
+    public class Transfer
     {
         #region Properties
         [Key]

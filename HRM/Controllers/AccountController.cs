@@ -9,10 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
-using System.Linq.Expressions;
 using System.Security.Claims;
-using System.Web.WebPages.Html;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HRM.Controllers
 {
@@ -26,6 +23,35 @@ namespace HRM.Controllers
         {
             _userService = userService;
             _validator = validator;
+        }
+        public List<SelectListItem> Areas()
+        {
+            List<SelectListItem> areas = new()
+            {
+                new SelectListItem
+                {
+                    Text = "استان",
+                    Value = 0.ToString()
+                },
+                new SelectListItem
+                {
+                    Text = "شهرستان",
+                    Value = 1.ToString()
+                },
+                new SelectListItem
+                {
+                    Text = "بخش",
+                    Value = 3.ToString()
+                }
+            };
+            return areas;
+        }
+
+        public IActionResult Login()
+        {
+            var areas = Areas();
+            ViewData["Areas"] = areas;
+            return View();
         }
 
         #endregion
@@ -43,6 +69,7 @@ namespace HRM.Controllers
                 var hasher = new PasswordHasher<string>();
                 var password = model.Password;
                 var hashedPassword = hasher.HashPassword(null, password);
+                model.Password = hashedPassword;
                 #endregion
 
                 var user = await _userService.GetUser(model);
@@ -58,16 +85,20 @@ namespace HRM.Controllers
                     };
                     var identity = new ClaimsIdentity(claims);
                     var principal = new ClaimsPrincipal(identity);
-                    await HttpContext.SignInAsync(null, principal);
-                    return View("Index", model);
+                    var properties = new AuthenticationProperties
+                    {
+                        IsPersistent = model.RememberMe
+                    };
+                    await HttpContext.SignInAsync(principal,properties);
+                    return View(model);
                 }
 
-                #region Error
+                #region Error Messages
                 if (user is null)
                 {
                     ModelState.AddModelError("UserName", "کاربری با مشخصات وارد شده یافت نشد");
                 }
-                if (user.IsActived == false)
+                if (user != null && user.IsActived == false)
                 {
                     ModelState.AddModelError("UserName", "حساب کاربری غیر فعال است.");
                 }
@@ -82,11 +113,11 @@ namespace HRM.Controllers
             #endregion
 
             #region Areas
-            var areas = new HomeController().Areas();
+            var areas =Areas();
             ViewData["Areas"] = areas;
             #endregion
 
-            return View("Index", model);
+            return View();
         }
     }
 }

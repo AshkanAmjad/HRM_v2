@@ -35,10 +35,10 @@
                     <span asp-validation-for="Password" class="text-danger fs-8"></span>
                 </div>
 
-                <div class="checkbox mb-2">
-                    <label asp-for="RememberMe" class="form-label">
+                <div class="checkbox mb-2 ">
+                    <label asp-for="RememberMe" class="form-check-label">
                         مرا به خاطر بسپار
-                        <input class="form-check-input" asp-for="RememberMe" />
+                        <input asp-for="RememberMe" class="form-check-input" />
                     </label>
                 </div>
                 <div>
@@ -54,45 +54,6 @@
 </div>
 
 @section Scripts {
-    <script>
-        $(function () {
-            $("#submit").off("click");
-            $("#submit").on("click", function (e) {
-                var userName = $("input[name='UserName']").val();
-                var password = $("input[name='Password']").val();
-                var area = $("#areas").find(':selected').text();
-                if (area == "ناحیه شعبه را انتخاب کنید") {
-                    $("#areaError").text("تکمیل ورودی ناحیه شعبه ضروری است.");
-                }
-                else {
-                    $("#areaError").text('');
-                }
-                if (area == "ناحیه شعبه را انتخاب کنید" && password != '' && userName != '') {
-                    $("#areaError").text("تکمیل ورودی ناحیه شعبه ضروری است.");
-                    e.preventDefault();
-                }
-            });
-
-        });
-
-        $(document).ready(function () {
-            $("#areas").change(function () {
-                var area = $("#areas").find(':selected').text();
-                if (area != "ناحیه شعبه را انتخاب کنید") {
-                    $("#areaError").text('');
-                }
-                else {
-                    $("#areaError").text("تکمیل ورودی ناحیه شعبه ضروری است.");
-                }
-            });
-        });
-    </script>
-    Edit
-
-    markdown
-    Edit
-    Full Screen
-    Copy code
     <script>
         $(function () {
             var areaError = $("#areaError");

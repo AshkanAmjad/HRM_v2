@@ -2,7 +2,6 @@
 using Domain.Entities.Portal.Models;
 using Domain.Entities.Security.Mapping;
 using Domain.Entities.Security.Models;
-using Domain.Interfaces.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
@@ -27,8 +26,6 @@ namespace Data.Context
         public DbSet<Document> Documents { get; set; }
         public DbSet<Transfer> Transfers { get; set; }  
         public DbSet<DepartmentTransfer> DepartmentTransfers { get; set; }
-
-
         #endregion
 
         #region OnModelCreating

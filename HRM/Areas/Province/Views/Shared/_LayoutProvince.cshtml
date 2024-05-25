@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPartial.cshtml">
+</head>
+<body>
+    <header class="mb-5 mb-xl-0 pb-5 pb-xl-0">
+        <partial name="~/Views/Shared/Partials/General/Header/_HeaderPartial.cshtml" />
+    </header>
+    <hr class="mb-xl-5" />
+    <div class="row m-0 p-0">
+        <div class="col-xl-2 h-100 ps-lg-0">
+            <div class="border rounded mb-2 my-xl-3">
+                <partial name="Partials/General/_NavBarPartial.cshtml" />
+            </div>
+        </div>
+        <div class="col-xl-10 my-xl-3">
+            <main class="p-2 border rounded" id="main">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+    <footer class="row m-0 border bg-info shadow-lg text-muted position-absolute bottom-0 w-100">
+        <partial name="~/Views/Shared/Partials/General/Footer/_FooterPartial.cshtml" />
+    </footer>
+</body>
+<partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
+@await RenderSectionAsync("Scripts", required: false)
+</html>
+    
+<script type="text/javascript">
+    var _home = '@Url.Action("Index", "Home")';
+    var _management = '@Url.Action("Management", "Home")';
+</script>
+<script type="text/javascript">
+    $('#navbar li a').click(function (e) {
+        $('#navbar li a').removeClass('navBar-active');
+        $(this).addClass('navBar-active');
+    });
+    $(function () {
+        $("#home").off("click");
+        $("#home").on("click", function (e) {
+            e.preventDefault();
+            $.get(_home).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+
+        $("#management").off("click");
+        $("#management").on("click", function (e) {
+            e.preventDefault();
+            $.get(_management).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+    })
+</script>
+

@@ -5,12 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Domain.Interfaces.Base;
 
 namespace Domain.Entities.Security.Models
 {
     [Table("Roles", Schema = "Security")]
-    public class Role:BaseEntity
+    public class Role
     {
         #region Properties
         [Key]

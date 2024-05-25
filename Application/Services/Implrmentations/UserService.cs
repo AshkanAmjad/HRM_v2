@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace Application.Services.Implrmentations
 {
-    public class UserService:IUserService
+    public class UserService : IUserService
     {
         #region Constructor
         private readonly HRMContext _context;
@@ -47,28 +47,26 @@ namespace Application.Services.Implrmentations
 
         public async Task<User?> GetUser(LoginVM loginDTO)
         {
-            var userName= loginDTO.UserName;
-            var password=loginDTO.Password;
-            var user=new User();
-            if (loginDTO.Area.Equals('0'))
+            var user = new User();
+            if (loginDTO.Area == "0")
             {
-                 user =await _context.Users.SingleOrDefaultAsync(
-                    u => u.UserName == userName
+                 user = await _context.Users.SingleOrDefaultAsync(
+                    u => u.UserName == loginDTO.UserName
                     &&
-                    u.Password == password
+                    u.Password == loginDTO.Password
                     &&
-                    u.Department.Province!=0
+                    u.Department.Province != 0
                     &&
-                    u.Department.County==0
+                    u.Department.County == 0
                     &&
-                    u.Department.District==0);
+                    u.Department.District == 0);
             }
-            if(loginDTO.Area.Equals('1'))
+            if (loginDTO.Area == "1")
             {
-                 user =await _context.Users.SingleOrDefaultAsync(
-                    u => u.UserName == userName
+                 user = await _context.Users.SingleOrDefaultAsync(
+                    u => u.UserName == loginDTO.UserName
                     &&
-                    u.Password == password
+                    u.Password == loginDTO.Password
                     &&
                     u.Department.Province == 0
                     &&
@@ -76,12 +74,12 @@ namespace Application.Services.Implrmentations
                     &&
                     u.Department.District == 0);
             }
-            if (loginDTO.Area.Equals('2'))
+            if (loginDTO.Area == "2")
             {
-                 user =await _context.Users.SingleOrDefaultAsync(
-                    u => u.UserName == userName
+                user = await _context.Users.SingleOrDefaultAsync(
+                    u => u.UserName == loginDTO.UserName
                     &&
-                    u.Password == password
+                    u.Password == loginDTO.Password
                     &&
                     u.Department.Province == 0
                     &&
@@ -91,7 +89,7 @@ namespace Application.Services.Implrmentations
             }
             return user;
         }
-    
+
 
 
     }

@@ -1,5 +1,4 @@
 ﻿using Domain.Entities.Security.Models;
-using Domain.Interfaces.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 namespace Domain.Entities.Portal.Models
 {
     [Table("DepartmentTransfers", Schema = "Portal")]
-    public class DepartmentTransfer:BaseEntity
+    public class DepartmentTransfer
     {
         #region Properties
         public Guid TransferId { get; set; }

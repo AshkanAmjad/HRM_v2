@@ -6,12 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities.Portal.Models;
-using Domain.Interfaces.Base;
 
 namespace Domain.Entities.Security.Models
 {
     [Table("Departments", Schema = "Security")]
-    public class Department:BaseEntity
+    public class Department
     {
         #region Properties
         [Key]

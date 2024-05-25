@@ -1,5 +1,4 @@
 ﻿using Domain.Entities.Portal.Models;
-using Domain.Interfaces.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;

@@ -1,5 +1,4 @@
 ﻿using Domain.Entities.Security.Models;
-using Domain.Interfaces.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,7 +10,7 @@ using System.Threading.Tasks;
 namespace Domain.Entities.Portal.Models
 {
     [Table("Documents", Schema = "Portal")]
-    public class Document:BaseEntity
+    public class Document
     {
         #region Properties
         [Key]
