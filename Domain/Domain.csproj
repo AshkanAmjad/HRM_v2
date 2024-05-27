@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="DTOs\Portal\" />
-    <Folder Include="Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>

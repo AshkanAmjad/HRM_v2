@@ -1,0 +1,142 @@
+﻿<ul class="navbar-nav px-0 navBar" id="navbar">
+    <li class="nav-item border-bottom " id="home">
+        <a class="nav-link navBar-active">
+            <i class="fa fa-home fa-lg mx-2 "></i>
+            خانه
+        </a>
+    </li>
+    <li class="nav-item border-bottom" id="management">
+        <a class="nav-link collapsed d-flex" href="#submenu1" type="button" data-bs-toggle="collapse" aria-controls="#submenu1" aria-expanded="false">
+            <div class="w-75">
+                <i class="fa fa-users fa-lg mx-2"></i>
+                مدیریت
+            </div>
+            <div class="w-25 d-flex justify-content-end mx-2 align-items-center">
+                <i class="fa fa-caret-square-o-down"></i>
+            </div>
+        </a>
+        <div class="collapse nav-background" id="submenu1">
+            <ul class="flex-column nav flex-nowrap font-weight-light p-0">
+                <li class="nav-item p-0">
+                    <a class="nav-link p-1 border-bottom border-top collapsed d-flex" href="#subMenu2" type="button" data-bs-toggle="collapse" aria-controls="#submenu1" aria-expanded="false">
+                        <div class="w-75">
+                            <i class="fa fa-navicon mx-3 my-1"></i>
+                            سطح استان
+                        </div>
+                        <div class="w-25 d-flex justify-content-end mx-2 align-items-center">
+                            <i class="fa fa-caret-square-o-down"></i>
+                        </div>
+                    </a>
+                    <div class="collapse nav-subMenu-background m-0" id="subMenu2">
+                        <ul class="flex-column nav font-weight-light p-0">
+                            <li class="nav-item">
+                                <a class="nav-link p-1 border-bottom border-top">
+                                    <i class="fa fa-minus-square mx-3"></i>
+                                    کارکنان
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link p-1 border-bottom border-top">
+                                    <i class="fa fa-minus-square mx-3"></i>
+                                    مدارک
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item p-0">
+                    <a class="nav-link p-1 border-bottom border-top collapsed d-flex" href="#subMenu3" type="button" data-bs-toggle="collapse" aria-controls="#submenu1" aria-expanded="false">
+                        <div class="w-75">
+                            <i class="fa fa-navicon mx-3 my-1"></i>
+                            سطح شهرستان
+                        </div>
+                        <div class="w-25 d-flex justify-content-end mx-2 align-items-center">
+                            <i class="fa fa-caret-square-o-down"></i>
+                        </div>
+                    </a>
+                    <div class="collapse nav-subMenu-background" id="subMenu3">
+                        <ul class="flex-column nav font-weight-light p-0">
+                            <li class="nav-item">
+                                <a class="nav-link p-1 border-bottom border-top">
+                                    <i class="fa fa-minus-square mx-3"></i>
+                                    کارکنان
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link p-1 border-bottom border-top">
+                                    <i class="fa fa-minus-square mx-3"></i>
+                                    مدارک
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item p-0">
+                    <a class="nav-link p-1 border-bottom border-top collapsed d-flex" href="#subMenu4" type="button" data-bs-toggle="collapse" aria-controls="#submenu1" aria-expanded="false">
+                        <div class="w-75">
+                            <i class="fa fa-navicon mx-3 my-1"></i>
+                            سطح بخش
+                        </div>
+                        <div class="w-25 d-flex justify-content-end mx-2 align-items-center">
+                            <i class="fa fa-caret-square-o-down"></i>
+                        </div>
+                    </a>
+                    <div class="collapse nav-subMenu-background" id="subMenu4">
+                        <ul class="flex-column nav font-weight-light p-0">
+                            <li class="nav-item">
+                                <a class="nav-link p-1 border-bottom border-top">
+                                    <i class="fa fa-minus-square mx-3"></i>
+                                    کارکنان
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link p-1 border-bottom border-top">
+                                    <i class="fa fa-minus-square mx-3"></i>
+                                    مدارک
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </li>
+    <li class="nav-item border-bottom" id="transfer">
+        <a class="nav-link">
+            <i class="fa fa-exchange fa-lg mx-2"></i>
+            تبادل
+        </a>
+    </li>
+    <li class="nav-item border-bottom" id="archive">
+        <a class="nav-link">
+            <i class="fa fa-archive fa-lg mx-2"></i>
+            بایگانی
+        </a>
+    </li>
+    <li class="nav-item border-bottom" id="report">
+        <a class="nav-link">
+            <i class="fa fa-area-chart fa-lg mx-2"></i>
+            گزارش
+        </a>
+    </li>
+    <li class="nav-item border-bottom" id="access">
+        <a class="nav-link">
+            <i class="fa fa-lock fa-lg mx-2"></i>
+            کنترل دسترسی
+        </a>
+    </li>
+    <li class="nav-item border-bottom" id="profile">
+        <a class="nav-link">
+            <i class="fa fa-user fa-lg mx-2"></i>
+            حساب کاربری
+        </a>
+    </li>
+    <li class="nav-item border-bottom" id="logout">
+        <a class="nav-link" asp-action="Logout" asp-controller="Home" asp-area="Province">
+            <i class="fa fa-sign-out fa-lg mx-2"></i>
+            خروج
+        </a>
+    </li>
+</ul>
+
+

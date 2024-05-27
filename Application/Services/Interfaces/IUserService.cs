@@ -6,7 +6,7 @@ namespace Application.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<User?> GetUser(LoginVM loginDTO);
+        Task<User?> GetUser(LoginVM model);
         List<SelectListItem> GetAreas();
     }
 }

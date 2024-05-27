@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
+    <title>@ViewData["Title"] - HRM</title>
     <partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPartial.cshtml">
 </head>
 <body>
@@ -14,33 +14,55 @@
     <div class="row m-0 p-0">
         <div class="col-xl-2 h-100 ps-lg-0">
             <div class="border rounded mb-2 my-xl-3">
-                <partial name="Partials/General/_NavBarPartial.cshtml" />
+                <partial name="Partials/General/NavBar/_NavBarPartial.cshtml" />
             </div>
         </div>
-        <div class="col-xl-10 my-xl-3">
-            <main class="p-2 border rounded" id="main">
+        <div class="col-xl-10 mt-2 mb-3 my-xl-3">
+            <main class="p-2 border rounded h-100" id="main" style="min-height:100vh" >
                 @RenderBody()
             </main>
         </div>
     </div>
-    <footer class="row m-0 border bg-info shadow-lg text-muted position-absolute bottom-0 w-100">
+    <footer class="row m-0 border bg-info shadow-lg text-muted w-100">
         <partial name="~/Views/Shared/Partials/General/Footer/_FooterPartial.cshtml" />
     </footer>
 </body>
 <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
 @await RenderSectionAsync("Scripts", required: false)
 </html>
-    
+
 <script type="text/javascript">
+    var _transfer = '@Url.Action("Index", "Document")';
+    var _archive = '@Url.Action("Index", "Archive")';
     var _home = '@Url.Action("Index", "Home")';
-    var _management = '@Url.Action("Management", "Home")';
+    var _management = '@Url.Action("Index", "Management")';
+    var _report = '@Url.Action("Index", "Report")';
+    var _access = '@Url.Action("Index", "Access")';
+    var _profile = '@Url.Action("Profile", "Management")';
 </script>
 <script type="text/javascript">
     $('#navbar li a').click(function (e) {
-        $('#navbar li a').removeClass('navBar-active');
+        $('#navbar li a,#home').removeClass('navBar-active');
         $(this).addClass('navBar-active');
     });
+
     $(function () {
+        $("#transfer").off("click");
+        $("#transfer").on("click", function (e) {
+            e.preventDefault();
+            $.get(_transfer).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+
+        $("#archive").off("click");
+        $("#archive").on("click", function (e) {
+            e.preventDefault();
+            $.get(_archive).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+
         $("#home").off("click");
         $("#home").on("click", function (e) {
             e.preventDefault();
@@ -51,8 +73,31 @@
 
         $("#management").off("click");
         $("#management").on("click", function (e) {
-            e.preventDefault();
             $.get(_management).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+
+        $("#report").off("click");
+        $("#report").on("click", function (e) {
+            e.preventDefault();
+            $.get(_report).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+
+        $("#access").off("click");
+        $("#access").on("click", function (e) {
+            e.preventDefault();
+            $.get(_access).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+
+        $("#profile").off("click");
+        $("#profile").on("click", function (e) {
+            e.preventDefault();
+            $.get(_profile).done(function (result) {
                 $("#main").html(result);
             });
         });

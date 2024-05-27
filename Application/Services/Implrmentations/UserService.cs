@@ -3,6 +3,7 @@ using Data.Context;
 using Domain.DTOs.Enums;
 using Domain.DTOs.Security.Login;
 using Domain.Entities.Security.Models;
+using Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Http;
@@ -16,10 +17,12 @@ namespace Application.Services.Implrmentations
     {
         #region Constructor
         private readonly HRMContext _context;
+        private readonly IUserRepository _userRepository;
 
-        public UserService(HRMContext context)
+        public UserService(HRMContext context,IUserRepository userRepository)
         {
             _context = context;
+            _userRepository = userRepository;
         }
         #endregion
         public List<SelectListItem> GetAreas()
@@ -39,56 +42,15 @@ namespace Application.Services.Implrmentations
                 new SelectListItem
                 {
                     Text = "بخش",
-                    Value = 3.ToString()
+                    Value = 2.ToString()
                 }
             };
             return areas;
         }
 
-        public async Task<User?> GetUser(LoginVM loginDTO)
-        {
-            var user = new User();
-            if (loginDTO.Area == "0")
-            {
-                 user = await _context.Users.SingleOrDefaultAsync(
-                    u => u.UserName == loginDTO.UserName
-                    &&
-                    u.Password == loginDTO.Password
-                    &&
-                    u.Department.Province != 0
-                    &&
-                    u.Department.County == 0
-                    &&
-                    u.Department.District == 0);
-            }
-            if (loginDTO.Area == "1")
-            {
-                 user = await _context.Users.SingleOrDefaultAsync(
-                    u => u.UserName == loginDTO.UserName
-                    &&
-                    u.Password == loginDTO.Password
-                    &&
-                    u.Department.Province == 0
-                    &&
-                    u.Department.County != 0
-                    &&
-                    u.Department.District == 0);
-            }
-            if (loginDTO.Area == "2")
-            {
-                user = await _context.Users.SingleOrDefaultAsync(
-                    u => u.UserName == loginDTO.UserName
-                    &&
-                    u.Password == loginDTO.Password
-                    &&
-                    u.Department.Province == 0
-                    &&
-                    u.Department.County != 0
-                    &&
-                    u.Department.District != 0);
-            }
-            return user;
-        }
+        public async Task<User?> GetUser(LoginVM model)
+            => await _userRepository.GetUser(model);
+
 
 
 

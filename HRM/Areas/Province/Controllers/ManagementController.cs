@@ -4,19 +4,14 @@ namespace HRM.Areas.Province.Controllers
 {
     [Area("Province")]
 
-    public class HomeController : Controller
+    public class ManagementController : Controller
     {
-        public IActionResult Main()
-        {
-            return View();
-        }
-
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Logout()
+        public IActionResult Profile()
         {
             return View();
         }
