@@ -2,6 +2,7 @@
 using Data.Context;
 using Domain.DTOs.Enums;
 using Domain.DTOs.Security.Login;
+using Domain.DTOs.Security.User;
 using Domain.Entities.Security.Models;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -49,8 +50,20 @@ namespace Application.Services.Implrmentations
         }
 
         public async Task<User?> GetUser(LoginVM model)
-            => await _userRepository.GetUser(model);
+        {
+            #region hashing password
+            var hasher = new PasswordHasher<string>();
+            var password = model.Password;
+            var hashedPassword = hasher.HashPassword(null, password);
+            model.Password = hashedPassword;
+            #endregion
 
+            var user= await _userRepository.GetUser(model);
+            return user;
+        }
+
+        public async Task<bool> Register(UserRegisterVM model)
+            => await _userRepository.Register(model);
 
 
 

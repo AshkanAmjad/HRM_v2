@@ -25,17 +25,21 @@ namespace Domain.Entities.Security.Mapping
                 .IsRequired();
             builder.Property(u => u.Gender)
                 .IsRequired();
-            builder.Property(u=>u.PhoneNumber)
+            builder.Property(u => u.Employment)
                 .IsRequired();
-            builder.Property(u=>u.DateOfBirth)
+            builder.Property(u => u.Insurance)
                 .IsRequired();
-            builder.Property(u=>u.City)
+            builder.Property(u => u.PhoneNumber)
                 .IsRequired();
-            builder.Property(u=>u.Address)
+            builder.Property(u => u.DateOfBirth)
                 .IsRequired();
-            builder.Property(u=>u.IsActived) 
+            builder.Property(u => u.City)
                 .IsRequired();
-            builder.Property(u=>u.MaritalStatus)
+            builder.Property(u => u.Address)
+                .IsRequired();
+            builder.Property(u => u.IsActived)
+                .IsRequired();
+            builder.Property(u => u.MaritalStatus)
                 .IsRequired();
             builder.Property(u => u.RegisterDate)
                 .IsRequired();

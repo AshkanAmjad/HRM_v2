@@ -27,7 +27,6 @@ namespace Domain.Entities.Portal.Models
 
         #region Relations
         public Department Department { get; set; }
-
         #endregion
     }
 }

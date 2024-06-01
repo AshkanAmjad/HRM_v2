@@ -4,14 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.DTOs.Enums
+namespace Domain.DTOs.Security.User
 {
-    public class Marital
+    public class UserEditVM
     {
-        public enum MaritalType
-        {
-            S,
-            M
-        }
     }
 }

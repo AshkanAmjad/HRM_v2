@@ -1,5 +1,6 @@
 ﻿using Data.Context;
 using Domain.DTOs.Security.Login;
+using Domain.DTOs.Security.User;
 using Domain.Entities.Security.Models;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,6 @@ namespace Data.Repositores
             _context = context;
         }
         #endregion
-
         public async Task<User?> GetUser(LoginVM loginVM)
         {
             var user = new User();
@@ -67,5 +67,10 @@ namespace Data.Repositores
             }
             return user;
         }
+        public async Task<bool> Register(UserRegisterVM userRegister)
+        {
+            return true;
+        }
+
     }
 }

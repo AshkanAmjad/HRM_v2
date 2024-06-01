@@ -1,4 +1,4 @@
-﻿using Domain.DTOs.Security.Login;
+﻿using AutoMapper;
 using Domain.DTOs.Security.User;
 using Domain.Entities.Security.Models;
 using System;
@@ -7,11 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Interfaces
+namespace Application.Profiles
 {
-    public interface IUserRepository
+    public class HRMProfile:Profile
     {
-        Task<User?>GetUser(LoginVM loginVM);
-        Task<bool> Register(UserRegisterVM userRegister);
+        public HRMProfile()
+        {
+            CreateMap<UserRegisterVM,User>();
+        }
     }
 }

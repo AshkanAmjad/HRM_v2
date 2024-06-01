@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,19 +7,17 @@
     <title>@ViewData["Title"] - HRM</title>
     <partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPartial.cshtml">
 </head>
-<body class="position-relative">
+<body class="position-relative min-vh-100">
     <header class="mb-5">
         <partial name="~/Views/Shared/Partials/General/Header/_HeaderPartial.cshtml" />
     </header>
-    <div class="container">
-        <main class="pb-3">
+        <main class="pb-3 mb-5">
             @RenderBody()
         </main>
-    </div>
-    <footer class="row footer m-0 border bg-info shadow-lg position-absolute bottom-0 text-muted w-100">
+    <footer class="row m-0 border bg-info shadow-lg text-muted w-100 position-absolute bottom-0">
         <partial name="~/Views/Shared/Partials/General/Footer/_FooterPartial.cshtml" />
     </footer>
 </body>
 <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
-@await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
 </html>

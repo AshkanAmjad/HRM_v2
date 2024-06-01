@@ -38,13 +38,17 @@
     font-size:0.1rem;
 }
 
+.mb-n1 {
+    margin-bottom: -3rem !important;
+}
+
 .cursor {
     cursor: default;
 }
 
-body {
-    min-height: 93.5vh;
-} 
+.w-90{
+    width:90%;
+}
 
 .footer-animation , .header-animation {
     display: inline-block;
@@ -92,7 +96,6 @@ header {
     font-size: 0.8rem;
 }
 
-
 /*media*/
 @media (max-width:767px) {
     .footer {
@@ -110,10 +113,32 @@ header {
     #footer-logo {
         order: 1;
     }
+
+    input, input::placeholder,textarea,textarea::placeholder {
+        font-size: 0.55rem;
+    }
+
+    label {
+        font-size: 0.8rem;
+    }
+
+    #employment {
+        font-size: 0.55rem;
+        padding-top:0.7rem;
+        padding-bottom:0.7rem;
+    }
 }
 
 @media (max-width:320px) {
     body {
         min-height: 120vh;
     }
+}
+
+/*main*/
+.avatarUploadBox{
+    width:200px;
+    height:200px;
+    border:2px dotted #ccc;
+    cursor:grab;
 }

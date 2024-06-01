@@ -3,10 +3,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - HRM</title>
+    <title>@ViewData["Title"] HRM</title>
     <partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPartial.cshtml">
 </head>
-<body>
+<body class="min-vh-100">
     <header class="mb-5 mb-xl-0 pb-5 pb-xl-0">
         <partial name="~/Views/Shared/Partials/General/Header/_HeaderPartial.cshtml" />
     </header>
@@ -18,12 +18,12 @@
             </div>
         </div>
         <div class="col-xl-10 mt-2 mb-3 my-xl-3">
-            <main class="p-2 border rounded h-100" id="main" style="min-height:100vh" >
+            <main class="p-2 border rounded min-vh-100" id="main" >
                 @RenderBody()
             </main>
         </div>
     </div>
-    <footer class="row m-0 border bg-info shadow-lg text-muted w-100">
+    <footer class="row mb-n1 border bg-info shadow-lg text-muted w-100">
         <partial name="~/Views/Shared/Partials/General/Footer/_FooterPartial.cshtml" />
     </footer>
 </body>

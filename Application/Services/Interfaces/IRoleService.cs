@@ -4,14 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.DTOs.Enums
+namespace Application.Services.Interfaces
 {
-    public class Marital
+    public interface IRoleService
     {
-        public enum MaritalType
-        {
-            S,
-            M
-        }
     }
 }

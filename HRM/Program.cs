@@ -1,5 +1,6 @@
 using IOC.Dependencies;
 using HRM.Extensions;
+using Data.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 #region Add Services
+builder.Services.AddMappingService();
 builder.Services.RegisterServices();
 builder.Services.ValidationServices();
 builder.Services.AddApplicationService(builder.Configuration);

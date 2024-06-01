@@ -10,8 +10,8 @@ namespace Domain.DTOs.Enums
     {
         public enum GenderType
         {
-            Man,
-            Woman
+            M,
+            W
         }
     }
 }

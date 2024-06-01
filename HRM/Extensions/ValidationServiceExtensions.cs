@@ -1,4 +1,5 @@
 ﻿using Domain.DTOs.Security.Login;
+using Domain.DTOs.Security.User;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using HRM.Models.Validation;
@@ -15,6 +16,7 @@ namespace HRM.Extensions
 
             #region Life Time
             services.AddScoped<IValidator<LoginVM>, LoginValidator>();
+            services.AddScoped<IValidator<UserRegisterVM>,UserRegisterValidator>();
             #endregion
 
             #region Authenication

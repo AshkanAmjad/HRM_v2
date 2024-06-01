@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Enums
 {
-    public class Marital
+    public class Employment
     {
-        public enum MaritalType
+        public enum EmploymentType
         {
-            S,
-            M
+            آزمایشی,
+            قراردادی,
+            رسمی
         }
     }
 }

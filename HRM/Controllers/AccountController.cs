@@ -24,6 +24,9 @@ namespace HRM.Controllers
             _userService = userService;
             _validator = validator;
         }
+        #endregion
+
+        #region Select lists
         public List<SelectListItem> Areas()
         {
             List<SelectListItem> areas = new()
@@ -46,6 +49,7 @@ namespace HRM.Controllers
             };
             return areas;
         }
+        #endregion
 
         public IActionResult Login()
         {
@@ -54,7 +58,6 @@ namespace HRM.Controllers
             return View();
         }
 
-        #endregion
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -64,14 +67,6 @@ namespace HRM.Controllers
 
             if (result.IsValid)
             {
-
-                #region hashing password
-                var hasher = new PasswordHasher<string>();
-                var password = model.Password;
-                var hashedPassword = hasher.HashPassword(null, password);
-                model.Password = hashedPassword;
-                #endregion
-
                 var user = await _userService.GetUser(model);
                 if (user != null)
                 {
