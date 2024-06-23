@@ -5,8 +5,8 @@
     ? ViewData["Areas"] as List<SelectListItem>
     : new List<SelectListItem>();
 }
-<div class="row ">
-    <div class="card shadow mx-auto col-11 col-sm-8 col-md-6 col-lg-5 col-xl-4 p-0 my-3 my-md-5">
+<div class="row pt-5">
+    <div class="card shadow mx-auto col-11 col-sm-8 col-md-6 col-lg-5 col-xl-4 p-0 my-5">
         <div class="card-header d-flex justify-content-center align-items-center cursor">
             <h6 class=" mb-0">ورود</h6>
             <i class="fa fa-sign-in text-primary mx-2"></i>
@@ -63,13 +63,13 @@
                 var password = $("input[name='Password']").val();
                 var area = $("#areas").find(':selected').text();
 
-                if (area == "ناحیه شعبه را انتخاب کنید") {
+                if (area === "ناحیه شعبه را انتخاب کنید") {
                     areaError.text("تکمیل ورودی ناحیه شعبه ضروری است.");
                 } else {
                     areaError.text('');
                 }
 
-                if (area == "ناحیه شعبه را انتخاب کنید" && password != '' && userName != '') {
+                if (area === "ناحیه شعبه را انتخاب کنید" && userName !== '' && password !== "") {
                     areaError.text("تکمیل ورودی ناحیه شعبه ضروری است.");
                     e.preventDefault();
                 }
@@ -78,7 +78,7 @@
             $("#areas").change(function () {
                 var area = $("#areas").find(':selected').text();
 
-                if (area != "ناحیه شعبه را انتخاب کنید") {
+                if (area !== "ناحیه شعبه را انتخاب کنید") {
                     areaError.text('');
                 } else {
                     areaError.text("تکمیل ورودی ناحیه شعبه ضروری است.");

@@ -1,0 +1,30 @@
+﻿@{
+    Layout = null;
+}
+<partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPartial.cshtml">
+
+    <div id="operation-box" class="modal fade" role="dialog" aria-hidden="true">
+    </div>
+    <div class="btn btn-outline-primary btn-sm  my-1 mx-3">مدیریت پرسنل - استان</div>
+
+    <div>
+        <button class="btn btn-primary text-white d-flex p-2 justify-content-center m-3" id="addBtn">
+            <i class="fa fa-lg fa-user-plus align-self-center"></i>
+        </button>
+    </div>
+    <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
+        <script type="text/javascript">
+            var _registerUrl = '@Url.Action("Register", "Management")';
+        </script>
+        <script type="text/javascript">
+            //Register
+            $("#addBtn").off("click").on("click", function (e) {
+                e.preventDefault();
+                $.get(_registerUrl).done(function (result) {
+                    $("#operation-box").html(result);
+                    $("#operation-box").modal("show");
+                });
+            });
+        </script>
+
+

@@ -12,6 +12,7 @@ namespace Domain.Interfaces
     public interface IUserRepository
     {
         Task<User?>GetUser(LoginVM loginVM);
-        Task<bool> Register(UserRegisterVM userRegister);
+        bool Similarity(UserRegisterVM userRegister, out string message);
+        bool Register(UserRegisterVM userRegister, out string message);
     }
 }

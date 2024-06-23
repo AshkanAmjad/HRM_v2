@@ -7,6 +7,8 @@ namespace HRM.Models.Validation
     {
         public UserRegisterValidator()
         {
+            RuleFor(x=>x.Avatar).SetValidator(new AvatarValidator());
+
             RuleFor(x => x.UserName).Length(10)
                                     .WithMessage("تعداد ارقام کدملی باید 10 رقم باشد.")
                                     .NotNull()
@@ -55,10 +57,14 @@ namespace HRM.Models.Validation
                                        .WithMessage("تکمیل ورودی تاریخ تولد ضروری است.");
 
             RuleFor(x => x.City).NotNull()
-                                .WithMessage("تکمیل ورودی شهر محل سکونت ضروری است.");
+                                .WithMessage("تکمیل ورودی شهر محل سکونت ضروری است.")
+                                .Matches(@"^[\u0600-\u06FF\s]+$")
+                                .WithMessage("مقدار ورودی شهر سکونت معتبر نیست.");
 
             RuleFor(x => x.Address).NotNull()
                                    .WithMessage("تکمیل ورودی نشانی محل سکونت ضروری است.")
+                                   .Matches(@"^[\u0600-\u06FF\s]+$")
+                                   .WithMessage("مقدار ورودی نشانی سکونت معتبر نیست.")
                                    .MinimumLength(10)
                                    .WithMessage("حداقل تعداد حروف نشانی محل سکونت 10 حرف می باشد.");
         }

@@ -9,6 +9,6 @@ namespace Application.Services.Interfaces
     {
         Task<User?> GetUser(LoginVM model);
         List<SelectListItem> GetAreas();
-        Task<bool> Register(UserRegisterVM model);
+        bool Register(UserRegisterVM model, out string message);
     }
 }

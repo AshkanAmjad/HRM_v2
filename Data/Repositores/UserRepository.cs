@@ -67,10 +67,36 @@ namespace Data.Repositores
             }
             return user;
         }
-        public async Task<bool> Register(UserRegisterVM userRegister)
+        public bool Register(UserRegisterVM userRegister, out string message)
         {
-            return true;
+            string checkMessage = "";
+            if (Similarity(userRegister, out checkMessage) == false)
+            {
+                //Implement Register
+                message = "";
+                return true;
+            }
+            message = checkMessage;
+            return false;
         }
 
+        public bool Similarity(UserRegisterVM userRegister, out string message)
+        {
+            bool check = false;
+            var resultMessage = "";
+            if (userRegister != null)
+            {
+                if (userRegister.Area == 0)
+                {
+                    check = _context.Users.Where(u => (u.UserName == userRegister.UserName) && (u.Department.Province == 1)).Any();
+                }
+                if (check)
+                {
+                    resultMessage = "کاربر" + userRegister.FirstName + " " + userRegister.LastName + "قبلا ثبت شده است.";
+                }
+            }
+            message = resultMessage;
+            return check;
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
+﻿document.body.addEventListener('keydown', function (e) {
+    var key = e.key;
+    if (key === 'Enter') {
+        document.getElementById('submit').click();
+    }
+});

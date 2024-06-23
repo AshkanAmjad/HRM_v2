@@ -62,8 +62,8 @@ namespace Application.Services.Implrmentations
             return user;
         }
 
-        public async Task<bool> Register(UserRegisterVM model)
-            => await _userRepository.Register(model);
+        public bool Register(UserRegisterVM model, out string message)
+            => _userRepository.Register(model, out message);
 
 
 

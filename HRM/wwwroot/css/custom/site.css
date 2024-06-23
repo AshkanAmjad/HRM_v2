@@ -26,16 +26,16 @@
 }
 
 .fs-8 {
-    font-size: 0.8rem;
+    font-size: 0.8rem !important;
 }
-.fs-9{
-    font-size:0.7rem;
+.fs-9 {
+    font-size: 0.7rem !important;
 }
-.fs-10{
-    font-size:0.6rem;
+.fs-10 {
+    font-size: 0.6rem !important;
 }
-.fs-11{
-    font-size:0.1rem;
+.fs-11 {
+    font-size: 0.1rem !important;
 }
 
 .mb-n1 {
@@ -46,8 +46,23 @@
     cursor: default;
 }
 
-.w-90{
-    width:90%;
+.cursor-pointer{
+    cursor:pointer;
+}
+
+.btn-close {
+    cursor: pointer;
+    color: red;
+    position: absolute;
+    left: 10px;
+}
+
+.w-90 {
+    width: 90%;
+}
+
+.hidden{
+    display:none;
 }
 
 .footer-animation , .header-animation {
@@ -85,7 +100,6 @@ header {
 .nav-background {
     background-color: rgb(242,242,242);
 }
-
 /*container*/
 .container {
     padding-bottom: 2.5rem;
@@ -119,19 +133,22 @@ header {
     }
 
     label {
-        font-size: 0.8rem;
+        font-size: 0.6rem;
     }
 
-    #employment {
+    #employmentStatus {
         font-size: 0.55rem;
-        padding-top:0.7rem;
-        padding-bottom:0.7rem;
+        padding-top: 0.7rem;
+        padding-bottom: 0.7rem;
     }
 }
 
 @media (max-width:320px) {
     body {
         min-height: 120vh;
+    }
+    label {
+        font-size: 0.6rem;
     }
 }
 

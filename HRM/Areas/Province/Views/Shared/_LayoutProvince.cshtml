@@ -32,17 +32,17 @@
 </html>
 
 <script type="text/javascript">
-    var _transfer = '@Url.Action("Index", "Document")';
-    var _archive = '@Url.Action("Index", "Archive")';
-    var _home = '@Url.Action("Index", "Home")';
-    var _management = '@Url.Action("Index", "Management")';
-    var _report = '@Url.Action("Index", "Report")';
-    var _access = '@Url.Action("Index", "Access")';
-    var _profile = '@Url.Action("Profile", "Management")';
+    var _transferUrl = '@Url.Action("Index", "Document")';
+    var _archiveUrl = '@Url.Action("Index", "Archive")';
+    var _homeUrl = '@Url.Action("Index", "Home")';
+    var _provinceManagementUsersUrl = '@Url.Action("ProvinceIndex", "Management")';
+    var _reportUrl = '@Url.Action("Index", "Report")';
+    var _accessUrl = '@Url.Action("Index", "Access")';
+    var _profileUrl = '@Url.Action("Profile", "Management")';
 </script>
 <script type="text/javascript">
-    $('#navbar li a').click(function (e) {
-        $('#navbar li a,#home').removeClass('navBar-active');
+    $('#navbar a').click(function (e) {
+        $('#navbar a,#home').removeClass('navBar-active');
         $(this).addClass('navBar-active');
     });
 
@@ -50,7 +50,7 @@
         $("#transfer").off("click");
         $("#transfer").on("click", function (e) {
             e.preventDefault();
-            $.get(_transfer).done(function (result) {
+            $.get(_transferUrl).done(function (result) {
                 $("#main").html(result);
             });
         });
@@ -58,7 +58,7 @@
         $("#archive").off("click");
         $("#archive").on("click", function (e) {
             e.preventDefault();
-            $.get(_archive).done(function (result) {
+            $.get(_archiveUrl).done(function (result) {
                 $("#main").html(result);
             });
         });
@@ -66,14 +66,14 @@
         $("#home").off("click");
         $("#home").on("click", function (e) {
             e.preventDefault();
-            $.get(_home).done(function (result) {
+            $.get(_homeUrl).done(function (result) {
                 $("#main").html(result);
             });
         });
 
-        $("#management").off("click");
-        $("#management").on("click", function (e) {
-            $.get(_management).done(function (result) {
+        $("#provinceManagementUsers").off("click");
+        $("#provinceManagementUsers").on("click", function (e) {
+            $.get(_provinceManagementUsersUrl).done(function (result) {
                 $("#main").html(result);
             });
         });
@@ -81,7 +81,7 @@
         $("#report").off("click");
         $("#report").on("click", function (e) {
             e.preventDefault();
-            $.get(_report).done(function (result) {
+            $.get(_reportUrl).done(function (result) {
                 $("#main").html(result);
             });
         });
@@ -89,7 +89,7 @@
         $("#access").off("click");
         $("#access").on("click", function (e) {
             e.preventDefault();
-            $.get(_access).done(function (result) {
+            $.get(_accessUrl).done(function (result) {
                 $("#main").html(result);
             });
         });
@@ -97,7 +97,7 @@
         $("#profile").off("click");
         $("#profile").on("click", function (e) {
             e.preventDefault();
-            $.get(_profile).done(function (result) {
+            $.get(_profileUrl).done(function (result) {
                 $("#main").html(result);
             });
         });
