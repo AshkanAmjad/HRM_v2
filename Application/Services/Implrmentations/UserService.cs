@@ -63,7 +63,10 @@ namespace Application.Services.Implrmentations
         }
 
         public bool Register(UserRegisterVM model, out string message)
-            => _userRepository.Register(model, out message);
+        {
+            model.UserId = Guid.NewGuid();
+            return _userRepository.Register(model, out message);
+        }
 
 
 

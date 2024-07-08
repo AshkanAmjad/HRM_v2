@@ -32,7 +32,8 @@
                     مشخصات کارمند را با دقت در ورودی های مربوطه وارد کنید.
                 </p>
             </div>
-            <form asp-action="Register" asp-controller="Management" enctype="multipart/form-data" id="registerForm" asp-antiforgery="true" method="post">
+            <form id="registerForm" enctype="multipart/form-data" asp-antiforgery="true">
+                @Html.AntiForgeryToken()
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Area" value="0" />
                 <input type="file" asp-for="Avatar" class="hidden" id="pic" />
@@ -220,107 +221,107 @@
     </div>
 
     <script type="text/javascript">
-
         $('#dateOfBirth').persianDatepicker({
             initialValue: false,
             format: 'YYYY/MM/DD'
         });
 
-        $(function() {
+        $.fn.Validation = function () {
+            var employmentError = $("#employmentError");
+            var maritalError = $("#maritalError");
+            var ganderError = $("#genderError");
+            var $userName = $("input[name='UserName']").val();
+            var $password = $("input[name='Password']").val();
+            var $confirmPassword = $("input[name='ConfirmPassword']").val();
+            var $firstName = $("input[name='FirstName']").val();
+            var $lastName = $("input[name='LastName']").val();
+            var $gender = $("input[name='gender']:checked").val();
+            var $dateOfBirth = $("input[name='DateOfBirth']").val();
+            var $marital = $("input[name='maritalStatus']:checked").val();
+            var $employment = $("#employmentStatus").find(':selected').text();
+            var $gender = $("input[name='gender']:checked").val();
+            var $email = $("input[name='Email").val();
+            var $phoneNumber = $("input[name='PhoneNumber']").val();
+            var $city = $("input[name='City']").val();
+            var $address = $("#Address").val();
+            if ($employment === "وضعیت استخدامی خود را انتخاب کنید ...") {
+                employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.")
+            } else {
+                employmentError.text('');
+            }
+            if ($marital === undefined) {
+                maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
+            } else {
+                maritalError.text('');
+            }
+            if ($gender === undefined) {
+                ganderError.text("تکمیل ورودی جنسیت ضروری است.");
+            } else {
+                ganderError.text('');
+            }
+            if (($employment === "وضعیت استخدامی خود را انتخاب کنید ..." || $marital === undefined || $gender === undefined)
+                &&
+                ($userName !== "" && $password !== "" && $confirmPassword !== "" && $firstName !== "" && $lastName !== ""
+                    && $dateOfBirth !== "" && $email !== "" && $phoneNumber !== "" && $city !== "" && $address !== "")) {
+                if ($employment === "وضعیت استخدامی خود را انتخاب کنید ...") {
+                    employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.")
+                }
+                if ($marital === undefined) {
+                    maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
+                }
+                if ($gender === undefined) {
+                    ganderError.text("تکمیل ورودی جنسیت ضروری است.");
+                }
+                e.preventDefault();
+            }
+            $("#employmentStatus").change(function () {
+                var $employment = $("#employmentStatus").find(':selected').text();
+                if ($employment !== "وضعیت استخدامی خود را انتخاب کنید ...") {
+                    employmentError.text('');
+                } else {
+                    employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.")
+                }
+            });
+            $("input[name='maritalStatus']").change(function () {
+                var $marital = $("input[name='maritalStatus']:checked").val();
+                if ($marital !== undefined) {
+                    maritalError.text('');
+                } else {
+                    maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
+                }
+            });
+            $("input[name='gender']").change(function () {
+                var $gender = $("input[name='gender']:checked").val();
+                if ($gender !== undefined) {
+                    ganderError.text('');
+                } else {
+                    ganderError.text("تکمیل ورودی جنسیت ضروری است.");
+                }
+            })
+        };
+
+        $(function () {
             var $file = null;
             var dropZone = $('#uploadAvatarBox');
-
-            $(function() {
-                var employmentError = $("#employmentError");
-                var maritalError = $("#maritalError");
-                var ganderError = $("#genderError");
-                $("#submitBtn").off("click").on("click", function (e) {
-                    var $userName = $("input[name='UserName']").val();
-                    var $password = $("input[name='Password']").val();
-                    var $confirmPassword = $("input[name='ConfirmPassword']").val();
-                    var $firstName = $("input[name='FirstName']").val();
-                    var $lastName = $("input[name='LastName']").val();
-                    var $gender = $("input[name='gender']:checked").val();
-                    var $dateOfBirth = $("input[name='DateOfBirth']").val();
-                    var $marital = $("input[name='maritalStatus']:checked").val();
-                    var $employment = $("#employmentStatus").find(':selected').text();
-                    var $gender = $("input[name='gender']:checked").val();
-                    var $email = $("input[name='Email").val();
-                    var $phoneNumber = $("input[name='PhoneNumber']").val();
-                    var $city = $("input[name='City']").val();
-                    var $address = $("#Address").val();
-                    if ($employment === "وضعیت استخدامی خود را انتخاب کنید ...") {
-                        employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.")
-                    } else {
-                        employmentError.text('');
-                    }
-                    if ($marital === undefined) {
-                        maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
-                    } else {
-                        maritalError.text('');
-                    }
-                    if ($gender === undefined) {
-                        ganderError.text("تکمیل ورودی جنسیت ضروری است.");
-                    } else {
-                        ganderError.text('');
-                    }
-                    if (($employment === "وضعیت استخدامی خود را انتخاب کنید ..." || $marital === undefined || $gender === undefined)
-                        &&
-                        ($userName !== "" && $password !== "" && $confirmPassword !== "" && $firstName !== "" && $lastName !== ""
-                            && $dateOfBirth !== "" && $email !== "" && $phoneNumber !== "" && $city !== "" && $address !== "")) {
-                        if ($employment === "وضعیت استخدامی خود را انتخاب کنید ...") {
-                            employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.")
-                        }
-                        if ($marital === undefined) {
-                            maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
-                        }
-                        if ($gender === undefined) {
-                            ganderError.text("تکمیل ورودی جنسیت ضروری است.");
-                        }
-                        e.preventDefault();
-                    }
-                });
-
-                $("#employmentStatus").change(function () {
-                    var $employment = $("#employmentStatus").find(':selected').text();
-                    if ($employment !== "وضعیت استخدامی خود را انتخاب کنید ...") {
-                        employmentError.text('');
-                    } else {
-                        employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.")
-                    }
-                });
-                $("input[name='maritalStatus']").change(function () {
-                    var $marital = $("input[name='maritalStatus']:checked").val();
-                    if ($marital !== undefined) {
-                        maritalError.text('');
-                    } else {
-                        maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
-                    }
-                });
-                $("input[name='gender']").change(function () {
-                    var $gender = $("input[name='gender']:checked").val();
-                    if ($gender !== undefined) {
-                        ganderError.text('');
-                    } else {
-                        ganderError.text("تکمیل ورودی جنسیت ضروری است.");
-                    }
-                })
-
-            })
-
             $("#submitBtn").off("click");
             $("#submitBtn").on("click", function (e) {
+                $.fn.Validation();
                 e.preventDefault();
                 var $form = $('#registerForm');
                 if ($form.valid()) {
                     $("#submitBtn").prop('disabled', true);
-                    var data = $form.serialize();
-                    $.post('@Url.Action("Register", "Management")', data)
-                        .done(function (result) {
+                    var formData = new FormData($form.get(0));
+                    $.ajax({
+                        url: '@Url.Action("Register", "Management")',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (result) {
                             if (result.success) {
                                 //Grid_Load
                                 $("#operation-box").modal("toggle");
-                                swal.fire({
+                                Swal.fire({
                                     title: result.message,
                                     icon: 'success',
                                     showConfirmButton: false,
@@ -333,7 +334,7 @@
                                     }
                                 });
                             } else {
-                                swal.fire({
+                                Swal.fire({
                                     title: 'خطا',
                                     icon: 'error',
                                     text: result.message,
@@ -347,11 +348,12 @@
                                     }
                                 })
                             }
-                        })
-                        .always(function () {
+                        },
+                        complete: function () {
                             $("#submitBtn").prop('disabled', false);
-                        });
-                }
+                        }
+                    });
+                };
             });
 
             // Dragover event

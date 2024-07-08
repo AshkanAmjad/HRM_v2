@@ -5,6 +5,7 @@ using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text.Json;
 
 namespace HRM.Areas.Province.Controllers
 {
@@ -103,11 +104,11 @@ namespace HRM.Areas.Province.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(UserRegisterVM user)
+        public async Task<IActionResult> Register(UserRegisterVM user )
         {
             ValidationResult userValidator = _userRegisterValidator.Validate(user);
             bool success = false;
-            var message = ".عملیات ثبت با شکست مواجه شده است";
+            var message = $"<h5>.عملیات ثبت با شکست مواجه شده است</h5>";
             string checkMessage = "";
             if (userValidator.IsValid)
             {
@@ -117,7 +118,7 @@ namespace HRM.Areas.Province.Controllers
                     if (result)
                     {
                         success = true;
-                        message = ".عملیات ثبت کاربر " + user.FirstName + " " + user.LastName + " با موفقیت انجام شد";
+                        message = $"<h5>عملیات ثبت کاربر <span class='text-primary'> {user.FirstName}  {user.LastName} </span> با موفقیت انجام شد.</h5>";
                     }
                     else
                     {
@@ -130,12 +131,12 @@ namespace HRM.Areas.Province.Controllers
                     {
                         ex = ex.InnerException;
                     }
-                    message = "خطای شکست عملیات ثبت : " + ex.Message;
+                    message = $"<h5>خطای شکست عملیات ثبت : {ex.Message}</h5>";
                 }
             }
             else
             {
-                message = ".داده ورودی نمعتبر است";
+                message = "<h5>.داده ورودی نمعتبر است</h5>";
             }
             #region Manual Validation
             foreach (var error in userValidator.Errors)
@@ -145,12 +146,15 @@ namespace HRM.Areas.Province.Controllers
             userValidator.AddToModelState(this.ModelState);
             #endregion
 
-            return Json(new
+            #region Json data
+            var data = new
             {
                 success = success,
                 message = message,
-                System.Web.Mvc.JsonRequestBehavior.AllowGet
-            });
+            };
+            #endregion
+
+            return Json(data);
         }
 
 
