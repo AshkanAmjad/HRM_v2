@@ -108,7 +108,7 @@ namespace HRM.Areas.Province.Controllers
         {
             ValidationResult userValidator = _userRegisterValidator.Validate(user);
             bool success = false;
-            var message = $"<h5>.عملیات ثبت با شکست مواجه شده است</h5>";
+            var message = $"عملیات ثبت با شکست مواجه شده است.";
             string checkMessage = "";
             if (userValidator.IsValid)
             {
@@ -131,12 +131,12 @@ namespace HRM.Areas.Province.Controllers
                     {
                         ex = ex.InnerException;
                     }
-                    message = $"<h5>خطای شکست عملیات ثبت : {ex.Message}</h5>";
+                    message = $"<h5>خطای شکست عملیات ثبت : {ex.Message} </h5>";
                 }
             }
             else
             {
-                message = "<h5>.داده ورودی نمعتبر است</h5>";
+                message = $"{userValidator}";
             }
             #region Manual Validation
             foreach (var error in userValidator.Errors)

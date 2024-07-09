@@ -1,4 +1,5 @@
-﻿using Data.Context;
+﻿using AutoMapper;
+using Data.Context;
 using Domain.DTOs.Security.Login;
 using Domain.DTOs.Security.User;
 using Domain.Entities.Security.Models;
@@ -16,10 +17,12 @@ namespace Data.Repositores
     {
         #region Constructor
         private readonly HRMContext _context;
+        private readonly IMapper _mapper;
 
-        public UserRepository(HRMContext context)
+        public UserRepository(HRMContext context,IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         #endregion
         public async Task<User?> GetUser(LoginVM loginVM)
@@ -72,7 +75,12 @@ namespace Data.Repositores
             string checkMessage = "";
             if (Similarity(userRegister, out checkMessage) == false)
             {
-                //Implement Register
+                User user=_mapper.Map<User>(userRegister);
+                user.IsActived= true;
+                user.RegisterDate = DateTime.Now;
+                user.LastActived= DateTime.Now;
+                _context.Add(user);
+                _context.SaveChanges();
                 message = "";
                 return true;
             }

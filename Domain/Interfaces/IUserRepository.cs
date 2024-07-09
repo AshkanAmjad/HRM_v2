@@ -11,8 +11,11 @@ namespace Domain.Interfaces
 {
     public interface IUserRepository
     {
+        #region User
         Task<User?>GetUser(LoginVM loginVM);
         bool Similarity(UserRegisterVM userRegister, out string message);
         bool Register(UserRegisterVM userRegister, out string message);
+        #endregion
+
     }
 }

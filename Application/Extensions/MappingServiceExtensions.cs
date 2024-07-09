@@ -1,10 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Data.HRMProfiles;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data.Extensions
 {
@@ -13,9 +8,8 @@ namespace Data.Extensions
         public static IServiceCollection AddMappingService(this IServiceCollection services)
         {
             #region Add Auto Mapping
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(typeof(UserProfile));
             #endregion
-
             return services;
         }
     }
