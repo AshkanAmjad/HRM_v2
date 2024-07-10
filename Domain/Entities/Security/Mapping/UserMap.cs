@@ -25,6 +25,8 @@ namespace Domain.Entities.Security.Mapping
                 .IsRequired();
             builder.Property(u => u.Gender)
                 .IsRequired();
+            builder.Property(u=>u.Education)
+                .IsRequired();
             builder.Property(u => u.Employment)
                 .IsRequired();
             builder.Property(u => u.Insurance)

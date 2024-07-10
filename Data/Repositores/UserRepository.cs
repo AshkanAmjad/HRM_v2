@@ -25,7 +25,7 @@ namespace Data.Repositores
             _mapper = mapper;
         }
         #endregion
-        public async Task<User?> GetUser(LoginVM loginVM)
+        public async Task<User?> GetUserAsync(LoginVM loginVM)
         {
             var user = new User();
 
@@ -80,6 +80,7 @@ namespace Data.Repositores
                 user.RegisterDate = DateTime.Now;
                 user.LastActived= DateTime.Now;
                 _context.Add(user);
+                //Implement insert to the document table Insert
                 _context.SaveChanges();
                 message = "";
                 return true;
@@ -106,5 +107,36 @@ namespace Data.Repositores
             message = resultMessage;
             return check;
         }
+        public async Task<List<DisplayUsersVM>> GetUsersAsync()
+        {
+            var users= from item in _context.Users.AsNoTracking()
+                   where (item.IsActived)
+                   select new DisplayUsersVM
+                   {
+                       UserId = item.UserId,
+                       UserName = item.UserName,
+                       FirstName = item.FirstName,
+                       LastName = item.LastName,
+                       Gender = (item.Gender == "M") ? "مرد" : "زن",
+                       MaritalStatus = (item.MaritalStatus == "S") ? "مجرد" : "متاهل",
+                       Employment = (item.Employment == "T") ? "آزمایشی" : ((item.Employment == "C") ? "قراردادی" : "رسمی"),
+                       Area = (item.Department.Province != 0 && item.Department.County == 0 && item.Department.District == 0) ? "استان" : (item.Department.Province != 0 && item.Department.County != 0 && item.Department.District == 0 ? "شهرستان" : "بخش"),
+                       Department = (item.Department.Province != 0 && item.Department.County == 0 && item.Department.District == 0) ? (item.Department.Province) : (item.Department.Province != 0 && item.Department.County != 0 && item.Department.District == 0 ? item.Department.County : item.Department.District),
+                       Insurance = (item.Insurance) ? "مشمول" : "در انتظار",
+                       Education = (item.Education == "Dip") ? "دیپلم" : ((item.Education == "B") ? "کارشناسی" : ((item.Education == "M") ? "کارشناسی ارشد" : "دکترا")),
+                       PhoneNumber = item.PhoneNumber,
+                       Email = item.Email,
+                       DateOfBirth = item.DateOfBirth,
+                       City = item.City,
+                       Address = item.Address,
+                       IsActived = item.IsActived,
+                       LastActived = item.LastActived,
+                       RegisterDate = item.RegisterDate
+                   };
+            return await users.ToListAsync();
+        }
+
+
+
     }
 }

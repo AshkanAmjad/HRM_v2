@@ -44,9 +44,37 @@ namespace HRM.Areas.Province.Controllers
             return genders;
         }
 
+        public List<SelectListItem> EducationTypes()
+        {
+            List<SelectListItem> educationTypes = new()
+            {
+                new SelectListItem
+                {
+                    Text="دیپلم",
+                    Value="Dip"
+                },
+                new SelectListItem
+                {
+                    Text="کارشناسی",
+                    Value="B"
+                },
+                new SelectListItem
+                {
+                    Text="کارشناسی ارشد",
+                    Value="M"
+                },
+                new SelectListItem
+                {
+                    Text="دکترا",
+                    Value="D"
+                }
+            };
+            return educationTypes;
+        }
+
         public List<SelectListItem> MariltalTypes()
         {
-            List<SelectListItem> genders = new()
+            List<SelectListItem> maritalTypes = new()
             {
                 new SelectListItem
                 {
@@ -59,7 +87,7 @@ namespace HRM.Areas.Province.Controllers
                     Value = "M"
                 }
             };
-            return genders;
+            return maritalTypes;
         }
 
         public List<SelectListItem> EmploymentTypes()
@@ -91,20 +119,34 @@ namespace HRM.Areas.Province.Controllers
             return View();
         }
 
+        #region Display
+        public IActionResult GetUsers()
+        {
+            return View();
+        }
+        //public IActionResult FillUsersGrid()
+        //{
+
+        //}
+        #endregion
+
+        #region Register
         public IActionResult Register()
         {
             var genders = GenderTypes();
             var marital = MariltalTypes();
             var employment = EmploymentTypes();
+            var education = EducationTypes();
             ViewData["Gendes"] = genders;
             ViewData["Marital"] = marital;
             ViewData["Employment"] = employment;
+            ViewData["Education"] = education;
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(UserRegisterVM user )
+        public async Task<IActionResult> Register(UserRegisterVM user)
         {
             ValidationResult userValidator = _userRegisterValidator.Validate(user);
             bool success = false;
@@ -156,11 +198,13 @@ namespace HRM.Areas.Province.Controllers
 
             return Json(data);
         }
+        #endregion
 
-
+        #region Profile
         public IActionResult Profile()
         {
             return View();
         }
+        #endregion
     }
 }

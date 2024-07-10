@@ -22,6 +22,7 @@ namespace Data.HRMProfiles
                    .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender))
                    .ForMember(dest => dest.MaritalStatus, opt => opt.MapFrom(src => src.MaritalStatus))
                    .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
+                   .ForMember(dest=>dest.Education, opt=>opt.MapFrom(src => src.Education))
                    .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
                    .ForMember(dest => dest.DateOfBirth, opt => opt.MapFrom(opt => opt.DateOfBirth))
                    .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City))

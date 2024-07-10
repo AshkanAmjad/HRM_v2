@@ -145,6 +145,12 @@ header {
         padding-top: 0.7rem;
         padding-bottom: 0.7rem;
     }
+
+    #educationTypes{
+        font-size: 0.55rem;
+        padding-top: 0.7rem;
+        padding-bottom: 0.7rem;
+    }
 }
 
 @media (max-width:320px) {

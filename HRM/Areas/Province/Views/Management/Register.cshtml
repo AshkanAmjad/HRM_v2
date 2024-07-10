@@ -9,6 +9,10 @@
             ? ViewData["Marital"] as List<SelectListItem>
             : new List<SelectListItem>();
 
+    var educationTypes = ViewData["Education"] != null
+            ? ViewData["Education"] as List<SelectListItem>
+            : new List<SelectListItem>();
+
     var employmentTypes = ViewData["Employment"] != null
              ? ViewData["Employment"] as List<SelectListItem>
              : new List<SelectListItem>();
@@ -128,6 +132,18 @@
                                     <span asp-validation-for="MaritalStatus" class="text-danger fs-8 d-block" id="maritalError"></span>
                                 </div>
                             </div>
+                            <div class="row mb-2 mt-3 p-0">
+                                <div class="col-5 col-lg-4">
+                                    <i class="fa fa fa-caret-square-o-left text-primary ms-2"></i>
+                                    <label class="control-label">تحصیلات :</label>
+                                </div>
+                                <div class="col-7 col-lg-8">
+                                    <select asp-for="Education" class="form-select" aria-label=".form-select-sm" asp-items="educationTypes" id="educationTypes" tabindex="8">
+                                        <option selected class="fs-7">سطح تحصیلات خود را انتخاب کنید ...</option>
+                                    </select>
+                                    <span asp-validation-for="Education" class="text-danger fs-8" id="educationError"></span>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-xl-6">
                             <div class="row mt-2 p-0 ">
@@ -136,7 +152,7 @@
                                     <label class="control-label">وضعیت استخدامی :</label>
                                 </div>
                                 <div class="col-7 col-lg-8">
-                                    <select asp-for="EmploymentStatus" class="form-select" aria-label=".form-select-sm" asp-items="employmentTypes" id="employmentStatus" tabindex="8">
+                                    <select asp-for="EmploymentStatus" class="form-select" aria-label=".form-select-sm" asp-items="employmentTypes" id="employmentStatus" tabindex="9">
                                         <option selected class="fs-7">وضعیت استخدامی خود را انتخاب کنید ...</option>
                                     </select>
                                     <span asp-validation-for="EmploymentStatus" class="text-danger fs-8" id="employmentError"></span>
@@ -149,7 +165,7 @@
                                 </div>
                                 <div class="col-7 col-lg-8 my-2 d-flex align-items-center">
                                     <label class="ms-2">مشمول</label>
-                                    <input class="form-check-input" asp-for="Insurance" tabindex="9" />
+                                    <input class="form-check-input" asp-for="Insurance" tabindex="10" />
                                 </div>
                             </div>
                             <div class="row mt-2 p-0 ">
@@ -158,7 +174,7 @@
                                     <label class="control-label">تاریخ تولد :</label>
                                 </div>
                                 <div class="col-7 col-lg-8">
-                                    <input asp-for="DateOfBirth" class="form-control w-100" placeholder="مقدار مناسبی برای تاریخ تولد وارد کنید ..." id="dateOfBirth" tabindex="10" autocomplete="off" />
+                                    <input asp-for="DateOfBirth" class="form-control w-100" placeholder="مقدار مناسبی برای تاریخ تولد وارد کنید ..." id="dateOfBirth" tabindex="11" autocomplete="off" />
                                     <span asp-validation-for="DateOfBirth" class="text-danger fs-8"  autocomplete="off"></span>
                                 </div>
                             </div>
@@ -168,7 +184,7 @@
                                     <label class="control-label">پست الکترونیک :</label>
                                 </div>
                                 <div class="col-7 col-lg-8">
-                                    <input asp-for="Email" class="form-control w-100 " tabindex="11" autocomplete="off" placeholder="مقدار مناسبی برای پست الکترونیک وارد کنید ..." />
+                                    <input asp-for="Email" class="form-control w-100 " tabindex="12" autocomplete="off" placeholder="مقدار مناسبی برای پست الکترونیک وارد کنید ..." />
                                     <span asp-validation-for="Email" class="text-danger fs-8"></span>
                                 </div>
                             </div>
@@ -178,7 +194,7 @@
                                     <label class="control-label">شماره همراه :</label>
                                 </div>
                                 <div class="col-7 col-lg-8">
-                                    <input asp-for="PhoneNumber" type="number" class="form-control w-100 " tabindex="12" autocomplete="off" placeholder="مقدار مناسبی برای شماره همراه وارد کنید ..." />
+                                    <input asp-for="PhoneNumber" type="number" class="form-control w-100 " tabindex="13" autocomplete="off" placeholder="مقدار مناسبی برای شماره همراه وارد کنید ..." />
                                     <span asp-validation-for="PhoneNumber" class="text-danger fs-8"></span>
                                 </div>
                             </div>
@@ -188,7 +204,7 @@
                                     <label class="control-label">شهر سکونت :</label>
                                 </div>
                                 <div class="col-7 col-lg-8">
-                                    <input asp-for="City" class="form-control w-100 " tabindex="13" autocomplete="off" placeholder="مقدار مناسبی برای شهر سکونت وارد کنید ..." />
+                                    <input asp-for="City" class="form-control w-100 " tabindex="14" autocomplete="off" placeholder="مقدار مناسبی برای شهر سکونت وارد کنید ..." />
                                     <span asp-validation-for="City" class="text-danger fs-8"></span>
                                 </div>
                             </div>
@@ -198,7 +214,7 @@
                                     <label class="control-label">نشانی سکونت :</label>
                                 </div>
                                 <div class="col-7 col-lg-8">
-                                    <textarea asp-for="Address" class="form-control w-100" tabindex="14" placeholder="آدرس سکونت را به طور دقیق وارد کنید ..."></textarea>
+                                    <textarea asp-for="Address" class="form-control w-100" tabindex="15" placeholder="آدرس سکونت را به طور دقیق وارد کنید ..."></textarea>
                                     <span asp-validation-for="Address" class="text-danger fs-8"></span>
                                 </div>
                             </div>
@@ -206,11 +222,11 @@
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-center align-items-center mt-lg-5">
-                    <button type="submit" class="btn btn-primary px-5 align-items-center" id="submitBtn" tabindex="15">
+                    <button type="submit" class="btn btn-primary px-5 align-items-center" id="submitBtn" tabindex="16">
                         <i class="fa fa-save mx-2"></i>
                         ثبت
                     </button>
-                    <button type="button" class="btn btn-secondary cursor-pointer mx-1" tabindex="16" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-secondary cursor-pointer mx-1" tabindex="17" data-bs-dismiss="modal">
                         &times;
                     </button>
                 </div>
@@ -228,6 +244,7 @@
 
         $.fn.Validation = function () {
             var employmentError = $("#employmentError");
+            var educationError = $("#educationError")
             var maritalError = $("#maritalError");
             var ganderError = $("#genderError");
             var $userName = $("input[name='UserName']").val();
@@ -236,6 +253,7 @@
             var $firstName = $("input[name='FirstName']").val();
             var $lastName = $("input[name='LastName']").val();
             var $gender = $("input[name='gender']:checked").val();
+            var $education = $("#educationTypes").find(':selected').text();
             var $dateOfBirth = $("input[name='DateOfBirth']").val();
             var $marital = $("input[name='maritalStatus']:checked").val();
             var $employment = $("#employmentStatus").find(':selected').text();
@@ -249,6 +267,11 @@
             } else {
                 employmentError.text('');
             }
+            if ($education === "سطح تحصیلات خود را انتخاب کنید ...") {
+                educationError.text("تکمیل ورودی تحصیلات ضروری است.")
+            } else {
+                educationError.text('');
+            }
             if ($marital === undefined) {
                 maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
             } else {
@@ -259,12 +282,15 @@
             } else {
                 ganderError.text('');
             }
-            if (($employment === "وضعیت استخدامی خود را انتخاب کنید ..." || $marital === undefined || $gender === undefined)
+            if (($employment === "وضعیت استخدامی خود را انتخاب کنید ..." || $education === "سطح تحصیلات خود را انتخاب کنید ..." || $marital === undefined || $gender === undefined)
                 &&
                 ($userName !== "" && $password !== "" && $confirmPassword !== "" && $firstName !== "" && $lastName !== ""
                     && $dateOfBirth !== "" && $email !== "" && $phoneNumber !== "" && $city !== "" && $address !== "")) {
                 if ($employment === "وضعیت استخدامی خود را انتخاب کنید ...") {
                     employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.")
+                }
+                if ($education === "سطح تحصیلات خود را انتخاب کنید ...") {
+                    educationError.text("تکمیل ورودی تحصیلات ضروری است.")
                 }
                 if ($marital === undefined) {
                     maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
@@ -274,6 +300,14 @@
                 }
                 e.preventDefault();
             }
+            $("#educationTypes").change(function () {
+                var $education = $("#educationTypes").find(':selected').text();
+                if ($education !== "سطح تحصیلات خود را انتخاب کنید ...") {
+                    educationError.text('');
+                } else {
+                    educationError.text("تکمیل ورودی تحصیلات ضروری است.")
+                }
+            });
             $("#employmentStatus").change(function () {
                 var $employment = $("#employmentStatus").find(':selected').text();
                 if ($employment !== "وضعیت استخدامی خود را انتخاب کنید ...") {

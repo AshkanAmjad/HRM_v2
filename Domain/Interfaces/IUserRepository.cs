@@ -12,9 +12,11 @@ namespace Domain.Interfaces
     public interface IUserRepository
     {
         #region User
-        Task<User?>GetUser(LoginVM loginVM);
+        Task<User?> GetUserAsync(LoginVM loginVM);
         bool Similarity(UserRegisterVM userRegister, out string message);
         bool Register(UserRegisterVM userRegister, out string message);
+        Task<List<DisplayUsersVM>> GetUsersAsync();
+
         #endregion
 
     }

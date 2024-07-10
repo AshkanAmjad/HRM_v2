@@ -67,7 +67,7 @@ namespace HRM.Controllers
 
             if (result.IsValid)
             {
-                var user = await _userService.GetUser(model);
+                var user = await _userService.GetUserAsync(model);
                 if (user != null)
                 {
                     var claims = new List<Claim>

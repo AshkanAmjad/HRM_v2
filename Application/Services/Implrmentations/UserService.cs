@@ -1,5 +1,6 @@
 ﻿using Application.Services.Interfaces;
 using Data.Context;
+using Data.Repositores;
 using Domain.DTOs.Security.Login;
 using Domain.DTOs.Security.User;
 using Domain.Entities.Security.Models;
@@ -46,16 +47,18 @@ namespace Application.Services.Implrmentations
             return areas;
         }
 
-        public async Task<User?> GetUser(LoginVM model)
+        public async Task<User?> GetUserAsync(LoginVM model)
         {
-            #region hashing password
-            var hasher = new PasswordHasher<string>();
-            var password = model.Password;
-            var hashedPassword = hasher.HashPassword(null, password);
-            model.Password = hashedPassword;
-            #endregion
+            //#region hashing password
+            //var hasher = new PasswordHasher<string>();
+            //var password = model.Password;
+            //var hashedPassword = hasher.HashPassword(null, password);
+            //model.Password = hashedPassword;
+            //#endregion
 
-            var user = await _userRepository.GetUser(model);
+            string hashed = Hashing(model.Password);
+            model.Password = hashed;
+            var user = await _userRepository.GetUserAsync(model);
             return user;
         }
 
@@ -82,9 +85,8 @@ namespace Application.Services.Implrmentations
             ));
             return hashed;
         }
-
-
-
+        public async Task<List<DisplayUsersVM>> GetUsersAsync()
+        => await _userRepository.GetUsersAsync();
 
     }
 }

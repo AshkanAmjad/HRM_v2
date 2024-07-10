@@ -34,6 +34,9 @@ namespace HRM.Models.Validation
                                     .Matches(@"^[\u0600-\u06FF\s]+$")
                                     .WithMessage("مقدار ورودی نام خانوادگی معتبر نیست.");
 
+            RuleFor(x => x.Education).NotEqual("سطح تحصیلات خود را انتخاب کنید ...")
+                                     .WithMessage("تکمیل ورودی تحصیلات ضروری است.");
+
             RuleFor(x => x.Gender).NotNull()
                                   .WithMessage("تکمیل ورودی جنسیت ضروری است.");
 
