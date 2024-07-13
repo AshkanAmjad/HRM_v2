@@ -16,6 +16,10 @@ namespace Domain.Entities.Security.Mapping
             builder.HasKey(d => d.DepartmentId);
             builder.Property(d => d.Province)
                 .IsRequired();
+            builder.Property(d=>d.County)
+                .IsRequired();
+            builder.Property(d=>d.District)
+                .IsRequired();
             builder.Property(d=>d.IsActived)
                 .IsRequired();
             builder.Property(d=>d.RegisterDate)

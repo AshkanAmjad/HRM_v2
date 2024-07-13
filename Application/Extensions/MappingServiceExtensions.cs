@@ -9,6 +9,7 @@ namespace Data.Extensions
         {
             #region Add Auto Mapping
             services.AddAutoMapper(typeof(UserProfile));
+            services.AddAutoMapper(typeof(DocumentProfle));
             #endregion
             return services;
         }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(HRMContext))]
-    [Migration("20240710183808_CreateDB")]
-    partial class CreateDB
+    [Migration("20240713185357_AddFileNameFieldToDocumentTable")]
+    partial class AddFileNameFieldToDocumentTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,6 +59,10 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FileFormat")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActived")
@@ -131,10 +135,10 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("County")
+                    b.Property<int>("County")
                         .HasColumnType("int");
 
-                    b.Property<int?>("District")
+                    b.Property<int>("District")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActived")

@@ -18,6 +18,8 @@ namespace Domain.Entities.Portal.Mapping
             builder.Property(d => d.Title)
                 .IsRequired()
                 .HasMaxLength(100);
+            builder.Property(d => d.FileName)
+                .IsRequired();
             builder.Property(d => d.UploadDate)
                 .IsRequired();
             builder.Property(d => d.IsActived)

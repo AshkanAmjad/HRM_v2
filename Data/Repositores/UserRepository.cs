@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using Data.Context;
+using Domain.DTOs.General;
+using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Security.Login;
 using Domain.DTOs.Security.User;
+using Domain.Entities.Portal.Models;
 using Domain.Entities.Security.Models;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -73,14 +76,29 @@ namespace Data.Repositores
         public bool Register(UserRegisterVM userRegister, out string message)
         {
             string checkMessage = "";
-            if (Similarity(userRegister, out checkMessage) == false)
+            if (!Similarity(userRegister, out checkMessage))
             {
-                User user=_mapper.Map<User>(userRegister);
-                user.IsActived= true;
-                user.RegisterDate = DateTime.Now;
-                user.LastActived= DateTime.Now;
+                #region User
+                User user =_mapper.Map<User>(userRegister);
+                #endregion
+
+                #region Department
+                Department department =_mapper.Map<Department>(userRegister);
+                var departmentId=Guid.NewGuid();
+                department.DepartmentId=departmentId;
+                #endregion
+
                 _context.Add(user);
-                //Implement insert to the document table Insert
+                _context.Add(department);
+
+                #region Document
+                UploadVM file = _mapper.Map<UploadVM>(userRegister);
+                file.Name = "Avatar";
+                file.Description = "-";
+                file.DepartmentId = departmentId;
+                UploadDocumentToDb(file);
+                #endregion
+
                 _context.SaveChanges();
                 message = "";
                 return true;
@@ -101,16 +119,16 @@ namespace Data.Repositores
                 }
                 if (check)
                 {
-                    resultMessage = "کاربر" + userRegister.FirstName + " " + userRegister.LastName + "قبلا ثبت شده است.";
+                    resultMessage = $"کاربر با کدملی {userRegister.UserName} قبلا ثبت شده است.";
                 }
             }
             message = resultMessage;
             return check;
         }
-        public async Task<List<DisplayUsersVM>> GetUsersAsync()
+        public async Task<List<DisplayUsersVM>> GetUsersAsync(AreaVM area)
         {
             var users= from item in _context.Users.AsNoTracking()
-                   where (item.IsActived)
+                   where (item.IsActived && item.Department.Province == area.Province && item.Department.County == area.County && item.Department.District == area.District)
                    select new DisplayUsersVM
                    {
                        UserId = item.UserId,
@@ -121,7 +139,8 @@ namespace Data.Repositores
                        MaritalStatus = (item.MaritalStatus == "S") ? "مجرد" : "متاهل",
                        Employment = (item.Employment == "T") ? "آزمایشی" : ((item.Employment == "C") ? "قراردادی" : "رسمی"),
                        Area = (item.Department.Province != 0 && item.Department.County == 0 && item.Department.District == 0) ? "استان" : (item.Department.Province != 0 && item.Department.County != 0 && item.Department.District == 0 ? "شهرستان" : "بخش"),
-                       Department = (item.Department.Province != 0 && item.Department.County == 0 && item.Department.District == 0) ? (item.Department.Province) : (item.Department.Province != 0 && item.Department.County != 0 && item.Department.District == 0 ? item.Department.County : item.Department.District),
+                       County = item.Department.County,
+                       District = item.Department.District,
                        Insurance = (item.Insurance) ? "مشمول" : "در انتظار",
                        Education = (item.Education == "Dip") ? "دیپلم" : ((item.Education == "B") ? "کارشناسی" : ((item.Education == "M") ? "کارشناسی ارشد" : "دکترا")),
                        PhoneNumber = item.PhoneNumber,
@@ -136,7 +155,28 @@ namespace Data.Repositores
             return await users.ToListAsync();
         }
 
+        public void UploadDocumentToDb(UploadVM file)
+        {
+            if (file.document != null && file.document.Length>0)
+            {
+                var userName = file.UserName;
+                Document document = _mapper.Map<Document>(file);
+                document.IsActived = true;
+                document.UploadDate=DateTime.Now;
+                document.DocumentId=Guid.NewGuid();
+                var docName = Path.GetFileName(file.document.FileName);
+                var fileExtension = Path.GetExtension(docName);
+                document.FileName = string.Concat($"{file.Name}-{userName}",fileExtension);
+                document.FileFormat = fileExtension;
+                using (var target = new MemoryStream())
+                {
+                    file.document.CopyTo(target);
+                    document.DataBytes = target.ToArray();
+                }
+                _context.Add(document);
+            }
 
+        }
 
     }
 }

@@ -17,7 +17,7 @@ namespace Application.Extensions
             using var output = File.OpenWrite(outputImagePath);
             using var image = SKImage.FromBitmap(resizedBitmap);
 
-            using var data = image.Encode(SKEncodedImageFormat.Jpeg, quality);
+            using var data = image.Encode(SKEncodedImageFormat.Png, quality);
             data.SaveTo(output);
 
         }

@@ -20,6 +20,15 @@
     <Folder Include="Areas\District\Models\" />
     <Folder Include="Areas\District\Views\" />
     <Folder Include="Areas\Province\Data\" />
+    <Folder Include="Areas\Province\Documents\County\Avatar\Original\" />
+    <Folder Include="Areas\Province\Documents\County\Avatar\Thumb\" />
+    <Folder Include="Areas\Province\Documents\County\Transfers\" />
+    <Folder Include="Areas\Province\Documents\District\Avatar\Original\" />
+    <Folder Include="Areas\Province\Documents\District\Avatar\Thumb\" />
+    <Folder Include="Areas\Province\Documents\District\Transfers\" />
+    <Folder Include="Areas\Province\Documents\Province\Avatar\Thumb\" />
+    <Folder Include="Areas\Province\Documents\Province\Avatar\Original\" />
+    <Folder Include="Areas\Province\Documents\Province\Transfers\" />
     <Folder Include="Areas\Province\Models\" />
     <Folder Include="Views\Shared\Partials\Login\" />
   </ItemGroup>

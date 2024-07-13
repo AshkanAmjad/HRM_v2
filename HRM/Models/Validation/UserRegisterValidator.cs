@@ -7,6 +7,14 @@ namespace HRM.Models.Validation
     {
         public UserRegisterValidator()
         {
+            RuleFor(x => x.Area).NotNull();
+
+            RuleFor(x=>x.Province).NotNull();   
+
+            RuleFor(x => x.County).NotNull();
+
+            RuleFor(x => x.District).NotNull();
+
             RuleFor(x=>x.Avatar).SetValidator(new AvatarValidator());
 
             RuleFor(x => x.UserName).Length(10)
@@ -39,7 +47,7 @@ namespace HRM.Models.Validation
 
             RuleFor(x => x.Gender).NotNull()
                                   .WithMessage("تکمیل ورودی جنسیت ضروری است.");
-
+                
             RuleFor(x => x.MaritalStatus).NotNull()
                                          .WithMessage("تکمیل ورودی وضعیت تاهل ضروری است.");
 

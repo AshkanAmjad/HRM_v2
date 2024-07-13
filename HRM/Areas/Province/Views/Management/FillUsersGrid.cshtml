@@ -1,0 +1,24 @@
+﻿@model List<Domain.DTOs.Security.User.DisplayUsersVM>
+<div class="card">
+    <div class="card-body">
+        <table class="table-striped table-responsive table-bordered">
+            <thead>
+                <tr>
+                    <th class="hidden"></th>
+                    <th>نام کاربری</th>
+                    <th>نام</th>
+                    <th>نام خانوادگی</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <td class="hidden">@item.UserId</td>
+                <td>@item.UserName</td>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

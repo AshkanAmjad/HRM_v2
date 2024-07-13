@@ -40,6 +40,9 @@
                 @Html.AntiForgeryToken()
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Area" value="0" />
+                <input type="hidden" asp-for="Province" value="1" />
+                <input type="hidden" asp-for="County" value="0" />
+                <input type="hidden" asp-for="District" value="0" />
                 <input type="file" asp-for="Avatar" class="hidden" id="pic" />
                 <div class="modal-body">
                     <div class="row px-2">

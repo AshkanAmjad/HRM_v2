@@ -1,10 +1,12 @@
 ﻿using Application.Services.Interfaces;
+using Domain.DTOs.General;
 using Domain.DTOs.Security.User;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq.Expressions;
 using System.Text.Json;
 
 namespace HRM.Areas.Province.Controllers
@@ -120,14 +122,11 @@ namespace HRM.Areas.Province.Controllers
         }
 
         #region Display
-        public IActionResult GetUsers()
+        public IActionResult FillUsersGrid(AreaVM arae)
         {
-            return View();
+            var users = _userService.GetUsersAsync(arae);
+            return Json(users);
         }
-        //public IActionResult FillUsersGrid()
-        //{
-
-        //}
         #endregion
 
         #region Register
@@ -146,7 +145,7 @@ namespace HRM.Areas.Province.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(UserRegisterVM user)
+        public IActionResult Register(UserRegisterVM user)
         {
             ValidationResult userValidator = _userRegisterValidator.Validate(user);
             bool success = false;
