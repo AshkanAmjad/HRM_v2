@@ -1,24 +1,48 @@
-﻿@model List<Domain.DTOs.Security.User.DisplayUsersVM>
-<div class="card">
-    <div class="card-body">
-        <table class="table-striped table-responsive table-bordered">
-            <thead>
-                <tr>
-                    <th class="hidden"></th>
-                    <th>نام کاربری</th>
-                    <th>نام</th>
-                    <th>نام خانوادگی</th>
+﻿@{
+    Layout = null;
+}
+<partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPartial.cshtml">
+<partial name="~/Views/Shared/Partials/General/Refrences/css/_DataTablesCssPartial.cshtml">
 
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                <td class="hidden">@item.UserId</td>
-                <td>@item.UserName</td>
-
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="table-responsive px-1">
+                    <table class="table table-hover table-bordered mx-auto text-center fs-8 cursor" id="tableList">
+                        <thead>
+                            <tr>
+                                <th scope="col">نام کاربری</th>
+                                <th scope="col">ناحیه</th>
+                                <th scope="col">شهرستان</th>
+                                <th scope="col">بخش</th>
+                                <th scope="col">نام</th>
+                                <th scope="col">نام خانوادگی</th>
+                                <th scope="col">جنسیت</th>
+                                <th scope="col">تحصیلات</th>
+                                <th scope="col">وضعیت استخدامی</th>
+                                <th scope="col">وضعیت تاهل</th>
+                                <th scope="col">بیمه</th>
+                                <th scope="col">شماره همراه</th>
+                                <th scope="col">پست الکترونیک</th>
+                                <th scope="col">تاریخ تولد</th>
+                                <th scope="col">شهر سکونت</th>
+                                <th scope="col" class="px-7">نشانی سکونت</th>
+                                <th scope="col">وضعیت</th>
+                                <th scope="col">آخرین فعالیت</th>
+                                <th scope="col">تاریخ ثبت</th>
+                                <th scope="col">عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
+        <partial name="~/Views/Shared/Partials/General/Refrences/js/_DataTablesJsPartial.cshtml">
+        <script type="text/javascript">
+        </script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                GridLoad();
+            });
+        </script>

@@ -12,15 +12,87 @@
             <i class="fa fa-lg fa-user-plus align-self-center"></i>
         </button>
     </div>
-    <div class="users-box">
-
+    <div id="users-box">
     </div>
-
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
         <script type="text/javascript">
             var _registerUrl = '@Url.Action("Register", "Management")';
+            var _gridUrl = '@Url.Action("FillUsersGrid", "Management")';
+            var _GetUsers = '@Html.Raw(@Url.Action("GetUsers", "Management", new { Province = 1, County = 0, District = 0 }))';
         </script>
         <script type="text/javascript">
+            //List
+            $(document).ready(function (e) {
+                $.get(_gridUrl).done(function (result) {
+                    $("#users-box").html(result);
+                });
+            });
+
+            function GridLoad() {
+                $("#tableList").DataTable({
+                    initComplete: function () {
+                        $('div.dt-search').addClass("d-flex");
+                        $('div.dt-search input').addClass('form-control');
+                    },
+                    "paging": true,
+                    "pagingType": 'full_numbers',
+                    "pageLength": 10,
+                    "processing": false,
+                    "serverSide": true,
+                    "info": false,
+                    "lengthChange": false,
+                    "language": {
+                        "emptyTable":"داده ای ثبت نشده است.",
+                        "loadingRecords": `<span class="text-muted">
+                                              در حال بارگذاری ...
+                                          </span>`,
+                        "search": `<span class="ms-2">
+                                               <i class="fa fa-search text-primary"></i>
+                                               جست‌و‌جو بر اساس کد ملی:
+                                   </span>`,
+                        "searchPlaceholder": 'مقدار مناسبی برای کد ملی وارد کنید ...',
+                    },
+                    "ajax": {
+                        "url": _GetUsers,
+                        "type": "POST",
+                        "datatype": "json"
+                    },
+                    "columns": [
+                        { "data": "userName", "title": "نام کاربری" },
+                        { "data": "area", "title": "ناحیه" },
+                        { "data": "county", "title": "شهرستان" },
+                        { "data": "district", "title": "بخش" },
+                        { "data": "firstName", "title": "نام" },
+                        { "data": "lastName", "title": "نام خانوادگی" },
+                        { "data": "gender", "title": "جنسیت" },
+                        { "data": "education", "title": "تحصیلات" },
+                        { "data": "employment", "title": "وضعیت استخدامی" },
+                        { "data": "maritalStatus", "title": "وضعیت تاهل" },
+                        { "data": "insurance", "title": "بیمه" },
+                        { "data": "phoneNumber", "title": "شماره همراه" },
+                        { "data": "email", "title": "پست الکترونیک" },
+                        { "data": "dateOfBirth", "title": "تاریخ تولد" },
+                        { "data": "city", "title": "شهر سکونت" },
+                        { "data": "address", "title": "نشانی سکونت" },
+                        { "data": "isActived", "title": "وضعیت" },
+                        { "data": "lastActived", "title": "آخرین فعالیت" },
+                        { "data": "registerDate", "title": "تاریخ ثبت" },
+                        {
+                            "title": "عملیات", render: function (data, type, row) {
+                                return `<div class="d-flex py-2">
+                                                         <a class="btn btn-outline-primary btn-sm rounded-circle py-1 ms-1" >
+                                                                 <i class="fa fa-edit" > </i>
+                                                         </a>
+                                                         <a class="btn btn-outline-danger btn-sm rounded-circle py-1" >
+                                                                <i class="fa fa-times" > </i>
+                                                         </a>
+                                                    <div>`
+                            }
+                        }
+                    ]
+                })
+            };
+
             //Register
             $("#addBtn").off("click").on("click", function (e) {
                 e.preventDefault();

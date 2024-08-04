@@ -122,10 +122,43 @@ namespace HRM.Areas.Province.Controllers
         }
 
         #region Display
-        public IActionResult FillUsersGrid(AreaVM arae)
+        public IActionResult FillUsersGrid()
         {
-            var users = _userService.GetUsersAsync(arae);
-            return Json(users);
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult GetUsers(AreaVM arae)
+        {
+            var users = _userService.GetUsers(arae);
+
+            #region paging and searching
+            int start = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");
+            int length = int.Parse(Request.Form["length"].FirstOrDefault() ?? "10");
+            string searchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
+
+
+            var mainData=users
+                .Where(u => u.UserName.Contains(searchValue))
+                .Skip(start)
+                .Take(length)
+                .ToList();
+
+            var totalCount=users
+                .Count();
+
+            #endregion
+
+
+            var jsonData = new
+            {
+                draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0"),
+                recordTotal =totalCount,
+                recordsFiltered = mainData.Count(),
+                data = mainData
+            };
+
+            return Json(jsonData);
         }
         #endregion
 
@@ -188,14 +221,14 @@ namespace HRM.Areas.Province.Controllers
             #endregion
 
             #region Json data
-            var data = new
+            var jsonData = new
             {
                 success = success,
                 message = message,
             };
             #endregion
 
-            return Json(data);
+            return Json(jsonData);
         }
         #endregion
 

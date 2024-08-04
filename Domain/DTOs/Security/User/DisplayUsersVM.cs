@@ -25,8 +25,8 @@ namespace Domain.DTOs.Security.User
         public string DateOfBirth { get; set; }
         public string City { get; set; }
         public string Address { get; set; }
-        public bool IsActived { get; set; }
-        public DateTime? LastActived { get; set; }
-        public DateTime RegisterDate { get; set; }
+        public string IsActived { get; set; }
+        public string LastActived { get; set; }
+        public string RegisterDate { get; set; }
     }
 }

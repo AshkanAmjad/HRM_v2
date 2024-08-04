@@ -38,12 +38,21 @@
     font-size: 0.1rem !important;
 }
 
+.px-7{
+    padding-right:100px !important;
+    padding-left:100px !important;
+}
+
 .mb-n1 {
     margin-bottom: -3rem !important;
 }
 
 .cursor {
     cursor: default;
+}
+
+.alert{
+    width:50% !important;
 }
 
 .cursor-pointer{
@@ -70,6 +79,26 @@
     animation: fadeIn;
     animation-duration: 8s;
 }
+
+/*table*/
+
+.table thead tr th {
+    text-align: center !important;
+}
+
+.dt-paging{
+    text-align:center !important;
+    width:100% !important;
+}
+
+.dt-search{
+    text-align:right !important;
+}
+
+.dt-input {
+    width: 25rem !important;
+}
+
 /*header*/
 header {
     color: #005DA5;
@@ -122,6 +151,10 @@ header {
 
     .container {
         margin-top: 8rem;
+    }
+
+    .alert {
+        width: 100% !important;
     }
 
     #copy {

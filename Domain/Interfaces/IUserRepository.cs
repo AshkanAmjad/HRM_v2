@@ -17,12 +17,16 @@ namespace Domain.Interfaces
         Task<User?> GetUserAsync(LoginVM loginVM);
         bool Similarity(UserRegisterVM userRegister, out string message);
         bool Register(UserRegisterVM userRegister, out string message);
-        Task<List<DisplayUsersVM>> GetUsersAsync(AreaVM area);
+        List<DisplayUsersVM> GetUsers(AreaVM area);
 
+        IQueryable<User> GetUsersQuery();
         #endregion
 
-        #region Document
-        public void UploadDocumentToDb(UploadVM file);
+        #region DB
+        void UploadDocumentToDb(UploadVM file);
+        void UploadUserToDb(UserRegisterVM user);
+        void UploadDepartmentToDb(UserRegisterVM depatment, Guid departmentId);
+
         #endregion
     }
 }

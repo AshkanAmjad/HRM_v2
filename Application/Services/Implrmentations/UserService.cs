@@ -107,8 +107,8 @@ namespace Application.Services.Implrmentations
             ));
             return hashed;
         }
-        public async Task<List<DisplayUsersVM>> GetUsersAsync(AreaVM area)
-        => await _userRepository.GetUsersAsync(area);
+        public List<DisplayUsersVM> GetUsers(AreaVM area)
+        => _userRepository.GetUsers(area);
         public void UploadDocumentToServer(UploadVM document)
         {
             if (document != null)

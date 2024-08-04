@@ -15,12 +15,12 @@ namespace Application.Services.Interfaces
         List<SelectListItem> GetAreas();
         bool Register(UserRegisterVM model, out string message);
         string Hashing(string password);
-        Task<List<DisplayUsersVM>> GetUsersAsync(AreaVM area);
+        List<DisplayUsersVM> GetUsers(AreaVM area);
         #endregion
 
         #region Document
-        public void UploadDocumentToServer(UploadVM document);
-        public DirectionVM UploadDirectionOnServer(DirectionVM direction);
+        void UploadDocumentToServer(UploadVM document);
+        DirectionVM UploadDirectionOnServer(DirectionVM direction);
         #endregion
     }
 }

@@ -25,7 +25,7 @@ namespace Domain.Entities.Security.Models
         public string City { get; set; }
         public string Address { get; set; }
         public bool IsActived { get; set; }
-        public DateTime? LastActived { get; set; }
+        public DateTime LastActived { get; set; }
         public DateTime RegisterDate { get; set; }
         #endregion
 
