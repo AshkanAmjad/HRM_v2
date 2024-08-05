@@ -12,6 +12,7 @@ namespace Domain.Entities.Portal.Models
     public class DepartmentTransfer
     {
         #region Properties
+        public Guid DepartmentTransferId {  get; set; }
         public Guid TransferId { get; set; }
         public Guid DepartmentId { get; set; }
         #endregion

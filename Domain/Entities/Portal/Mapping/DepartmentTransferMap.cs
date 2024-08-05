@@ -15,7 +15,7 @@ namespace Domain.Entities.Portal.Mapping
     {
         public void Configure(EntityTypeBuilder<DepartmentTransfer> builder)
         {
-            builder.HasKey(dt => new { dt.TransferId, dt.DepartmentId });
+            builder.HasKey(dt => new { dt.DepartmentTransferId});
             builder.HasOne(d => d.Department)
                             .WithMany(dt => dt.DepartmentTransfers)
                             .HasForeignKey(d => d.DepartmentId);

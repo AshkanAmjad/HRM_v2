@@ -12,7 +12,6 @@ namespace Domain.Entities.Portal.Models
     public class Transfer
     {
         #region Properties
-        [Key]
         public Guid TransferId { get; set; }
         public string Title { get; set; }
         public string? Description { get; set; }

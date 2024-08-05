@@ -13,7 +13,6 @@ namespace Domain.Entities.Security.Models
     public class Department
     {
         #region Properties
-        [Key]
         public Guid DepartmentId { get; set; }
         public Guid UserId { get; set; }
         public int Province { get; set; }

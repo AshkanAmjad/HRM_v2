@@ -14,7 +14,7 @@ namespace Domain.Entities.Security.Mapping
     {
         public void Configure(EntityTypeBuilder<UserRole> builder)
         {
-            builder.HasKey(ru => new { ru.UserId, ru.RoleId });
+            builder.HasKey(ru => new { ru.UserRoleId });
             builder.HasOne(u => u.User)
                 .WithMany(ru => ru.UserRoles)
                 .HasForeignKey(u => u.UserId);

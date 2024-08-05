@@ -12,7 +12,6 @@ namespace Domain.Entities.Security.Models
     public class Role
     {
         #region Properties
-        [Key]
         public Guid RoleId { get; set; }
         public string Title { get; set; }
         #endregion

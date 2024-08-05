@@ -13,7 +13,6 @@ namespace Domain.Entities.Portal.Models
     public class Document
     {
         #region Properties
-        [Key]
         public Guid DocumentId { get; set; }
         public string Title { get; set; }
         public string FileName{get; set; }
