@@ -29,7 +29,7 @@
             });
 
             function GridLoad() {
-                $("#tableList").DataTable({
+                table=$("#tableList").DataTable({
                     initComplete: function () {
                         $('div.dt-search').addClass("d-flex");
                         $('div.dt-search input').addClass('form-control');
@@ -41,6 +41,7 @@
                     "serverSide": true,
                     "info": false,
                     "lengthChange": false,
+                    "ordering":true,
                     "language": {
                         "emptyTable":"داده ای ثبت نشده است.",
                         "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
@@ -90,6 +91,11 @@
                     ]
                 })
             };
+
+            //Reload
+            function GridReload() {
+                table.ajax.reload(null,false);
+            }
 
             //Register
             $("#addBtn").off("click").on("click", function (e) {

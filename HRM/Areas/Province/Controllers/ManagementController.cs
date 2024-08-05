@@ -230,6 +230,16 @@ namespace HRM.Areas.Province.Controllers
 
             return Json(jsonData);
         }
+
+        public IActionResult Edit()
+        {
+            return View();
+        }
+
+        public IActionResult Delete()
+        {
+            return View();
+        }
         #endregion
 
         #region Profile
