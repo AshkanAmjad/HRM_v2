@@ -25,9 +25,8 @@ namespace Application.Services.Implrmentations
         private readonly IDocumentService _documentService;
         private readonly IMapper _mapper;
 
-        public UserService(HRMContext context, IUserRepository userRepository, IMapper mapper, IDocumentService documentService)
+        public UserService(IUserRepository userRepository, IMapper mapper, IDocumentService documentService)
         {
-            _context = context;
             _userRepository = userRepository;
             _mapper = mapper;
             _documentService = documentService;
