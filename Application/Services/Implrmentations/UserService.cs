@@ -22,13 +22,15 @@ namespace Application.Services.Implrmentations
         #region Constructor
         private readonly HRMContext _context;
         private readonly IUserRepository _userRepository;
+        private readonly IDocumentService _documentService;
         private readonly IMapper _mapper;
 
-        public UserService(HRMContext context, IUserRepository userRepository, IMapper mapper)
+        public UserService(HRMContext context, IUserRepository userRepository, IMapper mapper, IDocumentService documentService)
         {
             _context = context;
             _userRepository = userRepository;
             _mapper = mapper;
+            _documentService = documentService;
         }
         #endregion
         public List<SelectListItem> GetAreas()
@@ -88,7 +90,7 @@ namespace Application.Services.Implrmentations
             {
                 UploadVM uploadToServer = _mapper.Map<UploadVM>(model);
                 uploadToServer.Name = "Avatar";
-                UploadDocumentToServer(uploadToServer);
+                _documentService.UploadDocumentToServer(uploadToServer);
             }
             #endregion
 
@@ -109,161 +111,6 @@ namespace Application.Services.Implrmentations
         }
         public List<DisplayUsersVM> GetUsers(AreaVM area)
         => _userRepository.GetUsers(area);
-        public void UploadDocumentToServer(UploadVM document)
-        {
-            if (document != null)
-            {
-                DirectionVM direction = _mapper.Map<DirectionVM>(document);
-                var path = UploadDirectionOnServer(direction);
-
-                bool dirOrginal = Directory.Exists(path._saveDirOrginal);
-                bool dirThumb = Directory.Exists(path._saveDirThumb);
-
-                if (!dirOrginal)
-                    Directory.CreateDirectory(path._saveDirOrginal);
-
-                if (!dirThumb)
-                    Directory.CreateDirectory(path._saveDirThumb);
-
-                var documentNameOrginal = "";
-                var documentNameThumb = "";
-
-                if (document.Name == "Avatar")
-                {
-                    documentNameOrginal = $"Avatar-{document.UserName}{Path.GetExtension(document.document.FileName)}";
-                    documentNameThumb = $"Thumb-{document.UserName}{Path.GetExtension(document.document.FileName)}";
-                }
-                else
-                {
-                    documentNameOrginal = $"Document-{document.UserName}{Path.GetExtension(document.document.FileName)}";
-                }
-
-                string filePathOriginal = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirOrginal, documentNameOrginal);
-                using(var fileStream=new FileStream(filePathOriginal, FileMode.Create))
-                    document.document.CopyTo(fileStream);
-
-                if (path._saveDirThumb != "")
-                {
-                    string filePathThumb = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirThumb, documentNameThumb);
-                    ImageConvertor.ResizeImage(filePathOriginal, filePathThumb, 100, 100);
-                }
-
-            }
-        }
-
-        public DirectionVM UploadDirectionOnServer(DirectionVM direction)
-        {
-            string saveDirOrginal = "";
-            string saveDirThumb = "";
-
-            if (direction.Area == 0)
-            {
-                if (direction.County == 0 && direction.District == 0)
-                {
-                    if (direction.Name == "Avatar")
-                    {
-                        saveDirOrginal = "Areas/Province/Documents/Province/Avatar/Original";
-                        saveDirThumb = "Areas/Province/Documents/Province/Avatar/Thumb";
-
-                    }
-                    else
-                    {
-                        saveDirOrginal = "Areas/Province/Documents/Province/Transfer";
-                    }
-                }
-                else if (direction.County != 0 && direction.District == 0)
-                {
-                    if (direction.Name == "Avatar")
-                    {
-                        saveDirOrginal = "Areas/Province/Documents/County/Avatar/Original";
-                        saveDirThumb = "Areas/Province/Documents/County/Avatar/Thumb";
-                    }
-                    else
-                    {
-                        saveDirOrginal = "Areas/Province/Documents/County/Transfer";
-                    }
-                }
-                else
-                {
-                    if (direction.Name == "Avatar")
-                    {
-                        saveDirOrginal = "Areas/Province/Documents/District/Avatar/Original";
-                        saveDirThumb = "Areas/Province/Documents/District/Avatar/Thumb";
-                    }
-                    else
-                    {
-                        saveDirOrginal = "Areas/Province/Documents/District/Transfer";
-                    }
-                }
-            }
-            else if (direction.Area == 1)
-            {
-                if (direction.County == 0 && direction.District == 0)
-                {
-                    saveDirOrginal = "Areas/County/Documents/County/Transfer";
-                }
-                else if (direction.County != 0 && direction.District == 0)
-                {
-                    if (direction.Name == "Avatar")
-                    {
-                        saveDirOrginal = "Areas/County/Documents/County/Avatar/Original";
-                        saveDirThumb = "Areas/County/Documents/County/Avatar/Thumb";
-
-                    }
-                    else
-                    {
-                        saveDirOrginal = "Areas/County/Documents/County/Transfer";
-                    }
-                }
-                else
-                {
-                    if (direction.County == 0 && direction.District != 0)
-                    {
-                        if (direction.Name == "Avatar")
-                        {
-                            saveDirOrginal = "Areas/County/Documents/District/Avatar/Orginal";
-                            saveDirThumb = "Areas/County/Documents/District/Avatar/Thumb";
-                        }
-                        else
-                        {
-                            saveDirOrginal = "Areas/County/Documents/District/Transfer";
-                        }
-
-                    }
-                }
-            }
-            else
-            {
-                if (direction.County == 0 && direction.District == 0)
-                {
-                    saveDirOrginal = "Areas/District/Documents/Province/Transfer";
-                }
-                else if (direction.County != 0 && direction.District == 0)
-                {
-                    saveDirOrginal = "Areas/District/Documents/County/Transfer";
-                }
-                else
-                {
-                    if (direction.Name == "Avatar")
-                    {
-                        saveDirOrginal = "Areas/District/Documents/Disrrict/Avatar/Original";
-                        saveDirThumb = "Areas/District/Documents/Disrrict/Avatar/Thumb";
-                    }
-                    else
-                    {
-                        saveDirOrginal = "Areas/District/Documents/Disrrict/Transfer";
-                    }
-                }
-            }
-
-            DirectionVM dir = new();
-            dir._saveDirOrginal = saveDirOrginal;
-            dir._saveDirThumb = saveDirThumb;
-            return dir;
-        }
-
-
-
 
     }
 

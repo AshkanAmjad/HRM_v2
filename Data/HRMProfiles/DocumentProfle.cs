@@ -35,6 +35,11 @@ namespace Data.HRMProfiles
                 .ForMember(dest => dest.DepartmentId, opt => opt.MapFrom(src => src.DepartmentId))
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description));
+
+            CreateMap<UserEditVM, DirectionVM>()
+                .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.County))
+                .ForMember(dest => dest.Area, opt => opt.MapFrom(src => src.Area))
+                .ForMember(dest => dest.District, opt => opt.MapFrom(src => src.District));
         }
     }
 }

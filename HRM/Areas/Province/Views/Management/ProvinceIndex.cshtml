@@ -18,7 +18,7 @@
         <script type="text/javascript">
             var _registerUrl = '@Url.Action("Register", "Management")';
             var _gridUrl = '@Url.Action("FillUsersGrid", "Management")';
-            var _GetUsers = '@Html.Raw(@Url.Action("GetUsers", "Management", new { Province = 1, County = 0, District = 0 }))';
+            var _GetUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Management", new { Province = 1, County = 0, District = 0 }))';
         </script>
         <script type="text/javascript">
             //List
@@ -29,7 +29,7 @@
             });
 
             function GridLoad() {
-                table=$("#tableList").DataTable({
+                table = $("#tableList").DataTable({
                     initComplete: function () {
                         $('div.dt-search').addClass("d-flex");
                         $('div.dt-search input').addClass('form-control');
@@ -41,18 +41,18 @@
                     "serverSide": true,
                     "info": false,
                     "lengthChange": false,
-                    "ordering":true,
+                    "ordering": true,
                     "language": {
-                        "emptyTable":"داده ای ثبت نشده است.",
+                        "emptyTable": "داده ای ثبت نشده است.",
                         "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
                         "search": `<span class="ms-2">
-                                               <i class="fa fa-search text-primary"></i>
-                                               جست‌و‌جو بر اساس کد ملی:
-                                   </span>`,
+                                                           <i class="fa fa-search text-primary"></i>
+                                                           جست‌و‌جو بر اساس کد ملی:
+                                               </span>`,
                         "searchPlaceholder": 'مقدار مناسبی برای کد ملی وارد کنید ...',
                     },
                     "ajax": {
-                        "url": _GetUsers,
+                        "url": _GetUsersUrl,
                         "type": "POST",
                         "datatype": "json"
                     },
@@ -76,16 +76,27 @@
                         { "data": "isActived", "title": "وضعیت" },
                         { "data": "lastActived", "title": "آخرین فعالیت" },
                         { "data": "registerDate", "title": "تاریخ ثبت" },
-                        {
-                            "title": "عملیات", render: function (data, type, row) {
+                        { "data": "userId", "title": "عملیات", render: function (data, type, row) {
+                            const area = {
+                                province: 1,
+                                county: 0,
+                                district: 0
+                            };
+                                const _editUrl =`/Province/Management/Edit?userId=${data}&province=${area.province}&county=${area.county}&district=${area.district}`;
+                                const _deleteUrl = `/Province/Management/Delete?userId=${data}&province=${area.province}&county=${area.county}&district=${area.district}`;
+
                                 return `<div class="d-flex py-2">
-                                                         <a class="btn btn-outline-primary btn-sm rounded-circle py-1 ms-1" >
-                                                                 <i class="fa fa-edit" > </i>
-                                                         </a>
-                                                         <a class="btn btn-outline-danger btn-sm rounded-circle py-1" >
-                                                                <i class="fa fa-times" > </i>
-                                                         </a>
-                                                    <div>`
+                                           <a class="btn btn-outline-primary btn-sm rounded-circle py-1 ms-1"
+                                              href="${_editUrl}"
+                                           >
+                                               <i class="fa fa-edit" > </i>
+                                           </a>
+                                           <a class="btn btn-outline-danger btn-sm rounded-circle py-1"
+                                               href="${_deleteUrl}"
+                                           >
+                                           <i class="fa fa-times" > </i>
+                                           </a>
+                                       <div>`
                             }
                         }
                     ]
@@ -94,7 +105,7 @@
 
             //Reload
             function GridReload() {
-                table.ajax.reload(null,false);
+                table.ajax.reload(null, false);
             }
 
             //Register

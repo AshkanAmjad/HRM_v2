@@ -18,15 +18,15 @@ namespace Domain.Interfaces
         bool Similarity(UserRegisterVM userRegister, out string message);
         bool Register(UserRegisterVM userRegister, out string message);
         List<DisplayUsersVM> GetUsers(AreaVM area);
-
         IQueryable<User> GetUsersQuery();
+        UserEditVM? GetUserById(Guid userId, AreaVM area);
         #endregion
 
         #region DB
-        void UploadDocumentToDb(UploadVM file);
         void UploadUserToDb(UserRegisterVM user);
         void UploadDepartmentToDb(UserRegisterVM depatment, Guid departmentId);
-
+        void SaveChanges();
         #endregion
+
     }
 }

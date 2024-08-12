@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Areas\Province\Views\Management\Edit.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\IOC\IOC.csproj" />
   </ItemGroup>
 
@@ -42,6 +46,18 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
     <PackageReference Include="PersianDatePicker" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Areas\Province\Views\Management\Edit.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Areas\Province\Views\Management\Edit.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Areas\Province\Views\Management\Edit.cshtml" />
   </ItemGroup>
 
 </Project>

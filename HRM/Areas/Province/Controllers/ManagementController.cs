@@ -1,6 +1,7 @@
 ﻿using Application.Services.Interfaces;
 using Domain.DTOs.General;
 using Domain.DTOs.Security.User;
+using Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
@@ -17,13 +18,17 @@ namespace HRM.Areas.Province.Controllers
     {
         #region Constructor
         private readonly IUserService _userService;
+        private readonly IUserRepository _userRepository;
         private readonly IValidator<UserRegisterVM> _userRegisterValidator;
 
 
-        public ManagementController(IUserService userService, IValidator<UserRegisterVM> userRegisterValidator)
+        public ManagementController(IUserService userService,
+            IValidator<UserRegisterVM> userRegisterValidator,
+            IUserRepository userRepository)
         {
             _userService = userService;
             _userRegisterValidator = userRegisterValidator;
+            _userRepository = userRepository;
         }
         #endregion
 
@@ -116,10 +121,12 @@ namespace HRM.Areas.Province.Controllers
         }
         #endregion
 
+        #region Index
         public IActionResult ProvinceIndex()
         {
             return View();
         }
+        #endregion
 
         #region Display
         public IActionResult FillUsersGrid()
@@ -189,8 +196,10 @@ namespace HRM.Areas.Province.Controllers
                 try
                 {
                     bool result = _userService.Register(user, out checkMessage);
+
                     if (result)
                     {
+                        _userRepository.SaveChanges();
                         success = true;
                         message = $"<h5>عملیات ثبت کاربر <span class='text-primary'> {user.FirstName}  {user.LastName} </span> با موفقیت انجام شد.</h5>";
                     }
@@ -230,12 +239,58 @@ namespace HRM.Areas.Province.Controllers
 
             return Json(jsonData);
         }
+        #endregion
 
+        #region Edit
+        public IActionResult Edit(Guid userId,int province,int county,int district)
+        {
+            AreaVM area = new()
+            {
+                County = county,
+                District = district,
+                Province = province
+            };
+
+            var genders = GenderTypes();
+            var marital = MariltalTypes();
+            var employment = EmploymentTypes();
+            var education = EducationTypes();
+            ViewData["Gendes"] = genders;
+            ViewData["Marital"] = marital;
+            ViewData["Employment"] = employment;
+            ViewData["Education"] = education;
+            
+            if(userId == Guid.Empty)
+            {
+                return NotFound();
+            }
+            var user=_userRepository.GetUserById(userId, area);
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit()
         {
             return View();
         }
+        #endregion
 
+        #region Delete
+        public IActionResult Delete(Guid userId, int province, int county, int district)
+        {
+            AreaVM area = new()
+            {
+                County = county,
+                District = district,
+                Province = province
+            };
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete()
         {
             return View();

@@ -9,6 +9,7 @@ using Domain.Entities.Portal.Models;
 using Domain.Entities.Security.Models;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,11 +23,14 @@ namespace Data.Repositores
         #region Constructor
         private readonly HRMContext _context;
         private readonly IMapper _mapper;
-
-        public UserRepository(HRMContext context, IMapper mapper)
+        private readonly IDocumentRepository _documentRepository;
+        public UserRepository(HRMContext context,
+            IMapper mapper,
+            IDocumentRepository documentRepository)
         {
             _context = context;
             _mapper = mapper;
+            _documentRepository = documentRepository;
         }
         #endregion
 
@@ -99,11 +103,10 @@ namespace Data.Repositores
                     file.Name = "Avatar";
                     file.Description = "-";
                     file.DepartmentId = departmentId;
-                    UploadDocumentToDb(file);
+                    _documentRepository.UploadDocumentToDb(file);
                 }
                 #endregion
 
-                _context.SaveChanges();
                 message = "";
                 return true;
             }
@@ -162,28 +165,6 @@ namespace Data.Repositores
             return users;
         }
 
-        public void UploadDocumentToDb(UploadVM file)
-        {
-            if (file.document != null && file.document.Length > 0)
-            {
-                var userName = file.UserName;
-                Document document = _mapper.Map<Document>(file);
-                document.IsActived = true;
-                document.UploadDate = DateTime.Now;
-                document.DocumentId = Guid.NewGuid();
-                var docName = Path.GetFileName(file.document.FileName);
-                var fileExtension = Path.GetExtension(docName);
-                document.FileName = string.Concat($"{file.Name}-{userName}", fileExtension);
-                document.FileFormat = fileExtension;
-                using (var target = new MemoryStream())
-                {
-                    file.document.CopyTo(target);
-                    document.DataBytes = target.ToArray();
-                }
-                _context.Add(document);
-            }
-
-        }
 
         public void UploadUserToDb(UserRegisterVM userRegister)
         {
@@ -204,7 +185,49 @@ namespace Data.Repositores
             }
         }
 
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
+
+        public UserEditVM? GetUserById(Guid userId,AreaVM area)
+        {
+            UserEditVM user = new();
+            if (userId != Guid.Empty)
+            {
+               user = (from item in _context.Users
+                            where (item.UserId == userId
+                            && item.Department.Province == area.Province
+                            && item.Department.County == area.County
+                            && item.Department.District == area.District
+                            && item.IsActived == true)
+                            select new UserEditVM
+                            {
+                                Address = item.Address,
+                                City = item.City,
+                                DateOfBirth = item.DateOfBirth,
+                                Education = item.Education,
+                                Email = item.Email,
+                                FirstName = item.FirstName,
+                                LastName = item.LastName,
+                                PhoneNumber = item.PhoneNumber,
+                                UserId = item.UserId,
+                                UserName = item.UserName,
+                                Insurance = item.Insurance,
+                                Gender = item.Gender,
+                                MaritalStatus = item.MaritalStatus,
+                                EmploymentStatus = item.Employment,
+                                County=item.Department.County,
+                                District=item.Department.District,
+                                Area=(item.Department.Province!=0 && item.Department.County == 0 && item.Department.County == 0 ? 0:
+                                     (item.Department.Province !=0 && item.Department.County !=0 && item.Department.District == 0 ? 1:2))
+                            }).Single();
+            }
+            return user;
+        }
 
 
+
+        
     }
 }

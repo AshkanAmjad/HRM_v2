@@ -18,9 +18,6 @@ namespace Application.Services.Interfaces
         List<DisplayUsersVM> GetUsers(AreaVM area);
         #endregion
 
-        #region Document
-        void UploadDocumentToServer(UploadVM document);
-        DirectionVM UploadDirectionOnServer(DirectionVM direction);
-        #endregion
+
     }
 }
