@@ -17,7 +17,7 @@ namespace Application.Services.Interfaces
         #endregion
 
         #region Is Exist 
-        bool IsExistAvatarOnServer(UserEditVM user);
+        bool IsExistAvatarOnServer(UserEditVM? user);
 
         #endregion
     }

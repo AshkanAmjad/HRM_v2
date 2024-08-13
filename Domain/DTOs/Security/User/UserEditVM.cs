@@ -28,6 +28,7 @@ namespace Domain.DTOs.Security.User
         public string? Address { get; set; }
 
         public int? Area {  get; set; }
+        public int? Province { get; set; }  
         public int? County { get; set; }
         public int? District { get; set; }
     }

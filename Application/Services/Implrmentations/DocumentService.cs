@@ -177,7 +177,7 @@ namespace Application.Services.Implrmentations
             return dir;
         }
 
-        public bool IsExistAvatarOnServer(UserEditVM user)
+        public bool IsExistAvatarOnServer(UserEditVM? user)
         {
             bool result= false;
             if(user != null)

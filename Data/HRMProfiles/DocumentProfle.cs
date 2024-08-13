@@ -40,6 +40,10 @@ namespace Data.HRMProfiles
                 .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.County))
                 .ForMember(dest => dest.Area, opt => opt.MapFrom(src => src.Area))
                 .ForMember(dest => dest.District, opt => opt.MapFrom(src => src.District));
+
+            CreateMap<Document, DownloadAvatarVM>()
+                .ForMember(dest => dest.FileName, opt => opt.MapFrom(src => src.FileName))
+                .ForMember(dest => dest.DataBytes, opt => opt.MapFrom(src => src.DataBytes));
         }
     }
 }

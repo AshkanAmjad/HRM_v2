@@ -1,4 +1,6 @@
 ﻿using Domain.DTOs.Portal.Document;
+using Domain.DTOs.Security.User;
+using Domain.Entities.Portal.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +11,11 @@ namespace Domain.Interfaces
 {
     public interface IDocumentRepository
     {
-        #region DB
+        #region DB        
         void UploadDocumentToDb(UploadVM file);
-        void DownloadAvatar(Guid userId);
+        Task DownloadOrginalAvatar(Document document);
+        Document? GetAvatarWithUserId(Guid userId);
+
         #endregion
 
         #region Is Exist

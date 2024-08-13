@@ -1,5 +1,7 @@
 ﻿using Application.Services.Interfaces;
+using AutoMapper;
 using Domain.DTOs.General;
+using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Security.User;
 using Domain.Interfaces;
 using FluentValidation;
@@ -19,16 +21,25 @@ namespace HRM.Areas.Province.Controllers
         #region Constructor
         private readonly IUserService _userService;
         private readonly IUserRepository _userRepository;
+        private readonly IDocumentService _documentService;
+        private readonly IDocumentRepository _documentRepository;
         private readonly IValidator<UserRegisterVM> _userRegisterValidator;
+        private readonly IMapper _mapper;
 
 
         public ManagementController(IUserService userService,
             IValidator<UserRegisterVM> userRegisterValidator,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            IDocumentService documentService,
+            IDocumentRepository documentRepository,
+            IMapper mapper)
         {
             _userService = userService;
             _userRegisterValidator = userRegisterValidator;
             _userRepository = userRepository;
+            _documentService = documentService;
+            _documentRepository = documentRepository;
+            _mapper=mapper;
         }
         #endregion
 
@@ -250,6 +261,28 @@ namespace HRM.Areas.Province.Controllers
                 District = district,
                 Province = province
             };
+            
+            if(userId == Guid.Empty)
+            {
+                return NotFound();
+            }
+
+            var user=_userRepository.GetUserById(userId, area);
+            
+            if(user == null)
+            {
+                return NotFound();
+            }
+
+            if (!_documentService.IsExistAvatarOnServer(user)
+                &&
+                _documentRepository.IsExistAvatarOnDb(user.UserId))
+            {
+                var avatar=_documentRepository.GetAvatarWithUserId(user.UserId);
+                UploadVM document= _mapper.Map<UploadVM>(avatar);
+                _documentRepository.DownloadOrginalAvatar(avatar);
+                _documentService.UploadDocumentToServer(document);
+            }
 
             var genders = GenderTypes();
             var marital = MariltalTypes();
@@ -259,12 +292,7 @@ namespace HRM.Areas.Province.Controllers
             ViewData["Marital"] = marital;
             ViewData["Employment"] = employment;
             ViewData["Education"] = education;
-            
-            if(userId == Guid.Empty)
-            {
-                return NotFound();
-            }
-            var user=_userRepository.GetUserById(userId, area);
+
             return View();
         }
 

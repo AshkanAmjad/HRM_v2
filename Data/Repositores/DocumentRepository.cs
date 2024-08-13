@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Data.Context;
+using Domain.DTOs.General;
 using Domain.DTOs.Portal.Document;
+using Domain.DTOs.Security.User;
 using Domain.Entities.Portal.Models;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Data.Repositores
 {
-    public class DocumentRepository:IDocumentRepository
+    public class DocumentRepository : IDocumentRepository
     {
         #region Constructor
         private readonly HRMContext _context;
@@ -47,12 +49,35 @@ namespace Data.Repositores
 
         }
 
-        public void DownloadAvatar(Guid userId)
+        public async Task DownloadOrginalAvatar(Document document)
         {
-            throw new NotImplementedException();
+            byte[]? bytes;
+
+            if (document != null)
+            {
+                DownloadAvatarVM avatar = _mapper.Map<DownloadAvatarVM>(document);
+
+                DirectionVM direction = _mapper.Map<DirectionVM>(document);
+
+                var fileName = avatar.FileName;
+                bytes = avatar.DataBytes;
+
+                string? orginalFilePath;
+
+                orginalFilePath = Path.Combine(Directory.GetCurrentDirectory(),direction._saveDirOrginal, $"Avatar-{fileName}");
+
+                using (var fileStream = new FileStream(orginalFilePath, FileMode.Create))
+                {
+                    await fileStream.WriteAsync(bytes);
+                }
+            }
         }
 
         public bool IsExistAvatarOnDb(Guid userId)
             => _context.Documents.Any(d => d.Department.UserId == userId && d.Title == "Avatar" && d.IsActived);
+
+        public Document? GetAvatarWithUserId(Guid userId)
+            => _context.Documents.Where(d => d.Department.UserId == userId).SingleOrDefault();
+
     }
 }
