@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Data.HRMProfiles
 {
-    public class DocumentProfle:Profile
+    public class DocumentProfle : Profile
     {
         public DocumentProfle()
         {
@@ -44,6 +44,22 @@ namespace Data.HRMProfiles
             CreateMap<Document, DownloadAvatarVM>()
                 .ForMember(dest => dest.FileName, opt => opt.MapFrom(src => src.FileName))
                 .ForMember(dest => dest.DataBytes, opt => opt.MapFrom(src => src.DataBytes));
+
+            CreateMap<Document, DirectionVM>()
+                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Title))
+                 .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.Department.County))
+                 .ForMember(dest => dest.District, opt => opt.MapFrom(src => src.Department.District))
+                 .ForMember(dest => dest.Area, opt => opt.MapFrom(src => GetArea(src.Department)));
+        }
+
+        private int GetArea(Department department)
+        {
+            if (department.Province != 0 && department.County == 0 && department.District == 0)
+                return 0;
+            else if (department.Province != 0 && department.County != 0 && department.District == 0)
+                return 1;
+            else
+                return 2;
         }
     }
 }

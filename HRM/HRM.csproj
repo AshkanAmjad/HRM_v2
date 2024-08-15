@@ -30,8 +30,8 @@
     <Folder Include="Areas\Province\Documents\District\Avatar\Original\" />
     <Folder Include="Areas\Province\Documents\District\Avatar\Thumb\" />
     <Folder Include="Areas\Province\Documents\District\Transfers\" />
-    <Folder Include="Areas\Province\Documents\Province\Avatar\Thumb\" />
     <Folder Include="Areas\Province\Documents\Province\Avatar\Original\" />
+    <Folder Include="Areas\Province\Documents\Province\Avatar\Thumb\" />
     <Folder Include="Areas\Province\Documents\Province\Transfers\" />
     <Folder Include="Areas\Province\Models\" />
     <Folder Include="Views\Shared\Partials\Login\" />

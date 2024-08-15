@@ -39,7 +39,7 @@ namespace HRM.Areas.Province.Controllers
             _userRepository = userRepository;
             _documentService = documentService;
             _documentRepository = documentRepository;
-            _mapper=mapper;
+            _mapper = mapper;
         }
         #endregion
 
@@ -156,13 +156,13 @@ namespace HRM.Areas.Province.Controllers
             string searchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
 
 
-            var mainData=users
+            var mainData = users
                 .Where(u => u.UserName.Contains(searchValue))
                 .Skip(start)
                 .Take(length)
                 .ToList();
 
-            var totalCount=users
+            var totalCount = users
                 .Count();
 
             #endregion
@@ -171,7 +171,7 @@ namespace HRM.Areas.Province.Controllers
             var jsonData = new
             {
                 draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0"),
-                recordTotal =totalCount,
+                recordTotal = totalCount,
                 recordsFiltered = mainData.Count(),
                 data = mainData
             };
@@ -253,7 +253,7 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Edit
-        public IActionResult Edit(Guid userId,int province,int county,int district)
+        public IActionResult Edit(Guid userId, int province, int county, int district)
         {
             AreaVM area = new()
             {
@@ -261,27 +261,34 @@ namespace HRM.Areas.Province.Controllers
                 District = district,
                 Province = province
             };
-            
-            if(userId == Guid.Empty)
+
+            if (userId == Guid.Empty)
             {
                 return NotFound();
             }
 
-            var user=_userRepository.GetUserById(userId, area);
-            
-            if(user == null)
+            var user = _userRepository.GetUserById(userId, area);
+
+            if (user == null)
             {
                 return NotFound();
             }
 
-            if (!_documentService.IsExistAvatarOnServer(user)
-                &&
-                _documentRepository.IsExistAvatarOnDb(user.UserId))
+            if (_documentRepository.IsExistAvatarOnDb(user.UserId))
             {
-                var avatar=_documentRepository.GetAvatarWithUserId(user.UserId);
-                UploadVM document= _mapper.Map<UploadVM>(avatar);
-                _documentRepository.DownloadOrginalAvatar(avatar);
-                _documentService.UploadDocumentToServer(document);
+                bool isExistOrginalAvatar = _documentService.IsExistOrginalAvatarOnServer(user);
+                bool isExistThumbAvatar = _documentService.IsExistThumbAvatarOnServer(user);
+
+                if (!isExistOrginalAvatar || !isExistThumbAvatar)
+                {
+                    var avatar = _documentRepository.GetAvatarWithUserId(user.UserId);
+
+                    if (!isExistOrginalAvatar)
+                        _documentRepository.DownloadOrginalAvatar(avatar);
+
+                    if (!isExistThumbAvatar)
+                        _documentService.UploadDocumentToServer(avatar);
+                }
             }
 
             var genders = GenderTypes();
@@ -293,7 +300,7 @@ namespace HRM.Areas.Province.Controllers
             ViewData["Employment"] = employment;
             ViewData["Education"] = education;
 
-            return View();
+            return View(user);
         }
 
         [HttpPost]

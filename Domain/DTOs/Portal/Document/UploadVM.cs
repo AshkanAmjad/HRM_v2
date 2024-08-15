@@ -14,7 +14,7 @@ namespace Domain.DTOs.Portal.Document
         public int District {  get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public int UserName { get; set; }
+        public string UserName { get; set; }
         public IFormFile? document { get; set; }
         public Guid DepartmentId { get; set; }
     }

@@ -5,6 +5,7 @@ using Data.Context;
 using Domain.DTOs.General;
 using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Security.User;
+using Domain.Entities.Portal.Models;
 using Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Application.Services.Implrmentations
 {
-    public class DocumentService:IDocumentService
+    public class DocumentService : IDocumentService
     {
         #region Constructor
         private readonly IMapper _mapper;
@@ -26,45 +27,92 @@ namespace Application.Services.Implrmentations
         #endregion
         public void UploadDocumentToServer(UploadVM document)
         {
-            if (document != null)
+            if (document == null)
+                return;
+
+            DirectionVM direction = _mapper.Map<DirectionVM>(document);
+            var path = UploadDirectionOnServer(direction);
+
+            bool dirOrginal = Directory.Exists(path._saveDirOrginal);
+            bool dirThumb = Directory.Exists(path._saveDirThumb);
+
+            if (!dirOrginal)
+                Directory.CreateDirectory(path._saveDirOrginal);
+
+            if (!dirThumb)
+                Directory.CreateDirectory(path._saveDirThumb);
+
+            var documentNameOrginal = "";
+            var documentNameThumb = "";
+
+            if (document.Name == "Avatar")
             {
-                DirectionVM direction = _mapper.Map<DirectionVM>(document);
-                var path = UploadDirectionOnServer(direction);
+                documentNameOrginal = $"Avatar-{document.UserName}{Path.GetExtension(document.document.FileName)}";
+                documentNameThumb = $"Thumb-{document.UserName}{Path.GetExtension(document.document.FileName)}";
+            }
+            else
+            {
+                documentNameOrginal = $"Document-{document.UserName}{Path.GetExtension(document.document.FileName)}";
+            }
 
-                bool dirOrginal = Directory.Exists(path._saveDirOrginal);
-                bool dirThumb = Directory.Exists(path._saveDirThumb);
+            string filePathOriginal = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirOrginal, documentNameOrginal);
+            using (var fileStream = new FileStream(filePathOriginal, FileMode.Create))
+                document.document.CopyTo(fileStream);
 
-                if (!dirOrginal)
-                    Directory.CreateDirectory(path._saveDirOrginal);
+            if (path._saveDirThumb != "")
+            {
+                string filePathThumb = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirThumb, documentNameThumb);
+                ImageConvertor.ResizeImage(filePathOriginal, filePathThumb, 100, 100);
+            }
 
-                if (!dirThumb)
-                    Directory.CreateDirectory(path._saveDirThumb);
 
-                var documentNameOrginal = "";
-                var documentNameThumb = "";
+        }
 
-                if (document.Name == "Avatar")
-                {
-                    documentNameOrginal = $"Avatar-{document.UserName}{Path.GetExtension(document.document.FileName)}";
-                    documentNameThumb = $"Thumb-{document.UserName}{Path.GetExtension(document.document.FileName)}";
-                }
-                else
-                {
-                    documentNameOrginal = $"Document-{document.UserName}{Path.GetExtension(document.document.FileName)}";
-                }
+        public void UploadDocumentToServer(Document document)
+        {
+            if (document == null)
+                return;
 
-                string filePathOriginal = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirOrginal, documentNameOrginal);
-                using (var fileStream = new FileStream(filePathOriginal, FileMode.Create))
-                    document.document.CopyTo(fileStream);
+            DirectionVM direction = _mapper.Map<DirectionVM>(document);
+            var path = UploadDirectionOnServer(direction);
 
-                if (path._saveDirThumb != "")
-                {
-                    string filePathThumb = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirThumb, documentNameThumb);
-                    ImageConvertor.ResizeImage(filePathOriginal, filePathThumb, 100, 100);
-                }
+            bool dirOrginal = Directory.Exists(path._saveDirOrginal);
+            bool dirThumb = Directory.Exists(path._saveDirThumb);
 
+            if (!dirOrginal)
+                Directory.CreateDirectory(path._saveDirOrginal);
+
+            if (!dirThumb)
+                Directory.CreateDirectory(path._saveDirThumb);
+
+            var documentNameOrginal = "";
+            var documentNameThumb = "";
+
+            if (document.Title == "Avatar")
+            {
+                documentNameOrginal = $"Avatar-{document.Department.User.UserName}{Path.GetExtension(document.FileFormat)}";
+                documentNameThumb = $"Thumb-{document.Department.User.UserName}{Path.GetExtension(document.FileFormat)}";
+            }
+            else
+            {
+                documentNameOrginal = $"Document-{document.Department.User.UserName}{Path.GetExtension(document.FileFormat)}";
+            }
+
+            byte[]? bytes=document.DataBytes;
+
+            string filePathOriginal = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirOrginal, documentNameOrginal);
+
+            using (var fileStream = new FileStream(filePathOriginal, FileMode.Truncate))
+                fileStream.Write(bytes);
+
+
+            if (path._saveDirThumb != "")
+            {
+                string filePathThumb = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirThumb, documentNameThumb);
+                ImageConvertor.ResizeImage(filePathOriginal, filePathThumb, 100, 100);
             }
         }
+
 
         public DirectionVM UploadDirectionOnServer(DirectionVM direction)
         {
@@ -177,40 +225,63 @@ namespace Application.Services.Implrmentations
             return dir;
         }
 
-        public bool IsExistAvatarOnServer(UserEditVM? user)
+        public bool IsExistOrginalAvatarOnServer(UserEditVM? user)
         {
-            bool result= false;
-            if(user != null)
+            bool result = false;
+            if (user != null)
             {
 
                 DirectionVM direction = _mapper.Map<DirectionVM>(user);
+                direction.Name = "Avatar";
+
                 var path = UploadDirectionOnServer(direction);
 
                 bool dirOrginal = Directory.Exists(path._saveDirOrginal);
-                bool dirThumb = Directory.Exists(path._saveDirThumb);
 
                 bool isExistOrginalAvatar;
-                bool isExistThumbAvatar=false;
 
-                if (dirOrginal && dirThumb)
+                if (dirOrginal)
                 {
-                    var dirOrginalAvatar = $"{path._saveDirOrginal}/Avatar-{user.UserId}.png";
-                    isExistOrginalAvatar = Directory.Exists(dirOrginalAvatar);
+                    var dirOrginalAvatar = $"{path._saveDirOrginal}/Avatar-{user.UserName}{Path.GetExtension(".png")}";
+                    isExistOrginalAvatar = File.Exists(dirOrginalAvatar);
 
                     if (isExistOrginalAvatar)
                     {
-                        var dirThumbAvatar = $"{path._saveDirThumb}/Thumb-{user.UserId}.png";
-                        isExistThumbAvatar = Directory.Exists(dirThumbAvatar);
-                    }
-
-                    if (isExistOrginalAvatar && isExistThumbAvatar)
-                    {
-                       result = true;
+                        result = true;
                     }
                 }
             }
             return result;
         }
+
+        public bool IsExistThumbAvatarOnServer(UserEditVM? user)
+        {
+            bool result = false;
+            if (user != null)
+            {
+                DirectionVM direction = _mapper.Map<DirectionVM>(user);
+                direction.Name = "Avatar";
+
+                var path = UploadDirectionOnServer(direction);
+
+                bool dirThumb = Directory.Exists(path._saveDirThumb);
+
+                bool isExistThumbAvatar = false;
+
+                if (dirThumb)
+                {
+                    var dirThumbAvatar = $"{path._saveDirThumb}/Thumb-{user.UserName}{Path.GetExtension(".png")}";
+                    isExistThumbAvatar = File.Exists(dirThumbAvatar);
+                }
+
+                if (isExistThumbAvatar)
+                {
+                    result = true;
+                }
+            }
+            return result;
+        }
+
 
     }
 }

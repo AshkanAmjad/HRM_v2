@@ -1,4 +1,5 @@
-﻿using Domain.DTOs.Portal.Document;
+﻿using Domain.DTOs.General;
+using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Security.User;
 using Domain.Entities.Portal.Models;
 using System;
@@ -15,6 +16,7 @@ namespace Domain.Interfaces
         void UploadDocumentToDb(UploadVM file);
         Task DownloadOrginalAvatar(Document document);
         Document? GetAvatarWithUserId(Guid userId);
+        DirectionVM UploadDirectionOnServer(DirectionVM direction);
 
         #endregion
 

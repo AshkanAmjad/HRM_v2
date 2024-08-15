@@ -1,6 +1,7 @@
 ﻿using Domain.DTOs.General;
 using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Security.User;
+using Domain.Entities.Portal.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +14,15 @@ namespace Application.Services.Interfaces
     {
         #region Document
         void UploadDocumentToServer(UploadVM document);
+
+        void UploadDocumentToServer(Document document);
+
         DirectionVM UploadDirectionOnServer(DirectionVM direction);
         #endregion
 
         #region Is Exist 
-        bool IsExistAvatarOnServer(UserEditVM? user);
-
+        bool IsExistOrginalAvatarOnServer(UserEditVM? user);
+        bool IsExistThumbAvatarOnServer(UserEditVM? user);
         #endregion
     }
 }
