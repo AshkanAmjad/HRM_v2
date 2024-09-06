@@ -19,6 +19,11 @@
             var _registerUrl = '@Url.Action("Register", "Management")';
             var _gridUrl = '@Url.Action("FillUsersGrid", "Management")';
             var _GetUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Management", new { Province = 1, County = 0, District = 0 }))';
+            var area = {
+                province: 1,
+                county: 0,
+                district: 0
+            };
         </script>
         <script type="text/javascript">
             //List
@@ -41,14 +46,14 @@
                     "serverSide": true,
                     "info": false,
                     "lengthChange": false,
-                    "ordering": true,
+                    "ordering": false,
                     "language": {
                         "emptyTable": "داده ای ثبت نشده است.",
                         "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
                         "search": `<span class="ms-2">
-                                                           <i class="fa fa-search text-primary"></i>
+                                         <i class="fa fa-search text-primary"></i>
                                                            جست‌و‌جو بر اساس کد ملی:
-                                               </span>`,
+                                   </span>`,
                         "searchPlaceholder": 'مقدار مناسبی برای کد ملی وارد کنید ...',
                     },
                     "ajax": {
@@ -77,23 +82,16 @@
                         { "data": "lastActived", "title": "آخرین فعالیت" },
                         { "data": "registerDate", "title": "تاریخ ثبت" },
                         { "data": "userId", "title": "عملیات", render: function (data, type, row) {
-                            const area = {
-                                province: 1,
-                                county: 0,
-                                district: 0
-                            };
-                                const _editUrl =`/Province/Management/Edit?userId=${data}&province=${area.province}&county=${area.county}&district=${area.district}`;
-                                const _deleteUrl = `/Province/Management/Delete?userId=${data}&province=${area.province}&county=${area.county}&district=${area.district}`;
 
                                 return `<div class="d-flex py-2">
                                            <a class="btn btn-outline-primary btn-sm rounded-circle py-1 ms-1"
-                                              href="${_editUrl}"
+                                             onclick="Edit('${data}')"
                                            >
                                                <i class="fa fa-edit" > </i>
                                            </a>
                                            <a class="btn btn-outline-danger btn-sm rounded-circle py-1"
-                                               href="${_deleteUrl}"
-                                           >
+                                             onclick = "Delete('${data}')"
+                                    >
                                            <i class="fa fa-times" > </i>
                                            </a>
                                        <div>`
@@ -116,6 +114,25 @@
                     $("#operation-box").modal("show");
                 });
             });
-        </script>
+
+            //Edit
+            function Edit(userId) {
+                         var _editUrl = `/Province/Management/Edit?userId=${userId}&province=${area.province}&county=${area.county}&district=${area.district}`;
+                         $.get(_editUrl).done(function (result) {
+                          $("#operation-box").html(result);
+                          $("#operation-box").modal("show");
+                      });
+            }
+
+            //Delete
+            function Delete(userId) {
+                var _deleteUrl = `/Province/Management/Delete?userId=${userId}&province=${area.province}&county=${area.county}&district=${area.district}`;
+                $.get(_deleteUrl).done(function (result) {
+                    $("#operation-box").html(result);
+                    $("#operation-box").modal("show");
+                });
+            };
+            
+   </script>
 
 

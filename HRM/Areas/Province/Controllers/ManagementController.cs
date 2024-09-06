@@ -24,11 +24,13 @@ namespace HRM.Areas.Province.Controllers
         private readonly IDocumentService _documentService;
         private readonly IDocumentRepository _documentRepository;
         private readonly IValidator<UserRegisterVM> _userRegisterValidator;
+        private readonly IValidator<UserEditVM> _userEditValidator;
         private readonly IMapper _mapper;
 
 
         public ManagementController(IUserService userService,
             IValidator<UserRegisterVM> userRegisterValidator,
+            IValidator<UserEditVM> userEditValidators,
             IUserRepository userRepository,
             IDocumentService documentService,
             IDocumentRepository documentRepository,
@@ -38,6 +40,7 @@ namespace HRM.Areas.Province.Controllers
             _userRegisterValidator = userRegisterValidator;
             _userRepository = userRepository;
             _documentService = documentService;
+            _userEditValidator = userEditValidators;
             _documentRepository = documentRepository;
             _mapper = mapper;
         }
@@ -274,7 +277,9 @@ namespace HRM.Areas.Province.Controllers
                 return NotFound();
             }
 
-            if (_documentRepository.IsExistAvatarOnDb(user.UserId))
+            bool IsExistAvatarOnDb = _documentRepository.IsExistAvatarOnDb(user.UserId);
+
+            if (IsExistAvatarOnDb)
             {
                 bool isExistOrginalAvatar = _documentService.IsExistOrginalAvatarOnServer(user);
                 bool isExistThumbAvatar = _documentService.IsExistThumbAvatarOnServer(user);
@@ -299,15 +304,66 @@ namespace HRM.Areas.Province.Controllers
             ViewData["Marital"] = marital;
             ViewData["Employment"] = employment;
             ViewData["Education"] = education;
+            ViewData["IsExistAvatar"] = IsExistAvatarOnDb;
 
             return View(user);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit()
+        public IActionResult Edit(UserEditVM user)
         {
-            return View();
+            ValidationResult userValidator = _userEditValidator.Validate(user);
+            bool success = false;
+            var message = $"عملیات ویرایش با شکست مواجه شده است.";
+            string checkMessage = "";
+            if (userValidator.IsValid)
+            {
+                try
+                {
+                    bool result = _userService.Edit(user, out checkMessage);
+
+                    if (result)
+                    {
+                        _userRepository.SaveChanges();
+                        success = true;
+                        message = $"<h5>عملیات ویرایش مشخصات کاربر <span class='text-primary'> {user.FirstName}  {user.LastName} </span> با موفقیت انجام شد.</h5>";
+                    }
+                    else
+                    {
+                        message = checkMessage;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    while (ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    message = $"<h5>خطای شکست عملیات ثبت : {ex.Message} </h5>";
+                }
+            }
+            else
+            {
+                message = $"{userValidator}";
+            }
+            #region Manual Validation
+            foreach (var error in userValidator.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+            userValidator.AddToModelState(this.ModelState);
+            #endregion
+
+            #region Json data
+            var jsonData = new
+            {
+                success = success,
+                message = message,
+            };
+            #endregion
+
+            return Json(jsonData);
         }
         #endregion
 

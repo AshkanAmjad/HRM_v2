@@ -11,10 +11,9 @@ namespace Application.Services.Interfaces
     public interface IUserService
     {
         #region User
-        Task<User?> GetUserAsync(LoginVM model);
         List<SelectListItem> GetAreas();
         bool Register(UserRegisterVM model, out string message);
-        string Hashing(string password);
+        bool Edit(UserEditVM model, out string message);
         List<DisplayUsersVM> GetUsers(AreaVM area);
         #endregion
 

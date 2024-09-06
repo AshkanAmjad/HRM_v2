@@ -1,5 +1,7 @@
-﻿using Application.Services.Interfaces;
+﻿using Application.Extensions;
+using Application.Services.Interfaces;
 using Domain.DTOs.Security.Login;
+using Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
@@ -16,13 +18,14 @@ namespace HRM.Controllers
     public class AccountController : Controller
     {
         #region Constructor
-        private readonly IUserService _userService;
+        private readonly IUserRepository _userRepository;
         private readonly IValidator<LoginVM> _validator;
 
-        public AccountController(IUserService userService, IValidator<LoginVM> validator)
+        public AccountController(IUserService userService, IValidator<LoginVM> validator, IUserRepository userRepository)
         {
-            _userService = userService;
+            _userRepository = userRepository;
             _validator = validator;
+
         }
         #endregion
 
@@ -67,7 +70,9 @@ namespace HRM.Controllers
 
             if (result.IsValid)
             {
-                var user = await _userService.GetUserAsync(model);
+                model.Password = Hashing.Main(model.Password);
+
+                var user = await _userRepository.GetUserAsync(model);
                 if (user != null)
                 {
                     var claims = new List<Claim>

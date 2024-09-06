@@ -15,8 +15,8 @@ namespace Domain.Interfaces
     {
         #region User
         Task<User?> GetUserAsync(LoginVM loginVM);
-        bool Similarity(UserRegisterVM userRegister, out string message);
-        bool Register(UserRegisterVM userRegister, out string message);
+        bool Similarity(UserRegisterVM user, out string message);
+        bool Register(UserRegisterVM user, out string message);
         List<DisplayUsersVM> GetUsers(AreaVM area);
         IQueryable<User> GetUsersQuery();
         UserEditVM? GetUserById(Guid userId, AreaVM area);

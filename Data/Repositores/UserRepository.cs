@@ -8,11 +8,13 @@ using Domain.DTOs.Security.User;
 using Domain.Entities.Portal.Models;
 using Domain.Entities.Security.Models;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,16 +41,17 @@ namespace Data.Repositores
             return _context.Users.AsQueryable();
         }
 
-        public async Task<User?> GetUserAsync(LoginVM loginVM)
+        public async Task<User?> GetUserAsync(LoginVM model)
         {
+
             var user = new User();
 
-            if (loginVM.Area == "0")
+            if (model.Area == "0")
             {
                 user = await _context.Users.SingleOrDefaultAsync(
-                   u => u.UserName == loginVM.UserName
+                   u => u.UserName == model.UserName
                    &&
-                   u.Password == loginVM.Password
+                   u.Password == model.Password
                    &&
                    u.Department.Province != 0
                    &&
@@ -56,12 +59,12 @@ namespace Data.Repositores
                    &&
                    u.Department.District == 0);
             }
-            if (loginVM.Area == "1")
+            if (model.Area == "1")
             {
                 user = await _context.Users.SingleOrDefaultAsync(
-                   u => u.UserName == loginVM.UserName
+                   u => u.UserName == model.UserName
                    &&
-                   u.Password == loginVM.Password
+                   u.Password == model.Password
                    &&
                    u.Department.Province == 0
                    &&
@@ -69,12 +72,12 @@ namespace Data.Repositores
                    &&
                    u.Department.District == 0);
             }
-            if (loginVM.Area == "2")
+            if (model.Area == "2")
             {
                 user = await _context.Users.SingleOrDefaultAsync(
-                    u => u.UserName == loginVM.UserName
+                    u => u.UserName == model.UserName
                     &&
-                    u.Password == loginVM.Password
+                    u.Password == model.Password
                     &&
                     u.Department.Province == 0
                     &&
@@ -84,22 +87,22 @@ namespace Data.Repositores
             }
             return user;
         }
-        public bool Register(UserRegisterVM userRegister, out string message)
+        public bool Register(UserRegisterVM user, out string message)
         {
             string checkMessage = "";
-            if (!Similarity(userRegister, out checkMessage))
+            if (!Similarity(user, out checkMessage))
             {
 
-                UploadUserToDb(userRegister);
+                UploadUserToDb(user);
 
                 var departmentId = Guid.NewGuid();
 
-                UploadDepartmentToDb(userRegister, departmentId);
+                UploadDepartmentToDb(user, departmentId);
 
                 #region Document
-                if (userRegister.Avatar != null)
+                if (user.Avatar != null)
                 {
-                    UploadVM file = _mapper.Map<UploadVM>(userRegister);
+                    UploadVM file = _mapper.Map<UploadVM>(user);
                     file.Name = "Avatar";
                     file.Description = "-";
                     file.DepartmentId = departmentId;
@@ -114,19 +117,19 @@ namespace Data.Repositores
             return false;
         }
 
-        public bool Similarity(UserRegisterVM userRegister, out string message)
+        public bool Similarity(UserRegisterVM user, out string message)
         {
             bool check = false;
             var resultMessage = "";
-            if (userRegister != null)
+            if (user != null)
             {
-                if (userRegister.Area == 0)
+                if (user.Area == 0)
                 {
-                    check = _context.Users.Where(u => (u.UserName == userRegister.UserName) && (u.Department.Province == 1)).Any();
+                    check = _context.Users.Where(u => (u.UserName == user.UserName) && (u.Department.Province == 1)).Any();
                 }
                 if (check)
                 {
-                    resultMessage = $"کاربر با کدملی {userRegister.UserName} قبلا ثبت شده است.";
+                    resultMessage = $"کاربر با کدملی {user.UserName} قبلا ثبت شده است.";
                 }
             }
             message = resultMessage;
@@ -137,6 +140,7 @@ namespace Data.Repositores
             var context = GetUsersQuery();
             var users = (from item in context
                          where (item.IsActived && item.Department.Province == area.Province && item.Department.County == area.County && item.Department.District == area.District)
+                         orderby item.RegisterDate descending
                          select new DisplayUsersVM
                          {
                              UserId = item.UserId,
@@ -159,9 +163,9 @@ namespace Data.Repositores
                              IsActived = (item.IsActived == true) ? "فعال" : "غیرفعال",
                              LastActived = $"{item.LastActived.ToShamsi()}",
                              RegisterDate = $"{item.RegisterDate.ToShamsi()}"
-                         }).ToList();
+                         })
+                         .ToList();
 
-            users.OrderBy(u => u.RegisterDate);
             return users;
         }
 
@@ -219,15 +223,12 @@ namespace Data.Repositores
                                 EmploymentStatus = item.Employment,
                                 County=item.Department.County,
                                 District=item.Department.District,
+                                Province=item.Department.Province,
                                 Area=(item.Department.Province!=0 && item.Department.County == 0 && item.Department.County == 0 ? 0:
                                      (item.Department.Province !=0 && item.Department.County !=0 && item.Department.District == 0 ? 1:2))
                             }).Single();
             }
             return user;
         }
-
-
-
-        
     }
 }

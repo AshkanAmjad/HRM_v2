@@ -55,7 +55,7 @@ namespace Application.Services.Implrmentations
             return areas;
         }
 
-        public async Task<User?> GetUserAsync(LoginVM model)
+        public bool Register(UserRegisterVM model, out string message)
         {
             //#region hashing password
             //var hasher = new PasswordHasher<string>();
@@ -64,14 +64,6 @@ namespace Application.Services.Implrmentations
             //model.Password = hashedPassword;
             //#endregion
 
-            string hashed = Hashing(model.Password);
-            model.Password = hashed;
-            var user = await _userRepository.GetUserAsync(model);
-            return user;
-        }
-
-        public bool Register(UserRegisterVM model, out string message)
-        {
             #region Seed Data On Users Table
             model.UserId = Guid.NewGuid();
             model.RegisterDate = DateTime.Now;
@@ -80,7 +72,7 @@ namespace Application.Services.Implrmentations
             #endregion 
 
             #region Hashing Password
-            string hashed = Hashing(model.Password);
+            string hashed = Hashing.Main(model.Password);
             model.Password = hashed;
             #endregion
 
@@ -96,21 +88,14 @@ namespace Application.Services.Implrmentations
             return _userRepository.Register(model, out message);
         }
 
-        public string Hashing(string password)
-        {
-            byte[] salt = RandomNumberGenerator.GetBytes(128 / 8);
-            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                            password: password,
-                            salt: salt,
-                            prf: KeyDerivationPrf.HMACSHA256,
-                            iterationCount: 100000,
-                            numBytesRequested: 256 / 8
-            ));
-            return hashed;
-        }
+
         public List<DisplayUsersVM> GetUsers(AreaVM area)
         => _userRepository.GetUsers(area);
 
+        public bool Edit(UserEditVM model, out string message)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 
