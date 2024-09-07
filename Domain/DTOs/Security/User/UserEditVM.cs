@@ -30,5 +30,8 @@ namespace Domain.DTOs.Security.User
         public int? Province { get; set; }
         public int? County { get; set; }
         public int? District { get; set; }
+        public bool IsActived { get; set; }
+        public DateTime RegisterDate { get; set; }
+        public DateTime LastActived { get; set; }
     }
 }

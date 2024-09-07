@@ -93,7 +93,7 @@ namespace Data.Repositores
             if (!Similarity(user, out checkMessage))
             {
 
-                UploadUserToDb(user);
+                UploadRegisterUserToDb(user);
 
                 var departmentId = Guid.NewGuid();
 
@@ -116,6 +116,65 @@ namespace Data.Repositores
             message = checkMessage;
             return false;
         }
+
+        public bool Edit(UserEditVM user, out string message)
+        {
+            string checkMessage = "اطلاعات ناقص ارسال شده است.";
+
+            if (user != null)
+            {
+                UploadEditUserToDb(user);
+
+                #region Document
+                if (user.Avatar != null)
+                {
+                    var departmentId = GetDepartmentId(user.UserId);
+
+                    bool IsExist = IsExistAvatar(departmentId);
+
+                    if (IsExist)
+                    {
+                        DeleteAvatarOnDb(departmentId);
+                    }
+
+                    UploadVM file = _mapper.Map<UploadVM>(user);
+                    file.Name = "Avatar";
+                    file.Description = "-";
+                    file.DepartmentId = departmentId;
+                    _documentRepository.UploadDocumentToDb(file);
+                }
+                #endregion
+
+                message = "";
+                return true;
+            }
+
+            message = checkMessage;
+            return false;
+        }
+
+        public void DeleteAvatarOnDb(Guid departmentId)
+        {
+            if (departmentId != Guid.Empty)
+            {
+                var avatar = _context.Documents.Where(d => d.DepartmentId == departmentId)
+                                               .Single();
+
+                _context.Documents.Remove(avatar);
+
+            }
+        }
+
+
+        public bool IsExistAvatar(Guid departmentId)
+            => _context.Documents.Where(d => d.DepartmentId == departmentId)
+                                 .Any();
+
+
+        public Guid GetDepartmentId(Guid userId)
+            => _context.Departments.Where(d => d.UserId == userId)
+                                   .Select(d => d.DepartmentId)
+                                   .Single();
 
         public bool Similarity(UserRegisterVM user, out string message)
         {
@@ -170,7 +229,7 @@ namespace Data.Repositores
         }
 
 
-        public void UploadUserToDb(UserRegisterVM userRegister)
+        public void UploadRegisterUserToDb(UserRegisterVM userRegister)
         {
             if (userRegister != null)
             {
@@ -179,6 +238,46 @@ namespace Data.Repositores
             }
 
         }
+
+        public void UploadEditUserToDb(UserEditVM userEdit)
+        {
+            if (userEdit != null)
+            {
+                User initial = _context.Users
+                                       .Find(userEdit.UserId);
+                if (initial != null)
+                {
+                    User user = _mapper.Map<User>(userEdit);
+
+                    initial.FirstName = user.FirstName;
+                    initial.LastName = user.LastName;
+                    initial.Gender = user.Gender;
+                    initial.Education = user.Education;
+                    initial.Employment = user.Employment;
+                    initial.MaritalStatus = user.MaritalStatus;
+                    initial.Insurance = user.Insurance;
+                    initial.PhoneNumber = user.PhoneNumber;
+                    initial.Email = user.Email;
+                    initial.DateOfBirth = user.DateOfBirth;
+                    initial.City = user.City;
+                    initial.Address = user.Address;
+                    initial.IsActived = user.IsActived;
+                    initial.LastActived = user.LastActived;
+                    initial.RegisterDate = user.RegisterDate;
+
+                    if (userEdit.Password != null)
+                    {
+                        user.Password = userEdit.Password;
+                        initial.Password = user.Password;
+                    }
+
+                    _context.Update(user);
+
+                }
+
+            }
+        }
+
         public void UploadDepartmentToDb(UserRegisterVM userRegister, Guid departmentId)
         {
             if (userRegister != null)
@@ -194,39 +293,40 @@ namespace Data.Repositores
             _context.SaveChanges();
         }
 
-        public UserEditVM? GetUserById(Guid userId,AreaVM area)
+        public UserEditVM? GetUserById(Guid userId, AreaVM area)
         {
             UserEditVM user = new();
             if (userId != Guid.Empty)
             {
-               user = (from item in _context.Users
-                            where (item.UserId == userId
-                            && item.Department.Province == area.Province
-                            && item.Department.County == area.County
-                            && item.Department.District == area.District
-                            && item.IsActived == true)
-                            select new UserEditVM
-                            {
-                                Address = item.Address,
-                                City = item.City,
-                                DateOfBirth = item.DateOfBirth,
-                                Education = item.Education,
-                                Email = item.Email,
-                                FirstName = item.FirstName,
-                                LastName = item.LastName,
-                                PhoneNumber = item.PhoneNumber,
-                                UserId = item.UserId,
-                                UserName = item.UserName,
-                                Insurance = item.Insurance,
-                                Gender = item.Gender,
-                                MaritalStatus = item.MaritalStatus,
-                                EmploymentStatus = item.Employment,
-                                County=item.Department.County,
-                                District=item.Department.District,
-                                Province=item.Department.Province,
-                                Area=(item.Department.Province!=0 && item.Department.County == 0 && item.Department.County == 0 ? 0:
-                                     (item.Department.Province !=0 && item.Department.County !=0 && item.Department.District == 0 ? 1:2))
-                            }).Single();
+                user = (from item in _context.Users
+                        where (item.UserId == userId
+                        && item.Department.Province == area.Province
+                        && item.Department.County == area.County
+                        && item.Department.District == area.District
+                        && item.IsActived == true)
+                        select new UserEditVM
+                        {
+                            Address = item.Address,
+                            City = item.City,
+                            DateOfBirth = item.DateOfBirth,
+                            Education = item.Education,
+                            Email = item.Email,
+                            FirstName = item.FirstName,
+                            LastName = item.LastName,
+                            PhoneNumber = item.PhoneNumber,
+                            UserId = item.UserId,
+                            UserName = item.UserName,
+                            Insurance = item.Insurance,
+                            Gender = item.Gender,
+                            MaritalStatus = item.MaritalStatus,
+                            EmploymentStatus = item.Employment,
+                            County = item.Department.County,
+                            District = item.Department.District,
+                            Province = item.Department.Province,
+                            Area = (item.Department.Province != 0 && item.Department.County == 0 && item.Department.County == 0 ? 0 :
+                                 (item.Department.Province != 0 && item.Department.County != 0 && item.Department.District == 0 ? 1 : 2)),
+                            IsActived = item.IsActived
+                        }).Single();
             }
             return user;
         }

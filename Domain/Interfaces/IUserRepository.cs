@@ -17,16 +17,23 @@ namespace Domain.Interfaces
         Task<User?> GetUserAsync(LoginVM loginVM);
         bool Similarity(UserRegisterVM user, out string message);
         bool Register(UserRegisterVM user, out string message);
+        bool Edit(UserEditVM user, out string message);
         List<DisplayUsersVM> GetUsers(AreaVM area);
         IQueryable<User> GetUsersQuery();
         UserEditVM? GetUserById(Guid userId, AreaVM area);
+        Guid GetDepartmentId(Guid userId);
         #endregion
 
         #region DB
-        void UploadUserToDb(UserRegisterVM user);
+        void UploadRegisterUserToDb(UserRegisterVM userRegister);
+        void UploadEditUserToDb(UserEditVM userEdit);
         void UploadDepartmentToDb(UserRegisterVM depatment, Guid departmentId);
+        void DeleteAvatarOnDb(Guid departmentId);
         void SaveChanges();
         #endregion
 
+        #region Is Exist
+        bool IsExistAvatar(Guid departmentId);
+        #endregion
     }
 }

@@ -57,13 +57,6 @@ namespace Application.Services.Implrmentations
 
         public bool Register(UserRegisterVM model, out string message)
         {
-            //#region hashing password
-            //var hasher = new PasswordHasher<string>();
-            //var password = model.Password;
-            //var hashedPassword = hasher.HashPassword(null, password);
-            //model.Password = hashedPassword;
-            //#endregion
-
             #region Seed Data On Users Table
             model.UserId = Guid.NewGuid();
             model.RegisterDate = DateTime.Now;
@@ -94,7 +87,29 @@ namespace Application.Services.Implrmentations
 
         public bool Edit(UserEditVM model, out string message)
         {
-            throw new NotImplementedException();
+            #region Seed Data On Users Table
+            model.RegisterDate = DateTime.Now;
+            model.LastActived = DateTime.Now;
+            #endregion 
+
+            #region Hashing Password
+            if (model.Password != null)
+            {
+                string hashed = Hashing.Main(model.Password);
+                model.Password = hashed;
+            }
+            #endregion
+
+            #region Save Avatar On Server
+            if (model.Avatar != null)
+            {
+                UploadVM uploadToServer = _mapper.Map<UploadVM>(model);
+                uploadToServer.Name = "Avatar";
+                _documentService.UploadDocumentToServer(uploadToServer);
+            }
+            #endregion
+
+            return _userRepository.Edit(model, out message);
         }
     }
 

@@ -56,12 +56,20 @@ namespace Application.Services.Implrmentations
             }
 
             string filePathOriginal = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirOrginal, documentNameOrginal);
+
+            if (File.Exists(filePathOriginal))
+                File.Delete(filePathOriginal);
+
             using (var fileStream = new FileStream(filePathOriginal, FileMode.Create))
                 document.document.CopyTo(fileStream);
 
             if (path._saveDirThumb != "")
             {
                 string filePathThumb = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirThumb, documentNameThumb);
+
+                if (File.Exists(filePathThumb))
+                    File.Delete(filePathThumb);
+
                 ImageConvertor.ResizeImage(filePathOriginal, filePathThumb, 100, 100);
             }
 
@@ -98,7 +106,7 @@ namespace Application.Services.Implrmentations
                 documentNameOrginal = $"Document-{document.Department.User.UserName}{Path.GetExtension(document.FileFormat)}";
             }
 
-            byte[]? bytes=document.DataBytes;
+            byte[]? bytes = document.DataBytes;
 
             string filePathOriginal = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirOrginal, documentNameOrginal);
 
