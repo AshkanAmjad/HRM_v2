@@ -112,7 +112,7 @@ namespace Application.Services.Implrmentations
             return _userRepository.Edit(model, out message);
         }
 
-        public bool Delete(UserDeleteVM model, out string message)
+        public bool Delete(UserEdit_DeleteVM model, out string message)
             => _userRepository.Delete(model, out message);
 
     }

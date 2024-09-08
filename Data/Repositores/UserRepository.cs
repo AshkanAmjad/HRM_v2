@@ -332,7 +332,7 @@ namespace Data.Repositores
             return user;
         }
 
-        public bool Delete(UserDeleteVM model, out string message)
+        public bool Delete(UserEdit_DeleteVM model, out string message)
         {
             throw new NotImplementedException();
         }

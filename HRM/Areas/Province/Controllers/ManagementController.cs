@@ -3,10 +3,12 @@ using AutoMapper;
 using Domain.DTOs.General;
 using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Security.User;
+using Domain.Entities.Security.Models;
 using Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
+using HRM.Models.Validation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq.Expressions;
@@ -25,14 +27,14 @@ namespace HRM.Areas.Province.Controllers
         private readonly IDocumentRepository _documentRepository;
         private readonly IValidator<UserRegisterVM> _userRegisterValidator;
         private readonly IValidator<UserEditVM> _userEditValidator;
-        private readonly IValidator<UserDeleteVM> _userDeleteValidator;
+        private readonly IValidator<UserEdit_DeleteVM> _userEdit_DeleteValidator;
         private readonly IMapper _mapper;
 
 
         public ManagementController(IUserService userService,
             IValidator<UserRegisterVM> userRegisterValidator,
             IValidator<UserEditVM> userEditValidators,
-            IValidator<UserDeleteVM> userDeleteValidator,
+            IValidator<UserEdit_DeleteVM> userEdit_DeleteValidator,
             IUserRepository userRepository,
             IDocumentService documentService,
             IDocumentRepository documentRepository,
@@ -43,6 +45,7 @@ namespace HRM.Areas.Province.Controllers
             _userRepository = userRepository;
             _documentService = documentService;
             _userEditValidator = userEditValidators;
+            _userEdit_DeleteValidator = userEdit_DeleteValidator;
             _documentRepository = documentRepository;
             _mapper = mapper;
         }
@@ -258,57 +261,59 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Edit
-        public IActionResult Edit(Guid userId, int province, int county, int district)
+        public IActionResult Edit(UserEdit_DeleteVM model)
         {
-            AreaVM area = new()
+            ValidationResult userValidator = _userEdit_DeleteValidator.Validate(model);
+
+            if (userValidator.IsValid)
             {
-                County = county,
-                District = district,
-                Province = province
-            };
-
-            if (userId == Guid.Empty)
-            {
-                return NotFound();
-            }
-
-            var user = _userRepository.GetUserById(userId, area);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            bool IsExistAvatarOnDb = _documentRepository.IsExistAvatarOnDb(user.UserId);
-
-            if (IsExistAvatarOnDb)
-            {
-                bool isExistOrginalAvatar = _documentService.IsExistOrginalAvatarOnServer(user);
-                bool isExistThumbAvatar = _documentService.IsExistThumbAvatarOnServer(user);
-
-                if (!isExistOrginalAvatar || !isExistThumbAvatar)
+                AreaVM area = new()
                 {
-                    var avatar = _documentRepository.GetAvatarWithUserId(user.UserId);
+                    County = model.County,
+                    District = model.District,
+                    Province = model.Province
+                };
 
-                    if (!isExistOrginalAvatar)
-                        _documentRepository.DownloadOrginalAvatar(avatar);
+                var user = _userRepository.GetUserById(model.UserId, area);
 
-                    if (!isExistThumbAvatar)
-                        _documentService.UploadDocumentToServer(avatar);
+                if (user == null)
+                {
+                    return NotFound();
                 }
+
+                bool IsExistAvatarOnDb = _documentRepository.IsExistAvatarOnDb(user.UserId);
+
+                if (IsExistAvatarOnDb)
+                {
+                    bool isExistOrginalAvatar = _documentService.IsExistOrginalAvatarOnServer(user);
+                    bool isExistThumbAvatar = _documentService.IsExistThumbAvatarOnServer(user);
+
+                    if (!isExistOrginalAvatar || !isExistThumbAvatar)
+                    {
+                        var avatar = _documentRepository.GetAvatarWithUserId(user.UserId);
+
+                        if (!isExistOrginalAvatar)
+                            _documentRepository.DownloadOrginalAvatar(avatar);
+
+                        if (!isExistThumbAvatar)
+                            _documentService.UploadDocumentToServer(avatar);
+                    }
+                }
+
+                var genders = GenderTypes();
+                var marital = MariltalTypes();
+                var employment = EmploymentTypes();
+                var education = EducationTypes();
+                ViewData["Gendes"] = genders;
+                ViewData["Marital"] = marital;
+                ViewData["Employment"] = employment;
+                ViewData["Education"] = education;
+                ViewData["IsExistAvatar"] = IsExistAvatarOnDb;
+
+                return View(user);
             }
 
-            var genders = GenderTypes();
-            var marital = MariltalTypes();
-            var employment = EmploymentTypes();
-            var education = EducationTypes();
-            ViewData["Gendes"] = genders;
-            ViewData["Marital"] = marital;
-            ViewData["Employment"] = employment;
-            ViewData["Education"] = education;
-            ViewData["IsExistAvatar"] = IsExistAvatarOnDb;
-
-            return View(user);
+            return NotFound();
         }
 
         [HttpPost]
@@ -372,9 +377,9 @@ namespace HRM.Areas.Province.Controllers
         #region Delete
 
         [HttpPost]
-        public IActionResult Delete(UserDeleteVM user)
+        public IActionResult Delete(UserEdit_DeleteVM user)
         {
-            ValidationResult userValidator = _userDeleteValidator.Validate(user);
+            ValidationResult userValidator = _userEdit_DeleteValidator.Validate(user);
             bool success = false;
             var message = $"عملیات غیر فعال سازی با شکست مواجه شده است.";
             string checkMessage = "";

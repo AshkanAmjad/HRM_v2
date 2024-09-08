@@ -3,15 +3,13 @@ using FluentValidation;
 
 namespace HRM.Models.Validation
 {
-    public class UserDeleteValidator: AbstractValidator<UserDeleteVM>
+    public class UserEdit_DeleteValidator: AbstractValidator<UserEdit_DeleteVM>
     {
-        public UserDeleteValidator()
+        public UserEdit_DeleteValidator()
         {
             RuleFor(x => x.UserId).NotEmpty()
                                   .NotNull()
                                   .NotEqual(Guid.Empty);
-
-            RuleFor(x => x.UserName).NotNull();
 
             RuleFor(x => x.Province).NotNull();
 
