@@ -138,6 +138,7 @@ namespace Data.Repositores
                     }
 
                     UploadVM file = _mapper.Map<UploadVM>(user);
+
                     file.Name = "Avatar";
                     file.Description = "-";
                     file.DepartmentId = departmentId;
@@ -271,7 +272,7 @@ namespace Data.Repositores
                         initial.Password = user.Password;
                     }
 
-                    _context.Update(user);
+                    _context.Update(initial);
 
                 }
 
@@ -329,6 +330,11 @@ namespace Data.Repositores
                         }).Single();
             }
             return user;
+        }
+
+        public bool Delete(UserDeleteVM model, out string message)
+        {
+            throw new NotImplementedException();
         }
     }
 }

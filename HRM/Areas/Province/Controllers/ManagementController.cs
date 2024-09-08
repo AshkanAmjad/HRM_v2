@@ -25,12 +25,14 @@ namespace HRM.Areas.Province.Controllers
         private readonly IDocumentRepository _documentRepository;
         private readonly IValidator<UserRegisterVM> _userRegisterValidator;
         private readonly IValidator<UserEditVM> _userEditValidator;
+        private readonly IValidator<UserDeleteVM> _userDeleteValidator;
         private readonly IMapper _mapper;
 
 
         public ManagementController(IUserService userService,
             IValidator<UserRegisterVM> userRegisterValidator,
             IValidator<UserEditVM> userEditValidators,
+            IValidator<UserDeleteVM> userDeleteValidator,
             IUserRepository userRepository,
             IDocumentService documentService,
             IDocumentRepository documentRepository,
@@ -228,7 +230,7 @@ namespace HRM.Areas.Province.Controllers
                     {
                         ex = ex.InnerException;
                     }
-                    message = $"<h5>خطای شکست عملیات ثبت : {ex.Message} </h5>";
+                    message = $"<h5>خطای شکست عملیات  : {ex.Message} </h5>";
                 }
             }
             else
@@ -327,7 +329,7 @@ namespace HRM.Areas.Province.Controllers
                     {
                         _userRepository.SaveChanges();
                         success = true;
-                        message = $"<h5>عملیات ویرایش مشخصات کاربر <span class='text-primary'> {user.FirstName}  {user.LastName} </span> با موفقیت انجام شد.</h5>";
+                        message = $"<h5>عملیات ویرایش کاربر <span class='text-primary'> {user.FirstName}  {user.LastName} </span> با موفقیت انجام شد.</h5>";
                     }
                     else
                     {
@@ -340,7 +342,7 @@ namespace HRM.Areas.Province.Controllers
                     {
                         ex = ex.InnerException;
                     }
-                    message = $"<h5>خطای شکست عملیات ثبت : {ex.Message} </h5>";
+                    message = $"<h5>خطای شکست عملیات  : {ex.Message} </h5>";
                 }
             }
             else
@@ -368,23 +370,61 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Delete
-        public IActionResult Delete(Guid userId, int province, int county, int district)
-        {
-            AreaVM area = new()
-            {
-                County = county,
-                District = district,
-                Province = province
-            };
-
-            return View();
-        }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Delete()
+        public IActionResult Delete(UserDeleteVM user)
         {
-            return View();
+            ValidationResult userValidator = _userDeleteValidator.Validate(user);
+            bool success = false;
+            var message = $"عملیات غیر فعال سازی با شکست مواجه شده است.";
+            string checkMessage = "";
+            if (userValidator.IsValid)
+            {
+                try
+                {
+                    bool result = _userService.Delete(user, out checkMessage);
+
+                    if (result)
+                    {
+                        _userRepository.SaveChanges();
+                        success = true;
+                        message = $"<h5>عملیات غیر فعال سازی کاربر <span class='text-primary'> {user.UserName} </span> با موفقیت انجام شد.</h5>";
+                    }
+                    else
+                    {
+                        message = checkMessage;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    while (ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    message = $"<h5>خطای شکست عملیات  : {ex.Message} </h5>";
+                }
+            }
+            else
+            {
+                message = $"{userValidator}";
+            }
+            #region Manual Validation
+            foreach (var error in userValidator.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+            userValidator.AddToModelState(this.ModelState);
+            #endregion
+
+            #region Json data
+            var jsonData = new
+            {
+                success = success,
+                message = message,
+            };
+            #endregion
+
+            return Json(jsonData);
         }
         #endregion
 

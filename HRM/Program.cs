@@ -18,27 +18,50 @@ builder.Services.AddApplicationService(builder, builder.Configuration);
 #endregion
 
 #region Static Files
+
+
 var wwwrootOptions = new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "wwwroot"))
+    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "wwwroot")),
+    OnPrepareResponse = context =>
+    {
+        context.Context.Response.Headers.Append("Cache-Control", "no-cache, no-store");
+        context.Context.Response.Headers.Append("Expires", "-1");
+    }
 };
 
 var province_provinceAvatarsOptions = new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Areas/Province/Documents/Province/Avatar/Thumb")),
-    RequestPath = "/Province/Avatars/Province"
+    RequestPath = "/Province/Avatars/Province",
+    OnPrepareResponse = context =>
+    {
+        context.Context.Response.Headers.Append("Cache-Control", "no-cache, no-store");
+        context.Context.Response.Headers.Append("Expires", "-1");
+
+    }
 };
 
 var province_countyAvatarsOptions = new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Areas/Province/Documents/County/Avatar/Thumb")),
-    RequestPath = "/Province/Avatars/County"
+    RequestPath = "/Province/Avatars/County",
+    OnPrepareResponse = context =>
+    {
+        context.Context.Response.Headers.Append("Cache-Control", "no-cache, no-store");
+        context.Context.Response.Headers.Append("Expires", "-1");
+    }
 };
 
 var province_districtAvatarsOptions = new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Areas/Province/Documents/District/Avatar/Thumb")),
-    RequestPath = "/Province/Avatars/District"
+    RequestPath = "/Province/Avatars/District",
+    OnPrepareResponse = context =>
+    {
+        context.Context.Response.Headers.Append("Cache-Control", "no-cache, no-store");
+        context.Context.Response.Headers.Append("Expires", "-1");
+    }
 };
 #endregion
 

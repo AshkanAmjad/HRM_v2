@@ -51,9 +51,9 @@
                         "emptyTable": "داده ای ثبت نشده است.",
                         "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
                         "search": `<span class="ms-2">
-                                         <i class="fa fa-search text-primary"></i>
-                                                           جست‌و‌جو بر اساس کد ملی:
-                                   </span>`,
+                                                     <i class="fa fa-search text-primary"></i>
+                                                                       جست‌و‌جو بر اساس کد ملی:
+                                               </span>`,
                         "searchPlaceholder": 'مقدار مناسبی برای کد ملی وارد کنید ...',
                     },
                     "ajax": {
@@ -81,20 +81,21 @@
                         { "data": "isActived", "title": "وضعیت" },
                         { "data": "lastActived", "title": "آخرین فعالیت" },
                         { "data": "registerDate", "title": "تاریخ ثبت" },
-                        { "data": "userId", "title": "عملیات", render: function (data, type, row) {
+                        {
+                            "data": "userId", "title": "عملیات", render: function (data, type, row) {
 
                                 return `<div class="d-flex py-2">
-                                           <a class="btn btn-outline-primary btn-sm rounded-circle py-1 ms-1"
-                                             onclick="Edit('${data}')"
-                                           >
-                                               <i class="fa fa-edit" > </i>
-                                           </a>
-                                           <a class="btn btn-outline-danger btn-sm rounded-circle py-1"
-                                             onclick = "Delete('${data}')"
-                                    >
-                                           <i class="fa fa-times" > </i>
-                                           </a>
-                                       <div>`
+                                                       <a class="btn btn-outline-primary btn-sm rounded-circle py-1 ms-1"
+                                                         onclick="Edit('${data}')"
+                                                       >
+                                                           <i class="fa fa-edit" > </i>
+                                                       </a>
+                                                       <a class="btn btn-outline-danger btn-sm rounded-circle py-1"
+                                                         onclick = "Delete('${data}','${row.userName}')"
+                                                >
+                                                       <i class="fa fa-times" > </i>
+                                                       </a>
+                                                   <div>`
                             }
                         }
                     ]
@@ -117,22 +118,68 @@
 
             //Edit
             function Edit(userId) {
-                         var _editUrl = `/Province/Management/Edit?userId=${userId}&province=${area.province}&county=${area.county}&district=${area.district}`;
-                         $.get(_editUrl).done(function (result) {
-                          $("#operation-box").html(result);
-                          $("#operation-box").modal("show");
-                      });
-            }
-
-            //Delete
-            function Delete(userId) {
-                var _deleteUrl = `/Province/Management/Delete?userId=${userId}&province=${area.province}&county=${area.county}&district=${area.district}`;
-                $.get(_deleteUrl).done(function (result) {
+                var _editUrl = `/Province/Management/Edit?userId=${userId}&province=${area.province}&county=${area.county}&district=${area.district}`;
+                $.get(_editUrl).done(function (result) {
                     $("#operation-box").html(result);
                     $("#operation-box").modal("show");
                 });
+            }
+
+            //Delete
+            function Delete(userId, userName) {
+                Swal.fire({
+                    text: " آیا از غیر فعال کردن کاربر " + userName + " مطمئن هستید؟ ",
+                    showCancelButton: true,
+                    icon: "warning",
+                    confirmButtonText: "تایید",
+                    confirmButtonColor: "#d33",
+                    cancelButtonText: "خیر"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        var data = {
+                            userId: userId,
+                            userName: userName,
+                            province: area.province,
+                            county: area.county,
+                            district: area.district
+                        };
+
+                        $.post('@Url.Action("Delete", "Management")', data).done(function (result) {
+                            if (result.success) {
+                                $("#operation-box").modal("toggle");
+                                Swal.fire({
+                                    title: result.message,
+                                    icon: 'success',
+                                    showConfirmButton: false,
+                                    timer: 4000,
+                                    showClass: {
+                                        popup: 'animate__animated animate__fadeInDown'
+                                    },
+                                    hideClass: {
+                                        popup: 'animate__animated animate__fadeOutDown'
+                                    }
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'خطا',
+                                    icon: 'error',
+                                    text: result.message,
+                                    showConfirmButton: false,
+                                    timer: 4000,
+                                    showClass: {
+                                        popup: 'animate__animated animate__fadeInDown'
+                                    },
+                                    hideClass: {
+                                        popup: 'animate__animated animate__fadeOutDown'
+                                    }
+                                })
+                            }
+                        });
+                    }
+                })
             };
-            
-   </script>
+
+        </script>
 
 

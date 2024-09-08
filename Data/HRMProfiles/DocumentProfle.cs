@@ -24,6 +24,13 @@ namespace Data.HRMProfiles
                 .ForMember(dest => dest.District, opt => opt.MapFrom(opt => opt.District))
                 .ForMember(dest => dest.document, opt => opt.MapFrom(opt => opt.Avatar));
 
+            CreateMap<UserEditVM, UploadVM>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
+                .ForMember(dest => dest.Area, opt => opt.MapFrom(src => src.Area))
+                .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.County))
+                .ForMember(dest => dest.District, opt => opt.MapFrom(opt => opt.District))
+                .ForMember(dest => dest.document, opt => opt.MapFrom(opt => opt.Avatar));
+
             CreateMap<UploadVM, DirectionVM>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Area, opt => opt.MapFrom(src => src.Area))

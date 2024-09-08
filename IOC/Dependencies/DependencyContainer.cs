@@ -16,6 +16,7 @@ namespace IOC.Dependencies
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IDocumentService, DocumentService>();
             #endregion
+
             #region Repository
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IDocumentRepository, DocumentRepository>();

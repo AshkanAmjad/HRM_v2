@@ -12,6 +12,7 @@ namespace HRM.Extensions
             services.AddDbContext<HRMContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("HRMConnectionString"));
+                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
             #endregion
 

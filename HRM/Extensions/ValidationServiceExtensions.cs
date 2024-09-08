@@ -18,6 +18,7 @@ namespace HRM.Extensions
             #region Life Time
             services.AddScoped<IValidator<LoginVM>, LoginValidator>();
             services.AddScoped<IValidator<UserRegisterVM>,UserRegisterValidator>();
+            services.AddScoped<IValidator<UserDeleteVM>, UserDeleteValidator>();
             services.AddScoped<IValidator<UserEditVM>,UserEditValidator>();
             services.AddScoped<IValidator<AreaVM>,AreaValidator>();
             #endregion
