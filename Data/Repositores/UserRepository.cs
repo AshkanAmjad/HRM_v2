@@ -332,9 +332,72 @@ namespace Data.Repositores
             return user;
         }
 
-        public bool Delete(UserEdit_DeleteVM model, out string message)
+        public bool Disable(UserEdit_DisableVM model, out string message)
         {
-            throw new NotImplementedException();
+            string checkMessage = "عملیات غیر فعال سازی با شکست مواجه شد.";
+            string userName = "";
+            Guid dId = Guid.Empty;
+
+            if (model != null)
+            {
+
+                DisableUser(model);
+
+                DisableDepartment(model, out dId);
+
+                Guid departmentId = dId;
+
+                _documentRepository.DisableDocuments(model, departmentId);
+               
+                message = "";
+
+                return true;
+
+            }
+            message = checkMessage;
+            return false;
+        }
+
+        public void DisableUser(UserEdit_DisableVM model)
+        {
+
+            if(model != null)
+            {
+                var user = _context.Users
+                                   .Find(model.UserId);
+
+                if (user != null)
+                {
+                    user.IsActived = false;
+
+                    _context.Users.Update(user);
+                }
+            }
+        }
+
+        public void DisableDepartment(UserEdit_DisableVM model , out Guid departmentId)
+        {
+            Guid id = Guid.Empty;
+
+            if (model != null)
+            {
+                var department = _context.Departments.Where(d => d.UserId == model.UserId &&
+                                                                 d.Province == model.Province &&
+                                                                 d.County == model.County &&
+                                                                 d.District == model.District)
+                                                      .SingleOrDefault();
+
+                if (department != null)
+                {
+                    department.IsActived = false;
+
+                    id = department.DepartmentId;
+
+                    _context.Departments.Update(department);
+                }
+            }
+
+            departmentId = id;
         }
     }
 }

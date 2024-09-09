@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace HRM.Models.Validation
 {
-    public class UserEdit_DeleteValidator: AbstractValidator<UserEdit_DeleteVM>
+    public class UserEdit_DisableValidator: AbstractValidator<UserEdit_DisableVM>
     {
-        public UserEdit_DeleteValidator()
+        public UserEdit_DisableValidator()
         {
             RuleFor(x => x.UserId).NotEmpty()
                                   .NotNull()

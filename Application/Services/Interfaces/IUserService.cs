@@ -14,7 +14,7 @@ namespace Application.Services.Interfaces
         List<SelectListItem> GetAreas();
         bool Register(UserRegisterVM model, out string message);
         bool Edit(UserEditVM model, out string message);
-        bool Delete(UserEdit_DeleteVM model, out string message);
+        bool Disable(UserEdit_DisableVM model, out string message);
         List<DisplayUsersVM> GetUsers(AreaVM area);
         #endregion
 

@@ -18,6 +18,10 @@ namespace Application.Services.Interfaces
         void UploadDocumentToServer(Document document);
 
         DirectionVM UploadDirectionOnServer(DirectionVM direction);
+
+        void DeleteDocumentOnServer(string filePathOriginal, string filePathThumb);
+        void DeleteDocumentOnServer(UserEdit_DisableVM model);
+
         #endregion
 
         #region Is Exist 

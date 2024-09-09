@@ -57,8 +57,7 @@ namespace Application.Services.Implrmentations
 
             string filePathOriginal = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirOrginal, documentNameOrginal);
 
-            if (File.Exists(filePathOriginal))
-                File.Delete(filePathOriginal);
+            DeleteDocumentOnServer(filePathOriginal, "");
 
             using (var fileStream = new FileStream(filePathOriginal, FileMode.Create))
                 document.document.CopyTo(fileStream);
@@ -67,8 +66,7 @@ namespace Application.Services.Implrmentations
             {
                 string filePathThumb = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirThumb, documentNameThumb);
 
-                if (File.Exists(filePathThumb))
-                    File.Delete(filePathThumb);
+                DeleteDocumentOnServer( "" , filePathThumb);
 
                 ImageConvertor.ResizeImage(filePathOriginal, filePathThumb, 100, 100);
             }
@@ -290,6 +288,58 @@ namespace Application.Services.Implrmentations
             return result;
         }
 
+        public void DeleteDocumentOnServer(string filePathOriginal, string filePathThumb)
+        {
+            if (filePathOriginal != "" && File.Exists(filePathOriginal))
+                File.Delete(filePathOriginal);
+
+            if (filePathThumb != "" && File.Exists(filePathThumb))
+                File.Delete(filePathThumb);
+        }
+
+        public void DeleteDocumentOnServer(UserEdit_DisableVM model)
+        {
+            if (model != null)
+            {
+                DirectionVM direction;
+                direction = _mapper.Map<DirectionVM>(model);
+                direction.Name = "Avatar";
+
+                DirectionVM path;
+
+                path = UploadDirectionOnServer(direction);
+
+                var documentNameOrginal = "";
+                var documentNameThumb = "";
+
+                if (direction.Name == "Avatar")
+                {
+                    documentNameOrginal = Path.GetFileNameWithoutExtension($"Avatar-{model.UserName}");
+                    documentNameThumb = Path.GetFileNameWithoutExtension($"Thumb-{model.UserName}");
+                }
+
+                direction.Name = "Document";
+
+                path = UploadDirectionOnServer(direction);
+
+                if(direction.Name != "Avatar")
+                {
+                    documentNameOrginal = Path.GetFileNameWithoutExtension($"Document-{model.UserName}");
+                }
+
+                string filePathOriginal = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirOrginal, documentNameOrginal);
+
+                string filePathThumb = "";
+
+                if (path._saveDirThumb != "")
+                {
+                    filePathThumb = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirThumb, documentNameThumb);
+                }
+
+                DeleteDocumentOnServer(filePathOriginal, filePathThumb);
+            }
+            
+        }
 
     }
 }

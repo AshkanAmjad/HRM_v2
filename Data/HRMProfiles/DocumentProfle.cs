@@ -57,6 +57,11 @@ namespace Data.HRMProfiles
                  .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.Department.County))
                  .ForMember(dest => dest.District, opt => opt.MapFrom(src => src.Department.District))
                  .ForMember(dest => dest.Area, opt => opt.MapFrom(src => GetArea(src.Department)));
+
+            CreateMap<UserEdit_DisableVM, DirectionVM>()
+                .ForMember(dest => dest.County , opt => opt.MapFrom(src => src.County))
+                .ForMember(dest => dest.District , opt => opt.MapFrom(src => src.County))
+                .ForMember(dest => dest.Area , opt => opt.MapFrom(src => GetArea(src.Province,src.County,src.District)))
         }
 
         private int GetArea(Department department)
@@ -64,6 +69,16 @@ namespace Data.HRMProfiles
             if (department.Province != 0 && department.County == 0 && department.District == 0)
                 return 0;
             else if (department.Province != 0 && department.County != 0 && department.District == 0)
+                return 1;
+            else
+                return 2;
+        }
+
+        private int GetArea(int? province, int? county, int? district)
+        {
+            if (province != 0 && county == 0 && district == 0)
+                return 0;
+            else if (province != 0 && county != 0 && district == 0)
                 return 1;
             else
                 return 2;

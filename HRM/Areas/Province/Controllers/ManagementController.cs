@@ -27,14 +27,14 @@ namespace HRM.Areas.Province.Controllers
         private readonly IDocumentRepository _documentRepository;
         private readonly IValidator<UserRegisterVM> _userRegisterValidator;
         private readonly IValidator<UserEditVM> _userEditValidator;
-        private readonly IValidator<UserEdit_DeleteVM> _userEdit_DeleteValidator;
+        private readonly IValidator<UserEdit_DisableVM> _userEdit_DeleteValidator;
         private readonly IMapper _mapper;
 
 
         public ManagementController(IUserService userService,
             IValidator<UserRegisterVM> userRegisterValidator,
             IValidator<UserEditVM> userEditValidators,
-            IValidator<UserEdit_DeleteVM> userEdit_DeleteValidator,
+            IValidator<UserEdit_DisableVM> userEdit_DeleteValidator,
             IUserRepository userRepository,
             IDocumentService documentService,
             IDocumentRepository documentRepository,
@@ -261,7 +261,7 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Edit
-        public IActionResult Edit(UserEdit_DeleteVM model)
+        public IActionResult Edit(UserEdit_DisableVM model)
         {
             ValidationResult userValidator = _userEdit_DeleteValidator.Validate(model);
 
@@ -377,7 +377,7 @@ namespace HRM.Areas.Province.Controllers
         #region Delete
 
         [HttpPost]
-        public IActionResult Delete(UserEdit_DeleteVM user)
+        public IActionResult Disable(UserEdit_DisableVM user)
         {
             ValidationResult userValidator = _userEdit_DeleteValidator.Validate(user);
             bool success = false;
@@ -387,7 +387,7 @@ namespace HRM.Areas.Province.Controllers
             {
                 try
                 {
-                    bool result = _userService.Delete(user, out checkMessage);
+                    bool result = _userService.Disable(user, out checkMessage);
 
                     if (result)
                     {

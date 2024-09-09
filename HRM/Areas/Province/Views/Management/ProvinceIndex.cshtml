@@ -85,15 +85,15 @@
                             "data": "userId", "title": "عملیات", render: function (data, type, row) {
 
                                 return `<div class="d-flex py-2">
-                                                       <a class="btn btn-outline-primary btn-sm rounded-circle py-1 ms-1"
+                                                       <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
                                                          onclick="Edit('${data}')"
                                                        >
-                                                           <i class="fa fa-edit" > </i>
+                                                           <i class="fa fa-edit my-2 mx-1" > </i>
                                                        </a>
-                                                       <a class="btn btn-outline-danger btn-sm rounded-circle py-1"
-                                                         onclick = "Delete('${data}','${row.userName}')"
-                                                >
-                                                       <i class="fa fa-times" > </i>
+                                                       <a class="btn btn-outline-danger btn-sm rounded-circle"
+                                                         onclick = "Disable('${data}','${row.userName}')"
+                                                        >
+                                                           <i class="fa fa-minus my-2 mx-1" > </i>
                                                        </a>
                                                    <div>`
                             }
@@ -132,8 +132,8 @@
                 });
             }
 
-            //Delete
-            function Delete(userId, userName) {
+            //Disale
+            function Disable(userId, userName) {
                 Swal.fire({
                     text: " آیا از غیر فعال کردن کاربر " + userName + " مطمئن هستید؟ ",
                     showCancelButton: true,
@@ -152,7 +152,7 @@
                             district: area.district
                         };
 
-                        $.post('@Url.Action("Delete", "Management")', data).done(function (result) {
+                        $.post('@Url.Action("Disable", "Management")', data).done(function (result) {
                             if (result.success) {
                                 $("#operation-box").modal("toggle");
                                 Swal.fire({

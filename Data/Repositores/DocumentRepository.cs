@@ -4,6 +4,7 @@ using Domain.DTOs.General;
 using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Security.User;
 using Domain.Entities.Portal.Models;
+using Domain.Entities.Security.Models;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -19,11 +20,17 @@ namespace Data.Repositores
         #region Constructor
         private readonly HRMContext _context;
         private readonly IMapper _mapper;
+        private readonly IDocumentRepository _documentRepository;
 
-        public DocumentRepository(HRMContext context, IMapper mapper)
+
+        public DocumentRepository(
+            HRMContext context,
+            IMapper mapper,
+            IDocumentRepository documentRepository)
         {
             _context = context;
             _mapper = mapper;
+            _documentRepository = documentRepository;
         }
         #endregion
         public void UploadDocumentToDb(UploadVM file)
@@ -187,6 +194,21 @@ namespace Data.Repositores
             dir._saveDirOrginal = saveDirOrginal;
             dir._saveDirThumb = saveDirThumb;
             return dir;
+        }
+
+        public void DisableDocuments(UserEdit_DisableVM model , Guid departmentId)
+        {
+            Guid id = Guid.Empty;
+
+            if (model != null)
+            {
+                id = departmentId;
+
+                _context.Documents.Where(d => d.DepartmentId == id)
+                                  .ToList()
+                                  .ForEach(d => d.IsActived = false);
+
+            }
         }
 
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Security.User
 {
-    public class UserEdit_DeleteVM
+    public class UserEdit_DisableVM
     {
         public Guid UserId { get; set; }
         public string? UserName { get; set; }
