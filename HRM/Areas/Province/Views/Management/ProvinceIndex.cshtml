@@ -154,7 +154,7 @@
 
                         $.post('@Url.Action("Disable", "Management")', data).done(function (result) {
                             if (result.success) {
-                                $("#operation-box").modal("toggle");
+                                GridReload();
                                 Swal.fire({
                                     title: result.message,
                                     icon: 'success',

@@ -8,7 +8,7 @@ namespace HRM.Models.Validation
             RuleFor(x => x.Length).LessThanOrEqualTo(1000000)
                                   .WithMessage("حجم تصویر بیش از مقدار مجاز است.");
 
-            RuleFor(x => x.ContentType).Must(x => x.Equals("image/jpeg") || x.Equals("image/png"))
+            RuleFor(x => x.ContentType).Must(x => x.Equals("image/png"))
                                        .WithMessage("نوع تصویر ورودی نامعتبر است.");
         }
     }

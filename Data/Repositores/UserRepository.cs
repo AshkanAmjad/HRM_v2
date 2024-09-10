@@ -335,7 +335,6 @@ namespace Data.Repositores
         public bool Disable(UserEdit_DisableVM model, out string message)
         {
             string checkMessage = "عملیات غیر فعال سازی با شکست مواجه شد.";
-            string userName = "";
             Guid dId = Guid.Empty;
 
             if (model != null)
@@ -347,7 +346,7 @@ namespace Data.Repositores
 
                 Guid departmentId = dId;
 
-                _documentRepository.DisableDocuments(model, departmentId);
+                _documentRepository.DisableDocuments(departmentId);
                
                 message = "";
 

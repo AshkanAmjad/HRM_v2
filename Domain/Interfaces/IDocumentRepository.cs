@@ -15,10 +15,9 @@ namespace Domain.Interfaces
         #region DB        
         void UploadDocumentToDb(UploadVM file);
         Task DownloadOrginalAvatar(Document document);
-        void DisableDocuments(UserEdit_DisableVM model ,Guid departmentId);
+        void DisableDocuments(Guid departmentId);
         Document? GetAvatarWithUserId(Guid userId);
         DirectionVM UploadDirectionOnServer(DirectionVM direction);
-
         #endregion
 
         #region Is Exist

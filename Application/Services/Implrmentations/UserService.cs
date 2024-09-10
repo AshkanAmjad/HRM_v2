@@ -20,7 +20,6 @@ namespace Application.Services.Implrmentations
     public class UserService : IUserService
     {
         #region Constructor
-        private readonly HRMContext _context;
         private readonly IUserRepository _userRepository;
         private readonly IDocumentService _documentService;
         private readonly IMapper _mapper;
@@ -119,9 +118,8 @@ namespace Application.Services.Implrmentations
             bool result = _userRepository.Disable(model, out message);
 
             #region Delete Document On Server
-
-            _documentService.DeleteDocumentOnServer(model);
-
+            if (result)
+                _documentService.DeleteDocumentOnServer(model);
             #endregion
 
             return result;

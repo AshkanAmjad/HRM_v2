@@ -20,17 +20,15 @@ namespace Data.Repositores
         #region Constructor
         private readonly HRMContext _context;
         private readonly IMapper _mapper;
-        private readonly IDocumentRepository _documentRepository;
 
 
         public DocumentRepository(
             HRMContext context,
-            IMapper mapper,
-            IDocumentRepository documentRepository)
+            IMapper mapper
+            )
         {
             _context = context;
             _mapper = mapper;
-            _documentRepository = documentRepository;
         }
         #endregion
         public void UploadDocumentToDb(UploadVM file)
@@ -83,7 +81,7 @@ namespace Data.Repositores
             => _context.Documents.Any(d => d.Department.UserId == userId && d.Title == "Avatar" && d.IsActived);
 
         public Document? GetAvatarWithUserId(Guid userId)
-            => _context.Documents.Include(d => d.Department).ThenInclude(d=>d.User).Where(d => d.Department.UserId == userId).SingleOrDefault();
+            => _context.Documents.Include(d => d.Department).ThenInclude(d => d.User).Where(d => d.Department.UserId == userId).SingleOrDefault();
 
         public DirectionVM UploadDirectionOnServer(DirectionVM direction)
         {
@@ -196,17 +194,26 @@ namespace Data.Repositores
             return dir;
         }
 
-        public void DisableDocuments(UserEdit_DisableVM model , Guid departmentId)
+        public void DisableDocuments(Guid departmentId)
         {
-            Guid id = Guid.Empty;
 
-            if (model != null)
+            if (departmentId != Guid.Empty)
             {
-                id = departmentId;
 
-                _context.Documents.Where(d => d.DepartmentId == id)
-                                  .ToList()
-                                  .ForEach(d => d.IsActived = false);
+                var documents = _context.Documents.Where(d => d.DepartmentId == departmentId)
+                                                  .ToList();
+
+                if (documents.Count == 0)
+                {
+                    return;
+                }
+
+                foreach (var document in documents)
+                {
+                    document.IsActived = false;
+                }
+
+                _context.Documents.UpdateRange(documents);
 
             }
         }

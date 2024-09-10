@@ -137,7 +137,7 @@ namespace Application.Services.Implrmentations
                     }
                     else
                     {
-                        saveDirOrginal = "Areas/Province/Documents/Province/Transfer";
+                        saveDirOrginal = "Areas/Province/Documents/Province/Transfers";
                     }
                 }
                 else if (direction.County != 0 && direction.District == 0)
@@ -149,7 +149,7 @@ namespace Application.Services.Implrmentations
                     }
                     else
                     {
-                        saveDirOrginal = "Areas/Province/Documents/County/Transfer";
+                        saveDirOrginal = "Areas/Province/Documents/County/Transfers";
                     }
                 }
                 else
@@ -161,7 +161,7 @@ namespace Application.Services.Implrmentations
                     }
                     else
                     {
-                        saveDirOrginal = "Areas/Province/Documents/District/Transfer";
+                        saveDirOrginal = "Areas/Province/Documents/District/Transfers";
                     }
                 }
             }
@@ -181,7 +181,7 @@ namespace Application.Services.Implrmentations
                     }
                     else
                     {
-                        saveDirOrginal = "Areas/County/Documents/County/Transfer";
+                        saveDirOrginal = "Areas/County/Documents/County/Transfers";
                     }
                 }
                 else
@@ -195,7 +195,7 @@ namespace Application.Services.Implrmentations
                         }
                         else
                         {
-                            saveDirOrginal = "Areas/County/Documents/District/Transfer";
+                            saveDirOrginal = "Areas/County/Documents/District/Transfers";
                         }
 
                     }
@@ -314,9 +314,22 @@ namespace Application.Services.Implrmentations
 
                 if (direction.Name == "Avatar")
                 {
-                    documentNameOrginal = Path.GetFileNameWithoutExtension($"Avatar-{model.UserName}");
-                    documentNameThumb = Path.GetFileNameWithoutExtension($"Thumb-{model.UserName}");
+                    documentNameOrginal = $"Avatar-{model.UserName}{Path.GetExtension(".png")}";
+                    documentNameThumb = $"Thumb-{model.UserName}{Path.GetExtension(".png")}";
                 }
+
+                string avatarPathOriginal = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirOrginal, documentNameOrginal);
+
+                string avatarPathThumb = "";
+
+                if (path._saveDirThumb != "")
+                {
+                    avatarPathThumb = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirThumb, documentNameThumb);
+                }
+
+                if (avatarPathOriginal != null || avatarPathThumb != null)
+                    DeleteDocumentOnServer(avatarPathOriginal, avatarPathThumb);
+
 
                 direction.Name = "Document";
 
@@ -329,14 +342,7 @@ namespace Application.Services.Implrmentations
 
                 string filePathOriginal = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirOrginal, documentNameOrginal);
 
-                string filePathThumb = "";
-
-                if (path._saveDirThumb != "")
-                {
-                    filePathThumb = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirThumb, documentNameThumb);
-                }
-
-                DeleteDocumentOnServer(filePathOriginal, filePathThumb);
+                DeleteDocumentOnServer(filePathOriginal, "");
             }
             
         }
