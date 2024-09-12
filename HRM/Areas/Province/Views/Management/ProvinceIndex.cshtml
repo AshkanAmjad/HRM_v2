@@ -49,6 +49,7 @@
                     "ordering": false,
                     "language": {
                         "emptyTable": "داده ای ثبت نشده است.",
+                        "zeroRecords": "کاربری یافت نشد.",
                         "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
                         "search": `<span class="ms-2">
                                                      <i class="fa fa-search text-primary"></i>
@@ -132,7 +133,7 @@
                 });
             }
 
-            //Disale
+            //Disable
             function Disable(userId, userName) {
                 Swal.fire({
                     text: " آیا از غیر فعال کردن کاربر " + userName + " مطمئن هستید؟ ",

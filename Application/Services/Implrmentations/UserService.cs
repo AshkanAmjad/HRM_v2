@@ -68,8 +68,10 @@ namespace Application.Services.Implrmentations
             model.Password = hashed;
             #endregion
 
+            bool result =  _userRepository.Register(model, out message);
+
             #region Save Avatar On Server
-            if (model.Avatar != null && !_userRepository.Similarity(model, out message))
+            if (result && model.Avatar != null)
             {
                 UploadVM uploadToServer = _mapper.Map<UploadVM>(model);
                 uploadToServer.Name = "Avatar";
@@ -77,7 +79,7 @@ namespace Application.Services.Implrmentations
             }
             #endregion
 
-            return _userRepository.Register(model, out message);
+            return result;
         }
 
 

@@ -46,10 +46,16 @@
             <input type="file" asp-for="Avatar" class="hidden" id="pic" />
             <div class="modal-body">
                 <div class="row px-2">
-                    <div class="row pb-3">
+                    <div class="row pb-3 m-0">
                         <div class="d-flex align-items-center justify-content-center flex-column" id="uploadAvatarBox">
                             <img src=@(isExistAvatar.Equals(true) ? "/Province/Avatars/Province/Thumb-"+Model.UserName+".png" : "/pics/default/uploadBox/registerDefault.png" ) class="rounded avatarUploadBox" alt="Avatar" id="avatar" />
                             <span asp-validation-for="Avatar" class="text-danger fs-8"></span>
+                        </div>
+                        <div class="border border-top-0 border-start-0 border-end-0 p-0">
+                            <p class="fs-8 mt-3 fw-bold">
+                                <i class="fa fa-lg ms-2 fa-warning text-warning"></i>
+                                در صورت بارگذاری تصویر، فقط نوع png. مورد پذیرش است.
+                            </p>
                         </div>
                     </div>
                     <div class="col-xl-6">

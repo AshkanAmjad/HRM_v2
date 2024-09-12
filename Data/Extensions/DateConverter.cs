@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Data.Extensions
 {
-    public static class DateConvertor
+    public static class DateConverter
     {
         //مبدل تاریخ میلادی به شمسی با قالب تاریخ - زمان
         public static string ToShamsi(this DateTime value)

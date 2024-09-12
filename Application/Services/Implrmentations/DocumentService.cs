@@ -7,6 +7,7 @@ using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Security.User;
 using Domain.Entities.Portal.Models;
 using Domain.Interfaces;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,12 +67,14 @@ namespace Application.Services.Implrmentations
             {
                 string filePathThumb = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirThumb, documentNameThumb);
 
+                string watermarkImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/icons/general/watermark", "logoWatermark.png");
+
                 DeleteDocumentOnServer( "" , filePathThumb);
 
-                ImageConvertor.ResizeImage(filePathOriginal, filePathThumb, 100, 100);
+                SKBitmap resizedBitmap = ImageConverter.ResizeImage(filePathOriginal, 200, 200);
+                SKBitmap watermarkedBitmap = ImageConverter.WatermarkImage(resizedBitmap, watermarkImagePath);
+                ImageConverter.SaveImage(watermarkedBitmap, filePathThumb, 100);
             }
-
-
         }
 
         public void UploadDocumentToServer(Document document)
@@ -115,7 +118,11 @@ namespace Application.Services.Implrmentations
             if (path._saveDirThumb != "")
             {
                 string filePathThumb = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirThumb, documentNameThumb);
-                ImageConvertor.ResizeImage(filePathOriginal, filePathThumb, 100, 100);
+                string watermarkImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/icons/general/watermark", "logoWatermark.png");
+
+                SKBitmap resizedBitmap = ImageConverter.ResizeImage(filePathOriginal, 200, 200);
+                SKBitmap watermarkedBitmap = ImageConverter.WatermarkImage(resizedBitmap, watermarkImagePath);
+                ImageConverter.SaveImage(watermarkedBitmap, filePathThumb, 100);
             }
         }
 
