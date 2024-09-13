@@ -11,14 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\County\Controllers\" />
     <Folder Include="Areas\County\Data\" />
     <Folder Include="Areas\County\Models\" />
-    <Folder Include="Areas\County\Views\" />
-    <Folder Include="Areas\District\Controllers\" />
     <Folder Include="Areas\District\Data\" />
     <Folder Include="Areas\District\Models\" />
-    <Folder Include="Areas\District\Views\" />
     <Folder Include="Areas\Province\Data\" />
     <Folder Include="Areas\Province\Documents\County\Avatar\Original\" />
     <Folder Include="Areas\Province\Documents\County\Avatar\Thumb\" />

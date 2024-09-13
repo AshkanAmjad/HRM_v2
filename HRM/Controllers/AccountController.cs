@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Diagnostics;
 using System.Security.Claims;
 
@@ -20,11 +21,14 @@ namespace HRM.Controllers
         #region Constructor
         private readonly IUserRepository _userRepository;
         private readonly IValidator<LoginVM> _validator;
+        private readonly IPasswordHasher _passwordHasher;
 
-        public AccountController(IUserService userService, IValidator<LoginVM> validator, IUserRepository userRepository)
+
+        public AccountController(IUserService userService, IPasswordHasher passwordHasher, IValidator<LoginVM> validator, IUserRepository userRepository)
         {
             _userRepository = userRepository;
             _validator = validator;
+            _passwordHasher = passwordHasher;
 
         }
         #endregion
@@ -70,10 +74,20 @@ namespace HRM.Controllers
 
             if (result.IsValid)
             {
-                model.Password = Hashing.Main(model.Password);
+                var verify = false;
 
                 var user = await _userRepository.GetUserAsync(model);
-                if (user != null)
+
+                if (user != null && user.IsActived)
+                {
+                    verify = _passwordHasher.Verify(user.Password, model.Password);
+                }
+
+                if (!verify)
+                {
+                    ModelState.AddModelError("UserName", "کاربری با مشخصات وارد شده یافت نشد");
+                }
+                else if (verify)
                 {
                     var claims = new List<Claim>
                     {
@@ -89,35 +103,35 @@ namespace HRM.Controllers
                     {
                         IsPersistent = model.RememberMe
                     };
-                    await HttpContext.SignInAsync(principal,properties);
+                    await HttpContext.SignInAsync(principal, properties);
                     return View(model);
                 }
 
-                #region Error Messages
-                if (user is null)
-                {
-                    ModelState.AddModelError("UserName", "کاربری با مشخصات وارد شده یافت نشد");
-                }
-                if (user != null && user.IsActived == false)
-                {
-                    ModelState.AddModelError("UserName", "حساب کاربری غیر فعال است.");
-                }
-                #endregion
+            #region Error Messages
+            if (user is null)
+            {
+                ModelState.AddModelError("UserName", "کاربری با مشخصات وارد شده یافت نشد");
             }
+            if (user != null && !user.IsActived)
+            {
+                ModelState.AddModelError("UserName", "حساب کاربری غیر فعال است.");
+            }
+            #endregion
+        }
             #region Manual Validation
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
             }
-            result.AddToModelState(this.ModelState);
-            #endregion
+    result.AddToModelState(this.ModelState);
+    #endregion
 
-            #region Areas
-            var areas =Areas();
-            ViewData["Areas"] = areas;
+    #region Areas
+    var areas =Areas();
+    ViewData["Areas"] = areas;
             #endregion
 
             return View();
-        }
+}
     }
 }

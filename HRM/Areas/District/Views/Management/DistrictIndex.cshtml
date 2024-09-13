@@ -5,7 +5,7 @@
 
     <div id="operation-box" class="modal fade" role="dialog" aria-hidden="true">
     </div>
-    <div class="btn btn-outline-primary btn-sm  my-3 mx-1">مدیریت پرسنل - استان</div>
+    <div class="btn btn-outline-primary btn-sm  my-3 mx-1">مدیریت پرسنل - بخش</div>
 
     <div>
         <button class="btn btn-primary text-white d-flex p-2 justify-content-center mb-3 mx-1" id="addBtn">
@@ -16,13 +16,13 @@
     </div>
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
         <script type="text/javascript">
-            var _registerUrl = '@Url.Action("Register", "Management", new{area="Province"})';
-            var _gridUrl = '@Url.Action("FillUsersGrid", "Management", new { area = "Province" })';
-            var _GetUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Management", new { Province = 1, County = 0, District = 0 }))';
+            var _registerUrl = '@Url.Action("Register", "Management", new { area = "District" })';
+            var _gridUrl = '@Url.Action("FillUsersGrid", "Management", new { area = "District" })';
+            var _GetUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Management", new { Province = 1, County = 1, District = 1 }))';
             var area = {
                 province: 1,
-                county: 0,
-                district: 0
+                county: 1,
+                district: 1
             };
         </script>
         <script type="text/javascript">
@@ -52,9 +52,9 @@
                         "zeroRecords": "کاربری یافت نشد.",
                         "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
                         "search": `<span class="ms-2">
-                                                     <i class="fa fa-search text-primary"></i>
-                                                                       جست‌و‌جو بر اساس کد ملی:
-                                               </span>`,
+                                                                             <i class="fa fa-search text-primary"></i>
+                                                                                               جست‌و‌جو بر اساس کد ملی:
+                                                                       </span>`,
                         "searchPlaceholder": 'مقدار مناسبی برای کد ملی وارد کنید ...',
                     },
                     "ajax": {
@@ -86,17 +86,17 @@
                             "data": "userId", "title": "عملیات", render: function (data, type, row) {
 
                                 return `<div class="d-flex py-2">
-                                                       <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
-                                                         onclick="Edit('${data}')"
-                                                       >
-                                                           <i class="fa fa-edit my-2 mx-1" > </i>
-                                                       </a>
-                                                       <a class="btn btn-outline-danger btn-sm rounded-circle"
-                                                         onclick = "Disable('${data}','${row.userName}')"
-                                                        >
-                                                           <i class="fa fa-minus my-2 mx-1" > </i>
-                                                       </a>
-                                                   <div>`
+                                                                               <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
+                                                                                 onclick="Edit('${data}')"
+                                                                               >
+                                                                                   <i class="fa fa-edit my-2 mx-1" > </i>
+                                                                               </a>
+                                                                               <a class="btn btn-outline-danger btn-sm rounded-circle"
+                                                                                 onclick = "Disable('${data}','${row.userName}')"
+                                                                                >
+                                                                                   <i class="fa fa-minus my-2 mx-1" > </i>
+                                                                               </a>
+                                                                           <div>`
                             }
                         }
                     ]
@@ -128,7 +128,7 @@
                 };
 
                 $.get('@Url.Action("Edit", "Management")', data).done(function (result) {
-                $("#operation-box").html(result);
+                    $("#operation-box").html(result);
                     $("#operation-box").modal("show");
                 });
             }
@@ -189,5 +189,7 @@
             };
 
         </script>
+
+
 
 

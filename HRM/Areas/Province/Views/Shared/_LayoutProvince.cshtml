@@ -37,7 +37,9 @@
     var _transferUrl = '@Url.Action("Index", "Document")';
     var _archiveUrl = '@Url.Action("Index", "Archive")';
     var _homeUrl = '@Url.Action("Index", "Home")';
-    var _provinceManagementUsersUrl = '@Url.Action("ProvinceIndex", "Management")';
+    var _provinceManagementUsersUrl = '@Url.Action("ProvinceIndex", "Management",new{area = "Province"})';
+    var _countyManagementUsersUrl = '@Url.Action("CountyIndex","Management",new{area = "County"})';
+    var _districtManagementUsersUrl = '@Url.Action("DistrictIndex", "Management", new { area = "District" })';
     var _reportUrl = '@Url.Action("Index", "Report")';
     var _accessUrl = '@Url.Action("Index", "Access")';
     var _profileUrl = '@Url.Action("Profile", "Management")';
@@ -76,6 +78,20 @@
         $("#provinceManagementUsers").off("click");
         $("#provinceManagementUsers").on("click", function (e) {
             $.get(_provinceManagementUsersUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+
+        $("#countyManagementUsers").off("click");
+        $("#countyManagementUsers").on("click", function (e) {
+            $.get(_countyManagementUsersUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+
+        $("#districtManagementUsers").off("click");
+        $("#districtManagementUsers").on("click", function (e) {
+            $.get(_districtManagementUsersUrl).done(function (result) {
                 $("#main").html(result);
             });
         });

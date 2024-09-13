@@ -51,8 +51,6 @@ namespace Data.Repositores
                 user = await _context.Users.SingleOrDefaultAsync(
                    u => u.UserName == model.UserName
                    &&
-                   u.Password == model.Password
-                   &&
                    u.Department.Province != 0
                    &&
                    u.Department.County == 0
@@ -64,8 +62,6 @@ namespace Data.Repositores
                 user = await _context.Users.SingleOrDefaultAsync(
                    u => u.UserName == model.UserName
                    &&
-                   u.Password == model.Password
-                   &&
                    u.Department.Province == 0
                    &&
                    u.Department.County != 0
@@ -76,8 +72,6 @@ namespace Data.Repositores
             {
                 user = await _context.Users.SingleOrDefaultAsync(
                     u => u.UserName == model.UserName
-                    &&
-                    u.Password == model.Password
                     &&
                     u.Department.Province == 0
                     &&

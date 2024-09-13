@@ -18,7 +18,7 @@
         <div class="collapse nav-background" id="submenu1">
             <ul class="flex-column nav flex-nowrap font-weight-light p-0">
                 <li class="nav-item p-0">
-                    <a class="nav-link p-1 border-bottom border-top collapsed d-flex"  href="#subMenu2" type="button" data-bs-toggle="collapse" aria-controls="#submenu1" aria-expanded="false">
+                    <a class="nav-link p-1 border-bottom border-top collapsed d-flex" href="#subMenu2" type="button" data-bs-toggle="collapse" aria-controls="#submenu1" aria-expanded="false">
                         <div class="w-75">
                             <i class="fa fa-navicon mx-3 my-1"></i>
                             سطح استان
@@ -30,7 +30,7 @@
                     <div class="collapse nav-subMenu-background m-0" id="subMenu2">
                         <ul class="flex-column nav font-weight-light p-0">
                             <li class="nav-item" id="provinceManagementUsers">
-                                <a class="nav-link p-1 border-bottom border-top" >
+                                <a class="nav-link p-1 border-bottom border-top">
                                     <i class="fa fa-minus-square mx-3"></i>
                                     پرسنل
                                 </a>
@@ -56,7 +56,7 @@
                     </a>
                     <div class="collapse nav-subMenu-background" id="subMenu3">
                         <ul class="flex-column nav font-weight-light p-0">
-                            <li class="nav-item">
+                            <li class="nav-item" id="countyManagementUsers">
                                 <a class="nav-link p-1 border-bottom border-top">
                                     <i class="fa fa-minus-square mx-3"></i>
                                     پرسنل
@@ -83,7 +83,7 @@
                     </a>
                     <div class="collapse nav-subMenu-background" id="subMenu4">
                         <ul class="flex-column nav font-weight-light p-0">
-                            <li class="nav-item">
+                            <li class="nav-item" id="districtManagementUsers">
                                 <a class="nav-link p-1 border-bottom border-top">
                                     <i class="fa fa-minus-square mx-3"></i>
                                     پرسنل
@@ -108,10 +108,102 @@
         </a>
     </li>
     <li class="nav-item border-bottom" id="archive">
-        <a class="nav-link">
-            <i class="fa fa-archive fa-lg mx-2"></i>
-            بایگانی
+        <a class="nav-link collapsed d-flex" href="#submenu9" type="button" data-bs-toggle="collapse" aria-controls="#submenu3" aria-expanded="false">
+            <div class="w-75">
+                <i class="fa fa-archive fa-lg mx-2"></i>
+                بایگانی
+            </div>
+            <div class="w-25 d-flex justify-content-end mx-2 align-items-center">
+                <i class="fa fa-caret-square-o-down"></i>
+            </div>
         </a>
+
+        <div class="collapse nav-background" id="submenu9">
+            <ul class="flex-column nav flex-nowrap font-weight-light p-0">
+                <li class="nav-item p-0">
+                    <a class="nav-link p-1 border-bottom border-top collapsed d-flex" href="#subMenu10" type="button" data-bs-toggle="collapse" aria-controls="#submenu9" aria-expanded="false">
+                        <div class="w-75">
+                            <i class="fa fa-navicon mx-3 my-1"></i>
+                            سطح استان
+                        </div>
+                        <div class="w-25 d-flex justify-content-end mx-2 align-items-center">
+                            <i class="fa fa-caret-square-o-down"></i>
+                        </div>
+                    </a>
+                    <div class="collapse nav-subMenu-background m-0" id="subMenu10">
+                        <ul class="flex-column nav font-weight-light p-0">
+                            <li class="nav-item" id="provinceManagementUsers">
+                                <a class="nav-link p-1 border-bottom border-top">
+                                    <i class="fa fa-minus-square mx-3"></i>
+                                    پرسنل
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link p-1 border-bottom border-top">
+                                    <i class="fa fa-minus-square mx-3"></i>
+                                    مدارک
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item p-0">
+                    <a class="nav-link p-1 border-bottom border-top collapsed d-flex" href="#subMenu11" type="button" data-bs-toggle="collapse" aria-controls="#submenu9" aria-expanded="false">
+                        <div class="w-75">
+                            <i class="fa fa-navicon mx-3 my-1"></i>
+                            سطح شهرستان
+                        </div>
+                        <div class="w-25 d-flex justify-content-end mx-2 align-items-center">
+                            <i class="fa fa-caret-square-o-down"></i>
+                        </div>
+                    </a>
+                    <div class="collapse nav-subMenu-background" id="subMenu11">
+                        <ul class="flex-column nav font-weight-light p-0">
+                            <li class="nav-item" id="countyManagementUsers">
+                                <a class="nav-link p-1 border-bottom border-top">
+                                    <i class="fa fa-minus-square mx-3"></i>
+                                    پرسنل
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link p-1 border-bottom border-top">
+                                    <i class="fa fa-minus-square mx-3"></i>
+                                    مدارک
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item p-0">
+                    <a class="nav-link p-1 border-bottom border-top collapsed d-flex" href="#subMenu12" type="button" data-bs-toggle="collapse" aria-controls="#submenu9" aria-expanded="false">
+                        <div class="w-75">
+                            <i class="fa fa-navicon mx-3 my-1"></i>
+                            سطح بخش
+                        </div>
+                        <div class="w-25 d-flex justify-content-end mx-2 align-items-center">
+                            <i class="fa fa-caret-square-o-down"></i>
+                        </div>
+                    </a>
+                    <div class="collapse nav-subMenu-background" id="subMenu12">
+                        <ul class="flex-column nav font-weight-light p-0">
+                            <li class="nav-item" id="districtManagementUsers">
+                                <a class="nav-link p-1 border-bottom border-top">
+                                    <i class="fa fa-minus-square mx-3"></i>
+                                    پرسنل
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link p-1 border-bottom border-top">
+                                    <i class="fa fa-minus-square mx-3"></i>
+                                    مدارک
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
     </li>
     <li class="nav-item border-bottom" id="report">
         <a class="nav-link">

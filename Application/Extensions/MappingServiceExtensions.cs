@@ -11,6 +11,7 @@ namespace Data.Extensions
             services.AddAutoMapper(typeof(UserProfile));
             services.AddAutoMapper(typeof(DocumentProfle));
             #endregion
+
             return services;
         }
     }
