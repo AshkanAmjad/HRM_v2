@@ -9,12 +9,6 @@ namespace HRM.Models.Validation
         {
             RuleFor(x => x.Area).NotNull();
 
-            RuleFor(x=>x.Province).NotNull();   
-
-            RuleFor(x => x.County).NotNull();
-
-            RuleFor(x => x.District).NotNull();
-
             RuleFor(x=>x.Avatar).SetValidator(new AvatarValidator());
 
             RuleFor(x => x.UserName).Length(10)
@@ -53,6 +47,15 @@ namespace HRM.Models.Validation
 
             RuleFor(x => x.EmploymentStatus).NotEqual("وضعیت استخدامی خود را انتخاب کنید")
                                             .WithMessage("تکمیل ورودی وضعیت استخدامی ضروری است.");
+
+            RuleFor(x => x.Province).NotEqual("شعبه سطح استان خود را انتخاب کنید ...")
+                                    .WithMessage("تکمیل ورودی شعبه استان ضروری است.");
+
+            RuleFor(x => x.County).NotEqual("شعبه سطح شهرستان خود را انتخاب کنید ...")
+                                  .WithMessage("تکمیل ورودی شعبه شهرستان ضروری است.");
+
+            RuleFor(x => x.District).NotEqual("شعبه سطح بخش خود را انتخاب کنید ...")
+                                    .WithMessage("تکمیل ورودی شعبه بخش ضروری است.");
 
             RuleFor(x => x.PhoneNumber).NotNull()
                                        .WithMessage("تکمیل ورودی شماره تماس همراه ضروری است.")

@@ -9,8 +9,6 @@ namespace HRM.Models.Validation
         {
             RuleFor(x => x.Area).NotNull();
 
-            RuleFor(x => x.Province).NotNull();
-
             RuleFor(x => x.County).NotNull();
 
             RuleFor(x => x.District).NotNull();
@@ -59,6 +57,9 @@ namespace HRM.Models.Validation
 
             RuleFor(x => x.DateOfBirth).NotNull()
                                        .WithMessage("تکمیل ورودی تاریخ تولد ضروری است.");
+
+            RuleFor(x => x.Province).NotEqual("شعبه سطح استان خود را انتخاب کنید ...")
+                                    .WithMessage("تکمیل ورودی شعبه استان ضروری است.");
 
             RuleFor(x => x.City).NotNull()
                                 .WithMessage("تکمیل ورودی شهر محل سکونت ضروری است.")

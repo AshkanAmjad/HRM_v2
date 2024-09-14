@@ -8,8 +8,9 @@ namespace Domain.DTOs.General
 {
     public class AreaVM
     {
-        public int? Province {  get; set; }
-        public int? County {  get; set; }
-        public int? District {  get; set; }
+        public string? Section {  get; set; }
+        public string? Province {  get; set; }
+        public string? County {  get; set; }
+        public string? District {  get; set; }
     }
 }

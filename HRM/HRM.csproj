@@ -26,6 +26,8 @@
     <Folder Include="Areas\Province\Documents\Province\Avatar\Thumb\" />
     <Folder Include="Areas\Province\Documents\Province\Transfers\" />
     <Folder Include="Areas\Province\Models\" />
+    <Folder Include="Areas\Province\Views\Shared\Partials\General\Refrences\css\" />
+    <Folder Include="Areas\Province\Views\Shared\Partials\General\Refrences\js\" />
     <Folder Include="Views\Shared\Partials\Login\" />
   </ItemGroup>
 
@@ -38,6 +40,17 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
     <PackageReference Include="PersianDatePicker" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Areas\County\Views\_ViewImports.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Areas\County\Views\_ViewStart.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

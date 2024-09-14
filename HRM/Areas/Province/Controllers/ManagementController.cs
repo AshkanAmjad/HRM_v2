@@ -116,6 +116,19 @@ namespace HRM.Areas.Province.Controllers
             return maritalTypes;
         }
 
+        public List<SelectListItem> ProvinceDepartmentTypes()
+        {
+            List<SelectListItem> provinceDepartmentTypes = new()
+            {
+                new SelectListItem
+                {
+                    Text = "شعبه 1",
+                    Value = "1"
+                }
+            };
+            return provinceDepartmentTypes;
+        }
+
         public List<SelectListItem> EmploymentTypes()
         {
             List<SelectListItem> employment = new()
@@ -195,10 +208,12 @@ namespace HRM.Areas.Province.Controllers
             var marital = MariltalTypes();
             var employment = EmploymentTypes();
             var education = EducationTypes();
+            var departments = ProvinceDepartmentTypes();
             ViewData["Gendes"] = genders;
             ViewData["Marital"] = marital;
             ViewData["Employment"] = employment;
             ViewData["Education"] = education;
+            ViewData["Departments"] = departments;
             return View();
         }
 
@@ -303,9 +318,11 @@ namespace HRM.Areas.Province.Controllers
                 var genders = GenderTypes();
                 var marital = MariltalTypes();
                 var employment = EmploymentTypes();
+                var departments = ProvinceDepartmentTypes();
                 var education = EducationTypes();
                 ViewData["Gendes"] = genders;
                 ViewData["Marital"] = marital;
+                ViewData["Departments"] = departments;
                 ViewData["Employment"] = employment;
                 ViewData["Education"] = education;
                 ViewData["IsExistAvatar"] = IsExistAvatarOnDb;
@@ -374,7 +391,7 @@ namespace HRM.Areas.Province.Controllers
         }
         #endregion
 
-        #region Delete
+        #region Disable
 
         [HttpPost]
         public IActionResult Disable(UserEdit_DisableVM user)

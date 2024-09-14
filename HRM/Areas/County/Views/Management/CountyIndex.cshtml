@@ -18,10 +18,10 @@
         <script type="text/javascript">
             var _registerUrl = '@Url.Action("Register", "Management", new { area = "County" })';
             var _gridUrl = '@Url.Action("FillUsersGrid", "Management", new { area = "County" })';
-            var _GetUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Management", new { Province = 1, County = 1, District = 0 }))';
+            var _GetUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Management", new { Section = "1", Province = "0", County = "0", District = "0" }))';
             var area = {
+                area:1,
                 province: 1,
-                county: 1,
                 district: 0
             };
         </script>
@@ -122,8 +122,8 @@
 
                 var data = {
                     userId: userId,
+                    area: area.area,
                     province: area.province,
-                    county: area.county,
                     district: area.district
                 };
 

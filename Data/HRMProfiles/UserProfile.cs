@@ -35,6 +35,7 @@ namespace Data.HRMProfiles
                    .ForMember(dest => dest.LastActived, opt => opt.MapFrom(src => src.LastActived));
 
             CreateMap<UserRegisterVM, Department>()
+                .ForMember(dest => dest.Area, opt => opt.MapFrom(src => src.Area))
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
                 .ForMember(dest => dest.Province, opt => opt.MapFrom(src => src.Province))
                 .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.County))

@@ -15,9 +15,10 @@ namespace Domain.Entities.Security.Models
         #region Properties
         public Guid DepartmentId { get; set; }
         public Guid UserId { get; set; }
-        public int Province { get; set; }
-        public int County { get; set; }
-        public int District { get; set; }
+        public string Area {  get; set; }
+        public string Province { get; set; }
+        public string County { get; set; }
+        public string District { get; set; }
         public bool IsActived { get; set; }
         public DateTime RegisterDate { get; set; }
         #endregion

@@ -51,33 +51,33 @@ namespace Data.Repositores
                 user = await _context.Users.SingleOrDefaultAsync(
                    u => u.UserName == model.UserName
                    &&
-                   u.Department.Province != 0
+                   u.Department.Province != "0"
                    &&
-                   u.Department.County == 0
+                   u.Department.County == "0"
                    &&
-                   u.Department.District == 0);
+                   u.Department.District == "0");
             }
             if (model.Area == "1")
             {
                 user = await _context.Users.SingleOrDefaultAsync(
                    u => u.UserName == model.UserName
                    &&
-                   u.Department.Province == 0
+                   u.Department.Province == "0"
                    &&
-                   u.Department.County != 0
+                   u.Department.County != "0"
                    &&
-                   u.Department.District == 0);
+                   u.Department.District == "0");
             }
             if (model.Area == "2")
             {
                 user = await _context.Users.SingleOrDefaultAsync(
                     u => u.UserName == model.UserName
                     &&
-                    u.Department.Province == 0
+                    u.Department.Province == "0"
                     &&
-                    u.Department.County != 0
+                    u.Department.County != "0"
                     &&
-                    u.Department.District != 0);
+                    u.Department.District != "0");
             }
             return user;
         }
@@ -177,10 +177,8 @@ namespace Data.Repositores
             var resultMessage = "";
             if (user != null)
             {
-                if (user.Area == 0)
-                {
-                    check = _context.Users.Where(u => (u.UserName == user.UserName) && (u.Department.Province == 1)).Any();
-                }
+                check = _context.Users.Where(u => u.UserName == user.UserName && u.Department.Area == user.Area && u.IsActived).Any();
+
                 if (check)
                 {
                     resultMessage = $"کاربر با کدملی {user.UserName} قبلا ثبت شده است.";
@@ -193,7 +191,7 @@ namespace Data.Repositores
         {
             var context = GetUsersQuery();
             var users = (from item in context
-                         where (item.IsActived && item.Department.Province == area.Province && item.Department.County == area.County && item.Department.District == area.District)
+                         where (item.IsActived && item.Department.Area == area.Section)
                          orderby item.RegisterDate descending
                          select new DisplayUsersVM
                          {
@@ -204,7 +202,7 @@ namespace Data.Repositores
                              Gender = (item.Gender == "M") ? "مرد" : "زن",
                              MaritalStatus = (item.MaritalStatus == "S") ? "مجرد" : "متاهل",
                              Employment = (item.Employment == "T") ? "آزمایشی" : ((item.Employment == "C") ? "قراردادی" : "رسمی"),
-                             Area = (item.Department.Province != 0 && item.Department.County == 0 && item.Department.District == 0) ? "استان" : (item.Department.Province != 0 && item.Department.County != 0 && item.Department.District == 0 ? "شهرستان" : "بخش"),
+                             Area = (item.Department.Area == "0" ? "استان" : (item.Department.Area == "1" ? "شهرستان" : "بخش")),
                              County = item.Department.County,
                              District = item.Department.District,
                              Insurance = (item.Insurance) ? "مشمول" : "در انتظار",
@@ -318,8 +316,8 @@ namespace Data.Repositores
                             County = item.Department.County,
                             District = item.Department.District,
                             Province = item.Department.Province,
-                            Area = (item.Department.Province != 0 && item.Department.County == 0 && item.Department.County == 0 ? 0 :
-                                 (item.Department.Province != 0 && item.Department.County != 0 && item.Department.District == 0 ? 1 : 2)),
+                            Area = (item.Department.Province != "0" && item.Department.County == "0" && item.Department.County == "0" ? "0" :
+                                 (item.Department.Province != "0" && item.Department.County != "0" && item.Department.District == "0" ? "1" : "2")),
                             IsActived = item.IsActived
                         }).Single();
             }
@@ -341,7 +339,7 @@ namespace Data.Repositores
                 Guid departmentId = dId;
 
                 _documentRepository.DisableDocuments(departmentId);
-               
+
                 message = "";
 
                 return true;
@@ -354,7 +352,7 @@ namespace Data.Repositores
         public void DisableUser(UserEdit_DisableVM model)
         {
 
-            if(model != null)
+            if (model != null)
             {
                 var user = _context.Users
                                    .Find(model.UserId);
@@ -368,13 +366,14 @@ namespace Data.Repositores
             }
         }
 
-        public void DisableDepartment(UserEdit_DisableVM model , out Guid departmentId)
+        public void DisableDepartment(UserEdit_DisableVM model, out Guid departmentId)
         {
             Guid id = Guid.Empty;
 
             if (model != null)
             {
                 var department = _context.Departments.Where(d => d.UserId == model.UserId &&
+                                                                 d.Area == model.Area &&
                                                                  d.Province == model.Province &&
                                                                  d.County == model.County &&
                                                                  d.District == model.District)

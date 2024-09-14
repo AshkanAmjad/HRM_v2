@@ -4,6 +4,8 @@ using Domain.DTOs.General;
 using Domain.DTOs.Security.User;
 using Domain.Interfaces;
 using FluentValidation;
+using FluentValidation.AspNetCore;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -107,6 +109,19 @@ namespace HRM.Areas.District.Controllers
                 }
             };
             return maritalTypes;
+        }
+
+        public List<SelectListItem> ProvinceDepartmentTypes()
+        {
+            List<SelectListItem> provinceDepartmentTypes = new()
+            {
+                new SelectListItem
+                {
+                    Text = "شعبه 1",
+                    Value = "1"
+                }
+            };
+            return provinceDepartmentTypes;
         }
 
         public List<SelectListItem> CountyDepartmentTypes()
@@ -222,6 +237,263 @@ namespace HRM.Areas.District.Controllers
                 recordsFiltered = mainData.Count(),
                 data = mainData
             };
+
+            return Json(jsonData);
+        }
+        #endregion
+
+        #region Register
+        public IActionResult Register()
+        {
+            var genders = GenderTypes();
+            var marital = MariltalTypes();
+            var employment = EmploymentTypes();
+            var education = EducationTypes();
+            var provinceDepartments = ProvinceDepartmentTypes();
+            var countyDepartments = CountyDepartmentTypes();
+            var districtDepartments = DistrictDepartmentTypes();
+            ViewData["Gendes"] = genders;
+            ViewData["Marital"] = marital;
+            ViewData["Employment"] = employment;
+            ViewData["Education"] = education;
+            ViewData["ProvinceDepartments"] = provinceDepartments;
+            ViewData["CountyDepartments"] = countyDepartments;
+            ViewData["DistrictDepartments"] = districtDepartments;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Register(UserRegisterVM user)
+        {
+            ValidationResult userValidator = _userRegisterValidator.Validate(user);
+            bool success = false;
+            var message = $"عملیات ثبت با شکست مواجه شده است.";
+            string checkMessage = "";
+            if (userValidator.IsValid)
+            {
+                try
+                {
+                    bool result = _userService.Register(user, out checkMessage);
+
+                    if (result)
+                    {
+                        _userRepository.SaveChanges();
+                        success = true;
+                        message = $"<h5>عملیات ثبت کاربر <span class='text-primary'> {user.FirstName}  {user.LastName} </span> با موفقیت انجام شد.</h5>";
+                    }
+                    else
+                    {
+                        message = checkMessage;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    while (ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    message = $"<h5>خطای شکست عملیات  : {ex.Message} </h5>";
+                }
+            }
+            else
+            {
+                message = $"{userValidator}";
+            }
+            #region Manual Validation
+            foreach (var error in userValidator.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+            userValidator.AddToModelState(this.ModelState);
+            #endregion
+
+            #region Json data
+            var jsonData = new
+            {
+                success = success,
+                message = message,
+            };
+            #endregion
+
+            return Json(jsonData);
+        }
+        #endregion
+
+        #region Edit
+        public IActionResult Edit(UserEdit_DisableVM model)
+        {
+            ValidationResult userValidator = _userEdit_DeleteValidator.Validate(model);
+
+            if (userValidator.IsValid)
+            {
+                AreaVM area = new()
+                {
+                    County = model.County,
+                    District = model.District,
+                    Province = model.Province
+                };
+
+                var user = _userRepository.GetUserById(model.UserId, area);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                bool IsExistAvatarOnDb = _documentRepository.IsExistAvatarOnDb(user.UserId);
+
+                if (IsExistAvatarOnDb)
+                {
+                    bool isExistOrginalAvatar = _documentService.IsExistOrginalAvatarOnServer(user);
+                    bool isExistThumbAvatar = _documentService.IsExistThumbAvatarOnServer(user);
+
+                    if (!isExistOrginalAvatar || !isExistThumbAvatar)
+                    {
+                        var avatar = _documentRepository.GetAvatarWithUserId(user.UserId);
+
+                        if (!isExistOrginalAvatar)
+                            _documentRepository.DownloadOrginalAvatar(avatar);
+
+                        if (!isExistThumbAvatar)
+                            _documentService.UploadDocumentToServer(avatar);
+                    }
+                }
+
+                var genders = GenderTypes();
+                var marital = MariltalTypes();
+                var employment = EmploymentTypes();
+                var education = EducationTypes();
+                var provinceDepartments = ProvinceDepartmentTypes();
+                var countyDepartments = CountyDepartmentTypes();
+                var districtDepartments = DistrictDepartmentTypes();
+                ViewData["Gendes"] = genders;
+                ViewData["Marital"] = marital;
+                ViewData["Employment"] = employment;
+                ViewData["Education"] = education;
+                ViewData["ProvinceDepartments"] = provinceDepartments;
+                ViewData["countyDepartments"] = countyDepartments;
+                ViewData["districtDepartments"] = districtDepartments;
+                ViewData["IsExistAvatar"] = IsExistAvatarOnDb;
+
+                return View(user);
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(UserEditVM user)
+        {
+            ValidationResult userValidator = _userEditValidator.Validate(user);
+            bool success = false;
+            var message = $"عملیات ویرایش با شکست مواجه شده است.";
+            string checkMessage = "";
+            if (userValidator.IsValid)
+            {
+                try
+                {
+                    bool result = _userService.Edit(user, out checkMessage);
+
+                    if (result)
+                    {
+                        _userRepository.SaveChanges();
+                        success = true;
+                        message = $"<h5>عملیات ویرایش کاربر <span class='text-primary'> {user.FirstName}  {user.LastName} </span> با موفقیت انجام شد.</h5>";
+                    }
+                    else
+                    {
+                        message = checkMessage;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    while (ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    message = $"<h5>خطای شکست عملیات  : {ex.Message} </h5>";
+                }
+            }
+            else
+            {
+                message = $"{userValidator}";
+            }
+            #region Manual Validation
+            foreach (var error in userValidator.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+            userValidator.AddToModelState(this.ModelState);
+            #endregion
+
+            #region Json data
+            var jsonData = new
+            {
+                success = success,
+                message = message,
+            };
+            #endregion
+
+            return Json(jsonData);
+        }
+        #endregion
+
+        #region Disable
+
+        [HttpPost]
+        public IActionResult Disable(UserEdit_DisableVM user)
+        {
+            ValidationResult userValidator = _userEdit_DeleteValidator.Validate(user);
+            bool success = false;
+            var message = $"عملیات غیر فعال سازی با شکست مواجه شده است.";
+            string checkMessage = "";
+            if (userValidator.IsValid)
+            {
+                try
+                {
+                    bool result = _userService.Disable(user, out checkMessage);
+
+                    if (result)
+                    {
+                        _userRepository.SaveChanges();
+                        success = true;
+                        message = $"<h5>عملیات غیر فعال سازی کاربر <span class='text-primary'> {user.UserName} </span> با موفقیت انجام شد.</h5>";
+                    }
+                    else
+                    {
+                        message = checkMessage;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    while (ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    message = $"<h5>خطای شکست عملیات  : {ex.Message} </h5>";
+                }
+            }
+            else
+            {
+                message = $"{userValidator}";
+            }
+            #region Manual Validation
+            foreach (var error in userValidator.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+            userValidator.AddToModelState(this.ModelState);
+            #endregion
+
+            #region Json data
+            var jsonData = new
+            {
+                success = success,
+                message = message,
+            };
+            #endregion
 
             return Json(jsonData);
         }

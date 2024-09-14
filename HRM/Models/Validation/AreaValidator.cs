@@ -7,6 +7,8 @@ namespace HRM.Models.Validation
     {
         public AreaValidator()
         {
+            RuleFor(x => x.Section).NotNull();
+
             RuleFor(x => x.Province).NotNull();
 
             RuleFor(x => x.County).NotNull();

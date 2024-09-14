@@ -18,7 +18,7 @@
         <script type="text/javascript">
             var _registerUrl = '@Url.Action("Register", "Management", new { area = "District" })';
             var _gridUrl = '@Url.Action("FillUsersGrid", "Management", new { area = "District" })';
-            var _GetUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Management", new { Province = 1, County = 1, District = 1 }))';
+            var _GetUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Management", new { Section = "2", Province = "0", County = "0", District = "0" }))';
             var area = {
                 province: 1,
                 county: 1,

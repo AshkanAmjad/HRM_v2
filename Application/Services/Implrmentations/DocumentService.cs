@@ -132,9 +132,9 @@ namespace Application.Services.Implrmentations
             string saveDirOrginal = "";
             string saveDirThumb = "";
 
-            if (direction.Area == 0)
+            if (direction.Area == "0")
             {
-                if (direction.County == 0 && direction.District == 0)
+                if (direction.County == "0" && direction.District == "0")
                 {
                     if (direction.Name == "Avatar")
                     {
@@ -147,7 +147,7 @@ namespace Application.Services.Implrmentations
                         saveDirOrginal = "Areas/Province/Documents/Province/Transfers";
                     }
                 }
-                else if (direction.County != 0 && direction.District == 0)
+                else if (direction.County != "0" && direction.District == "0")
                 {
                     if (direction.Name == "Avatar")
                     {
@@ -172,13 +172,13 @@ namespace Application.Services.Implrmentations
                     }
                 }
             }
-            else if (direction.Area == 1)
+            else if (direction.Area == "1")
             {
-                if (direction.County == 0 && direction.District == 0)
+                if (direction.County == "0" && direction.District == "0")
                 {
                     saveDirOrginal = "Areas/County/Documents/County/Transfer";
                 }
-                else if (direction.County != 0 && direction.District == 0)
+                else if (direction.County != "0" && direction.District == "0")
                 {
                     if (direction.Name == "Avatar")
                     {
@@ -193,7 +193,7 @@ namespace Application.Services.Implrmentations
                 }
                 else
                 {
-                    if (direction.County == 0 && direction.District != 0)
+                    if (direction.County == "0" && direction.District != "0")
                     {
                         if (direction.Name == "Avatar")
                         {
@@ -210,11 +210,11 @@ namespace Application.Services.Implrmentations
             }
             else
             {
-                if (direction.County == 0 && direction.District == 0)
+                if (direction.County == "0" && direction.District == "0")
                 {
                     saveDirOrginal = "Areas/District/Documents/Province/Transfer";
                 }
-                else if (direction.County != 0 && direction.District == 0)
+                else if (direction.County != "0" && direction.District == "0")
                 {
                     saveDirOrginal = "Areas/District/Documents/County/Transfer";
                 }

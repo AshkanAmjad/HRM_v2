@@ -10,8 +10,9 @@ namespace Domain.DTOs.Security.User
     {
         public Guid UserId { get; set; }
         public string? UserName { get; set; }
-        public int? Province {  get; set; }
-        public int? County {  get; set; }
-        public int? District {  get; set; }
+        public string? Area {  get; set; }
+        public string? Province {  get; set; }
+        public string? County {  get; set; }
+        public string? District {  get; set; }
     }
 }

@@ -14,6 +14,8 @@ namespace Domain.Entities.Security.Mapping
         public void Configure(EntityTypeBuilder<Department> builder)
         {
             builder.HasKey(d => d.DepartmentId);
+            builder.Property(d => d.Area)
+                .IsRequired();
             builder.Property(d => d.Province)
                 .IsRequired();
             builder.Property(d=>d.County)

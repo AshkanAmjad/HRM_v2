@@ -66,19 +66,19 @@ namespace Data.HRMProfiles
 
         private int GetArea(Department department)
         {
-            if (department.Province != 0 && department.County == 0 && department.District == 0)
+            if (department.Province != "0" && department.County == "0" && department.District == "0")
                 return 0;
-            else if (department.Province != 0 && department.County != 0 && department.District == 0)
+            else if (department.Province != "0" && department.County != "0" && department.District == "0")
                 return 1;
             else
                 return 2;
         }
 
-        private int GetArea(int? province, int? county, int? district)
+        private int GetArea(string? province, string? county, string? district)
         {
-            if (province != 0 && county == 0 && district == 0)
+            if (province != "0" && county == "0" && district == "0")
                 return 0;
-            else if (province != 0 && county != 0 && district == 0)
+            else if (province != "0" && county != "0" && district == "0")
                 return 1;
             else
                 return 2;
