@@ -11,7 +11,7 @@ namespace HRM.Models.Validation
                                   .NotNull()
                                   .NotEqual(Guid.Empty);
 
-            RuleFor(x => x.Area).NotNull();
+            RuleFor(x => x.area).NotNull();
 
             RuleFor(x => x.Province).NotNull();
 

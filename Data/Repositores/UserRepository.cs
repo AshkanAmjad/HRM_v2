@@ -5,16 +5,12 @@ using Domain.DTOs.General;
 using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Security.Login;
 using Domain.DTOs.Security.User;
-using Domain.Entities.Portal.Models;
 using Domain.Entities.Security.Models;
 using Domain.Interfaces;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -119,23 +115,23 @@ namespace Data.Repositores
             {
                 UploadEditUserToDb(user);
 
+                UploadEditDepartmentToDb(user);
+
                 #region Document
                 if (user.Avatar != null)
                 {
-                    var departmentId = GetDepartmentId(user.UserId);
-
-                    bool IsExist = IsExistAvatar(departmentId);
+                    bool IsExist = IsExistAvatar(user.DepartmenyId);
 
                     if (IsExist)
                     {
-                        DeleteAvatarOnDb(departmentId);
+                        DeleteAvatarOnDb(user.DepartmenyId);
                     }
 
                     UploadVM file = _mapper.Map<UploadVM>(user);
 
                     file.Name = "Avatar";
                     file.Description = "-";
-                    file.DepartmentId = departmentId;
+                    file.DepartmentId = user.DepartmenyId;
                     _documentRepository.UploadDocumentToDb(file);
                 }
                 #endregion
@@ -166,10 +162,13 @@ namespace Data.Repositores
                                  .Any();
 
 
-        public Guid GetDepartmentId(Guid userId)
-            => _context.Departments.Where(d => d.UserId == userId)
-                                   .Select(d => d.DepartmentId)
-                                   .Single();
+        public Guid? GetDepartmentIdByUserId(Guid userId, string area)
+        {
+            var department = _context.Departments
+                .FirstOrDefault(d => d.UserId == userId && d.Area == area);
+
+            return department?.DepartmentId;
+        }
 
         public bool Similarity(UserRegisterVM user, out string message)
         {
@@ -254,7 +253,6 @@ namespace Data.Repositores
                     initial.DateOfBirth = user.DateOfBirth;
                     initial.City = user.City;
                     initial.Address = user.Address;
-                    initial.IsActived = user.IsActived;
                     initial.LastActived = user.LastActived;
                     initial.RegisterDate = user.RegisterDate;
 
@@ -267,7 +265,26 @@ namespace Data.Repositores
                     _context.Update(initial);
 
                 }
+            }
+        }
 
+        public void UploadEditDepartmentToDb(UserEditVM model)
+        {
+            if(model != null)
+            {
+                var initial = _context.Departments.Find(model.DepartmenyId);
+
+                if (initial != null)
+                {
+                    Department department = _mapper.Map <Department> (model);
+
+                    initial.Province = department.Province;
+                    initial.County = department.County;
+                    initial.District = department.District;
+
+                    _context.Update(initial);
+
+                }
             }
         }
 
@@ -286,17 +303,14 @@ namespace Data.Repositores
             _context.SaveChanges();
         }
 
-        public UserEditVM? GetUserById(Guid userId, AreaVM area)
+        public UserEditVM? GetUserById(Guid userId)
         {
             UserEditVM user = new();
             if (userId != Guid.Empty)
             {
                 user = (from item in _context.Users
                         where (item.UserId == userId
-                        && item.Department.Province == area.Province
-                        && item.Department.County == area.County
-                        && item.Department.District == area.District
-                        && item.IsActived == true)
+                        && item.IsActived)
                         select new UserEditVM
                         {
                             Address = item.Address,
@@ -309,6 +323,7 @@ namespace Data.Repositores
                             PhoneNumber = item.PhoneNumber,
                             UserId = item.UserId,
                             UserName = item.UserName,
+                            DepartmenyId = item.Department.DepartmentId,
                             Insurance = item.Insurance,
                             Gender = item.Gender,
                             MaritalStatus = item.MaritalStatus,
@@ -317,8 +332,7 @@ namespace Data.Repositores
                             District = item.Department.District,
                             Province = item.Department.Province,
                             Area = (item.Department.Province != "0" && item.Department.County == "0" && item.Department.County == "0" ? "0" :
-                                 (item.Department.Province != "0" && item.Department.County != "0" && item.Department.District == "0" ? "1" : "2")),
-                            IsActived = item.IsActived
+                                 (item.Department.Province != "0" && item.Department.County != "0" && item.Department.District == "0" ? "1" : "2"))
                         }).Single();
             }
             return user;
@@ -327,16 +341,16 @@ namespace Data.Repositores
         public bool Disable(UserEdit_DisableVM model, out string message)
         {
             string checkMessage = "عملیات غیر فعال سازی با شکست مواجه شد.";
-            Guid dId = Guid.Empty;
+            Guid _departmentId = Guid.Empty;
 
             if (model != null)
             {
 
                 DisableUser(model);
 
-                DisableDepartment(model, out dId);
+                DisableDepartment(model, out _departmentId);
 
-                Guid departmentId = dId;
+                Guid departmentId = _departmentId;
 
                 _documentRepository.DisableDocuments(departmentId);
 
@@ -369,15 +383,16 @@ namespace Data.Repositores
         public void DisableDepartment(UserEdit_DisableVM model, out Guid departmentId)
         {
             Guid id = Guid.Empty;
+            Department? department = null;
 
             if (model != null)
             {
-                var department = _context.Departments.Where(d => d.UserId == model.UserId &&
-                                                                 d.Area == model.Area &&
-                                                                 d.Province == model.Province &&
-                                                                 d.County == model.County &&
-                                                                 d.District == model.District)
-                                                      .SingleOrDefault();
+                var _departmentId = GetDepartmentIdByUserId(model.UserId, model.area);
+
+                if(_departmentId != Guid.Empty)
+                {
+                    department = _context.Departments.Find(_departmentId);
+                }
 
                 if (department != null)
                 {
@@ -391,5 +406,8 @@ namespace Data.Repositores
 
             departmentId = id;
         }
+
+
+
     }
 }

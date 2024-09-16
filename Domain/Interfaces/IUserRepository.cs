@@ -21,8 +21,8 @@ namespace Domain.Interfaces
         bool Disable(UserEdit_DisableVM model, out string message); 
         List<DisplayUsersVM> GetUsers(AreaVM area);
         IQueryable<User> GetUsersQuery();
-        UserEditVM? GetUserById(Guid userId, AreaVM area);
-        Guid GetDepartmentId(Guid userId);
+        UserEditVM? GetUserById(Guid userId);
+        Guid? GetDepartmentIdByUserId(Guid userId, string area);
         #endregion
 
         #region DB
@@ -31,6 +31,7 @@ namespace Domain.Interfaces
         void DisableDepartment(UserEdit_DisableVM model , out Guid departmentId);
         void UploadEditUserToDb(UserEditVM userEdit);
         void UploadDepartmentToDb(UserRegisterVM depatment, Guid departmentId);
+        void UploadEditDepartmentToDb(UserEditVM model);
         void DeleteAvatarOnDb(Guid departmentId);
         void SaveChanges();
         #endregion

@@ -69,7 +69,7 @@ namespace Application.Services.Implrmentations
 
                 string watermarkImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/icons/general/watermark", "logoWatermark.png");
 
-                DeleteDocumentOnServer( "" , filePathThumb);
+                DeleteDocumentOnServer("", filePathThumb);
 
                 SKBitmap resizedBitmap = ImageConverter.ResizeImage(filePathOriginal, 200, 200);
                 SKBitmap watermarkedBitmap = ImageConverter.WatermarkImage(resizedBitmap, watermarkImagePath);
@@ -132,7 +132,7 @@ namespace Application.Services.Implrmentations
             string saveDirOrginal = "";
             string saveDirThumb = "";
 
-            if (direction.Area == "0")
+            if (direction.Area == "Province" || direction.Area == "0") 
             {
                 if (direction.County == "0" && direction.District == "0")
                 {
@@ -147,32 +147,22 @@ namespace Application.Services.Implrmentations
                         saveDirOrginal = "Areas/Province/Documents/Province/Transfers";
                     }
                 }
-                else if (direction.County != "0" && direction.District == "0")
+                else if ( direction.County != "0" && direction.District == "0")
                 {
-                    if (direction.Name == "Avatar")
-                    {
-                        saveDirOrginal = "Areas/Province/Documents/County/Avatar/Original";
-                        saveDirThumb = "Areas/Province/Documents/County/Avatar/Thumb";
-                    }
-                    else
+                    if (direction.Name != "Avatar")
                     {
                         saveDirOrginal = "Areas/Province/Documents/County/Transfers";
                     }
                 }
                 else
                 {
-                    if (direction.Name == "Avatar")
-                    {
-                        saveDirOrginal = "Areas/Province/Documents/District/Avatar/Original";
-                        saveDirThumb = "Areas/Province/Documents/District/Avatar/Thumb";
-                    }
-                    else
+                    if (direction.Name != "Avatar")
                     {
                         saveDirOrginal = "Areas/Province/Documents/District/Transfers";
                     }
                 }
             }
-            else if (direction.Area == "1")
+            else if (direction.Area == "County" || direction.Area == "1")
             {
                 if (direction.County == "0" && direction.District == "0")
                 {
@@ -193,14 +183,9 @@ namespace Application.Services.Implrmentations
                 }
                 else
                 {
-                    if (direction.County == "0" && direction.District != "0")
+                    if (direction.County != "0" && direction.District != "0")
                     {
-                        if (direction.Name == "Avatar")
-                        {
-                            saveDirOrginal = "Areas/County/Documents/District/Avatar/Orginal";
-                            saveDirThumb = "Areas/County/Documents/District/Avatar/Thumb";
-                        }
-                        else
+                        if (direction.Name != "Avatar")
                         {
                             saveDirOrginal = "Areas/County/Documents/District/Transfers";
                         }
@@ -342,7 +327,7 @@ namespace Application.Services.Implrmentations
 
                 path = UploadDirectionOnServer(direction);
 
-                if(direction.Name != "Avatar")
+                if (direction.Name != "Avatar")
                 {
                     documentNameOrginal = Path.GetFileNameWithoutExtension($"Document-{model.UserName}");
                 }
@@ -351,7 +336,7 @@ namespace Application.Services.Implrmentations
 
                 DeleteDocumentOnServer(filePathOriginal, "");
             }
-            
+
         }
 
     }

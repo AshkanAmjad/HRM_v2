@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Data.HRMProfiles
 {
-    public class UserProfile:Profile
+    public class UserProfile : Profile
     {
         public UserProfile()
         {
@@ -58,9 +58,14 @@ namespace Data.HRMProfiles
                    .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
                    .ForMember(dest => dest.Employment, opt => opt.MapFrom(src => src.EmploymentStatus))
                    .ForMember(dest => dest.Insurance, opt => opt.MapFrom(src => src.Insurance))
-                   .ForMember(dest => dest.IsActived, opt => opt.MapFrom(src => src.IsActived))
                    .ForMember(dest => dest.RegisterDate, opt => opt.MapFrom(src => src.RegisterDate))
                    .ForMember(dest => dest.LastActived, opt => opt.MapFrom(src => src.LastActived));
+
+            CreateMap<UserEditVM, Department>()
+                .ForMember(dest => dest.Province, opt => opt.MapFrom(src => src.Province))
+                .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.County))
+                .ForMember(dest => dest.District, opt => opt.MapFrom(src => src.District));
+
         }
     }
 }

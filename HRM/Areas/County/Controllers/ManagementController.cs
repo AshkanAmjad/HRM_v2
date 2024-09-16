@@ -301,14 +301,7 @@ namespace HRM.Areas.County.Controllers
 
             if (userValidator.IsValid)
             {
-                AreaVM area = new()
-                {
-                    County = model.County,
-                    District = model.District,
-                    Province = model.Province
-                };
-
-                var user = _userRepository.GetUserById(model.UserId, area);
+                var user = _userRepository.GetUserById(model.UserId);
 
                 if (user == null)
                 {

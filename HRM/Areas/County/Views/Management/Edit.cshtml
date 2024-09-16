@@ -5,54 +5,59 @@
             ? ViewData["Gendes"] as List<SelectListItem>
             : new List<SelectListItem>();
 
+    var proviceDepartments = ViewData["ProvinceDepartments"] != null
+          ? ViewData["ProvinceDepartments"] as List<SelectListItem>
+          : new List<SelectListItem>();
+
+    var countyDepartments = ViewData["CountyDepartments"] != null
+        ? ViewData["CountyDepartments"] as List<SelectListItem>
+        : new List<SelectListItem>();
+
     var mariltalTypes = ViewData["Marital"] != null
-            ? ViewData["Marital"] as List<SelectListItem>
-            : new List<SelectListItem>();
+    ? ViewData["Marital"] as List<SelectListItem>
+    : new List<SelectListItem>();
 
     var educationTypes = ViewData["Education"] != null
             ? ViewData["Education"] as List<SelectListItem>
             : new List<SelectListItem>();
-
-    var departments = ViewData["Departments"] != null
-          ? ViewData["Departments"] as List<SelectListItem>
-          : new List<SelectListItem>();
 
     var employmentTypes = ViewData["Employment"] != null
              ? ViewData["Employment"] as List<SelectListItem>
              : new List<SelectListItem>();
 
     var isExistAvatar = ViewData["IsExistAvatar"];
+
 }
-<partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPersianDatePickerPartial.cshtml"/>
+
+<partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPersianDatePickerPartial.cshtml" />
 
 <div class="modal-dialog modal-xl " id="modal">
     <div class="modal-content">
         <div class="modal-header">
             <div class="modal-title">
-                <div class="btn btn-outline-primary btn-sm  my-2 mx-1">ویرایش در سطح استان</div>
+                <div class="btn btn-outline-primary btn-sm  my-2 mx-1">افزودن در سطح شهرستان</div>
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
         </div>
         <div class="border border-top-0 ">
             <p class="fs-8 mt-3 fw-bold">
                 <i class="fa fa-lg me-3 ms-2 fa-bullseye text-primary"></i>
-                در صورت نیاز، مشخصات کارمند را با دقت در ورودی های مربوطه وارد کنید.
+                مشخصات کارمند را با دقت در ورودی های مربوطه وارد کنید.
             </p>
         </div>
-        <form id="editForm" enctype="multipart/form-data" asp-antiforgery="true">
+        <form id="registerForm" enctype="multipart/form-data" asp-antiforgery="true">
             @Html.AntiForgeryToken()
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Area" />
-            <input type="hidden" asp-for="County" />
-            <input type="hidden" asp-for="District" />
+            <input type="hidden" asp-for="Area" value="1" />
+            <input type="hidden" asp-for="District" value="0" />
             <input type="hidden" asp-for="UserId" />
-            <input type="hidden" asp-for="DepartmenyId"/>
             <input type="file" asp-for="Avatar" class="hidden" id="pic" />
             <div class="modal-body">
                 <div class="row px-2">
                     <div class="row pb-3 m-0">
                         <div class="d-flex align-items-center justify-content-center flex-column" id="uploadAvatarBox">
-                            <img src=@(isExistAvatar.Equals(true) ? "/Province/Avatars/Province/Thumb-"+Model.UserName+".png" : "/pics/default/uploadBox/registerDefault.png" ) class="rounded avatarUploadBox" alt="Avatar" id="avatar" />
+                            <img src=@(isExistAvatar.Equals(true) ? "/County/Avatars/County/Thumb-"+Model.UserName+".png" : "/pics/default/uploadBox/registerDefault.png" ) class="rounded avatarUploadBox" alt="Avatar" id="avatar" />
                             <span asp-validation-for="Avatar" class="text-danger fs-8"></span>
                         </div>
                         <div class="border border-top-0 border-start-0 border-end-0 p-0">
@@ -69,7 +74,7 @@
                                 <label class="control-label">کد ملی :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <input asp-for="UserName" type="number" class="form-control w-100" readonly/>
+                                <input asp-for="UserName" type="number" class="form-control w-100" readonly />
                                 <span asp-validation-for="UserName" class="text-danger fs-8"></span>
                             </div>
                         </div>
@@ -79,7 +84,7 @@
                                 <label class="control-label">گذر واژه :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <input asp-for="Password" class="form-control w-100 " tabindex="1" autocomplete="off" placeholder="مقدار مناسبی برای گذر واژه وارد کنید ..." />
+                                <input asp-for="Password" class="form-control w-100 " tabindex="2" autocomplete="off" placeholder="مقدار مناسبی برای گذر واژه وارد کنید ..." />
                                 <span asp-validation-for="Password" class="text-danger fs-8"></span>
                             </div>
                         </div>
@@ -89,7 +94,7 @@
                                 <label class="control-label ">تکرار گذر واژه :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <input asp-for="ConfirmPassword" class="form-control w-100 " tabindex="2" autocomplete="off" placeholder="گذر واژه را تکرار کنید ..." />
+                                <input asp-for="ConfirmPassword" class="form-control w-100 " tabindex="3" autocomplete="off" placeholder="گذر واژه را تکرار کنید ..." />
                                 <span asp-validation-for="ConfirmPassword" class="text-danger fs-8"></span>
                             </div>
                         </div>
@@ -99,7 +104,7 @@
                                 <label class="control-label">نام :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <input asp-for="FirstName" class="form-control w-100" tabindex="3" placeholder="مقدار مناسبی برای نام وارد کنید ..." />
+                                <input asp-for="FirstName" class="form-control w-100" tabindex="4" placeholder="مقدار مناسبی برای نام وارد کنید ..." />
                                 <span asp-validation-for="FirstName" class="text-danger fs-8"></span>
                             </div>
                         </div>
@@ -109,7 +114,7 @@
                                 <label class="control-label">نام خانوادگی  :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <input asp-for="LastName" class="form-control w-100" tabindex="4" placeholder="مقدار مناسبی برای نام خانوادگی وارد کنید ..." />
+                                <input asp-for="LastName" class="form-control w-100" tabindex="5" placeholder="مقدار مناسبی برای نام خانوادگی وارد کنید ..." />
                                 <span asp-validation-for="LastName" class="text-danger fs-8"></span>
                             </div>
                         </div>
@@ -122,7 +127,7 @@
                                 @foreach (var item in genders)
                                 {
                                     <div class="form-check form-check-inline">
-                                        <input asp-for="Gender" type="radio" name="gender" value="@item.Value" tabindex="5" />
+                                        <input asp-for="Gender" type="radio" name="gender" value="@item.Value" tabindex="6" />
                                         <label class="form-check-label">@item.Text</label>
                                     </div>
                                 }
@@ -135,7 +140,7 @@
                                 <label class="control-label">تاریخ تولد :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <input asp-for="DateOfBirth" class="form-control w-100" placeholder="مقدار مناسبی برای تاریخ تولد وارد کنید ..." id="dateOfBirth" tabindex="6" autocomplete="off" />
+                                <input asp-for="DateOfBirth" class="form-control w-100" placeholder="مقدار مناسبی برای تاریخ تولد وارد کنید ..." id="dateOfBirth" tabindex="7" autocomplete="off" />
                                 <span asp-validation-for="DateOfBirth" class="text-danger fs-8" autocomplete="off"></span>
                             </div>
                         </div>
@@ -148,7 +153,7 @@
                                 @foreach (var item in mariltalTypes)
                                 {
                                     <div class="form-check form-check-inline ">
-                                        <input asp-for="MaritalStatus" type="radio" name="maritalStatus" value="@item.Value" tabindex="7" />
+                                        <input asp-for="MaritalStatus" type="radio" name="maritalStatus" value="@item.Value" tabindex="8" />
                                         <label class="form-check-label">@item.Text</label>
                                     </div>
                                 }
@@ -161,7 +166,7 @@
                                 <label class="control-label">تحصیلات :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <select asp-for="Education" class="form-select" aria-label=".form-select-sm" asp-items="educationTypes" id="educationTypes" tabindex="8">
+                                <select asp-for="Education" class="form-select" aria-label=".form-select-sm" asp-items="educationTypes" id="educationTypes" tabindex="9">
                                     <option selected class="fs-7">سطح تحصیلات خود را انتخاب کنید ...</option>
                                 </select>
                                 <span asp-validation-for="Education" class="text-danger fs-8" id="educationError"></span>
@@ -175,10 +180,22 @@
                                 <label class="control-label">شعبه استان :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <select asp-for="Province" class="form-select" aria-label=".form-select-sm" asp-items="departments" id="departmentStatus" tabindex="10">
+                                <select asp-for="Province" class="form-select" aria-label=".form-select-sm" asp-items="proviceDepartments" id="provinceDepartmentStatus" tabindex="10">
                                     <option selected class="fs-7">شعبه سطح استان خود را انتخاب کنید ...</option>
                                 </select>
-                                <span asp-validation-for="Province" class="text-danger fs-8" id="departmentError"></span>
+                                <span asp-validation-for="Province" class="text-danger fs-8" id="provinceDepartmentError"></span>
+                            </div>
+                        </div>
+                        <div class="row mt-2 p-0 ">
+                            <div class="col-5 col-lg-4">
+                                <i class="fa fa fa-caret-square-o-left text-primary ms-2"></i>
+                                <label class="control-label">شعبه شهرستان :</label>
+                            </div>
+                            <div class="col-7 col-lg-8">
+                                <select asp-for="County" class="form-select" aria-label=".form-select-sm" asp-items="countyDepartments" id="countyDepartmentStatus" tabindex="11">
+                                    <option selected class="fs-7">شعبه سطح شهرستان خود را انتخاب کنید ...</option>
+                                </select>
+                                <span asp-validation-for="County" class="text-danger fs-8" id="countyDepartmentError"></span>
                             </div>
                         </div>
                         <div class="row mt-2 p-0 ">
@@ -187,20 +204,20 @@
                                 <label class="control-label">وضعیت استخدامی :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <select asp-for="EmploymentStatus" class="form-select" aria-label=".form-select-sm" asp-items="employmentTypes" id="employmentStatus" tabindex="11">
+                                <select asp-for="EmploymentStatus" class="form-select" aria-label=".form-select-sm" asp-items="employmentTypes" id="employmentStatus" tabindex="12">
                                     <option selected class="fs-7">وضعیت استخدامی خود را انتخاب کنید ...</option>
                                 </select>
                                 <span asp-validation-for="EmploymentStatus" class="text-danger fs-8" id="employmentError"></span>
                             </div>
                         </div>
-                        <div class="row my-2 p-0 ">
+                        <div class="row mt-2 p-0 ">
                             <div class="col-5 col-lg-4">
                                 <i class="fa fa fa-caret-square-o-left text-primary ms-2"></i>
                                 <label class="form-check-label">وضعیت بیمه :</label>
                             </div>
-                            <div class="col-7 col-lg-8 mb-3 d-flex align-items-center">
+                            <div class="col-7 col-lg-8 my-2 d-flex align-items-center">
                                 <label class="ms-2">مشمول</label>
-                                <input class="form-check-input" asp-for="Insurance" tabindex="12" />
+                                <input class="form-check-input" asp-for="Insurance" tabindex="13" />
                             </div>
                         </div>
                         <div class="row mt-2 p-0 ">
@@ -209,7 +226,7 @@
                                 <label class="control-label">پست الکترونیک :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <input asp-for="Email" class="form-control w-100 " tabindex="13" autocomplete="off" placeholder="مقدار مناسبی برای پست الکترونیک وارد کنید ..." />
+                                <input asp-for="Email" class="form-control w-100 " tabindex="14" autocomplete="off" placeholder="مقدار مناسبی برای پست الکترونیک وارد کنید ..." />
                                 <span asp-validation-for="Email" class="text-danger fs-8"></span>
                             </div>
                         </div>
@@ -219,7 +236,7 @@
                                 <label class="control-label">شماره همراه :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <input asp-for="PhoneNumber" type="number" class="form-control w-100 " tabindex="14" autocomplete="off" placeholder="مقدار مناسبی برای شماره همراه وارد کنید ..." />
+                                <input asp-for="PhoneNumber" type="number" class="form-control w-100 " tabindex="15" autocomplete="off" placeholder="مقدار مناسبی برای شماره همراه وارد کنید ..." />
                                 <span asp-validation-for="PhoneNumber" class="text-danger fs-8"></span>
                             </div>
                         </div>
@@ -229,7 +246,7 @@
                                 <label class="control-label">شهر سکونت :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <input asp-for="City" class="form-control w-100 " tabindex="15" autocomplete="off" placeholder="مقدار مناسبی برای شهر سکونت وارد کنید ..." />
+                                <input asp-for="City" class="form-control w-100 " tabindex="16" autocomplete="off" placeholder="مقدار مناسبی برای شهر سکونت وارد کنید ..." />
                                 <span asp-validation-for="City" class="text-danger fs-8"></span>
                             </div>
                         </div>
@@ -239,7 +256,7 @@
                                 <label class="control-label">نشانی سکونت :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <textarea asp-for="Address" class="form-control w-100" tabindex="16" placeholder="آدرس سکونت را به طور دقیق وارد کنید ..."></textarea>
+                                <textarea asp-for="Address" class="form-control w-100" tabindex="17" placeholder="آدرس سکونت را به طور دقیق وارد کنید ..."></textarea>
                                 <span asp-validation-for="Address" class="text-danger fs-8"></span>
                             </div>
                         </div>
@@ -247,16 +264,18 @@
                 </div>
             </div>
             <div class="modal-footer d-flex justify-content-center align-items-center mt-lg-5">
-                <button type="submit" class="btn btn-primary px-5 align-items-center" id="submitBtn" tabindex="17">
+                <button type="submit" class="btn btn-primary px-5 align-items-center" id="submitBtn" tabindex="18">
                     <i class="fa fa-save mx-2"></i>
                     ثبت
                 </button>
-                <button type="button" class="btn btn-secondary cursor-pointer mx-1" tabindex="17" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-secondary cursor-pointer mx-1" tabindex="19" data-bs-dismiss="modal">
                     &times;
                 </button>
             </div>
         </form>
+
     </div>
+
 </div>
 <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPersianDatePickerPartial.cshtml" />
@@ -272,7 +291,8 @@
                 var educationError = $("#educationError")
                 var maritalError = $("#maritalError");
                 var ganderError = $("#genderError");
-                var departmentError = $("#departmentError");
+                var provinceDepartmentError = $("#provinceDepartmentError");
+                var countyDepartmentError = $("#countyDepartmentError");
                 var $userName = $("input[name='UserName']").val();
                 var $password = $("input[name='Password']").val();
                 var $confirmPassword = $("input[name='ConfirmPassword']").val();
@@ -283,7 +303,8 @@
                 var $dateOfBirth = $("input[name='DateOfBirth']").val();
                 var $marital = $("input[name='maritalStatus']:checked").val();
                 var $employment = $("#employmentStatus").find(':selected').text();
-                var $department = $("#departmentStatus").find(':selected').text();
+                var $provinceDepartment = $("#provinceDepartmentStatus").find(':selected').text();
+                var $countyDepartment = $("#countyDepartmentStatus").find(':selected').text();
                 var $gender = $("input[name='gender']:checked").val();
                 var $email = $("input[name='Email").val();
                 var $phoneNumber = $("input[name='PhoneNumber']").val();
@@ -294,10 +315,15 @@
                 } else {
                     employmentError.text("");
                 }
-                if ($department === "شعبه سطح استان خود را انتخاب کنید ...") {
-                    departmentError.text("تکمیل ورودی شعبه استان ضروری است.")
+                if ($provinceDepartment === "شعبه سطح استان خود را انتخاب کنید ...") {
+                    provinceDepartmentError.text("تکمیل ورودی شعبه استان ضروری است.")
                 } else {
-                    departmentError.text('');
+                    provinceDepartmentError.text('');
+                }
+                if ($countyDepartment === "شعبه سطح شهرستان خود را انتخاب کنید ...") {
+                    countyDepartmentError.text("تکمیل ورودی شعبه شهرستان ضروری است.")
+                } else {
+                    countyDepartmentError.text('');
                 }
                 if ($education === "سطح تحصیلات خود را انتخاب کنید ...") {
                     educationError.text("تکمیل ورودی تحصیلات ضروری است.")
@@ -314,15 +340,18 @@
                 } else {
                     ganderError.text('');
                 }
-                if (($employment === "وضعیت استخدامی خود را انتخاب کنید ..." || $department === "شعبه سطح استان خود را انتخاب کنید ..." || $education === "سطح تحصیلات خود را انتخاب کنید ..." || $marital === undefined || $gender === undefined)
+                if (($employment === "وضعیت استخدامی خود را انتخاب کنید ..." || $provinceDepartment === "شعبه سطح استان خود را انتخاب کنید ..." || $countyDepartment === "شعبه سطح شهرستان خود را انتخاب کنید ..." || $education === "سطح تحصیلات خود را انتخاب کنید ..." || $marital === undefined || $gender === undefined)
                     &&
                     ($userName !== "" && $password !== "" && $confirmPassword !== "" && $firstName !== "" && $lastName !== ""
                         && $dateOfBirth !== "" && $email !== "" && $phoneNumber !== "" && $city !== "" && $address !== "")) {
                     if ($employment === "وضعیت استخدامی خود را انتخاب کنید ...") {
                         employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.")
                     }
-                    if ($department === "شعبه سطح استان خود را انتخاب کنید ...") {
-                        departmentError.text("تکمیل ورودی شعبه استان ضروری است.");
+                    if ($provinceDepartment === "شعبه سطح استان خود را انتخاب کنید ...") {
+                        provinceDepartmentError.text("تکمیل ورودی شعبه استان ضروری است.");
+                    }
+                    if ($countyDepartment === "شعبه سطح شهرستان خود را انتخاب کنید ...") {
+                        countyDepartmentError.text("تکمیل ورودی شعبه شهرستان ضروری است.");
                     }
                     if ($education === "سطح تحصیلات خود را انتخاب کنید ...") {
                         educationError.text("تکمیل ورودی تحصیلات ضروری است.")
@@ -351,12 +380,20 @@
                         employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.")
                     }
                 });
-                $("#departmentStatus").change(function () {
-                    var $department = $("#departmentStatus").find(':selected').text();
-                    if ($department !== "شعبه سطح استان خود را انتخاب کنید ...") {
-                        departmentError.text('');
+                $("#provinceDepartmentStatus").change(function () {
+                    var $provinceDepartment = $("#provinceDepartmentStatus").find(':selected').text();
+                    if ($provinceDepartment !== "شعبه سطح استان خود را انتخاب کنید ...") {
+                        provinceDepartmentError.text('');
                     } else {
-                        departmentError.text("تکمیل ورودی شعبه استان ضروری است.")
+                        provinceDepartmentError.text("تکمیل ورودی شعبه استان ضروری است.")
+                    }
+                });
+                $("#countyDepartmentStatus").change(function () {
+                    var $countyDepartment = $("#countyDepartmentStatus").find(':selected').text();
+                    if ($countyDepartment !== "شعبه سطح شهرستان خود را انتخاب کنید ...") {
+                        countyDepartmentError.text('');
+                    } else {
+                        countyDepartmentError.text("تکمیل ورودی شعبه شهرستان ضروری است.")
                     }
                 });
                 $("input[name='maritalStatus']").change(function () {
@@ -384,7 +421,7 @@
                 $("#submitBtn").on("click", function (e) {
                     $.fn.Validation();
                     e.preventDefault();
-                    var $form = $('#editForm');
+                    var $form = $('#registerForm');
                     if ($form.valid()) {
                         $("#submitBtn").prop('disabled', true);
                         var formData = new FormData($form.get(0));
@@ -462,4 +499,5 @@
                 });
             });
         </script>
+
 

@@ -42,27 +42,39 @@ var province_provinceAvatarsOptions = new StaticFileOptions
     }
 };
 
-var province_countyAvatarsOptions = new StaticFileOptions
+var county_countyAvatarsOptions = new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Areas/Province/Documents/County/Avatar/Thumb")),
-    RequestPath = "/Province/Avatars/County",
+    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Areas/County/Documents/County/Avatar/Thumb")),
+    RequestPath = "/County/Avatars/County",
     OnPrepareResponse = context =>
     {
         context.Context.Response.Headers.Append("Cache-Control", "no-cache, no-store");
         context.Context.Response.Headers.Append("Expires", "-1");
+
     }
 };
 
-var province_districtAvatarsOptions = new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Areas/Province/Documents/District/Avatar/Thumb")),
-    RequestPath = "/Province/Avatars/District",
-    OnPrepareResponse = context =>
-    {
-        context.Context.Response.Headers.Append("Cache-Control", "no-cache, no-store");
-        context.Context.Response.Headers.Append("Expires", "-1");
-    }
-};
+//var province_countyAvatarsOptions = new StaticFileOptions
+//{
+//    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Areas/Province/Documents/County/Avatar/Thumb")),
+//    RequestPath = "/Province/Avatars/County",
+//    OnPrepareResponse = context =>
+//    {
+//        context.Context.Response.Headers.Append("Cache-Control", "no-cache, no-store");
+//        context.Context.Response.Headers.Append("Expires", "-1");
+//    }
+//};
+
+//var province_districtAvatarsOptions = new StaticFileOptions
+//{
+//    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Areas/Province/Documents/District/Avatar/Thumb")),
+//    RequestPath = "/Province/Avatars/District",
+//    OnPrepareResponse = context =>
+//    {
+//        context.Context.Response.Headers.Append("Cache-Control", "no-cache, no-store");
+//        context.Context.Response.Headers.Append("Expires", "-1");
+//    }
+//};
 #endregion
 
 var app = builder.Build();
@@ -81,8 +93,10 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles(wwwrootOptions);
 app.UseStaticFiles(province_provinceAvatarsOptions);
-app.UseStaticFiles(province_countyAvatarsOptions);
-app.UseStaticFiles(province_districtAvatarsOptions);
+app.UseStaticFiles(county_countyAvatarsOptions);
+
+//app.UseStaticFiles(province_countyAvatarsOptions);
+//app.UseStaticFiles(province_districtAvatarsOptions);
 
 app.UseRouting();
 app.UseAuthentication();

@@ -26,6 +26,7 @@ namespace Data.HRMProfiles
 
             CreateMap<UserEditVM, UploadVM>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
+                .ForMember(dest => dest.DepartmentId, opt => opt.MapFrom(src => src.DepartmenyId))
                 .ForMember(dest => dest.Area, opt => opt.MapFrom(src => src.Area))
                 .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.County))
                 .ForMember(dest => dest.District, opt => opt.MapFrom(opt => opt.District))

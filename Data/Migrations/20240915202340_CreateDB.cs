@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Data.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateDb : Migration
+    public partial class CreateDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -74,7 +74,7 @@ namespace Data.Migrations
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsActived = table.Column<bool>(type: "bit", nullable: false),
-                    LastActived = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastActived = table.Column<DateTime>(type: "datetime2", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -89,9 +89,10 @@ namespace Data.Migrations
                 {
                     DepartmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Province = table.Column<int>(type: "int", nullable: false),
-                    County = table.Column<int>(type: "int", nullable: false),
-                    District = table.Column<int>(type: "int", nullable: false),
+                    Area = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Province = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    County = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    District = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsActived = table.Column<bool>(type: "bit", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -112,12 +113,13 @@ namespace Data.Migrations
                 schema: "Security",
                 columns: table => new
                 {
+                    UserRoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserRoles", x => new { x.UserId, x.RoleId });
+                    table.PrimaryKey("PK_UserRoles", x => x.UserRoleId);
                     table.ForeignKey(
                         name: "FK_UserRoles_Roles_RoleId",
                         column: x => x.RoleId,
@@ -139,12 +141,13 @@ namespace Data.Migrations
                 schema: "Portal",
                 columns: table => new
                 {
+                    DepartmentTransferId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TransferId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DepartmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DepartmentTransfers", x => new { x.TransferId, x.DepartmentId });
+                    table.PrimaryKey("PK_DepartmentTransfers", x => x.DepartmentTransferId);
                     table.ForeignKey(
                         name: "FK_DepartmentTransfers_Departments_DepartmentId",
                         column: x => x.DepartmentId,
@@ -168,6 +171,7 @@ namespace Data.Migrations
                 {
                     DocumentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ContentType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FileFormat = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -202,6 +206,12 @@ namespace Data.Migrations
                 column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DepartmentTransfers_TransferId",
+                schema: "Portal",
+                table: "DepartmentTransfers",
+                column: "TransferId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Documents_DepartmentId",
                 schema: "Portal",
                 table: "Documents",
@@ -212,6 +222,12 @@ namespace Data.Migrations
                 schema: "Security",
                 table: "UserRoles",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRoles_UserId",
+                schema: "Security",
+                table: "UserRoles",
+                column: "UserId");
         }
 
         /// <inheritdoc />

@@ -105,24 +105,14 @@ namespace Data.Repositores
                 }
                 else if (direction.County != "0" && direction.District == "0")
                 {
-                    if (direction.Name == "Avatar")
-                    {
-                        saveDirOrginal = "Areas/Province/Documents/County/Avatar/Original";
-                        saveDirThumb = "Areas/Province/Documents/County/Avatar/Thumb";
-                    }
-                    else
+                    if (direction.Name != "Avatar")
                     {
                         saveDirOrginal = "Areas/Province/Documents/County/Transfer";
                     }
                 }
                 else
                 {
-                    if (direction.Name == "Avatar")
-                    {
-                        saveDirOrginal = "Areas/Province/Documents/District/Avatar/Original";
-                        saveDirThumb = "Areas/Province/Documents/District/Avatar/Thumb";
-                    }
-                    else
+                    if (direction.Name != "Avatar")
                     {
                         saveDirOrginal = "Areas/Province/Documents/District/Transfer";
                     }
@@ -149,14 +139,9 @@ namespace Data.Repositores
                 }
                 else
                 {
-                    if (direction.County == "0" && direction.District != "0")
+                    if (direction.County != "0" && direction.District != "0")
                     {
-                        if (direction.Name == "Avatar")
-                        {
-                            saveDirOrginal = "Areas/County/Documents/District/Avatar/Orginal";
-                            saveDirThumb = "Areas/County/Documents/District/Avatar/Thumb";
-                        }
-                        else
+                        if (direction.Name != "Avatar")
                         {
                             saveDirOrginal = "Areas/County/Documents/District/Transfer";
                         }

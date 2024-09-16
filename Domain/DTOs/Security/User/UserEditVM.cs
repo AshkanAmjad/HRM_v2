@@ -10,6 +10,7 @@ namespace Domain.DTOs.Security.User
     public class UserEditVM
     {
         public Guid UserId { get; set; }
+        public Guid DepartmenyId { get; set; }
         public string? UserName { get; set; }
         public string? Password { get; set; }
         public string? ConfirmPassword { get; set; }
@@ -30,7 +31,6 @@ namespace Domain.DTOs.Security.User
         public string? Province { get; set; }
         public string? County { get; set; }
         public string? District { get; set; }
-        public bool IsActived { get; set; }
         public DateTime RegisterDate { get; set; }
         public DateTime LastActived { get; set; }
     }

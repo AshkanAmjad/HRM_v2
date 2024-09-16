@@ -19,10 +19,10 @@
             var _registerUrl = '@Url.Action("Register", "Management", new{area="Province"})';
             var _gridUrl = '@Url.Action("FillUsersGrid", "Management", new { area = "Province" })';
             var _GetUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Management", new { Section = "0", Province = "0", County = "0" , District = "0"}))';
-            var area = {
-                province: 1,
-                county: 0,
-                district: 0
+            var direction = {
+                province: "1",
+                county: "0",
+                district: "0"
             };
         </script>
         <script type="text/javascript">
@@ -122,9 +122,9 @@
 
                 var data = {
                     userId: userId,
-                    province: area.province,
-                    county: area.county,
-                    district: area.district
+                    province: direction.province,
+                    county: direction.county,
+                    district: direction.district
                 };
 
                 $.get('@Url.Action("Edit", "Management")', data).done(function (result) {
@@ -146,11 +146,12 @@
                     if (result.isConfirmed) {
 
                         var data = {
+                            area: "0",
                             userId: userId,
                             userName: userName,
-                            province: area.province,
-                            county: area.county,
-                            district: area.district
+                            province: direction.province,
+                            county: direction.county,
+                            district: direction.district
                         };
 
                         $.post('@Url.Action("Disable", "Management")', data).done(function (result) {

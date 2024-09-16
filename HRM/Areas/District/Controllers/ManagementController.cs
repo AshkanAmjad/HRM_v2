@@ -334,7 +334,7 @@ namespace HRM.Areas.District.Controllers
                     Province = model.Province
                 };
 
-                var user = _userRepository.GetUserById(model.UserId, area);
+                var user = _userRepository.GetUserById(model.UserId);
 
                 if (user == null)
                 {
