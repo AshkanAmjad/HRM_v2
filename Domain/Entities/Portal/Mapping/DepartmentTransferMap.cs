@@ -22,6 +22,8 @@ namespace Domain.Entities.Portal.Mapping
             builder.HasOne(t => t.Transfer)
                             .WithMany(dt => dt.DepartmentTransfers)
                             .HasForeignKey(t => t.TransferId);
+            builder.Property(dt => dt.IsActived)
+                   .IsRequired();
         }
     }
 }

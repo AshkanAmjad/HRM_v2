@@ -14,6 +14,7 @@ namespace Domain.Entities.Security.Models
         #region Properties
         public Guid RoleId { get; set; }
         public string Title { get; set; }
+        public bool IsActived { get; set; }
         #endregion
 
         #region Relations

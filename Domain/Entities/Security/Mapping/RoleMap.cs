@@ -15,9 +15,13 @@ namespace Domain.Entities.Security.Mapping
         public void Configure(EntityTypeBuilder<Role> builder)
         {
             builder.HasKey(r => r.RoleId);
+
             builder.Property(r => r.Title)
                             .IsRequired()
                             .HasMaxLength(30);
+
+            builder.Property(r => r.IsActived)
+                   .IsRequired();
         }
     }
 }

@@ -35,7 +35,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <div class="modal-title">
-                <div class="btn btn-outline-primary btn-sm  my-2 mx-1">افزودن در سطح شهرستان</div>
+                <div class="btn btn-outline-primary btn-sm  my-2 mx-1">ویرایش در سطح شهرستان</div>
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
@@ -49,9 +49,10 @@
         <form id="registerForm" enctype="multipart/form-data" asp-antiforgery="true">
             @Html.AntiForgeryToken()
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Area" value="1" />
-            <input type="hidden" asp-for="District" value="0" />
-            <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="AreaDepartment"/>
+            <input type="hidden" asp-for="DistrictDepartment"/>
+            <input type="hidden" asp-for="UserId"/>
+            <input type="hidden" asp-for="DepartmenyId" />
             <input type="file" asp-for="Avatar" class="hidden" id="pic" />
             <div class="modal-body">
                 <div class="row px-2">
@@ -167,7 +168,7 @@
                             </div>
                             <div class="col-7 col-lg-8">
                                 <select asp-for="Education" class="form-select" aria-label=".form-select-sm" asp-items="educationTypes" id="educationTypes" tabindex="9">
-                                    <option selected class="fs-7">سطح تحصیلات خود را انتخاب کنید ...</option>
+                                    <option class="fs-7">سطح تحصیلات خود را انتخاب کنید ...</option>
                                 </select>
                                 <span asp-validation-for="Education" class="text-danger fs-8" id="educationError"></span>
                             </div>
@@ -180,10 +181,10 @@
                                 <label class="control-label">شعبه استان :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <select asp-for="Province" class="form-select" aria-label=".form-select-sm" asp-items="proviceDepartments" id="provinceDepartmentStatus" tabindex="10">
+                                <select asp-for="ProvinceDepartment" class="form-select" aria-label=".form-select-sm" asp-items="proviceDepartments" id="provinceDepartmentStatus" tabindex="10">
                                     <option selected class="fs-7">شعبه سطح استان خود را انتخاب کنید ...</option>
                                 </select>
-                                <span asp-validation-for="Province" class="text-danger fs-8" id="provinceDepartmentError"></span>
+                                <span asp-validation-for="ProvinceDepartment" class="text-danger fs-8" id="provinceDepartmentError"></span>
                             </div>
                         </div>
                         <div class="row mt-2 p-0 ">
@@ -192,10 +193,10 @@
                                 <label class="control-label">شعبه شهرستان :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <select asp-for="County" class="form-select" aria-label=".form-select-sm" asp-items="countyDepartments" id="countyDepartmentStatus" tabindex="11">
-                                    <option selected class="fs-7">شعبه سطح شهرستان خود را انتخاب کنید ...</option>
+                                <select asp-for="CountyDepartment" class="form-select" aria-label=".form-select-sm" asp-items="countyDepartments" id="countyDepartmentStatus" tabindex="11">
+                                    <option class="fs-7">شعبه سطح شهرستان خود را انتخاب کنید ...</option>
                                 </select>
-                                <span asp-validation-for="County" class="text-danger fs-8" id="countyDepartmentError"></span>
+                                <span asp-validation-for="CountyDepartment" class="text-danger fs-8" id="countyDepartmentError"></span>
                             </div>
                         </div>
                         <div class="row mt-2 p-0 ">

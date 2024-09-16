@@ -16,6 +16,8 @@
     <Folder Include="Areas\County\Documents\County\Avatar\Thumb\" />
     <Folder Include="Areas\County\Models\" />
     <Folder Include="Areas\District\Data\" />
+    <Folder Include="Areas\District\Documents\District\Avatar\Original\" />
+    <Folder Include="Areas\District\Documents\District\Avatar\Thumb\" />
     <Folder Include="Areas\District\Models\" />
     <Folder Include="Areas\Province\Data\" />
     <Folder Include="Areas\Province\Documents\County\" />

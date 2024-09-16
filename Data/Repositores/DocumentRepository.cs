@@ -163,12 +163,12 @@ namespace Data.Repositores
                 {
                     if (direction.Name == "Avatar")
                     {
-                        saveDirOrginal = "Areas/District/Documents/Disrrict/Avatar/Original";
-                        saveDirThumb = "Areas/District/Documents/Disrrict/Avatar/Thumb";
+                        saveDirOrginal = "Areas/District/Documents/District/Avatar/Original";
+                        saveDirThumb = "Areas/District/Documents/District/Avatar/Thumb";
                     }
                     else
                     {
-                        saveDirOrginal = "Areas/District/Documents/Disrrict/Transfer";
+                        saveDirOrginal = "Areas/District/Documents/District/Transfer";
                     }
                 }
             }

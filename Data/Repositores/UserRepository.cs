@@ -176,7 +176,7 @@ namespace Data.Repositores
             var resultMessage = "";
             if (user != null)
             {
-                check = _context.Users.Where(u => u.UserName == user.UserName && u.Department.Area == user.Area && u.IsActived).Any();
+                check = _context.Users.Where(u => u.UserName == user.UserName && u.Department.Area == user.AreaDepartment && u.IsActived).Any();
 
                 if (check)
                 {
@@ -190,7 +190,7 @@ namespace Data.Repositores
         {
             var context = GetUsersQuery();
             var users = (from item in context
-                         where (item.IsActived && item.Department.Area == area.Section)
+                         where (item.Department.Area == area.Section)
                          orderby item.RegisterDate descending
                          select new DisplayUsersVM
                          {
@@ -211,7 +211,7 @@ namespace Data.Repositores
                              DateOfBirth = item.DateOfBirth,
                              City = item.City,
                              Address = item.Address,
-                             IsActived = (item.IsActived == true) ? "فعال" : "غیرفعال",
+                             IsActived = (item.IsActived) ? "فعال" : "غیرفعال",
                              LastActived = $"{item.LastActived.ToShamsi()}",
                              RegisterDate = $"{item.RegisterDate.ToShamsi()}"
                          })
@@ -270,13 +270,13 @@ namespace Data.Repositores
 
         public void UploadEditDepartmentToDb(UserEditVM model)
         {
-            if(model != null)
+            if (model != null)
             {
                 var initial = _context.Departments.Find(model.DepartmenyId);
 
                 if (initial != null)
                 {
-                    Department department = _mapper.Map <Department> (model);
+                    Department department = _mapper.Map<Department>(model);
 
                     initial.Province = department.Province;
                     initial.County = department.County;
@@ -309,8 +309,7 @@ namespace Data.Repositores
             if (userId != Guid.Empty)
             {
                 user = (from item in _context.Users
-                        where (item.UserId == userId
-                        && item.IsActived)
+                        where (item.UserId == userId)
                         select new UserEditVM
                         {
                             Address = item.Address,
@@ -328,10 +327,10 @@ namespace Data.Repositores
                             Gender = item.Gender,
                             MaritalStatus = item.MaritalStatus,
                             EmploymentStatus = item.Employment,
-                            County = item.Department.County,
-                            District = item.Department.District,
-                            Province = item.Department.Province,
-                            Area = (item.Department.Province != "0" && item.Department.County == "0" && item.Department.County == "0" ? "0" :
+                            CountyDepartment = item.Department.County,
+                            DistrictDepartment = item.Department.District,
+                            ProvinceDepartment = item.Department.Province,
+                            AreaDepartment = (item.Department.Province != "0" && item.Department.County == "0" && item.Department.County == "0" ? "0" :
                                  (item.Department.Province != "0" && item.Department.County != "0" && item.Department.District == "0" ? "1" : "2"))
                         }).Single();
             }
@@ -389,7 +388,7 @@ namespace Data.Repositores
             {
                 var _departmentId = GetDepartmentIdByUserId(model.UserId, model.area);
 
-                if(_departmentId != Guid.Empty)
+                if (_departmentId != Guid.Empty)
                 {
                     department = _context.Departments.Find(_departmentId);
                 }

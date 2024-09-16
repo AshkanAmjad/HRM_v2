@@ -35,11 +35,11 @@ namespace Data.HRMProfiles
                    .ForMember(dest => dest.LastActived, opt => opt.MapFrom(src => src.LastActived));
 
             CreateMap<UserRegisterVM, Department>()
-                .ForMember(dest => dest.Area, opt => opt.MapFrom(src => src.Area))
+                .ForMember(dest => dest.Area, opt => opt.MapFrom(src => src.AreaDepartment))
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
-                .ForMember(dest => dest.Province, opt => opt.MapFrom(src => src.Province))
-                .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.County))
-                .ForMember(dest => dest.District, opt => opt.MapFrom(src => src.District))
+                .ForMember(dest => dest.Province, opt => opt.MapFrom(src => src.ProvinceDepartment))
+                .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.CountyDepartment))
+                .ForMember(dest => dest.District, opt => opt.MapFrom(src => src.DistrictDepartment))
                 .ForMember(dest => dest.RegisterDate, opt => opt.MapFrom(src => src.RegisterDate))
                 .ForMember(dest => dest.IsActived, opt => opt.MapFrom(src => src.IsActived));
 
@@ -62,9 +62,9 @@ namespace Data.HRMProfiles
                    .ForMember(dest => dest.LastActived, opt => opt.MapFrom(src => src.LastActived));
 
             CreateMap<UserEditVM, Department>()
-                .ForMember(dest => dest.Province, opt => opt.MapFrom(src => src.Province))
-                .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.County))
-                .ForMember(dest => dest.District, opt => opt.MapFrom(src => src.District));
+                .ForMember(dest => dest.Province, opt => opt.MapFrom(src => src.ProvinceDepartment))
+                .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.CountyDepartment))
+                .ForMember(dest => dest.District, opt => opt.MapFrom(src => src.DistrictDepartment));
 
         }
     }

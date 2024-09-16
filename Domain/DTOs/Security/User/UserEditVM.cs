@@ -27,10 +27,10 @@ namespace Domain.DTOs.Security.User
         public string? DateOfBirth { get; set; }
         public string? City { get; set; }
         public string? Address { get; set; }
-        public string? Area {  get; set; }
-        public string? Province { get; set; }
-        public string? County { get; set; }
-        public string? District { get; set; }
+        public string? AreaDepartment {  get; set; }
+        public string? ProvinceDepartment { get; set; }
+        public string? CountyDepartment { get; set; }
+        public string? DistrictDepartment { get; set; }
         public DateTime RegisterDate { get; set; }
         public DateTime LastActived { get; set; }
     }

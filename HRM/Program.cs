@@ -54,6 +54,18 @@ var county_countyAvatarsOptions = new StaticFileOptions
     }
 };
 
+var district_districtAvatarsOptions = new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Areas/District/Documents/District/Avatar/Thumb")),
+    RequestPath = "/District/Avatars/District",
+    OnPrepareResponse = context =>
+    {
+        context.Context.Response.Headers.Append("Cache-Control", "no-cache, no-store");
+        context.Context.Response.Headers.Append("Expires", "-1");
+
+    }
+};
+
 //var province_countyAvatarsOptions = new StaticFileOptions
 //{
 //    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Areas/Province/Documents/County/Avatar/Thumb")),
@@ -94,6 +106,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles(wwwrootOptions);
 app.UseStaticFiles(province_provinceAvatarsOptions);
 app.UseStaticFiles(county_countyAvatarsOptions);
+app.UseStaticFiles(district_districtAvatarsOptions);
 
 //app.UseStaticFiles(province_countyAvatarsOptions);
 //app.UseStaticFiles(province_districtAvatarsOptions);

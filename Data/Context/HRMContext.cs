@@ -41,6 +41,23 @@ namespace Data.Context
             modelBuilder.ApplyConfiguration(new UserRoleMap());
             #endregion
 
+            #region Filtering
+            modelBuilder.Entity<User>()
+                        .HasQueryFilter(u => u.IsActived);
+            modelBuilder.Entity<Department>()
+                        .HasQueryFilter(d => d.IsActived);
+            modelBuilder.Entity<Document>()
+                        .HasQueryFilter(d => d.IsActived);
+            modelBuilder.Entity<Transfer>()
+                        .HasQueryFilter(t => t.IsActived);
+            modelBuilder.Entity<UserRole>()
+                        .HasQueryFilter(ur => ur.IsActived);
+            modelBuilder.Entity<DepartmentTransfer>()
+                        .HasQueryFilter(dt => dt.IsActived);
+            modelBuilder.Entity<Role>()
+                        .HasQueryFilter(r => r.IsActived);
+        #endregion
+
             base.OnModelCreating(modelBuilder);
 
         }

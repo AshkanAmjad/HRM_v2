@@ -267,7 +267,7 @@ namespace HRM.Areas.County.Controllers
                     {
                         ex = ex.InnerException;
                     }
-                    message = $"<h5>خطای شکست عملیات  : {ex.Message} </h5>";
+                    message = $"خطای شکست عملیات  :  {ex.Message}";
                 }
             }
             else
@@ -378,7 +378,7 @@ namespace HRM.Areas.County.Controllers
                     {
                         ex = ex.InnerException;
                     }
-                    message = $"<h5>خطای شکست عملیات  : {ex.Message} </h5>";
+                    message = $"خطای شکست عملیات  :   {ex.Message}";
                 }
             }
             else
@@ -437,7 +437,7 @@ namespace HRM.Areas.County.Controllers
                     {
                         ex = ex.InnerException;
                     }
-                    message = $"<h5>خطای شکست عملیات  : {ex.Message} </h5>";
+                    message = $"خطای شکست عملیات  :   {ex.Message}";
                 }
             }
             else

@@ -7,7 +7,7 @@ namespace HRM.Models.Validation
     {
         public UserRegisterValidator()
         {
-            RuleFor(x => x.Area).NotNull();
+            RuleFor(x => x.AreaDepartment).NotNull();
 
             RuleFor(x=>x.Avatar).SetValidator(new AvatarValidator());
 
@@ -48,13 +48,13 @@ namespace HRM.Models.Validation
             RuleFor(x => x.EmploymentStatus).NotEqual("وضعیت استخدامی خود را انتخاب کنید")
                                             .WithMessage("تکمیل ورودی وضعیت استخدامی ضروری است.");
 
-            RuleFor(x => x.Province).NotEqual("شعبه سطح استان خود را انتخاب کنید ...")
+            RuleFor(x => x.ProvinceDepartment).NotEqual("شعبه سطح استان خود را انتخاب کنید ...")
                                     .WithMessage("تکمیل ورودی شعبه استان ضروری است.");
 
-            RuleFor(x => x.County).NotEqual("شعبه سطح شهرستان خود را انتخاب کنید ...")
+            RuleFor(x => x.CountyDepartment).NotEqual("شعبه سطح شهرستان خود را انتخاب کنید ...")
                                   .WithMessage("تکمیل ورودی شعبه شهرستان ضروری است.");
 
-            RuleFor(x => x.District).NotEqual("شعبه سطح بخش خود را انتخاب کنید ...")
+            RuleFor(x => x.DistrictDepartment).NotEqual("شعبه سطح بخش خود را انتخاب کنید ...")
                                     .WithMessage("تکمیل ورودی شعبه بخش ضروری است.");
 
             RuleFor(x => x.PhoneNumber).NotNull()

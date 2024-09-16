@@ -21,6 +21,8 @@ namespace Domain.Entities.Security.Mapping
             builder.HasOne(r => r.Role)
                 .WithMany(ru => ru.UserRoles)
                 .HasForeignKey(r => r.RoleId);
+            builder.Property(ru => ru.IsActived)
+                   .IsRequired();
         }
     }
 }

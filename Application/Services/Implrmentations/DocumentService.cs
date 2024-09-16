@@ -61,7 +61,9 @@ namespace Application.Services.Implrmentations
             DeleteDocumentOnServer(filePathOriginal, "");
 
             using (var fileStream = new FileStream(filePathOriginal, FileMode.Create))
+            {
                 document.document.CopyTo(fileStream);
+            }
 
             if (path._saveDirThumb != "")
             {
@@ -112,8 +114,9 @@ namespace Application.Services.Implrmentations
             string filePathOriginal = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirOrginal, documentNameOrginal);
 
             using (var fileStream = new FileStream(filePathOriginal, FileMode.Truncate))
+            {
                 fileStream.Write(bytes);
-
+            }
 
             if (path._saveDirThumb != "")
             {
@@ -207,12 +210,12 @@ namespace Application.Services.Implrmentations
                 {
                     if (direction.Name == "Avatar")
                     {
-                        saveDirOrginal = "Areas/District/Documents/Disrrict/Avatar/Original";
-                        saveDirThumb = "Areas/District/Documents/Disrrict/Avatar/Thumb";
+                        saveDirOrginal = "Areas/District/Documents/District/Avatar/Original";
+                        saveDirThumb = "Areas/District/Documents/District/Avatar/Thumb";
                     }
                     else
                     {
-                        saveDirOrginal = "Areas/District/Documents/Disrrict/Transfer";
+                        saveDirOrginal = "Areas/District/Documents/District/Transfer";
                     }
                 }
             }
