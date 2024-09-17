@@ -34,7 +34,8 @@ namespace Data.Repositores
 
         public IQueryable<User> GetUsersQuery()
         {
-            return _context.Users.AsQueryable();
+            return _context.Users.IgnoreQueryFilters()
+                                 .AsQueryable();
         }
 
         public async Task<User?> GetUserAsync(LoginVM model)
@@ -190,7 +191,7 @@ namespace Data.Repositores
         {
             var context = GetUsersQuery();
             var users = (from item in context
-                         where (item.Department.Area == area.Section)
+                         where (item.Department.Area == area.Section && item.IsActived)
                          orderby item.RegisterDate descending
                          select new DisplayUsersVM
                          {
@@ -373,6 +374,7 @@ namespace Data.Repositores
                 if (user != null)
                 {
                     user.IsActived = false;
+                    user.RegisterDate = DateTime.Now;
 
                     _context.Users.Update(user);
                 }
@@ -396,6 +398,7 @@ namespace Data.Repositores
                 if (department != null)
                 {
                     department.IsActived = false;
+                    department.RegisterDate = DateTime.Now;
 
                     id = department.DepartmentId;
 
@@ -406,7 +409,38 @@ namespace Data.Repositores
             departmentId = id;
         }
 
+        public List<DisplayUsersVM> GetArchivedUsers(AreaVM area)
+        {
+            var context = GetUsersQuery();
+            var users = (from item in context
+                         where (item.Department.Area == area.Section && !item.IsActived)
+                         orderby item.RegisterDate descending
+                         select new DisplayUsersVM
+                         {
+                             UserId = item.UserId,
+                             UserName = item.UserName,
+                             FirstName = item.FirstName,
+                             LastName = item.LastName,
+                             Gender = (item.Gender == "M") ? "مرد" : "زن",
+                             MaritalStatus = (item.MaritalStatus == "S") ? "مجرد" : "متاهل",
+                             Employment = (item.Employment == "T") ? "آزمایشی" : ((item.Employment == "C") ? "قراردادی" : "رسمی"),
+                             Area = (item.Department.Area == "0" ? "استان" : (item.Department.Area == "1" ? "شهرستان" : "بخش")),
+                             County = item.Department.County,
+                             District = item.Department.District,
+                             Insurance = (item.Insurance) ? "مشمول" : "در انتظار",
+                             Education = (item.Education == "Dip") ? "دیپلم" : ((item.Education == "B") ? "کارشناسی" : ((item.Education == "M") ? "کارشناسی ارشد" : "دکترا")),
+                             PhoneNumber = item.PhoneNumber,
+                             Email = item.Email,
+                             DateOfBirth = item.DateOfBirth,
+                             City = item.City,
+                             Address = item.Address,
+                             IsActived = (item.IsActived) ? "فعال" : "غیرفعال",
+                             LastActived = $"{item.LastActived.ToShamsi()}",
+                             RegisterDate = $"{item.RegisterDate.ToShamsi()}"
+                         })
+                         .ToList();
 
-
+            return users;
+        }
     }
 }

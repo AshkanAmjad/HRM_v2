@@ -171,7 +171,12 @@ namespace HRM.Areas.County.Controllers
         #endregion
 
         #region Index
-        public IActionResult CountyIndex()
+        public IActionResult CountyManagementIndex()
+        {
+            return View();
+        }
+
+        public IActionResult CountyDisabledUsersIndex()
         {
             return View();
         }
@@ -186,7 +191,7 @@ namespace HRM.Areas.County.Controllers
         [HttpPost]
         public IActionResult GetUsers(AreaVM arae)
         {
-            var users = _userService.GetUsers(arae);
+            var users = _userRepository.GetUsers(arae);
 
             #region paging and searching
             int start = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");

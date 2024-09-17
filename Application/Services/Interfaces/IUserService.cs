@@ -15,7 +15,6 @@ namespace Application.Services.Interfaces
         bool Register(UserRegisterVM model, out string message);
         bool Edit(UserEditVM model, out string message);
         bool Disable(UserEdit_DisableVM model, out string message);
-        List<DisplayUsersVM> GetUsers(AreaVM area);
         #endregion
 
 

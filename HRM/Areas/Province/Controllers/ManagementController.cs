@@ -154,7 +154,7 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Index
-        public IActionResult ProvinceIndex()
+        public IActionResult ProvinceManagementIndex()
         {
             return View();
         }
@@ -169,7 +169,7 @@ namespace HRM.Areas.Province.Controllers
         [HttpPost]
         public IActionResult GetUsers(AreaVM arae)
         {
-            var users = _userService.GetUsers(arae);
+            var users = _userRepository.GetUsers(arae);
 
             #region paging and searching
             int start = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");

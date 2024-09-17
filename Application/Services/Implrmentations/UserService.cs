@@ -85,10 +85,6 @@ namespace Application.Services.Implrmentations
             return result;
         }
 
-
-        public List<DisplayUsersVM> GetUsers(AreaVM area)
-        => _userRepository.GetUsers(area);
-
         public bool Edit(UserEditVM model, out string message)
         {
             #region Seed Data On Users Table

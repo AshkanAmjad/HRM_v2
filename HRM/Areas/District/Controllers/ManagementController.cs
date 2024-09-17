@@ -195,7 +195,12 @@ namespace HRM.Areas.District.Controllers
         #endregion
 
         #region Index
-        public IActionResult DistrictIndex()
+        public IActionResult DistrictManagementIndex()
+        {
+            return View();
+        }
+
+        public IActionResult DistrictDisabledUsersIndex()
         {
             return View();
         }
@@ -210,7 +215,7 @@ namespace HRM.Areas.District.Controllers
         [HttpPost]
         public IActionResult GetUsers(AreaVM arae)
         {
-            var users = _userService.GetUsers(arae);
+            var users = _userRepository.GetUsers(arae);
 
             #region paging and searching
             int start = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");
