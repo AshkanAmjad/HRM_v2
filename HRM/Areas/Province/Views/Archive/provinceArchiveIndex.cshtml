@@ -5,84 +5,99 @@
     <div id="operation-box" class="modal fade" role="dialog" aria-hidden="true">
     </div>
     <div class="btn btn-outline-primary btn-sm  my-3 mx-1">بایگانی پرسنل - استان</div>
-
-    <div>
-        <div id="users-box">
-        </div>
-        <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
-            <script type="text/javascript">
-                var _gridUrl = '@Url.Action("FillUsersGrid", "Archive", new { area = "Province" })';
-                var _GetUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Archive", new { Section = "0", Province = "0", County = "0", District = "0" }))';
-                var direction = {
-                    province: "1",
-                    county: "0",
-                    district: "0"
-                };
-            </script>
-            <script type="text/javascript">
-                //List
-                $(document).ready(function (e) {
-                    $.get(_gridUrl).done(function (result) {
-                        $("#users-box").html(result);
-                    });
+    <div class="d-flex px-5 mb-3 justify-content-center">
+        <button class="btn btn-danger mx-2 px-4 rounded-pill w-pill shadow shadow-sm" id="deleteBtn">
+            <i class="fa fa-remove"></i>
+            <p class="fs-9 m-0 ">
+                حذف
+            </p>
+        </button>
+        <button class="btn btn-success mx-2 px-4 rounded-pill w-pill shadow shadow-sm" id="activingBtn">
+            <i class="fa fa-check"></i>
+            <p class="fs-9 m-0">
+                بازیابی
+            </p>
+        </button>
+    </div>
+    <div id="users-box">
+    </div>
+    <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
+        <script type="text/javascript">
+            var _gridUrl = '@Url.Action("FillUsersGrid", "Archive", new { area = "Province" })';
+            var _GetUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Archive", new { Section = "0", Province = "0", County = "0", District = "0" }))';
+            var direction = {
+                province: "1",
+                county: "0",
+                district: "0"
+            };
+        </script>
+        <script type="text/javascript">
+            //List
+            $(document).ready(function (e) {
+                $.get(_gridUrl).done(function (result) {
+                    $("#users-box").html(result);
                 });
+            });
 
-                function GridLoad() {
-                    table = $("#tableList").DataTable({
-                        initComplete: function () {
-                            $('div.dt-search').addClass("d-flex");
-                            $('div.dt-search input').addClass('form-control');
-                        },
-                        "paging": true,
-                        "pagingType": 'full_numbers',
-                        "pageLength": 10,
-                        "processing": false,
-                        "serverSide": true,
-                        "info": false,
-                        "lengthChange": false,
-                        "ordering": false,
-                        "language": {
-                            "emptyTable": "داده ای ثبت نشده است.",
-                            "zeroRecords": "کاربری یافت نشد.",
-                            "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
-                            "search": `<span class="ms-2">
-                                                                     <i class="fa fa-search text-primary"></i>
-                                                                                       جست‌و‌جو بر اساس کد ملی:
-                                                               </span>`,
-                            "searchPlaceholder": 'مقدار مناسبی برای کد ملی وارد کنید ...',
-                        },
-                        "ajax": {
-                            "url": _GetUsersUrl,
-                            "type": "POST",
-                            "datatype": "json"
-                        },
-                        "columns": [
-                            { "data": "userName", "title": "نام کاربری" },
-                            { "data": "area", "title": "ناحیه" },
-                            { "data": "county", "title": "شهرستان" },
-                            { "data": "district", "title": "بخش" },
-                            { "data": "firstName", "title": "نام" },
-                            { "data": "lastName", "title": "نام خانوادگی" },
-                            { "data": "gender", "title": "جنسیت" },
-                            { "data": "education", "title": "تحصیلات" },
-                            { "data": "employment", "title": "وضعیت استخدامی" },
-                            { "data": "maritalStatus", "title": "وضعیت تاهل" },
-                            { "data": "insurance", "title": "بیمه" },
-                            { "data": "phoneNumber", "title": "شماره همراه" },
-                            { "data": "email", "title": "پست الکترونیک" },
-                            { "data": "dateOfBirth", "title": "تاریخ تولد" },
-                            { "data": "city", "title": "شهر سکونت" },
-                            { "data": "address", "title": "نشانی سکونت" },
-                            { "data": "isActived", "title": "وضعیت" },
-                            { "data": "lastActived", "title": "آخرین فعالیت" },
-                            { "data": "registerDate", "title": "تاریخ ثبت" },
-                            {"data":"userId", "visible":false}
-                        ]
-                    })
-                };
+            function GridLoad() {
+                table = $("#tableList").DataTable({
+                    initComplete: function () {
+                        $('div.dt-search').addClass("d-flex");
+                        $('div.dt-search input').addClass('form-control');
+                    },
+                    "paging": true,
+                    "pagingType": 'full_numbers',
+                    "pageLength": 10,
+                    "processing": false,
+                    "serverSide": true,
+                    "info": false,
+                    "lengthChange": false,
+                    "ordering": false,
+                    "language": {
+                        "emptyTable": "داده ای ثبت نشده است.",
+                        "zeroRecords": "کاربری یافت نشد.",
+                        "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
+                        "search": `<span class="ms-2">
+                                                                                                                                                         <i class="fa fa-search text-primary"></i>
+                                                                                                                                                                           جست‌و‌جو بر اساس کد ملی:
+                                                                                                                                                   </span>`,
+                        "searchPlaceholder": 'مقدار مناسبی برای کد ملی وارد کنید ...',
+                    },
+                    "ajax": {
+                        "url": _GetUsersUrl,
+                        "type": "POST",
+                        "datatype": "json"
+                    },
+                    "columns": [
+                        { "data": "userName", "title": "نام کاربری" },
+                        { "data": "area", "title": "ناحیه" },
+                        { "data": "county", "title": "شهرستان" },
+                        { "data": "district", "title": "بخش" },
+                        { "data": "firstName", "title": "نام" },
+                        { "data": "lastName", "title": "نام خانوادگی" },
+                        { "data": "gender", "title": "جنسیت" },
+                        { "data": "education", "title": "تحصیلات" },
+                        { "data": "employment", "title": "وضعیت استخدامی" },
+                        { "data": "maritalStatus", "title": "وضعیت تاهل" },
+                        { "data": "insurance", "title": "بیمه" },
+                        { "data": "phoneNumber", "title": "شماره همراه" },
+                        { "data": "email", "title": "پست الکترونیک" },
+                        { "data": "dateOfBirth", "title": "تاریخ تولد" },
+                        { "data": "city", "title": "شهر سکونت" },
+                        { "data": "address", "title": "نشانی سکونت" },
+                        { "data": "isActived", "title": "وضعیت" },
+                        { "data": "lastActived", "title": "آخرین فعالیت" },
+                        { "data": "registerDate", "title": "تاریخ ثبت" },
+                        { "data": "userId", "visible": false }
+                    ]
+                });
+            };
 
-                //Reload
-                function GridReload() {
-                    table.ajax.reload(null, false);
-                }
-            </script>
+            //Reload
+            function GridReload() {
+                table.ajax.reload(null, false);
+            }
+
+            $('#activingBtn, #deleteBtn').attr('disabled', true);
+
+        </script>

@@ -28,19 +28,22 @@
 .fs-8 {
     font-size: 0.8rem !important;
 }
+
 .fs-9 {
     font-size: 0.7rem !important;
 }
+
 .fs-10 {
     font-size: 0.6rem !important;
 }
+
 .fs-11 {
     font-size: 0.1rem !important;
 }
 
-.px-7{
-    padding-right:100px !important;
-    padding-left:100px !important;
+.px-7 {
+    padding-right: 100px !important;
+    padding-left: 100px !important;
 }
 
 .mb-n1 {
@@ -51,12 +54,12 @@
     cursor: default;
 }
 
-.alert{
-    width:50% !important;
+.alert {
+    width: 50% !important;
 }
 
-.cursor-pointer{
-    cursor:pointer;
+.cursor-pointer {
+    cursor: pointer;
 }
 
 .btn-close {
@@ -66,15 +69,19 @@
     left: 10px;
 }
 
+.w-pill {
+    width: 5rem;
+}
+
 .w-90 {
     width: 90%;
 }
 
-.hidden{
-    display:none;
+.hidden {
+    display: none;
 }
 
-.footer-animation , .header-animation {
+.footer-animation, .header-animation {
     display: inline-block;
     animation: fadeIn;
     animation-duration: 8s;
@@ -84,10 +91,10 @@
     color: #007BFF;
 }
 
-.lds-ellipsis,
-.lds-ellipsis div {
-    box-sizing: border-box;
-}
+    .lds-ellipsis,
+    .lds-ellipsis div {
+        box-sizing: border-box;
+    }
 
 .lds-ellipsis {
     display: inline-block;
@@ -162,17 +169,22 @@
     text-align: center !important;
 }
 
-.dt-paging{
-    text-align:center !important;
-    width:100% !important;
+.dt-paging {
+    text-align: center !important;
+    width: 100% !important;
 }
 
-.dt-search{
-    text-align:right !important;
+.dt-search {
+    text-align: right !important;
 }
 
 .dt-input {
     width: 25rem !important;
+}
+
+table tbody tr.selected td {
+    background-color: #007BFF ;
+    color: #fff !important;
 }
 
 /*header*/
@@ -192,22 +204,22 @@ header {
 /*navbar*/
 .nav bar li a:active {
     color: #fff !important;
-    cursor:pointer;
+    cursor: pointer;
 }
 
-.navBar-active, .navBar li a:hover{
+.navBar-active, .navBar li a:hover {
     background: rgb(0,123,255);
     color: #fff !important;
     border-radius: 3px;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .nav-background {
     background-color: rgb(242,242,242);
 }
 
-#navbar{
-    font-size:0.9rem;
+#navbar {
+    font-size: 0.9rem;
 }
 /*container*/
 .container {
@@ -241,7 +253,7 @@ header {
         order: 1;
     }
 
-    input, input::placeholder,textarea,textarea::placeholder {
+    input, input::placeholder, textarea, textarea::placeholder {
         font-size: 0.55rem;
     }
 
@@ -255,7 +267,7 @@ header {
         padding-bottom: 0.7rem;
     }
 
-    #educationTypes{
+    #educationTypes {
         font-size: 0.55rem;
         padding-top: 0.7rem;
         padding-bottom: 0.7rem;
@@ -266,15 +278,16 @@ header {
     body {
         min-height: 120vh;
     }
+
     label {
         font-size: 0.6rem;
     }
 }
 
 /*main*/
-.avatarUploadBox{
-    width:200px;
-    height:200px;
-    border:2px dotted #ccc;
-    cursor:grab;
+.avatarUploadBox {
+    width: 200px;
+    height: 200px;
+    border: 2px dotted #ccc;
+    cursor: grab;
 }

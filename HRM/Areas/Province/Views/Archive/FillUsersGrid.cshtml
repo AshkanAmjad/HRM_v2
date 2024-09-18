@@ -7,7 +7,7 @@
         <div class="card shadow mx-1">
             <div class="card-body">
                 <div class="table-responsive px-1">
-                    <table class="table table-hover table-bordered mx-auto text-center fs-8 cursor" id="tableList">
+                    <table class="table table-hover table-bordered mx-auto table-striped text-center fs-8 cursor" id="tableList">
                         <thead>
                             <tr>
                                 <th scope="col">نام کاربری</th>
@@ -41,7 +41,23 @@
                 <script type="text/javascript">
                 </script>
                 <script type="text/javascript">
+
+                    //Load Grid
                     $(document).ready(function () {
                         GridLoad();
                     });
+
+                    //Select Row
+                    $('#tableList tbody').on('click', 'tr', function () {
+                        if ($(this).hasClass('selected')) {
+                            $(this).removeClass('selected');
+                            $('#activingBtn, #deleteBtn').attr('disabled', true);
+                        } else {
+                            table.$('tr.selected').removeClass('selected');
+                            $(this).addClass('selected');
+                            $('#activingBtn, #deleteBtn').attr('disabled', false);
+                        }
+                    })
+                    $('#activingBtn, #deleteBtn').attr('disabled', true);
+
                 </script>
