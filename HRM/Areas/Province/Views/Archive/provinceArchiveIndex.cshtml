@@ -18,6 +18,10 @@
                 بازیابی
             </p>
         </button>
+
+        <i class="fa fa-info-circle text-primary cursor-pointer" data-toggle="tooltip" data-bs-html="true"
+           title="<p class='fs-9 m-0'>برای فعال شدن دکمه ها، ابتدا سطر مربوطه را انتخاب کنید.</P>"></i>
+
     </div>
     <div id="users-box">
     </div>
@@ -100,4 +104,7 @@
 
             $('#activingBtn, #deleteBtn').attr('disabled', true);
 
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
         </script>
