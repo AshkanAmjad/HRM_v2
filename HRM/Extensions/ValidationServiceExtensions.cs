@@ -4,6 +4,7 @@ using Domain.DTOs.Security.User;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using HRM.Models.Validation;
+using HRM.Models.Validation.Security;
 
 namespace HRM.Extensions
 {
@@ -21,6 +22,7 @@ namespace HRM.Extensions
             services.AddScoped<IValidator<UserEdit_DisableVM>, UserEdit_DisableValidator>();
             services.AddScoped<IValidator<UserEditVM>,UserEditValidator>();
             services.AddScoped<IValidator<AreaVM>,AreaValidator>();
+            services.AddScoped<IValidator<UserDelete_ActiveVM>, UserDelete_ActiveValidator>();
             #endregion
 
             #region Authenication

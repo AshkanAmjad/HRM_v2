@@ -2,16 +2,16 @@
 using AutoMapper;
 using Domain.DTOs.General;
 using Domain.DTOs.Security.User;
-using Domain.Entities.Security.Models;
 using Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HRM.Areas.Province.Controllers
+namespace HRM.Areas.County.Controllers
 {
-    [Area("Province")]
+    [Area("County")]
+
     public class ArchiveController : Controller
     {
         #region Constructor
@@ -36,7 +36,7 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Index
-        public IActionResult ProvinceArchiveIndex()
+        public IActionResult CountyArchiveIndex()
         {
             return View();
         }
@@ -145,65 +145,5 @@ namespace HRM.Areas.Province.Controllers
         }
 
         #endregion
-
-        #region Active
-        public IActionResult Active(UserDelete_ActiveVM model)
-        {
-            ValidationResult userValidator = _userDelete_ActiveValidator.Validate(model);
-            bool success = false;
-            string message = $".عملیات بازیابی با شکست مواجه شده است";
-            string checkMessage = "";
-
-            if (userValidator.IsValid)
-            {
-                try
-                {
-                    //bool result = _userService.Active(model, out checkMessage);
-
-                    //if (result)
-                    //{
-                    //    _userRepository.SaveChanges();
-                    //    success = true;
-                    //    message = $"<h5>عملیات بازیابی کاربر <span class='text-primary'> {model.UserName} </span> با موفقیت انجام شد.</h5>";
-                    //}
-                    //else
-                    //{
-                    //    message = checkMessage;
-                    //}
-                }
-                catch (Exception ex)
-                {
-                    while (ex.InnerException != null)
-                    {
-                        ex = ex.InnerException;
-                    }
-                    message = $"خطای شکست عملیات  :  {ex.Message}";
-                }
-            }
-            else
-            {
-                message = $"{userValidator}";
-            }
-
-            #region Manual Validation
-            foreach (var error in userValidator.Errors)
-            {
-                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-            }
-            userValidator.AddToModelState(this.ModelState);
-            #endregion
-
-            #region Json data
-            var jsonData = new
-            {
-                success = success,
-                message = message,
-            };
-            #endregion
-
-            return Json(jsonData);
-        }
-        #endregion
-
     }
 }

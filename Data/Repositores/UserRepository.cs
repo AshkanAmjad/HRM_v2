@@ -442,5 +442,37 @@ namespace Data.Repositores
 
             return users;
         }
+
+        public bool Delete(UserDelete_ActiveVM user, out string message)
+        {
+            string checkMessage = "انجام عملیات حذف با شکست مواحه شد.";
+            if (user == null)
+            {
+                message = checkMessage;
+                return false;
+            }
+
+            var context = GetUsersQuery();
+
+            if(context == null)
+            {
+                message = checkMessage;
+                return false;
+            }
+
+            var data = context.Where(u => u.UserId == user.UserId)
+                              .FirstOrDefault();
+
+            if(data == null)
+            {
+                message = checkMessage;
+                return false;
+            }
+
+            _context.Remove(data);
+
+            message = "";
+            return true;
+        }
     }
 }

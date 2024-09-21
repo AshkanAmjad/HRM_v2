@@ -18,6 +18,7 @@ namespace Domain.Interfaces
         bool Similarity(UserRegisterVM user, out string message);
         bool Register(UserRegisterVM user, out string message);
         bool Edit(UserEditVM user, out string message);
+        bool Delete(UserDelete_ActiveVM user, out string message);
         bool Disable(UserEdit_DisableVM model, out string message); 
         List<DisplayUsersVM> GetUsers(AreaVM area);
         List<DisplayUsersVM> GetArchivedUsers(AreaVM area);

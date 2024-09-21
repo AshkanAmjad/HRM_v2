@@ -33,7 +33,7 @@ namespace HRM.Areas.Province.Controllers
 
         public ManagementController(IUserService userService,
             IValidator<UserRegisterVM> userRegisterValidator,
-            IValidator<UserEditVM> userEditValidators,
+            IValidator<UserEditVM> userEditValidator,
             IValidator<UserEdit_DisableVM> userEdit_DeleteValidator,
             IUserRepository userRepository,
             IDocumentService documentService,
@@ -44,7 +44,7 @@ namespace HRM.Areas.Province.Controllers
             _userRegisterValidator = userRegisterValidator;
             _userRepository = userRepository;
             _documentService = documentService;
-            _userEditValidator = userEditValidators;
+            _userEditValidator = userEditValidator;
             _userEdit_DeleteValidator = userEdit_DeleteValidator;
             _documentRepository = documentRepository;
             _mapper = mapper;
