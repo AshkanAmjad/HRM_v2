@@ -51,13 +51,13 @@
                     $('#tableList tbody').on('click', 'tr', function () {
                         if ($(this).hasClass('selected')) {
                             $(this).removeClass('selected');
-                            $('#activingBtn, #deleteBtn').attr('disabled', true);
+                            $('#activeBtn, #deleteBtn').attr('disabled', true);
                         } else {
                             table.$('tr.selected').removeClass('selected');
                             $(this).addClass('selected');
-                            $('#activingBtn, #deleteBtn').attr('disabled', false);
+                            $('#activeBtn, #deleteBtn').attr('disabled', false);
                         }
                     })
-                    $('#activingBtn, #deleteBtn').attr('disabled', true);
+                    $('#activeBtn, #deleteBtn').attr('disabled', true);
 
                 </script>

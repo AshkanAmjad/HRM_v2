@@ -12,7 +12,7 @@
                 حذف
             </p>
         </button>
-        <button class="btn btn-success mx-2 px-4 rounded-pill w-pill shadow shadow-sm" id="activingBtn">
+        <button class="btn btn-success mx-2 px-4 rounded-pill w-pill shadow shadow-sm" id="activeBtn">
             <i class="fa fa-check"></i>
             <p class="fs-9 m-0">
                 بازیابی
@@ -28,7 +28,9 @@
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
         <script type="text/javascript">
             var _gridUrl = '@Url.Action("FillUsersGrid", "Archive", new { area = "Province" })';
-            var _GetUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Archive", new { Section = "0", Province = "0", County = "0", District = "0" }))';
+            var _getUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Archive", new { Section = "0", Province = "0", County = "0", District = "0" }))';
+            var _deleteUrl = '@Url.Action("Delete", "Archive")';
+            var _activeUrl = '@Url.Action("Active", "Archive")';
             var direction = {
                 province: "1",
                 county: "0",
@@ -62,13 +64,13 @@
                         "zeroRecords": "کاربری یافت نشد.",
                         "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
                         "search": `<span class="ms-2">
-                                                                                                                                                         <i class="fa fa-search text-primary"></i>
-                                                                                                                                                                           جست‌و‌جو بر اساس کد ملی:
-                                                                                                                                                   </span>`,
+                                                                            <i class="fa fa-search text-primary"></i>
+                                                                            جست‌و‌جو بر اساس کد ملی:
+                                                                      </span>`,
                         "searchPlaceholder": 'مقدار مناسبی برای کد ملی وارد کنید ...',
                     },
                     "ajax": {
-                        "url": _GetUsersUrl,
+                        "url": _getUsersUrl,
                         "type": "POST",
                         "datatype": "json"
                     },
@@ -102,9 +104,117 @@
                 table.ajax.reload(null, false);
             }
 
-            $('#activingBtn, #deleteBtn').attr('disabled', true);
+            //Disabing buttons
+            $('#activeBtn, #deleteBtn').attr('disabled', true);
 
+            //Tooltip
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip()
+            })
+
+            //Delete
+            $('#deleteBtn').off("click").on("click", function (e) {
+                var index = table.row('.selected').index();
+                var data = table.row(index).data();
+                if (data.userId != null) {
+                    e.preventDefault();
+                    var id = data.userId;
+
+                    swal.fire({
+                        text: " آیا از حذف اطلاعات ثبتی کاربر " + data.userName + " مطمئن هستید؟ ",
+                        showCancelButton: true,
+                        icon: "warning",
+                        confirmButtonText: "تایید",
+                        confirmButtonColor: "#DC3545",
+                        cancelButtonText: "خیر"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.post(_deleteUrl, { userId: id }).done(function (result) {
+                                if (result.success) {
+                                    Swal.fire({
+                                    title: result.message,
+                                    icon: 'success',
+                                    showConfirmButton: false,
+                                    timer: 4000,
+                                    showClass: {
+                                        popup: 'animate__animated animate__fadeInDown'
+                                    },
+                                    hideClass: {
+                                        popup: 'animate__animated animate__fadeOutDown'
+                                    }
+                                    })
+                        
+                                } else {
+                                    Swal.fire({
+                                        title: 'خطا',
+                                        icon: 'error',
+                                        text: result.message,
+                                        showConfirmButton: false,
+                                        timer: 4000,
+                                        showClass: {
+                                            popup: 'animate__animated animate__fadeInDown'
+                                        },
+                                        hideClass: {
+                                            popup: 'animate__animated animate__fadeOutDown'
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+
+            //Active
+            $('#activeBtn').off("click").on("click", function (e) {
+                var index = table.row('.selected').index();
+                var data = table.row(index).data();
+                if (data.userId != null) {
+                    e.preventDefault();
+                    var id = data.userId;
+
+                    swal.fire({
+                        text: " آیا از فعال شدن کاربر " + data.userName + " مطمئن هستید؟ ",
+                        showCancelButton: true,
+                        icon: "warning",
+                        confirmButtonText: "تایید",
+                        confirmButtonColor: "#198754",
+                        cancelButtonText: "خیر"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.post(_activeUrl, { userId: id }).done(function (result) {
+                                if (result.success) {
+                                    Swal.fire({
+                                        title: result.message,
+                                        icon: 'success',
+                                        showConfirmButton: false,
+                                        timer: 4000,
+                                        showClass: {
+                                            popup: 'animate__animated animate__fadeInDown'
+                                        },
+                                        hideClass: {
+                                            popup: 'animate__animated animate__fadeOutDown'
+                                        }
+                                    })
+
+                                } else {
+                                    Swal.fire({
+                                        title: 'خطا',
+                                        icon: 'error',
+                                        text: result.message,
+                                        showConfirmButton: false,
+                                        timer: 4000,
+                                        showClass: {
+                                            popup: 'animate__animated animate__fadeInDown'
+                                        },
+                                        hideClass: {
+                                            popup: 'animate__animated animate__fadeOutDown'
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                    })
+                }
             })
         </script>

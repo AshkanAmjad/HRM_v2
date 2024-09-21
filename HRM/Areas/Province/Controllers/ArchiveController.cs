@@ -91,6 +91,22 @@ namespace HRM.Areas.Province.Controllers
         }
         #endregion
 
+        #region Delete
+
+        [HttpPost]
+        public IActionResult Delete(UserDelete_ActiveVM model)
+        {
+            return View();
+        }
+
+        #endregion
+
+        #region Active
+        public IActionResult Active(UserDelete_ActiveVM model)
+        {
+            return View();
+        }
+        #endregion
 
     }
 }

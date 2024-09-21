@@ -281,6 +281,11 @@
 <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPersianDatePickerPartial.cshtml" />
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_DataTablesJsPartial.cshtml">
+
+        <script type="text/javascript">
+            var _editUrl = '@Url.Action("Edit", "Management", new { area = "County" })';
+        </script>
+
         <script type="text/javascript">
             $('#dateOfBirth').persianDatepicker({
                 initialValue: false,
@@ -427,7 +432,7 @@
                         $("#submitBtn").prop('disabled', true);
                         var formData = new FormData($form.get(0));
                         $.ajax({
-                            url: '@Url.Action("Edit", "Management")',
+                            url: _editUrl,
                             type: 'POST',
                             data: formData,
                             processData: false,

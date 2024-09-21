@@ -18,7 +18,9 @@
         <script type="text/javascript">
             var _registerUrl = '@Url.Action("Register", "Management", new { area = "District" })';
             var _gridUrl = '@Url.Action("FillUsersGrid", "Management", new { area = "District" })';
-            var _GetUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Management", new { Section = "2", Province = "0", County = "0", District = "0" }))';
+            var _getUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Management", new { Section = "2", Province = "0", County = "0", District = "0" }))';
+            var _editUrl = '@Url.Action("Edit", "Management", new { area = "District" })';
+            var _disableUrl = '@Url.Action("Disable", "Management", new { area = "District" })';
             var direction = {
                 province: 1,
                 county: 1,
@@ -58,7 +60,7 @@
                         "searchPlaceholder": 'مقدار مناسبی برای کد ملی وارد کنید ...',
                     },
                     "ajax": {
-                        "url": _GetUsersUrl,
+                        "url": _getUsersUrl,
                         "type": "POST",
                         "datatype": "json"
                     },
@@ -127,7 +129,7 @@
                     district: direction.district
                 };
 
-                $.get('@Url.Action("Edit", "Management")', data).done(function (result) {
+                $.get(_editUrl, data).done(function (result) {
                     $("#operation-box").html(result);
                     $("#operation-box").modal("show");
                 });
@@ -140,7 +142,7 @@
                     showCancelButton: true,
                     icon: "warning",
                     confirmButtonText: "تایید",
-                    confirmButtonColor: "#d33",
+                    confirmButtonColor: "#DC3545",
                     cancelButtonText: "خیر"
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -154,7 +156,7 @@
                             district: direction.district
                         };
 
-                        $.post('@Url.Action("Disable", "Management")', data).done(function (result) {
+                        $.post(_disableUrl, data).done(function (result) {
                             if (result.success) {
                                 GridReload();
                                 Swal.fire({
