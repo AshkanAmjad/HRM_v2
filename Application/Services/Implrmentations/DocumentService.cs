@@ -226,13 +226,12 @@ namespace Application.Services.Implrmentations
             return dir;
         }
 
-        public bool IsExistOrginalAvatarOnServer(UserEditVM? user)
+        public bool IsExistOrginalAvatarOnServer(DirectionVM direction, string userName)
         {
             bool result = false;
-            if (user != null)
-            {
 
-                DirectionVM direction = _mapper.Map<DirectionVM>(user);
+            if (direction != null && userName != "")
+            {
                 direction.Name = "Avatar";
 
                 var path = UploadDirectionOnServer(direction);
@@ -243,35 +242,7 @@ namespace Application.Services.Implrmentations
 
                 if (dirOrginal)
                 {
-                    var dirOrginalAvatar = $"{path._saveDirOrginal}/Avatar-{user.UserName}{Path.GetExtension(".png")}";
-                    isExistOrginalAvatar = File.Exists(dirOrginalAvatar);
-
-                    if (isExistOrginalAvatar)
-                    {
-                        result = true;
-                    }
-                }
-            }
-            return result;
-        }
-        public bool IsExistOrginalAvatarOnServer(UserDelete_ActiveVM? user)
-        {
-            bool result = false;
-            if (user != null)
-            {
-
-                DirectionVM direction = _mapper.Map<DirectionVM>(user);
-                direction.Name = "Avatar";
-
-                var path = UploadDirectionOnServer(direction);
-
-                bool dirOrginal = Directory.Exists(path._saveDirOrginal);
-
-                bool isExistOrginalAvatar;
-
-                if (dirOrginal)
-                {
-                    var dirOrginalAvatar = $"{path._saveDirOrginal}/Avatar-{user.UserName}{Path.GetExtension(".png")}";
+                    var dirOrginalAvatar = $"{path._saveDirOrginal}/Avatar-{userName}{Path.GetExtension(".png")}";
                     isExistOrginalAvatar = File.Exists(dirOrginalAvatar);
 
                     if (isExistOrginalAvatar)
@@ -283,12 +254,12 @@ namespace Application.Services.Implrmentations
             return result;
         }
 
-        public bool IsExistThumbAvatarOnServer(UserEditVM? user)
+        public bool IsExistThumbAvatarOnServer(DirectionVM direction, string userName)
         {
             bool result = false;
-            if (user != null)
+
+            if (direction != null && userName != "")
             {
-                DirectionVM direction = _mapper.Map<DirectionVM>(user);
                 direction.Name = "Avatar";
 
                 var path = UploadDirectionOnServer(direction);
@@ -299,7 +270,7 @@ namespace Application.Services.Implrmentations
 
                 if (dirThumb)
                 {
-                    var dirThumbAvatar = $"{path._saveDirThumb}/Thumb-{user.UserName}{Path.GetExtension(".png")}";
+                    var dirThumbAvatar = $"{path._saveDirThumb}/Thumb-{userName}{Path.GetExtension(".png")}";
                     isExistThumbAvatar = File.Exists(dirThumbAvatar);
                 }
 
@@ -311,33 +282,6 @@ namespace Application.Services.Implrmentations
             return result;
         }
 
-        public bool IsExistThumbAvatarOnServer(UserDelete_ActiveVM? user)
-        {
-            bool result = false;
-            if (user != null)
-            {
-                DirectionVM direction = _mapper.Map<DirectionVM>(user);
-                direction.Name = "Avatar";
-
-                var path = UploadDirectionOnServer(direction);
-
-                bool dirThumb = Directory.Exists(path._saveDirThumb);
-
-                bool isExistThumbAvatar = false;
-
-                if (dirThumb)
-                {
-                    var dirThumbAvatar = $"{path._saveDirThumb}/Thumb-{user.UserName}{Path.GetExtension(".png")}";
-                    isExistThumbAvatar = File.Exists(dirThumbAvatar);
-                }
-
-                if (isExistThumbAvatar)
-                {
-                    result = true;
-                }
-            }
-            return result;
-        }
 
         public void DeleteDocumentOnServer(string filePathOriginal, string filePathThumb)
         {

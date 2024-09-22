@@ -174,8 +174,10 @@ namespace HRM.Areas.Province.Controllers
 
                         if (IsExistAvatarOnDb)
                         {
-                            bool isExistOrginalAvatar = _documentService.IsExistOrginalAvatarOnServer(model);
-                            bool isExistThumbAvatar = _documentService.IsExistThumbAvatarOnServer(model);
+                            DirectionVM direction = _mapper.Map<DirectionVM>(model);
+
+                            bool isExistOrginalAvatar = _documentService.IsExistOrginalAvatarOnServer(direction, model.UserName);
+                            bool isExistThumbAvatar = _documentService.IsExistThumbAvatarOnServer(direction, model.UserName);
 
                             if (!isExistOrginalAvatar || !isExistThumbAvatar)
                             {
