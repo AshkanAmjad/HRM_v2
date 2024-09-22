@@ -254,8 +254,64 @@ namespace Application.Services.Implrmentations
             }
             return result;
         }
+        public bool IsExistOrginalAvatarOnServer(UserDelete_ActiveVM? user)
+        {
+            bool result = false;
+            if (user != null)
+            {
+
+                DirectionVM direction = _mapper.Map<DirectionVM>(user);
+                direction.Name = "Avatar";
+
+                var path = UploadDirectionOnServer(direction);
+
+                bool dirOrginal = Directory.Exists(path._saveDirOrginal);
+
+                bool isExistOrginalAvatar;
+
+                if (dirOrginal)
+                {
+                    var dirOrginalAvatar = $"{path._saveDirOrginal}/Avatar-{user.UserName}{Path.GetExtension(".png")}";
+                    isExistOrginalAvatar = File.Exists(dirOrginalAvatar);
+
+                    if (isExistOrginalAvatar)
+                    {
+                        result = true;
+                    }
+                }
+            }
+            return result;
+        }
 
         public bool IsExistThumbAvatarOnServer(UserEditVM? user)
+        {
+            bool result = false;
+            if (user != null)
+            {
+                DirectionVM direction = _mapper.Map<DirectionVM>(user);
+                direction.Name = "Avatar";
+
+                var path = UploadDirectionOnServer(direction);
+
+                bool dirThumb = Directory.Exists(path._saveDirThumb);
+
+                bool isExistThumbAvatar = false;
+
+                if (dirThumb)
+                {
+                    var dirThumbAvatar = $"{path._saveDirThumb}/Thumb-{user.UserName}{Path.GetExtension(".png")}";
+                    isExistThumbAvatar = File.Exists(dirThumbAvatar);
+                }
+
+                if (isExistThumbAvatar)
+                {
+                    result = true;
+                }
+            }
+            return result;
+        }
+
+        public bool IsExistThumbAvatarOnServer(UserDelete_ActiveVM? user)
         {
             bool result = false;
             if (user != null)

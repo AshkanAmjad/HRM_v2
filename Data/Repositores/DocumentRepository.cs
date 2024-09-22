@@ -51,8 +51,6 @@ namespace Data.Repositores
                 document.DataBytes = target.ToArray();
             }
             _context.Add(document);
-
-
         }
 
 
@@ -78,7 +76,9 @@ namespace Data.Repositores
         }
 
         public bool IsExistAvatarOnDb(Guid userId)
-            => _context.Documents.Any(d => d.Department.UserId == userId && d.Title == "Avatar" && d.IsActived);
+        => _context.Documents.Any(d => d.Department.UserId == userId && d.Title == "Avatar");
+            
+        
 
         public Document? GetAvatarWithUserId(Guid userId)
             => _context.Documents.Include(d => d.Department).ThenInclude(d => d.User).Where(d => d.Department.UserId == userId).SingleOrDefault();
@@ -203,5 +203,28 @@ namespace Data.Repositores
             }
         }
 
+        public void ActiveDocuments(Guid departmentId)
+        {
+            if (departmentId == Guid.Empty)
+            {
+                return;
+            }
+
+            var documents = _context.Documents.IgnoreQueryFilters()
+                                              .Where(d => d.DepartmentId == departmentId)
+                                              .ToList();
+
+            if (documents.Count == 0)
+            {
+                return;
+            }
+
+            foreach (var document in documents)
+            {
+                document.IsActived = true;
+            }
+
+            _context.Documents.UpdateRange(documents);
+        }
     }
 }

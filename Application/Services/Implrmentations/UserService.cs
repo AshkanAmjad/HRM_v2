@@ -7,6 +7,7 @@ using Domain.DTOs.General;
 using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Security.Login;
 using Domain.DTOs.Security.User;
+using Domain.Entities.Portal.Models;
 using Domain.Entities.Security.Models;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
@@ -126,6 +127,12 @@ namespace Application.Services.Implrmentations
             return result;
         }
 
+        public bool Active(UserDelete_ActiveVM model, out string message)
+        {
+            bool result = _userRepository.Active(model, out message);
+
+            return result;
+        }
     }
 
 

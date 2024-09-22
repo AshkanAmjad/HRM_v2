@@ -26,7 +26,11 @@ namespace Application.Services.Interfaces
 
         #region Is Exist 
         bool IsExistOrginalAvatarOnServer(UserEditVM? user);
+        bool IsExistOrginalAvatarOnServer(UserDelete_ActiveVM? user);
+
         bool IsExistThumbAvatarOnServer(UserEditVM? user);
+        bool IsExistThumbAvatarOnServer(UserDelete_ActiveVM? user);
+
         #endregion
     }
 }

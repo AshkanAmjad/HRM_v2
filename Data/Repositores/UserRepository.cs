@@ -159,14 +159,16 @@ namespace Data.Repositores
 
 
         public bool IsExistAvatar(Guid departmentId)
-            => _context.Documents.Where(d => d.DepartmentId == departmentId)
+            => _context.Documents.IgnoreQueryFilters()
+                                 .Where(d => d.DepartmentId == departmentId)
                                  .Any();
 
 
         public Guid? GetDepartmentIdByUserId(Guid userId, string area)
         {
             var department = _context.Departments
-                .FirstOrDefault(d => d.UserId == userId && d.Area == area);
+                                     .IgnoreQueryFilters()
+                                     .FirstOrDefault(d => d.UserId == userId && d.Area == area);
 
             return department?.DepartmentId;
         }
@@ -363,6 +365,30 @@ namespace Data.Repositores
             return false;
         }
 
+        public bool Active(UserDelete_ActiveVM model, out string message)
+        {
+            string checkMessage = "عملیات فعال سازی با شکست مواجه شد.";
+            Guid _departmentId = Guid.Empty;
+
+            if (model != null)
+            {
+                ActiveUser(model);
+
+                ActiveDepartment(model, out _departmentId);
+
+                Guid departmentId = _departmentId;
+
+                _documentRepository.ActiveDocuments(departmentId);
+
+                message = "";
+                return true;
+            }
+
+            message = checkMessage;
+            return false;
+        }
+
+
         public void DisableUser(UserEdit_DisableVM model)
         {
 
@@ -381,6 +407,24 @@ namespace Data.Repositores
             }
         }
 
+        public async void ActiveUser(UserDelete_ActiveVM model)
+        {
+            if (model != null)
+            {
+                var user = _context.Users.IgnoreQueryFilters()
+                                         .Where(u=> u.UserId == model.UserId)
+                                         .FirstOrDefault();
+
+                if (user != null)
+                {
+                    user.IsActived = true;
+                    user.RegisterDate = DateTime.Now;
+
+                    _context.Users.Update(user);
+                }
+            }
+        }
+
         public void DisableDepartment(UserEdit_DisableVM model, out Guid departmentId)
         {
             Guid id = Guid.Empty;
@@ -388,7 +432,7 @@ namespace Data.Repositores
 
             if (model != null)
             {
-                var _departmentId = GetDepartmentIdByUserId(model.UserId, model.area);
+                var _departmentId = GetDepartmentIdByUserId(model.UserId, model.Area);
 
                 if (_departmentId != Guid.Empty)
                 {
@@ -398,6 +442,36 @@ namespace Data.Repositores
                 if (department != null)
                 {
                     department.IsActived = false;
+                    department.RegisterDate = DateTime.Now;
+
+                    id = department.DepartmentId;
+
+                    _context.Departments.Update(department);
+                }
+            }
+
+            departmentId = id;
+        }
+
+        public void ActiveDepartment(UserDelete_ActiveVM model, out Guid departmentId)
+        {
+            Guid id = Guid.Empty;
+            Department? department = null;
+
+            if (model != null)
+            {
+                var _departmentId = GetDepartmentIdByUserId(model.UserId, model.Area);
+
+                if( _departmentId != Guid.Empty)
+                {
+                    department = _context.Departments.IgnoreQueryFilters()
+                                                     .Where(d => d.DepartmentId == _departmentId)
+                                                     .FirstOrDefault();
+                }
+
+                if (department != null)
+                {
+                    department.IsActived = true;
                     department.RegisterDate = DateTime.Now;
 
                     id = department.DepartmentId;
@@ -454,7 +528,7 @@ namespace Data.Repositores
 
             var context = GetUsersQuery();
 
-            if(context == null)
+            if (context == null)
             {
                 message = checkMessage;
                 return false;
@@ -463,7 +537,7 @@ namespace Data.Repositores
             var data = context.Where(u => u.UserId == user.UserId)
                               .FirstOrDefault();
 
-            if(data == null)
+            if (data == null)
             {
                 message = checkMessage;
                 return false;

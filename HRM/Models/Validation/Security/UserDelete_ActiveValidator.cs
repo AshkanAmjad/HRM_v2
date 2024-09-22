@@ -11,8 +11,14 @@ namespace HRM.Models.Validation.Security
                                   .NotNull()
                                   .NotEqual(Guid.Empty);
 
-            RuleFor(x => x.UserName).NotEmpty()
-                                    .NotNull();
+            RuleFor(x => x.Area).NotNull();
+
+            RuleFor(x => x.Province).NotNull();
+
+            RuleFor(x => x.County).NotNull();
+
+            RuleFor(x => x.District).NotNull();
+
         }
     }
 }

@@ -23,13 +23,18 @@ namespace HRM.Areas.Province.Controllers
         private readonly IMapper _mapper;
 
 
-        public ArchiveController(IUserService userService,
+        public ArchiveController(
+            IUserService userService,
+            IDocumentRepository documentRepository,
+            IDocumentService documentService,
             IUserRepository userRepository,
             IValidator<UserDelete_ActiveVM> userDelete_ActiveValidator,
             IMapper mapper)
         {
             _userService = userService;
+            _documentRepository = documentRepository;
             _userRepository = userRepository;
+            _documentService = documentService;
             _userDelete_ActiveValidator = userDelete_ActiveValidator;
             _mapper = mapper;
         }
@@ -147,6 +152,7 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Active
+        [HttpPost]
         public IActionResult Active(UserDelete_ActiveVM model)
         {
             ValidationResult userValidator = _userDelete_ActiveValidator.Validate(model);
@@ -158,18 +164,39 @@ namespace HRM.Areas.Province.Controllers
             {
                 try
                 {
-                    //bool result = _userService.Active(model, out checkMessage);
+                    bool result = _userService.Active(model, out checkMessage);
 
-                    //if (result)
-                    //{
-                    //    _userRepository.SaveChanges();
-                    //    success = true;
-                    //    message = $"<h5>عملیات بازیابی کاربر <span class='text-primary'> {model.UserName} </span> با موفقیت انجام شد.</h5>";
-                    //}
-                    //else
-                    //{
-                    //    message = checkMessage;
-                    //}
+                    if (result)
+                    {
+                        _userRepository.SaveChanges();
+
+                        bool IsExistAvatarOnDb = _documentRepository.IsExistAvatarOnDb(model.UserId);
+
+                        if (IsExistAvatarOnDb)
+                        {
+                            bool isExistOrginalAvatar = _documentService.IsExistOrginalAvatarOnServer(model);
+                            bool isExistThumbAvatar = _documentService.IsExistThumbAvatarOnServer(model);
+
+                            if (!isExistOrginalAvatar || !isExistThumbAvatar)
+                            {
+                                var avatar = _documentRepository.GetAvatarWithUserId(model.UserId);
+
+                                if (!isExistOrginalAvatar)
+                                    _documentRepository.DownloadOrginalAvatar(avatar);
+
+                                if (!isExistThumbAvatar)
+                                    _documentService.UploadDocumentToServer(avatar);
+                            }
+                        }
+
+                        success = true;
+                        message = $"<h5>عملیات بازیابی کاربر <span class='text-primary'> {model.UserName} </span> با موفقیت انجام شد.</h5>";
+                    }
+                    else
+                    {
+                        message = checkMessage;
+                    }
+
                 }
                 catch (Exception ex)
                 {
