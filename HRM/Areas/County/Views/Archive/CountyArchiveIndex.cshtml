@@ -31,6 +31,11 @@
             var _getUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Archive", new { Section = "1", Province = "0", County = "0", District = "0" }))';
             var _deleteUrl = '@Url.Action("Delete", "Archive", new { area = "County" })';
             var _activeUrl = '@Url.Action("Active", "Archive", new { area = "County" })';
+            var direction = {
+                province: "1",
+                county: "1",
+                district: "0"
+            }
         </script>
         <script type="text/javascript">
             //List
@@ -180,8 +185,12 @@
                     var userName = data.userName;
 
                     var data = {
+                        area: "1",
                         userId: id,
-                        userName: userName
+                        userName: userName,
+                        province: direction.province,
+                        county: direction.county,
+                        district: direction.district
                     }
 
                     swal.fire({
@@ -195,6 +204,9 @@
                         if (result.isConfirmed) {
                             $.post(_activeUrl, data).done(function (result) {
                                 if (result.success) {
+
+                                    GridReload();
+
                                     Swal.fire({
                                         title: result.message,
                                         icon: 'success',

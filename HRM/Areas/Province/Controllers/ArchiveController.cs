@@ -22,7 +22,6 @@ namespace HRM.Areas.Province.Controllers
         private readonly IValidator<UserDelete_ActiveVM> _userDelete_ActiveValidator;
         private readonly IMapper _mapper;
 
-
         public ArchiveController(
             IUserService userService,
             IDocumentRepository documentRepository,

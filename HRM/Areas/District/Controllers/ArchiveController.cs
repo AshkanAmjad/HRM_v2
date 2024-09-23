@@ -22,14 +22,18 @@ namespace HRM.Areas.District.Controllers
         private readonly IValidator<UserDelete_ActiveVM> _userDelete_ActiveValidator;
         private readonly IMapper _mapper;
 
-
-        public ArchiveController(IUserService userService,
+        public ArchiveController(
+            IUserService userService,
+            IDocumentRepository documentRepository,
+            IDocumentService documentService,
             IUserRepository userRepository,
             IValidator<UserDelete_ActiveVM> userDelete_ActiveValidator,
             IMapper mapper)
         {
             _userService = userService;
+            _documentRepository = documentRepository;
             _userRepository = userRepository;
+            _documentService = documentService;
             _userDelete_ActiveValidator = userDelete_ActiveValidator;
             _mapper = mapper;
         }
@@ -146,5 +150,88 @@ namespace HRM.Areas.District.Controllers
 
         #endregion
 
+        #region Active
+
+        [HttpPost]
+        public IActionResult Active(UserDelete_ActiveVM model)
+        {
+            ValidationResult userValidator = _userDelete_ActiveValidator.Validate(model);
+            bool success = false;
+            string message = $".عملیات بازیابی با شکست مواجه شده است";
+            string checkMessage = "";
+
+            if (userValidator.IsValid)
+            {
+                try
+                {
+                    bool result = _userService.Active(model, out checkMessage);
+
+                    if (result)
+                    {
+                        _userRepository.SaveChanges();
+
+                        bool IsExistAvatarOnDb = _documentRepository.IsExistAvatarOnDb(model.UserId);
+
+                        if (IsExistAvatarOnDb)
+                        {
+                            DirectionVM direction = _mapper.Map<DirectionVM>(model);
+
+                            bool isExistOrginalAvatar = _documentService.IsExistOrginalAvatarOnServer(direction, model.UserName);
+                            bool isExistThumbAvatar = _documentService.IsExistThumbAvatarOnServer(direction, model.UserName);
+
+                            if (!isExistOrginalAvatar || !isExistThumbAvatar)
+                            {
+                                var avatar = _documentRepository.GetAvatarWithUserId(model.UserId);
+
+                                if (!isExistOrginalAvatar)
+                                    _documentRepository.DownloadOrginalAvatar(avatar);
+
+                                if (!isExistThumbAvatar)
+                                    _documentService.UploadDocumentToServer(avatar);
+                            }
+                        }
+
+                        success = true;
+                        message = $"<h5>عملیات بازیابی کاربر <span class='text-primary'> {model.UserName} </span> با موفقیت انجام شد.</h5>";
+                    }
+                    else
+                    {
+                        message = checkMessage;
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    while (ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    message = $"خطای شکست عملیات  :  {ex.Message}";
+                }
+            }
+            else
+            {
+                message = $"{userValidator}";
+            }
+
+            #region Manual Validation
+            foreach (var error in userValidator.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+            userValidator.AddToModelState(this.ModelState);
+            #endregion
+
+            #region Json data
+            var jsonData = new
+            {
+                success = success,
+                message = message,
+            };
+            #endregion
+
+            return Json(jsonData);
+        }
+        #endregion
     }
 }
