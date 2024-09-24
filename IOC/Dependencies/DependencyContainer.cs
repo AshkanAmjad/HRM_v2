@@ -20,6 +20,7 @@ namespace IOC.Dependencies
             #region Repository
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IDocumentRepository, DocumentRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
             #endregion
         }
     }

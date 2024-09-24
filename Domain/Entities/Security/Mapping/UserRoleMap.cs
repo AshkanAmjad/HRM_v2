@@ -23,6 +23,8 @@ namespace Domain.Entities.Security.Mapping
                 .HasForeignKey(r => r.RoleId);
             builder.Property(ru => ru.IsActived)
                    .IsRequired();
+            builder.Property(ru => ru.RegisterDate)
+                   .IsRequired();
         }
     }
 }

@@ -22,6 +22,9 @@ namespace Domain.Entities.Security.Mapping
 
             builder.Property(r => r.IsActived)
                    .IsRequired();
+
+            builder.Property(r => r.RegisterDate)
+                   .IsRequired();
         }
     }
 }

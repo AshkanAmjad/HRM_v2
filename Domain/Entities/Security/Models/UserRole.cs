@@ -16,6 +16,8 @@ namespace Domain.Entities.Security.Models
         public Guid UserId { get; set; }
         public Guid RoleId { get; set; }
         public bool IsActived { get; set; }
+        public DateTime RegisterDate { get; set; }
+
         #endregion
 
         #region Relations
