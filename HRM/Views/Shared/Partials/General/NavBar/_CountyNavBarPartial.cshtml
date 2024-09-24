@@ -1,0 +1,39 @@
+﻿<script type="text/javascript">
+    var _countyManagementUsersUrl = '@Url.Action("CountyManagementUsersIndex", "Management", new { area = "County" })';
+    var _countyManagementArchivedUsersUrl = '@Url.Action("CountyArchiveUsersIndex", "Archive", new { area = "County" })';
+    var _countyManagementAssistantUrl = '@Url.Action("CountyAssistantsIndex", "Access", new { area = "County" })';
+    var _countyManagementRolesUrl = '@Url.Action("CountyRolesIndex", "Access", new { area = "County" })';
+</script>
+<script type="text/javascript">
+    $(function () {
+        $("#countyManagementUsers").off("click");
+        $("#countyManagementUsers").on("click", function (e) {
+            $.get(_countyManagementUsersUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+        //------------------------------------------------------------------------
+        $("#countyManagementArchivedUsers").off("click");
+        $("#countyManagementArchivedUsers").on("click", function (e) {
+            $.get(_countyManagementArchivedUsersUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+        //------------------------------------------------------------------------
+        $("#countyManagementAssistants").off("click");
+        $("#countyManagementAssistants").on("click", function (e) {
+            e.preventDefault();
+            $.get(_countyManagementAssistantUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+        //------------------------------------------------------------------------
+        $("#countyManagementRoles").off("click");
+        $("#countyManagementRoles").on("click", function (e) {
+            e.preventDefault();
+            $.get(_countyManagementRolesUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+    })
+</script>

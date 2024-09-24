@@ -40,7 +40,7 @@ namespace HRM.Areas.District.Controllers
         #endregion
 
         #region Index
-        public IActionResult DistrictArchiveIndex()
+        public IActionResult DistrictArchiveUsersIndex()
         {
             return View();
         }

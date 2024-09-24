@@ -1,0 +1,39 @@
+﻿<script type="text/javascript">
+    var _provinceManagementUsersUrl = '@Url.Action("ProvinceManagementUsersIndex", "Management", new { area = "Province" })';
+    var _provinceManagementArchivedUsersUrl = '@Url.Action("ProvinceArchiveUsersIndex", "Archive", new { area = "Province" })';
+    var _provinceManagementAssistantUrl = '@Url.Action("ProvinceAssistantsIndex", "Access", new { area = "Province" })';
+    var _provinceManagementRolesUrl = '@Url.Action("ProvinceRolesIndex", "Access", new { area = "Province" })';
+</script>
+<script type="text/javascript">
+    $(function () {
+        $("#provinceManagementUsers").off("click");
+        $("#provinceManagementUsers").on("click", function (e) {
+            $.get(_provinceManagementUsersUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+        //------------------------------------------------------------------------
+        $("#provinceManagementArchivedUsers").off("click");
+        $("#provinceManagementArchivedUsers").on("click", function (e) {
+            $.get(_provinceManagementArchivedUsersUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+        //------------------------------------------------------------------------
+        $("#provinceManagementAssistants").off("click");
+        $("#provinceManagementAssistants").on("click", function (e) {
+            e.preventDefault();
+            $.get(_provinceManagementAssistantUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+        //------------------------------------------------------------------------
+        $("#provinceManagementRoles").off("click");
+        $("#provinceManagementRoles").on("click", function (e) {
+            e.preventDefault();
+            $.get(_provinceManagementRolesUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+    });
+</script>

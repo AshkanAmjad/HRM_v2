@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] HRM</title>
     <partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPartial.cshtml">
-    <partial name="~/Views/Shared/Partials/General/Refrences/css/_DataTablesCssPartial.cshtml">
+        <partial name="~/Views/Shared/Partials/General/Refrences/css/_DataTablesCssPartial.cshtml">
 </head>
 <body class="min-vh-100">
     <header class="mb-5 mb-xl-0 pb-5 pb-xl-0">
@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="col-xl-10 mt-2 mb-3 my-xl-3">
-            <main class="p-2 border rounded min-vh-100" id="main" >
+            <main class="p-2 border rounded min-vh-100" id="main">
                 @RenderBody()
             </main>
         </div>
@@ -30,26 +30,21 @@
 </body>
 <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
 <partial name="~/Views/Shared/Partials/General/Refrences/js/_DataTablesJsPartial.cshtml">
-@await RenderSectionAsync("Scripts", required: false)
+<partial name="~/Views/Shared/Partials/General/NavBar/_GeneralNavBarPartial.cshtml" />
+<partial name="~/Views/Shared/Partials/General/NavBar/_ProvinceNavBarPartial.cshtml" />
+<partial name="~/Views/Shared/Partials/General/NavBar/_CountyNavBarPartial.cshtml" />
+<partial name="~/Views/Shared/Partials/General/NavBar/_DistrictNavBarPartial.cshtml" />
+
+        @await RenderSectionAsync("Scripts", required: false)
 </html>
 
 <script type="text/javascript">
     var _transferUrl = '@Url.Action("Index", "Document")';
-    var _homeUrl = '@Url.Action("Index", "Home")';
 
-    var _provinceManagementUsersUrl = '@Url.Action("ProvinceManagementIndex", "Management",new{area = "Province"})';
-    var _countyManagementUsersUrl = '@Url.Action("CountyManagementIndex","Management",new{area = "County"})';
-    var _districtManagementUsersUrl = '@Url.Action("DistrictManagementIndex", "Management", new { area = "District" })';
 
-    var _provinceManagementArchivedUsersUrl = '@Url.Action("ProvinceArchiveIndex", "Archive", new { area = "Province" })';
-    var _countyManagementArchivedUsersUrl = '@Url.Action("CountyArchiveIndex", "Archive", new { area = "County" })';
-    var _districtManagementArchivedUsersUrl = '@Url.Action("DistrictArchiveIndex", "Archive", new { area = "District" })';
 
     var _reportUrl = '@Url.Action("Index", "Report")';
 
-    var _provinceaccessUrl = '@Url.Action("Index", "Access", new { area = "Province" })';
-    var _countyaccessUrl = '@Url.Action("Index", "Access", new { area = "County" })';
-    var _drovinceaccessUrl = '@Url.Action("Index", "Access", new { area = "District" })';
 
 
     var _profileUrl = '@Url.Action("Profile", "Management")';
@@ -68,61 +63,6 @@
                 $("#main").html(result);
             });
         });
-
-        $("#home").off("click");
-        $("#home").on("click", function (e) {
-            e.preventDefault();
-            $.get(_homeUrl).done(function (result) {
-                $("#main").html(result);
-            });
-        });
-
-        //------------------------------------------------------------------------
-
-        $("#provinceManagementUsers").off("click");
-        $("#provinceManagementUsers").on("click", function (e) {
-            $.get(_provinceManagementUsersUrl).done(function (result) {
-                $("#main").html(result);
-            });
-        });
-
-        $("#countyManagementUsers").off("click");
-        $("#countyManagementUsers").on("click", function (e) {
-            $.get(_countyManagementUsersUrl).done(function (result) {
-                $("#main").html(result);
-            });
-        });
-
-        $("#districtManagementUsers").off("click");
-        $("#districtManagementUsers").on("click", function (e) {
-            $.get(_districtManagementUsersUrl).done(function (result) {
-                $("#main").html(result);
-            });
-        });
-
-        //------------------------------------------------------------------------
-
-        $("#provinceManagementArchivedUsers").off("click");
-        $("#provinceManagementArchivedUsers").on("click", function (e) {
-            $.get(_provinceManagementArchivedUsersUrl).done(function (result) {
-                $("#main").html(result);
-            });
-        });
-        $("#countyManagementArchivedUsers").off("click");
-        $("#countyManagementArchivedUsers").on("click", function (e) {
-            $.get(_countyManagementArchivedUsersUrl).done(function (result) {
-                $("#main").html(result);
-            });
-        });
-        $("#districtManagementArchivedUsers").off("click");
-        $("#districtManagementArchivedUsers").on("click", function (e) {
-            $.get(_districtManagementArchivedUsersUrl).done(function (result) {
-                $("#main").html(result);
-            });
-        });
-
-        //------------------------------------------------------------------------
-
         $("#report").off("click");
         $("#report").on("click", function (e) {
             e.preventDefault();
@@ -130,34 +70,6 @@
                 $("#main").html(result);
             });
         });
-
-        //------------------------------------------------------------------------
-
-        $("#provinceManagementAccess").off("click");
-        $("#provinceManagementAccess").on("click", function (e) {
-            e.preventDefault();
-            $.get(_provinceaccessUrl).done(function (result) {
-                $("#main").html(result);
-            });
-        });
-
-        $("#countyManagementAccess").off("click");
-        $("#countyManagementAccess").on("click", function (e) {
-            e.preventDefault();
-            $.get(_countyaccessUrl).done(function (result) {
-                $("#main").html(result);
-            });
-        });
-
-        $("#districtManagementAccess").off("click");
-        $("#districtManagementAccess").on("click", function (e) {
-            e.preventDefault();
-            $.get(_districtaccessUrl).done(function (result) {
-                $("#main").html(result);
-            });
-        });
-
-        //------------------------------------------------------------------------
 
         $("#profile").off("click");
         $("#profile").on("click", function (e) {

@@ -195,12 +195,7 @@ namespace HRM.Areas.District.Controllers
         #endregion
 
         #region Index
-        public IActionResult DistrictManagementIndex()
-        {
-            return View();
-        }
-
-        public IActionResult DistrictDisabledUsersIndex()
+        public IActionResult DistrictManagementUsersIndex()
         {
             return View();
         }

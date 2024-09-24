@@ -154,7 +154,7 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Index
-        public IActionResult ProvinceManagementIndex()
+        public IActionResult ProvinceManagementUsersIndex()
         {
             return View();
         }

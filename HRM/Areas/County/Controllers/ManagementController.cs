@@ -171,12 +171,7 @@ namespace HRM.Areas.County.Controllers
         #endregion
 
         #region Index
-        public IActionResult CountyManagementIndex()
-        {
-            return View();
-        }
-
-        public IActionResult CountyDisabledUsersIndex()
+        public IActionResult CountyManagementUsersIndex()
         {
             return View();
         }

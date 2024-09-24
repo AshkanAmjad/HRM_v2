@@ -42,7 +42,7 @@ namespace HRM.Areas.County.Controllers
         #endregion
 
         #region Index
-        public IActionResult CountyArchiveIndex()
+        public IActionResult CountyArchiveUsersIndex()
         {
             return View();
         }

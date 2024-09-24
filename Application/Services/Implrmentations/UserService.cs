@@ -24,15 +24,12 @@ namespace Application.Services.Implrmentations
         private readonly IUserRepository _userRepository;
         private readonly IDocumentService _documentService;
         private readonly IMapper _mapper;
-        private readonly IPasswordHasher _passwordHasher;
 
-        public UserService(IUserRepository userRepository, IMapper mapper, IDocumentService documentService, IPasswordHasher passwordHasher)
+        public UserService(IUserRepository userRepository, IMapper mapper, IDocumentService documentService)
         {
             _userRepository = userRepository;
             _mapper = mapper;
-            _passwordHasher = passwordHasher;
             _documentService = documentService;
-            _passwordHasher = passwordHasher;
         }
         #endregion
         public List<SelectListItem> GetAreas()
@@ -68,7 +65,7 @@ namespace Application.Services.Implrmentations
             #endregion 
 
             #region Hashing Password
-            string hashed = _passwordHasher.Hash(model.Password);
+            string hashed = Hashing.Hash(model.Password);
             model.Password = hashed;
             #endregion
 
@@ -96,7 +93,7 @@ namespace Application.Services.Implrmentations
             #region Hashing Password
             if (model.Password != null)
             {
-                string hashed = _passwordHasher.Hash(model.Password);
+                string hashed = Hashing.Hash(model.Password);
                 model.Password = hashed;
             }
             #endregion

@@ -1,0 +1,14 @@
+﻿<script type="text/javascript">
+    var _homeUrl = '@Url.Action("Index", "Home")';
+</script>
+<script type="text/javascript">
+    $(function () {
+        $("#home").off("click");
+        $("#home").on("click", function (e) {
+            e.preventDefault();
+            $.get(_homeUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+    })
+</script>

@@ -21,14 +21,12 @@ namespace HRM.Controllers
         #region Constructor
         private readonly IUserRepository _userRepository;
         private readonly IValidator<LoginVM> _validator;
-        private readonly IPasswordHasher _passwordHasher;
 
 
-        public AccountController(IUserService userService, IPasswordHasher passwordHasher, IValidator<LoginVM> validator, IUserRepository userRepository)
+        public AccountController(IUserService userService, IValidator<LoginVM> validator, IUserRepository userRepository)
         {
             _userRepository = userRepository;
             _validator = validator;
-            _passwordHasher = passwordHasher;
 
         }
         #endregion
@@ -78,9 +76,9 @@ namespace HRM.Controllers
 
                 var user = await _userRepository.GetUserAsync(model);
 
-                if (user != null && user.IsActived)
+                if (user != null)
                 {
-                    verify = _passwordHasher.Verify(user.Password, model.Password);
+                    verify = Hashing.Verify(user.Password, model.Password);
                 }
 
                 if (!verify)

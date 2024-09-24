@@ -15,7 +15,6 @@ namespace IOC.Dependencies
             #region Services
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IDocumentService, DocumentService>();
-            services.AddScoped<IPasswordHasher, PasswordHasher>();
             #endregion
 
             #region Repository

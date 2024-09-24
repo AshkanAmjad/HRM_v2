@@ -40,7 +40,7 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Index
-        public IActionResult ProvinceArchiveIndex()
+        public IActionResult ProvinceArchiveUsersIndex()
         {
             return View();
         }
