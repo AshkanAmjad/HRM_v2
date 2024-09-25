@@ -179,7 +179,9 @@ namespace Data.Repositores
             var resultMessage = "";
             if (user != null)
             {
-                check = _context.Users.Where(u => u.UserName == user.UserName && u.Department.Area == user.AreaDepartment && u.IsActived).Any();
+                check = _context.Users.IgnoreQueryFilters()
+                                      .Where(u => u.UserName == user.UserName && u.Department.Area == user.AreaDepartment)
+                                      .Any();
 
                 if (check)
                 {
@@ -348,13 +350,13 @@ namespace Data.Repositores
             if (model != null)
             {
 
-                DisableUser(model);
+                DisableUserDb(model);
 
-                DisableDepartment(model, out _departmentId);
+                DisableDepartmentDb(model, out _departmentId);
 
                 Guid departmentId = _departmentId;
 
-                _documentRepository.DisableDocuments(departmentId);
+                _documentRepository.DisableDocumentsDb(departmentId);
 
                 message = "";
 
@@ -372,13 +374,13 @@ namespace Data.Repositores
 
             if (model != null)
             {
-                ActiveUser(model);
+                ActiveUserDb(model);
 
-                ActiveDepartment(model, out _departmentId);
+                ActiveDepartmentDb(model, out _departmentId);
 
                 Guid departmentId = _departmentId;
 
-                _documentRepository.ActiveDocuments(departmentId);
+                _documentRepository.ActiveDocumentsDb(departmentId);
 
                 message = "";
                 return true;
@@ -389,7 +391,7 @@ namespace Data.Repositores
         }
 
 
-        public void DisableUser(UserEdit_DisableVM model)
+        public void DisableUserDb(UserEdit_DisableVM model)
         {
 
             if (model != null)
@@ -407,7 +409,7 @@ namespace Data.Repositores
             }
         }
 
-        public async void ActiveUser(UserDelete_ActiveVM model)
+        public async void ActiveUserDb(UserDelete_ActiveVM model)
         {
             if (model != null)
             {
@@ -425,7 +427,7 @@ namespace Data.Repositores
             }
         }
 
-        public void DisableDepartment(UserEdit_DisableVM model, out Guid departmentId)
+        public void DisableDepartmentDb(UserEdit_DisableVM model, out Guid departmentId)
         {
             Guid id = Guid.Empty;
             Department? department = null;
@@ -453,7 +455,7 @@ namespace Data.Repositores
             departmentId = id;
         }
 
-        public void ActiveDepartment(UserDelete_ActiveVM model, out Guid departmentId)
+        public void ActiveDepartmentDb(UserDelete_ActiveVM model, out Guid departmentId)
         {
             Guid id = Guid.Empty;
             Department? department = null;

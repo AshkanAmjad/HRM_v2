@@ -179,7 +179,7 @@ namespace Data.Repositores
             return dir;
         }
 
-        public void DisableDocuments(Guid departmentId)
+        public void DisableDocumentsDb(Guid departmentId)
         {
 
             if (departmentId != Guid.Empty)
@@ -203,7 +203,7 @@ namespace Data.Repositores
             }
         }
 
-        public void ActiveDocuments(Guid departmentId)
+        public void ActiveDocumentsDb(Guid departmentId)
         {
             if (departmentId == Guid.Empty)
             {

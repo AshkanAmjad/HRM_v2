@@ -261,14 +261,13 @@ header {
         font-size: 0.6rem;
     }
 
-    #employmentStatus {
-        font-size: 0.55rem;
-        padding-top: 0.7rem;
-        padding-bottom: 0.7rem;
-    }
-
-    #educationTypes {
-        font-size: 0.55rem;
+    #employmentStatus,
+    #educationTypes,
+    #provinceDepartmentStatus,
+    #countyDepartmentStatus,
+    #districtDepartmentStatus,
+    span {
+        font-size: 0.55rem !important;
         padding-top: 0.7rem;
         padding-bottom: 0.7rem;
     }

@@ -172,7 +172,7 @@
                                 <label class="control-label">شعبه استان :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <select asp-for="ProvinceDepartment" class="form-select" aria-label=".form-select-sm" asp-items="departments" id="departmentStatus" tabindex="10">
+                                <select asp-for="ProvinceDepartment" class="form-select" aria-label=".form-select-sm" asp-items="departments" id="provinceDepartmentStatus" tabindex="10">
                                     <option selected class="fs-7">شعبه سطح استان خود را انتخاب کنید ...</option>
                                 </select>
                                 <span asp-validation-for="ProvinceDepartment" class="text-danger fs-8" id="departmentError"></span>
@@ -286,7 +286,7 @@
                 var $dateOfBirth = $("input[name='DateOfBirth']").val();
                 var $marital = $("input[name='maritalStatus']:checked").val();
                 var $employment = $("#employmentStatus").find(':selected').text();
-                var $department = $("#departmentStatus").find(':selected').text();
+                var $department = $("#provinceDepartmentStatus").find(':selected').text();
                 var $gender = $("input[name='gender']:checked").val();
                 var $email = $("input[name='Email").val();
                 var $phoneNumber = $("input[name='PhoneNumber']").val();

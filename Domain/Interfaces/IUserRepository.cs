@@ -31,10 +31,10 @@ namespace Domain.Interfaces
 
         #region DB
         void UploadRegisterUserToDb(UserRegisterVM userRegister);
-        void DisableUser(UserEdit_DisableVM model);
-        void ActiveUser(UserDelete_ActiveVM model);
-        void DisableDepartment(UserEdit_DisableVM model , out Guid departmentId);
-        void ActiveDepartment(UserDelete_ActiveVM model , out Guid departmentId);
+        void DisableUserDb(UserEdit_DisableVM model);
+        void ActiveUserDb(UserDelete_ActiveVM model);
+        void DisableDepartmentDb(UserEdit_DisableVM model , out Guid departmentId);
+        void ActiveDepartmentDb(UserDelete_ActiveVM model , out Guid departmentId);
         void UploadEditUserToDb(UserEditVM userEdit);
         void UploadDepartmentToDb(UserRegisterVM depatment, Guid departmentId);
         void UploadEditDepartmentToDb(UserEditVM model);

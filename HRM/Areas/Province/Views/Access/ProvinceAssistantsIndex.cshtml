@@ -15,11 +15,11 @@
     </div>
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
         <script type="text/javascript">
-            var _registerUrl = '@Url.Action("Register", "Access", new { area = "Province" })';
+            var _registerUrl = '@Url.Action("AssistantRegister", "Access", new { area = "Province" })';
             var _gridUrl = '@Url.Action("FillAssistantsGrid", "Access", new { area = "Province" })';
             var _getAssistansUrl = '@Url.Action("GetAssistants", "Access", new { area = "Province" })';
-            var _editUrl = '@Url.Action("Edit", "Access", new { area = "Province" })';
-            var _disableUrl = '@Url.Action("Disable", "Access", new { area = "Province" })';
+            var _editUrl = '@Url.Action("AssistantEdit", "Access", new { area = "Province" })';
+            var _disableUrl = '@Url.Action("AssistantDisable", "Access", new { area = "Province" })';
         </script>
         <script type="text/javascript">
             //List

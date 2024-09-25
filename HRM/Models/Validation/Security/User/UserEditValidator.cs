@@ -1,9 +1,9 @@
 ﻿using Domain.DTOs.Security.User;
 using FluentValidation;
 
-namespace HRM.Models.Validation
+namespace HRM.Models.Validation.Security.User
 {
-    public class UserEditValidator:AbstractValidator<UserEditVM>
+    public class UserEditValidator : AbstractValidator<UserEditVM>
     {
         public UserEditValidator()
         {
@@ -18,6 +18,10 @@ namespace HRM.Models.Validation
             RuleFor(x => x.Password)
                         .MaximumLength(15)
                         .WithMessage("حداکثر تعداد حروف گذر واژه 15 حرف می باشد.");
+
+            RuleFor(x => x.UserId).NotNull()
+                                  .NotEmpty()
+                                  .NotEqual(Guid.Empty);
 
             RuleFor(x => x.ConfirmPassword)
                                .Equal(x => x.Password)
