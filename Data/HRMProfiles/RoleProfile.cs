@@ -18,6 +18,11 @@ namespace Data.HRMProfiles
                 .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.RoleId))
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
                 .ForMember(dest => dest.RegisterDate, opt => opt.MapFrom(src => src.RegisterDate));
+
+            CreateMap<AssistantEditVM, Role>()
+                .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.RoleId))
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+                .ForMember(dest => dest.RegisterDate, opt => opt.MapFrom(src => src.RegisterDate));
         }
     }
 }

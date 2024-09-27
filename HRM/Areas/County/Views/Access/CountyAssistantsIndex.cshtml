@@ -1,0 +1,61 @@
+﻿@{
+    Layout = null;
+}
+<partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPartial.cshtml">
+
+    <div class="btn btn-outline-primary btn-sm  my-3 mx-1">مشاهده معاونت ها - شهرستان</div>
+    <div id="assistants-box">
+    </div>
+    <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
+        <script type="text/javascript">
+            var _gridUrl = '@Url.Action("FillAssistantsGrid", "Access", new { area = "County" })';
+            var _getAssistansUrl = '@Url.Action("GetAssistants", "Access", new { area = "County" })';
+        </script>
+        <script type="text/javascript">
+            //List
+            $(document).ready(function (e) {
+                $.get(_gridUrl).done(function (result) {
+                    $("#assistants-box").html(result);
+                });
+            });
+
+            function GridLoad() {
+                table = $("#tableList").DataTable({
+                    initComplete: function () {
+                        $('div.dt-search').addClass("d-flex");
+                        $('div.dt-search input').addClass('form-control');
+                    },
+                    "paging": true,
+                    "pagingType": 'full_numbers',
+                    "pageLength": 10,
+                    "processing": false,
+                    "serverSide": true,
+                    "info": false,
+                    "lengthChange": false,
+                    "ordering": false,
+                    "language": {
+                        "emptyTable": "داده ای ثبت نشده است.",
+                        "zeroRecords": "معاونتی یافت نشد.",
+                        "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
+                        "search": `<span class="ms-2">
+                                                          <i class="fa fa-search text-primary"></i>
+                                                                جست‌و‌جو بر اساس عنوان معاونت:
+                                               </span>`,
+                        "searchPlaceholder": 'مقدار مناسبی برای عنوان معاونت وارد کنید ...',
+                    },
+                    "ajax": {
+                        "url": _getAssistansUrl,
+                        "type": "POST",
+                        "datatype": "json"
+                    },
+                    "columns": [
+                        { "data": "title", "title": "عنوان" },
+                        { "data": "isActived", "title": "وضعیت", "width": "10%" },
+                        { "data": "registerDate", "title": "تاریخ ثبت", "width": "10%" }
+                        
+                    ]
+                })
+            };
+
+        </script>
+

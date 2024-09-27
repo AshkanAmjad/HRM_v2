@@ -1,0 +1,114 @@
+﻿@model Domain.DTOs.Security.Role.AssistantEditVM
+@{
+    Layout = null;
+}
+<div class="modal-dialog modal-xl " id="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title">
+                <div class="btn btn-outline-primary btn-sm  my-2 mx-1">افزودن در سطح استان</div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+        </div>
+        <div class="border border-top-0 ">
+            <p class="fs-8 mt-3 fw-bold">
+                <i class="fa fa-lg me-3 ms-2 fa-bullseye text-primary"></i>
+                مشخصات معاونت را با دقت در ورودی مربوطه وارد کنید.
+            </p>
+        </div>
+        <form id="registerForm" enctype="multipart/form-data" asp-antiforgery="true">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="RoleId" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="modal-body">
+                <div class="row px-2">
+                    <div class="col-6">
+                        <div class="row mt-2 p-0">
+                            <div class="col-5 col-lg-4">
+                                <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
+                                <label class="control-label">عنوان :</label>
+                            </div>
+                            <div class="col-7 col-lg-8">
+                                <input asp-for="Title" class="form-control w-100" tabindex="1" autocomplete="off" placeholder="مقدار مناسبی برای عنوان وارد کنید ..." />
+                                <span asp-validation-for="Title" class="text-danger fs-8"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center align-items-center mt-lg-5">
+                <button type="submit" class="btn btn-primary px-5 align-items-center" id="submitBtn" tabindex="2">
+                    <i class="fa fa-save mx-2"></i>
+                    ثبت
+                </button>
+                <button type="button" class="btn btn-secondary cursor-pointer mx-1" tabindex="3" data-bs-dismiss="modal">
+                    &times;
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
+
+    <script type="text/javascript">
+        var _registerUrl = '@Url.Action("AssistantEdit", "Access", new { area = "Province" })';
+    </script>
+
+    <script type="text/javascript">
+
+        $(function () {
+            $("#submitBtn").off("click");
+            $("#submitBtn").on("click", function (e) {
+                e.preventDefault();
+                var $form = $('#registerForm');
+                if ($form.valid()) {
+                    $("#submitBtn").prop('disabled', true);
+                    var formData = new FormData($form.get(0));
+                    $.ajax({
+                        url: _registerUrl,
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (result) {
+                            if (result.success) {
+                                GridReload();
+                                $("#operation-box").modal("toggle");
+                                Swal.fire({
+                                    title: result.message,
+                                    icon: 'success',
+                                    showConfirmButton: false,
+                                    timer: 4000,
+                                    showClass: {
+                                        popup: 'animate__animated animate__fadeInDown'
+                                    },
+                                    hideClass: {
+                                        popup: 'animate__animated animate__fadeOutDown'
+                                    }
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'خطا',
+                                    icon: 'error',
+                                    text: result.message,
+                                    showConfirmButton: false,
+                                    timer: 4000,
+                                    showClass: {
+                                        popup: 'animate__animated animate__fadeInDown'
+                                    },
+                                    hideClass: {
+                                        popup: 'animate__animated animate__fadeOutDown'
+                                    }
+                                })
+                            }
+                        },
+                        complete: function () {
+                            $("#submitBtn").prop('disabled', false);
+                        }
+                    });
+                };
+            });
+
+        });
+    </script>

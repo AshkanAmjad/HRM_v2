@@ -21,7 +21,7 @@ namespace Domain.Interfaces
         bool ActiveAssistant(AssistantEdit_Active_DisableVM model, out string message);
         AssistantEditVM? GetAssistantById(Guid roleId);
         bool Similarity(AssistantRegisterVM model, out string message);
-
+        bool Similarity(AssistantEditVM model, out string message);
         #endregion
 
         #region DB

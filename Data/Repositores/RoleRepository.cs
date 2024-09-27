@@ -26,8 +26,7 @@ namespace Data.Repositores
         {
             var context = GetAssistantsQuery();
             var assistants = (from item in context
-                              where(item.IsActived)
-                              orderby item.RegisterDate descending
+                              orderby item.IsActived descending,item.RegisterDate descending
                               select new DisplayAssistantsVM
                               {
                                   RoleId = item.RoleId,
@@ -71,6 +70,25 @@ namespace Data.Repositores
             {
                 check = _context.Roles.IgnoreQueryFilters()
                                       .Where(r => r.Title == model.Title )
+                                      .Any();
+
+                if (check)
+                {
+                    resultMessage = $"معاونتی با عنوان {model.Title} قبلا ثبت شده است.";
+                }
+            }
+            message = resultMessage;
+            return check;
+        }
+
+        public bool Similarity(AssistantEditVM model, out string message)
+        {
+            bool check = false;
+            var resultMessage = "";
+            if (model != null)
+            {
+                check = _context.Roles.IgnoreQueryFilters()
+                                      .Where(r =>r.RoleId != model.RoleId && r.Title == model.Title)
                                       .Any();
 
                 if (check)
@@ -170,10 +188,12 @@ namespace Data.Repositores
 
         public bool EditAssistant(AssistantEditVM model, out string message)
         {
-            string checkMessage = "اطلاعات ناقص ارسال شده است.";
+            string checkMessage = "";
 
-            if (model != null)
+            if (!Similarity(model, out checkMessage))
             {
+                model.RegisterDate = DateTime.Now;
+
                 UploadEditAssistantToDb(model);
 
                 message = "";

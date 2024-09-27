@@ -18,7 +18,6 @@ namespace HRM.Areas.Province.Controllers
         private readonly IValidator<AssistantEditVM> _assistantEditValidator;
         private readonly IValidator<AssistantEdit_Active_DisableVM> _assistantEdit_DisableValidator;
 
-
         public AccessController(
             IRoleRepository roleRepository,
             IMapper mapper,
@@ -33,6 +32,7 @@ namespace HRM.Areas.Province.Controllers
             _mapper = mapper;
         }
         #endregion
+
         #region Index
         public IActionResult ProvinceAssistantsIndex()
         {
@@ -152,7 +152,7 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Edit
-        public IActionResult Edit(AssistantEdit_Active_DisableVM model)
+        public IActionResult AssistantEdit(AssistantEdit_Active_DisableVM model)
         {
             ValidationResult assistantValidator = _assistantEdit_DisableValidator.Validate(model);
 
@@ -170,7 +170,7 @@ namespace HRM.Areas.Province.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(AssistantEditVM model)
+        public IActionResult AssistantEdit(AssistantEditVM model)
         {
             ValidationResult assistantValidator = _assistantEditValidator.Validate(model);
             bool success = false;
@@ -228,7 +228,7 @@ namespace HRM.Areas.Province.Controllers
 
         #region Disable
         [HttpPost]
-        public IActionResult Disable(AssistantEdit_Active_DisableVM model)
+        public IActionResult AssistantDisable(AssistantEdit_Active_DisableVM model)
         {
             ValidationResult assistantValidator = _assistantEdit_DisableValidator.Validate(model);
             bool success = false;
@@ -245,6 +245,64 @@ namespace HRM.Areas.Province.Controllers
                         _roleRepository.SaveChanges();
                         success = true;
                         message = $"<h5>عملیات غیر فعال سازی معاونت <span class='text-primary'> {model.Title} </span> با موفقیت انجام شد.</h5>";
+                    }
+                    else
+                    {
+                        message = checkMessage;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    while (ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    message = $"خطای شکست عملیات  :  {ex.Message}";
+                }
+            }
+            else
+            {
+                message = $"{assistantValidator}";
+            }
+            #region Manual Validation
+            foreach (var error in assistantValidator.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+            assistantValidator.AddToModelState(this.ModelState);
+            #endregion
+
+            #region Json data
+            var jsonData = new
+            {
+                success = success,
+                message = message,
+            };
+            #endregion
+
+            return Json(jsonData);
+        }
+        #endregion
+
+        #region Active
+        [HttpPost]
+        public IActionResult AssistantActive(AssistantEdit_Active_DisableVM model)
+        {
+            ValidationResult assistantValidator = _assistantEdit_DisableValidator.Validate(model);
+            bool success = false;
+            var message = $"عملیات غیر فعال سازی با شکست مواجه شده است.";
+            string checkMessage = "";
+            if (assistantValidator.IsValid)
+            {
+                try
+                {
+                    bool result = _roleRepository.ActiveAssistant(model, out checkMessage);
+
+                    if (result)
+                    {
+                        _roleRepository.SaveChanges();
+                        success = true;
+                        message = $"<h5>عملیات فعال سازی معاونت <span class='text-primary'> {model.Title} </span> با موفقیت انجام شد.</h5>";
                     }
                     else
                     {

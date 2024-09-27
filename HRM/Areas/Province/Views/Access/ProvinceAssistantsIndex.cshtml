@@ -20,6 +20,7 @@
             var _getAssistansUrl = '@Url.Action("GetAssistants", "Access", new { area = "Province" })';
             var _editUrl = '@Url.Action("AssistantEdit", "Access", new { area = "Province" })';
             var _disableUrl = '@Url.Action("AssistantDisable", "Access", new { area = "Province" })';
+            var _activeUrl = '@Url.Action("AssistantActive", "Access", new { area = "Province" })';
         </script>
         <script type="text/javascript">
             //List
@@ -28,6 +29,7 @@
                     $("#assistants-box").html(result);
                 });
             });
+
             function GridLoad() {
                 table = $("#tableList").DataTable({
                     initComplete: function () {
@@ -63,19 +65,25 @@
                         { "data": "registerDate", "title": "تاریخ ثبت", "width": "10%" },
                         {
                             "data": "roleId", "title": "عملیات", "width": "20%", render: function (data, type, row) {
-
                                 return `<div class="d-flex justify-content-center">
-                                                                   <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
-                                                                     onclick="Edit('${data}')"
-                                                                   >
-                                                                       <i class="fa fa-edit my-2 mx-1" > </i>
-                                                                   </a>
-                                                                   <a class="btn btn-outline-danger btn-sm rounded-circle"
-                                                                     onclick = "Disable('${data}','${row.title}')"
-                                                                    >
-                                                                       <i class="fa fa-minus my-2 mx-1" > </i>
-                                                                   </a>
-                                                               <div>`
+                                            
+                                      ${row.isActived === "فعال" ?
+                                            `
+                                            <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
+                                               onclick="Edit('${data}', '${row.title}')">
+                                            <i class="fa fa-edit my-2 mx-1" > </i>
+                                                </a>
+                                            <a class="btn btn-outline-danger btn-sm rounded-circle"
+                                               onclick = "Disable('${data}','${row.title}')">
+                                               <i class="fa fa-minus my-2 mx-1" > </i>
+                                              </a>`
+                                        :
+                                          `<a class="btn btn-outline-success btn-sm rounded-circle"
+                                            onclick = "Active('${data}','${row.title}')">
+                                            <i class="fa fa-check my-2 mx-1" > </i>
+                                             </a>`
+                                         }
+                                      </div>`
                             }
                         }
                     ]
@@ -97,10 +105,11 @@
             });
 
             //Edit
-            function Edit(roleId) {
+            function Edit(roleId, title) {
 
                 var data = {
-                    roleId: roleId
+                    roleId: roleId,
+                    title: title
                 };
 
                 $.get(_editUrl, data).done(function (result) {
@@ -127,6 +136,58 @@
                         };
 
                         $.post(_disableUrl, data).done(function (result) {
+                            if (result.success) {
+                                GridReload();
+                                Swal.fire({
+                                    title: result.message,
+                                    icon: 'success',
+                                    showConfirmButton: false,
+                                    timer: 4000,
+                                    showClass: {
+                                        popup: 'animate__animated animate__fadeInDown'
+                                    },
+                                    hideClass: {
+                                        popup: 'animate__animated animate__fadeOutDown'
+                                    }
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'خطا',
+                                    icon: 'error',
+                                    text: result.message,
+                                    showConfirmButton: false,
+                                    timer: 4000,
+                                    showClass: {
+                                        popup: 'animate__animated animate__fadeInDown'
+                                    },
+                                    hideClass: {
+                                        popup: 'animate__animated animate__fadeOutDown'
+                                    }
+                                })
+                            }
+                        });
+                    }
+                })
+            };
+
+            //Active
+            function Active(roleId, title) {
+                Swal.fire({
+                    text: " آیا از فعال کردن معاونت " + title + " مطمئن هستید؟ ",
+                    showCancelButton: true,
+                    icon: "warning",
+                    confirmButtonText: "تایید",
+                    confirmButtonColor: "#198754",
+                    cancelButtonText: "خیر"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        var data = {
+                            roleId: roleId,
+                            title: title,
+                        };
+
+                        $.post(_activeUrl, data).done(function (result) {
                             if (result.success) {
                                 GridReload();
                                 Swal.fire({
