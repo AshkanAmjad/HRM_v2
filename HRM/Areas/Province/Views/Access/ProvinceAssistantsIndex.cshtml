@@ -59,12 +59,12 @@
                     },
                     "columns": [
                         { "data": "title", "title": "عنوان" },
-                        { "data": "isActived", "title": "وضعیت" },
-                        { "data": "registerDate", "title": "تاریخ ثبت" },
+                        { "data": "isActived", "title": "وضعیت", "width": "10%" },
+                        { "data": "registerDate", "title": "تاریخ ثبت", "width": "10%" },
                         {
-                            "data": "roleId", "title": "عملیات", render: function (data, type, row) {
+                            "data": "roleId", "title": "عملیات", "width": "20%", render: function (data, type, row) {
 
-                                return `<div class="d-flex py-2">
+                                return `<div class="d-flex justify-content-center">
                                                                    <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
                                                                      onclick="Edit('${data}')"
                                                                    >

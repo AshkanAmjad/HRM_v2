@@ -50,6 +50,9 @@ namespace Data.Repositores
             string checkMessage = "";
             if (!Similarity(model, out checkMessage))
             {
+                model.RegisterDate = DateTime.Now;
+                model.IsActived = true;
+                model.RoleId = Guid.NewGuid();
 
                 UploadRegisterAssistantToDb(model);
 

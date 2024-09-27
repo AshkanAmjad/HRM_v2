@@ -1,18 +1,9 @@
-﻿using Application.Services.Implrmentations;
-using Application.Services.Interfaces;
-using AutoMapper;
-using Data.Repositores;
-using Domain.DTOs.General;
+﻿using AutoMapper;
 using Domain.DTOs.Security.Role;
-using Domain.DTOs.Security.User;
-using Domain.Entities.Security.Models;
 using Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
-using HRM.Models.Validation;
-using HRM.Models.Validation.Security.Role;
-using HRM.Models.Validation.Security.User;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HRM.Areas.Province.Controllers

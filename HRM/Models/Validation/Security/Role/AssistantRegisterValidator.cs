@@ -12,7 +12,6 @@ namespace HRM.Models.Validation.Security.Role
                                  .WithMessage("تکمیل ورودی عنوان ضروری است.")
                                  .Matches(@"^[\u0600-\u06FF\s]+$")
                                  .WithMessage("مقدار ورودی  عنوان معتبر نیست.");
-
         }
     }
 }

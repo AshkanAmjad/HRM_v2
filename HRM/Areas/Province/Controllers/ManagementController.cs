@@ -1,18 +1,13 @@
 ﻿using Application.Services.Interfaces;
 using AutoMapper;
 using Domain.DTOs.General;
-using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Security.User;
-using Domain.Entities.Security.Models;
 using Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
-using HRM.Models.Validation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Linq.Expressions;
-using System.Text.Json;
 
 namespace HRM.Areas.Province.Controllers
 {
