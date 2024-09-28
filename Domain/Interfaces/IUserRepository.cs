@@ -15,7 +15,7 @@ namespace Domain.Interfaces
     public interface IUserRepository
     {
         #region User
-        Task<User?> GetUserAsync(LoginVM loginVM);
+        User? GetUser(LoginVM loginVM);
         bool Similarity(UserRegisterVM user, out string message);
         bool Register(UserRegisterVM user, out string message);
         bool Edit(UserEditVM user, out string message);

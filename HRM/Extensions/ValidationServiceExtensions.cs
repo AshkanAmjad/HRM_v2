@@ -8,6 +8,7 @@ using HRM.Models.Validation;
 using HRM.Models.Validation.Security;
 using HRM.Models.Validation.Security.Role;
 using HRM.Models.Validation.Security.User;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace HRM.Extensions
 {
@@ -33,15 +34,20 @@ namespace HRM.Extensions
             #endregion
 
             #region Authenication
-            services.AddAuthentication()
-                .AddCookie("HRM", options =>
-                {
-                    options.Cookie.Name = "HRM";
-                    options.LoginPath = "/Index";
-                    options.LogoutPath = "/Logout";
-                    options.ExpireTimeSpan = TimeSpan.FromHours(10);
-                });
-            
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+            }).AddCookie(options =>
+            {
+                options.LoginPath = "";
+                options.LogoutPath = "/Logout";
+                options.ExpireTimeSpan = TimeSpan.FromDays(1);
+            });
+
             #endregion
         }
 

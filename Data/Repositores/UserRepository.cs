@@ -38,14 +38,14 @@ namespace Data.Repositores
                                  .AsQueryable();
         }
 
-        public async Task<User?> GetUserAsync(LoginVM model)
+        public User? GetUser(LoginVM model)
         {
 
             var user = new User();
 
             if (model.Area == "0")
             {
-                user = await _context.Users.SingleOrDefaultAsync(
+                user = _context.Users.SingleOrDefault(
                    u => u.UserName == model.UserName
                    &&
                    u.Department.Province != "0"
@@ -56,7 +56,7 @@ namespace Data.Repositores
             }
             if (model.Area == "1")
             {
-                user = await _context.Users.SingleOrDefaultAsync(
+                user = _context.Users.SingleOrDefault(
                    u => u.UserName == model.UserName
                    &&
                    u.Department.Province == "0"
@@ -67,7 +67,7 @@ namespace Data.Repositores
             }
             if (model.Area == "2")
             {
-                user = await _context.Users.SingleOrDefaultAsync(
+                user = _context.Users.SingleOrDefault(
                     u => u.UserName == model.UserName
                     &&
                     u.Department.Province == "0"

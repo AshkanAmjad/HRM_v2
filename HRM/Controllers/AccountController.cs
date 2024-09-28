@@ -7,6 +7,7 @@ using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using HRM.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -55,7 +56,6 @@ namespace HRM.Controllers
             return areas;
         }
         #endregion
-
         public IActionResult Login()
         {
             var areas = Areas();
@@ -63,10 +63,9 @@ namespace HRM.Controllers
             return View();
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginVM model)
+        public IActionResult Login(LoginVM model)
         {
             ValidationResult result = _validator.Validate(model);
 
@@ -74,7 +73,7 @@ namespace HRM.Controllers
             {
                 var verify = false;
 
-                var user = await _userRepository.GetUserAsync(model);
+                var user = _userRepository.GetUser(model);
 
                 if (user != null)
                 {
@@ -95,41 +94,41 @@ namespace HRM.Controllers
                         new ("lastActived",user.LastActived.ToString()),
                         new ("isActived",user.IsActived.ToString())
                     };
-                    var identity = new ClaimsIdentity(claims);
+                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var principal = new ClaimsPrincipal(identity);
                     var properties = new AuthenticationProperties
                     {
                         IsPersistent = model.RememberMe
                     };
-                    await HttpContext.SignInAsync(principal, properties);
+                    HttpContext.SignInAsync(principal, properties);
                     return View(model);
                 }
 
-            #region Error Messages
-            if (user is null)
-            {
-                ModelState.AddModelError("UserName", "کاربری با مشخصات وارد شده یافت نشد");
+                #region Error Messages
+                if (user is null)
+                {
+                    ModelState.AddModelError("UserName", "کاربری با مشخصات وارد شده یافت نشد");
+                }
+                if (user != null && !user.IsActived)
+                {
+                    ModelState.AddModelError("UserName", "حساب کاربری غیر فعال است.");
+                }
+                #endregion
             }
-            if (user != null && !user.IsActived)
-            {
-                ModelState.AddModelError("UserName", "حساب کاربری غیر فعال است.");
-            }
-            #endregion
-        }
             #region Manual Validation
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
             }
-    result.AddToModelState(this.ModelState);
-    #endregion
+            result.AddToModelState(this.ModelState);
+            #endregion
 
-    #region Areas
-    var areas =Areas();
-    ViewData["Areas"] = areas;
+            #region Areas
+            var areas = Areas();
+            ViewData["Areas"] = areas;
             #endregion
 
             return View();
-}
+        }
     }
 }

@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HRM.Areas.Province.Controllers
 {
     [Area("Province")]
+    [Authorize]
 
     public class HomeController : Controller
     {
