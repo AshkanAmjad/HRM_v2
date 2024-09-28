@@ -13,13 +13,13 @@ namespace Data.HRMProfiles
     {
         public RoleProfile()
         {
-            CreateMap<AssistantRegisterVM, Role>()
+            CreateMap<RoleRegisterVM, Role>()
                 .ForMember(dest => dest.IsActived, opt => opt.MapFrom(src => src.IsActived))
                 .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.RoleId))
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
                 .ForMember(dest => dest.RegisterDate, opt => opt.MapFrom(src => src.RegisterDate));
 
-            CreateMap<AssistantEditVM, Role>()
+            CreateMap<RoleEditVM, Role>()
                 .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.RoleId))
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
                 .ForMember(dest => dest.RegisterDate, opt => opt.MapFrom(src => src.RegisterDate));

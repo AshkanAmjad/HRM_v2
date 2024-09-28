@@ -1,6 +1,7 @@
 ﻿using Domain.DTOs.General;
 using Domain.DTOs.Security.Role;
 using Domain.DTOs.Security.User;
+using Domain.DTOs.Security.UserRole;
 using Domain.Entities.Security.Models;
 using System;
 using System.Collections.Generic;
@@ -12,23 +13,30 @@ namespace Domain.Interfaces
 {
     public interface IRoleRepository
     {
-        #region Assistant
-        IQueryable<Role> GetAssistantsQuery();
-        List<DisplayAssistantsVM> GetAssistants();
-        bool RegisterAssistant(AssistantRegisterVM model, out string message);
-        bool EditAssistant(AssistantEditVM model, out string message);
-        bool DisableAssistant(AssistantEdit_Active_DisableVM model, out string message);
-        bool ActiveAssistant(AssistantEdit_Active_DisableVM model, out string message);
-        AssistantEditVM? GetAssistantById(Guid roleId);
-        bool Similarity(AssistantRegisterVM model, out string message);
-        bool Similarity(AssistantEditVM model, out string message);
+        #region Role
+        IQueryable<Role> GetRolesQuery();
+        List<DisplayRolesVM> GetRoles();
+        bool RegisterRole(RoleRegisterVM model, out string message);
+        bool EditRole(RoleEditVM model, out string message);
+        bool DisableRole(RoleEdit_Active_DisableVM model, out string message);
+        bool ActiveRole(RoleEdit_Active_DisableVM model, out string message);
+        RoleEditVM? GetRoleById(Guid roleId);
+        bool Similarity(RoleRegisterVM model, out string message);
+        bool Similarity(RoleEditVM model, out string message);
+        #endregion
+
+        #region UserRole
+        IQueryable<UserRole> GetUserRolesQuery();
+        List<DisplayUserRolesVM> GetUserRoles();
+
+
         #endregion
 
         #region DB
-        void DisableAssistantDb(AssistantEdit_Active_DisableVM model);
-        void ActiveAssistantDb(AssistantEdit_Active_DisableVM model);
-        void UploadEditAssistantToDb(AssistantEditVM model);
-        void UploadRegisterAssistantToDb(AssistantRegisterVM model);
+        void DisableRoleDb(RoleEdit_Active_DisableVM model);
+        void ActiveRoleDb(RoleEdit_Active_DisableVM model);
+        void UploadEditRoleToDb(RoleEditVM model);
+        void UploadRegisterRoleToDb(RoleRegisterVM model);
         void SaveChanges();
         #endregion
     }

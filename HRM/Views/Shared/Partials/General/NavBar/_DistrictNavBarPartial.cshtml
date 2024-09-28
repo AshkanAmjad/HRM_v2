@@ -1,8 +1,8 @@
 ﻿<script type="text/javascript">
     var _districtManagementUsersUrl = '@Url.Action("DistrictManagementUsersIndex", "Management", new { area = "District" })';
     var _districtManagementArchivedUsersUrl = '@Url.Action("DistrictArchiveUsersIndex", "Archive", new { area = "District" })';
-    var _districtManagementAssistantUrl = '@Url.Action("DistrictAssistantsIndex", "Access", new { area = "District" })';
     var _districtManagementRolesUrl = '@Url.Action("DistrictRolesIndex", "Access", new { area = "District" })';
+    var _districtManagementUserRolesUrl = '@Url.Action("DistrictUserRolesIndex", "Access", new { area = "District" })';
 </script>
 <script type="text/javascript">
     $("#districtManagementUsers").off("click");
@@ -19,18 +19,18 @@
         });
     });
     //------------------------------------------------------------------------
-    $("#districtManagementAssistants").off("click");
-    $("#districtManagementAssistants").on("click", function (e) {
-        e.preventDefault();
-        $.get(_districtManagementAssistantUrl).done(function (result) {
-            $("#main").html(result);
-        });
-    });
-    //------------------------------------------------------------------------
     $("#districtManagementRoles").off("click");
     $("#districtManagementRoles").on("click", function (e) {
         e.preventDefault();
         $.get(_districtManagementRolesUrl).done(function (result) {
+            $("#main").html(result);
+        });
+    });
+    //------------------------------------------------------------------------
+    $("#districtManagementUserRoles").off("click");
+    $("#districtManagementUserRoles").on("click", function (e) {
+        e.preventDefault();
+        $.get(_districtManagementUserRolesUrl).done(function (result) {
             $("#main").html(result);
         });
     });

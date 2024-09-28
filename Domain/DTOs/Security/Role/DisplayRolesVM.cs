@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Security.Role
 {
-    public class AssistantEdit_Active_DisableVM
+    public class DisplayRolesVM
     {
         public Guid RoleId { get; set; }
-        public string? Title {  get; set; }
+        public string Title {  get; set; }
+        public string IsActived { get; set; }
+        public string RegisterDate { get; set; }
+
     }
 }

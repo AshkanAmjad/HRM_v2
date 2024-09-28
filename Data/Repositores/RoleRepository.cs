@@ -4,6 +4,7 @@ using Data.Extensions;
 using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Security.Role;
 using Domain.DTOs.Security.User;
+using Domain.DTOs.Security.UserRole;
 using Domain.Entities.Security.Models;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -22,12 +23,12 @@ namespace Data.Repositores
             _mapper = mapper;
         }
         #endregion
-        public List<DisplayAssistantsVM> GetAssistants()
+        public List<DisplayRolesVM> GetRoles()
         {
-            var context = GetAssistantsQuery();
-            var assistants = (from item in context
+            var context = GetRolesQuery();
+            var roles = (from item in context
                               orderby item.IsActived descending,item.RegisterDate descending
-                              select new DisplayAssistantsVM
+                              select new DisplayRolesVM
                               {
                                   RoleId = item.RoleId,
                                   Title = item.Title,
@@ -35,16 +36,48 @@ namespace Data.Repositores
                                   IsActived = (item.IsActived) ? "فعال" : "غیرفعال"
                               })
                               .ToList();
-            return assistants;
+            return roles;
         }
 
-        public IQueryable<Role> GetAssistantsQuery()
+        public List<DisplayUserRolesVM> GetUserRoles()
+        {
+            var context = GetUserRolesQuery();
+            var userRoles = (from item in context
+                             orderby item.IsActived descending, item.RegisterDate descending
+                             select new DisplayUserRolesVM
+                             {
+                                 UserRoleId = item.UserRoleId,
+                                 UserName = item.User.UserName,
+                                 FirstName = item.User.FirstName,
+                                 LastName = item.User.LastName,
+                                 Title = item.Role.Title,
+                                 Area = (item.User.Department.Area == "0" ? "استان" : (item.User.Department.Area == "1" ? "شهرستان" : "بخش")),
+                                 County = (item.User.Department.County),
+                                 District = (item.User.Department.District),
+                                 IsActived = (item.IsActived)?"فعال":"غیرفعال",
+                                 RegisterDate = $"{item.RegisterDate.ToShamsi()}"
+                             })
+                             .ToList();
+            return userRoles;
+        }
+
+        public IQueryable<Role> GetRolesQuery()
         {
             return _context.Roles.IgnoreQueryFilters()
                                  .AsQueryable();
         }
 
-        public bool RegisterAssistant(AssistantRegisterVM model, out string message)
+        public IQueryable<UserRole> GetUserRolesQuery()
+        {
+            return _context.UserRoles.IgnoreQueryFilters()
+                                     .Include(r=>r.Role)
+                                     .Include(u=>u.User)
+                                     .Include(u => u.User.Department)
+                                     .AsQueryable();
+        }
+
+
+        public bool RegisterRole(RoleRegisterVM model, out string message)
         {
             string checkMessage = "";
             if (!Similarity(model, out checkMessage))
@@ -53,7 +86,7 @@ namespace Data.Repositores
                 model.IsActived = true;
                 model.RoleId = Guid.NewGuid();
 
-                UploadRegisterAssistantToDb(model);
+                UploadRegisterRoleToDb(model);
 
                 message = "";
                 return true;
@@ -62,7 +95,7 @@ namespace Data.Repositores
             return false;
         }
 
-        public bool Similarity(AssistantRegisterVM model, out string message)
+        public bool Similarity(RoleRegisterVM model, out string message)
         {
             bool check = false;
             var resultMessage = "";
@@ -81,7 +114,7 @@ namespace Data.Repositores
             return check;
         }
 
-        public bool Similarity(AssistantEditVM model, out string message)
+        public bool Similarity(RoleEditVM model, out string message)
         {
             bool check = false;
             var resultMessage = "";
@@ -106,7 +139,7 @@ namespace Data.Repositores
             _context.SaveChanges();
         }
 
-        public void UploadEditAssistantToDb(AssistantEditVM model)
+        public void UploadEditRoleToDb(RoleEditVM model)
         {
             if(model != null)
             {
@@ -114,10 +147,10 @@ namespace Data.Repositores
                                          .Find(model.RoleId);
                 if(initial != null)
                 {
-                    Role assistant = _mapper.Map<Role>(model);
+                    Role role = _mapper.Map<Role>(model);
                     
-                    initial.Title = assistant.Title;
-                    initial.RegisterDate = assistant.RegisterDate;
+                    initial.Title = role.Title;
+                    initial.RegisterDate = role.RegisterDate;
                     
                     _context.Update(initial);
                 }
@@ -125,7 +158,7 @@ namespace Data.Repositores
             }
         }
 
-        public void UploadRegisterAssistantToDb(AssistantRegisterVM model)
+        public void UploadRegisterRoleToDb(RoleRegisterVM model)
         {
             if(model != null)
             {
@@ -133,32 +166,32 @@ namespace Data.Repositores
                 _context.Add(assistant);
             }
         }
-        public void ActiveAssistantDb(AssistantEdit_Active_DisableVM model)
+        public void ActiveRoleDb(RoleEdit_Active_DisableVM model)
         {
             if (model != null)
             {
-                var assistant = _context.Roles.IgnoreQueryFilters()
+                var role = _context.Roles.IgnoreQueryFilters()
                                               .Where(r => r.RoleId == model.RoleId)
                                               .FirstOrDefault();
 
-                if (assistant != null)
+                if (role != null)
                 {
-                    assistant.IsActived = true;
-                    assistant.RegisterDate = DateTime.Now;
+                    role.IsActived = true;
+                    role.RegisterDate = DateTime.Now;
 
-                    _context.Roles.Update(assistant);
+                    _context.Roles.Update(role);
                 }
             }
         }
 
-        public bool DisableAssistant(AssistantEdit_Active_DisableVM model, out string message)
+        public bool DisableRole(RoleEdit_Active_DisableVM model, out string message)
         {
             string checkMessage = "عملیات غیر فعال سازی با شکست مواجه شد.";
 
             if (model != null)
             {
 
-                DisableAssistantDb(model);
+                DisableRoleDb(model);
 
                 message = "";
 
@@ -169,24 +202,24 @@ namespace Data.Repositores
             return false;
         }
 
-        public void DisableAssistantDb(AssistantEdit_Active_DisableVM model)
+        public void DisableRoleDb(RoleEdit_Active_DisableVM model)
         {
             if (model != null)
             {
-                var assistant = _context.Roles
+                var role = _context.Roles
                                         .Find(model.RoleId);
 
-                if (assistant != null)
+                if (role != null)
                 {
-                    assistant.IsActived = false;
-                    assistant.RegisterDate = DateTime.Now;
+                    role.IsActived = false;
+                    role.RegisterDate = DateTime.Now;
 
-                    _context.Roles.Update(assistant);
+                    _context.Roles.Update(role);
                 }
             }
         }
 
-        public bool EditAssistant(AssistantEditVM model, out string message)
+        public bool EditRole(RoleEditVM model, out string message)
         {
             string checkMessage = "";
 
@@ -194,7 +227,7 @@ namespace Data.Repositores
             {
                 model.RegisterDate = DateTime.Now;
 
-                UploadEditAssistantToDb(model);
+                UploadEditRoleToDb(model);
 
                 message = "";
                 return true;
@@ -204,29 +237,29 @@ namespace Data.Repositores
             return false;
         }
 
-        public AssistantEditVM? GetAssistantById(Guid roleId)
+        public RoleEditVM? GetRoleById(Guid roleId)
         {
-            AssistantEditVM assistant = new();
+            RoleEditVM role = new();
             if (roleId != Guid.Empty)
             {
-                assistant = (from item in _context.Roles
+                role = (from item in _context.Roles
                              where (item.RoleId == roleId)
-                             select new AssistantEditVM
+                             select new RoleEditVM
                              {
                                  RoleId = item.RoleId,
                                  Title = item.Title,
                              }).Single();
             }
-            return assistant;
+            return role;
         }
 
-        public bool ActiveAssistant(AssistantEdit_Active_DisableVM model, out string message)
+        public bool ActiveRole(RoleEdit_Active_DisableVM model, out string message)
         {
             string checkMessage = "عملیات فعال سازی با شکست مواجه شد.";
 
             if (model != null)
             {
-                ActiveAssistantDb(model);
+                ActiveRoleDb(model);
 
                 message = "";
                 return true;

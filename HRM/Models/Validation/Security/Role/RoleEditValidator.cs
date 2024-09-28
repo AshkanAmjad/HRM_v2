@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace HRM.Models.Validation.Security.Role
 {
-    public class AssistantEditValidator: AbstractValidator<AssistantEditVM>
+    public class RoleEditValidator: AbstractValidator<RoleEditVM>
     {
-        public AssistantEditValidator()
+        public RoleEditValidator()
         {
             RuleFor(x =>x.RoleId).NotEmpty()
                                  .NotNull()

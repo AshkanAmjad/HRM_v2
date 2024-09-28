@@ -2,31 +2,30 @@
     Layout = null;
 }
 <partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPartial.cshtml">
-
     <div id="operation-box" class="modal fade" role="dialog" aria-hidden="true">
     </div>
-    <div class="btn btn-outline-primary btn-sm  my-3 mx-1">مدیریت معاونت ها - استان</div>
+    <div class="btn btn-outline-primary btn-sm  my-3 mx-1">کنترل دسترسی پرسنل - استان</div>
     <div>
         <button class="btn btn-primary text-white d-flex p-2 justify-content-center mb-3 mx-1" id="addBtn">
             <i class="fa fa-lg fa-plus align-self-center"></i>
         </button>
     </div>
-    <div id="assistants-box">
+    <div id="userRoles-box">
     </div>
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
         <script type="text/javascript">
-            var _registerUrl = '@Url.Action("AssistantRegister", "Access", new { area = "Province" })';
-            var _gridUrl = '@Url.Action("FillAssistantsGrid", "Access", new { area = "Province" })';
-            var _getAssistansUrl = '@Url.Action("GetAssistants", "Access", new { area = "Province" })';
-            var _editUrl = '@Url.Action("AssistantEdit", "Access", new { area = "Province" })';
-            var _disableUrl = '@Url.Action("AssistantDisable", "Access", new { area = "Province" })';
-            var _activeUrl = '@Url.Action("AssistantActive", "Access", new { area = "Province" })';
+            var _registerUrl = '@Url.Action("UserRoleRegister", "Access", new { area = "Province" })';
+            var _gridUrl = '@Url.Action("FillUserRolesGrid", "Access", new { area = "Province" })';
+            var _getRolesUrl = '@Url.Action("GetUserRoles", "Access", new { area = "Province" })';
+            var _editUrl = '@Url.Action("UserRoleEdit", "Access", new { area = "Province" })';
+            var _disableUrl = '@Url.Action("UserRoleDisable", "Access", new { area = "Province" })';
+            var _activeUrl = '@Url.Action("UserRoleActive", "Access", new { area = "Province" })';
         </script>
         <script type="text/javascript">
             //List
             $(document).ready(function (e) {
                 $.get(_gridUrl).done(function (result) {
-                    $("#assistants-box").html(result);
+                    $("#userRoles-box").html(result);
                 });
             });
 
@@ -46,44 +45,50 @@
                     "ordering": false,
                     "language": {
                         "emptyTable": "داده ای ثبت نشده است.",
-                        "zeroRecords": "معاونتی یافت نشد.",
+                        "zeroRecords": "کاربری یافت نشد.",
                         "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
                         "search": `<span class="ms-2">
-                                              <i class="fa fa-search text-primary"></i>
-                                                    جست‌و‌جو بر اساس عنوان معاونت:
-                                   </span>`,
-                        "searchPlaceholder": 'مقدار مناسبی برای عنوان معاونت وارد کنید ...',
+                                                                                  <i class="fa fa-search text-primary"></i>
+                                                                                        جست‌و‌جو بر اساس عنوان معاونت یا نام کاربری: 
+                                                                       </span>`,
+                        "searchPlaceholder": 'مقدار مناسبی وارد کنید ...',
                     },
                     "ajax": {
-                        "url": _getAssistansUrl,
+                        "url": _getRolesUrl,
                         "type": "POST",
                         "datatype": "json"
                     },
                     "columns": [
-                        { "data": "title", "title": "عنوان" },
-                        { "data": "isActived", "title": "وضعیت", "width": "10%" },
-                        { "data": "registerDate", "title": "تاریخ ثبت", "width": "10%" },
+                        { "data": "userName", "title": "نام کاربری" },
+                        {"data":"title", "title":"معاونت"},
+                        { "data": "firstName", "title": "نام" },
+                        { "data": "lastName", "title": "نام خانوادگی" },
+                        { "data": "area", "title": "ناحیه" },
+                        { "data": "county", "title": "شهرستان" },
+                        { "data": "district", "title": "بخش" },
+                        { "data": "isActived", "title": "فعالیت" },
+                        { "data": "registerDate", "title": "تاریخ ثبت" },
                         {
-                            "data": "roleId", "title": "عملیات", "width": "20%", render: function (data, type, row) {
+                            "data": "UserRoleId", "title": "عملیات", "width": "20%", render: function (data, type, row) {
                                 return `<div class="d-flex justify-content-center">
-                                            
-                                      ${row.isActived === "فعال" ?
-                                            `
-                                            <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
-                                               onclick="Edit('${data}', '${row.title}')">
-                                            <i class="fa fa-edit my-2 mx-1" > </i>
-                                                </a>
-                                            <a class="btn btn-outline-danger btn-sm rounded-circle"
-                                               onclick = "Disable('${data}','${row.title}')">
-                                               <i class="fa fa-minus my-2 mx-1" > </i>
-                                              </a>`
+
+                                                                          ${row.isActived === "فعال" ?
+                                        `
+                                                                                <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
+                                                                                   onclick="Edit('${data})">
+                                                                                <i class="fa fa-edit my-2 mx-1" > </i>
+                                                                                    </a>
+                                                                                <a class="btn btn-outline-danger btn-sm rounded-circle"
+                                                                                   onclick = "Disable('${data}')">
+                                                                                   <i class="fa fa-minus my-2 mx-1" > </i>
+                                                                                  </a>`
                                         :
-                                          `<a class="btn btn-outline-success btn-sm rounded-circle"
-                                            onclick = "Active('${data}','${row.title}')">
-                                            <i class="fa fa-check my-2 mx-1" > </i>
-                                             </a>`
-                                         }
-                                      </div>`
+                                        `<a class="btn btn-outline-success btn-sm rounded-circle"
+                                                                                onclick = "Active('${data}','${row.userId}')">
+                                                                                <i class="fa fa-check my-2 mx-1" > </i>
+                                                                                 </a>`
+                                    }
+                                                                          </div>`
                             }
                         }
                     ]
@@ -105,11 +110,10 @@
             });
 
             //Edit
-            function Edit(roleId, title) {
+            function Edit(userRoleId) {
 
                 var data = {
-                    roleId: roleId,
-                    title: title
+                    userRoleId: userRoleId,
                 };
 
                 $.get(_editUrl, data).done(function (result) {
@@ -119,9 +123,9 @@
             }
 
             //Disable
-            function Disable(roleId, title) {
+            function Disable(userRoleId) {
                 Swal.fire({
-                    text: " آیا از غیر فعال کردن معاونت " + title + " مطمئن هستید؟ ",
+                    text: " آیا از غیر فعال کردن دسترسی انتخاب شده، مطمئن هستید؟ ",
                     showCancelButton: true,
                     icon: "warning",
                     confirmButtonText: "تایید",
@@ -131,8 +135,7 @@
                     if (result.isConfirmed) {
 
                         var data = {
-                            roleId: roleId,
-                            title: title,
+                            userRoleId: userRoleId,
                         };
 
                         $.post(_disableUrl, data).done(function (result) {
@@ -171,9 +174,9 @@
             };
 
             //Active
-            function Active(roleId, title) {
+            function Active(userRoleId) {
                 Swal.fire({
-                    text: " آیا از فعال کردن معاونت " + title + " مطمئن هستید؟ ",
+                    text: " آیا از فعال کردن دسترسی انتخاب شده، مطمئن هستید؟ ",
                     showCancelButton: true,
                     icon: "warning",
                     confirmButtonText: "تایید",
@@ -183,8 +186,7 @@
                     if (result.isConfirmed) {
 
                         var data = {
-                            roleId: roleId,
-                            title: title,
+                            userRoleId: userRoleId,
                         };
 
                         $.post(_activeUrl, data).done(function (result) {
@@ -222,3 +224,4 @@
                 })
             };
         </script>
+

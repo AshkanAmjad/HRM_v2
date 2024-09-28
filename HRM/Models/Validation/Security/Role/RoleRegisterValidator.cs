@@ -4,9 +4,9 @@ using FluentValidation;
 
 namespace HRM.Models.Validation.Security.Role
 {
-    public class AssistantRegisterValidator : AbstractValidator<AssistantRegisterVM>
+    public class RoleRegisterValidator : AbstractValidator<RoleRegisterVM>
     {
-        public AssistantRegisterValidator()
+        public RoleRegisterValidator()
         {
             RuleFor(x => x.Title).NotNull()
                                  .WithMessage("تکمیل ورودی عنوان ضروری است.")

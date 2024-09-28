@@ -24,12 +24,12 @@ namespace HRM.Areas.County.Controllers
         #endregion
 
         #region Index
-        public IActionResult CountyAssistantsIndex()
+        public IActionResult CountyRolesIndex()
         {
             return View();
         }
 
-        public IActionResult CountyRolesIndex()
+        public IActionResult CountyUserRolesIndex()
         {
             return View();
         }
@@ -37,15 +37,15 @@ namespace HRM.Areas.County.Controllers
         #endregion
 
         #region Display
-        public IActionResult FillAssistantsGrid()
+        public IActionResult FillRolesGrid()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult GetAssistants()
+        public IActionResult GetRoles()
         {
-            var assistants = _roleRepository.GetAssistants();
+            var roles = _roleRepository.GetRoles();
 
             #region paging and searching
             int start = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");
@@ -53,13 +53,13 @@ namespace HRM.Areas.County.Controllers
             string searchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
 
 
-            var mainData = assistants
+            var mainData = roles
                 .Where(a => a.Title.Contains(searchValue))
                 .Skip(start)
                 .Take(length)
                 .ToList();
 
-            var totalCount = assistants
+            var totalCount = roles
                 .Count();
 
             #endregion

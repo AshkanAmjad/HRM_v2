@@ -4,18 +4,18 @@
 <partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPartial.cshtml">
 
     <div class="btn btn-outline-primary btn-sm  my-3 mx-1">مشاهده معاونت ها - شهرستان</div>
-    <div id="assistants-box">
+    <div id="roles-box">
     </div>
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
         <script type="text/javascript">
-            var _gridUrl = '@Url.Action("FillAssistantsGrid", "Access", new { area = "County" })';
-            var _getAssistansUrl = '@Url.Action("GetAssistants", "Access", new { area = "County" })';
+            var _gridUrl = '@Url.Action("FillRolesGrid", "Access", new { area = "County" })';
+            var _getRoleUrl = '@Url.Action("GetRoles", "Access", new { area = "County" })';
         </script>
         <script type="text/javascript">
             //List
             $(document).ready(function (e) {
                 $.get(_gridUrl).done(function (result) {
-                    $("#assistants-box").html(result);
+                    $("#roles-box").html(result);
                 });
             });
 
@@ -44,7 +44,7 @@
                         "searchPlaceholder": 'مقدار مناسبی برای عنوان معاونت وارد کنید ...',
                     },
                     "ajax": {
-                        "url": _getAssistansUrl,
+                        "url": _getRolesUrl,
                         "type": "POST",
                         "datatype": "json"
                     },

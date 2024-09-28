@@ -1,4 +1,4 @@
-﻿@model Domain.DTOs.Security.Role.AssistantEditVM
+﻿@model Domain.DTOs.Security.Role.RoleEditVM
 @{
     Layout = null;
 }
@@ -52,7 +52,7 @@
 <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
 
     <script type="text/javascript">
-        var _registerUrl = '@Url.Action("AssistantEdit", "Access", new { area = "Province" })';
+        var _editUrl = '@Url.Action("RoleEdit", "Access", new { area = "Province" })';
     </script>
 
     <script type="text/javascript">
@@ -66,7 +66,7 @@
                     $("#submitBtn").prop('disabled', true);
                     var formData = new FormData($form.get(0));
                     $.ajax({
-                        url: _registerUrl,
+                        url: _editUrl,
                         type: 'POST',
                         data: formData,
                         processData: false,

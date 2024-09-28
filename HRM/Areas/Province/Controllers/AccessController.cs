@@ -14,32 +14,36 @@ namespace HRM.Areas.Province.Controllers
         #region Constructor
         private readonly IRoleRepository _roleRepository;
         private readonly IMapper _mapper;
-        private readonly IValidator<AssistantRegisterVM> _assistantRegisterValidator;
-        private readonly IValidator<AssistantEditVM> _assistantEditValidator;
-        private readonly IValidator<AssistantEdit_Active_DisableVM> _assistantEdit_DisableValidator;
+        private readonly IValidator<RoleRegisterVM> _roleRegisterValidator;
+        private readonly IValidator<RoleEditVM> _roleEditValidator;
+        private readonly IValidator<RoleEdit_Active_DisableVM> _roleEdit_DisableValidator;
 
         public AccessController(
             IRoleRepository roleRepository,
             IMapper mapper,
-            IValidator<AssistantRegisterVM> assistantRegisterValidator,
-            IValidator<AssistantEditVM> assistantEditValidator,
-            IValidator<AssistantEdit_Active_DisableVM> assistantEdit_DisableValidator)
+            IValidator<RoleRegisterVM> roleRegisterValidator,
+            IValidator<RoleEditVM> roleEditValidator,
+            IValidator<RoleEdit_Active_DisableVM> roleEdit_DisableValidator)
         {
             _roleRepository = roleRepository;
-            _assistantEditValidator = assistantEditValidator;
-            _assistantRegisterValidator = assistantRegisterValidator;
-            _assistantEdit_DisableValidator = assistantEdit_DisableValidator;
+            _roleEditValidator = roleEditValidator;
+            _roleRegisterValidator = roleRegisterValidator;
+            _roleEdit_DisableValidator = roleEdit_DisableValidator;
             _mapper = mapper;
         }
         #endregion
 
+        #region Select list
+
+        #endregion
+
         #region Index
-        public IActionResult ProvinceAssistantsIndex()
+        public IActionResult ProvinceRolesIndex()
         {
             return View();
         }
 
-        public IActionResult ProvinceRolesIndex()
+        public IActionResult ProvinceUserRolesIndex()
         {
             return View();
         }
@@ -47,15 +51,20 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Display
-        public IActionResult FillAssistantsGrid()
+        public IActionResult FillRolesGrid()
+        {
+            return View();
+        }
+
+        public IActionResult FillUserRolesGrid()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult GetAssistants()
+        public IActionResult GetRoles()
         {
-            var assistants = _roleRepository.GetAssistants();
+            var roles = _roleRepository.GetRoles();
 
             #region paging and searching
             int start = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");
@@ -63,13 +72,47 @@ namespace HRM.Areas.Province.Controllers
             string searchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
 
 
-            var mainData = assistants
+            var mainData = roles
                 .Where(a => a.Title.Contains(searchValue))
                 .Skip(start)
                 .Take(length)
                 .ToList();
 
-            var totalCount = assistants
+            var totalCount = roles
+                .Count();
+
+            #endregion
+
+            var jsonData = new
+            {
+                draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0"),
+                recordTotal = totalCount,
+                recordsFiltered = mainData.Count(),
+                data = mainData
+            };
+
+            return Json(jsonData);
+        }
+
+        [HttpPost]
+        public IActionResult GetUserRoles()
+        {
+            var roles = _roleRepository.GetUserRoles();
+
+            #region paging and searching
+            int start = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");
+            int length = int.Parse(Request.Form["length"].FirstOrDefault() ?? "10");
+            string searchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
+
+
+            var mainData = roles
+                .Where(a => (a.Title.Contains(searchValue)) ||
+                      (a.UserName.Contains(searchValue)))
+                .Skip(start)
+                .Take(length)
+                .ToList();
+
+            var totalCount = roles
                 .Count();
 
             #endregion
@@ -87,24 +130,24 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Register
-        public IActionResult AssistantRegister()
+        public IActionResult RoleRegister()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AssistantRegister(AssistantRegisterVM model)
+        public IActionResult RoleRegister(RoleRegisterVM model)
         {
-            ValidationResult assistantValidator = _assistantRegisterValidator.Validate(model);
+            ValidationResult roleValidator = _roleRegisterValidator.Validate(model);
             bool success = false;
             var message = $"عملیات ثبت با شکست مواجه شده است.";
             string checkMessage = "";
-            if (assistantValidator.IsValid)
+            if (roleValidator.IsValid)
             {
                 try
                 {
-                    bool result = _roleRepository.RegisterAssistant(model, out checkMessage);
+                    bool result = _roleRepository.RegisterRole(model, out checkMessage);
 
                     if (result)
                     {
@@ -128,14 +171,14 @@ namespace HRM.Areas.Province.Controllers
             }
             else
             {
-                message = $"{assistantValidator}";
+                message = $"{roleValidator}";
             }
             #region Manual Validation
-            foreach (var error in assistantValidator.Errors)
+            foreach (var error in roleValidator.Errors)
             {
                 ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
             }
-            assistantValidator.AddToModelState(this.ModelState);
+            roleValidator.AddToModelState(this.ModelState);
             #endregion
 
             #region Json data
@@ -149,38 +192,43 @@ namespace HRM.Areas.Province.Controllers
             return Json(jsonData);
 
         }
+
+        public IActionResult UserRoleRegister()
+        {
+            return View();
+        }
         #endregion
 
         #region Edit
-        public IActionResult AssistantEdit(AssistantEdit_Active_DisableVM model)
+        public IActionResult RoleEdit(RoleEdit_Active_DisableVM model)
         {
-            ValidationResult assistantValidator = _assistantEdit_DisableValidator.Validate(model);
+            ValidationResult roleValidator = _roleEdit_DisableValidator.Validate(model);
 
-            if (assistantValidator.IsValid)
+            if (roleValidator.IsValid)
             {
-                var assistant = _roleRepository.GetAssistantById(model.RoleId);
+                var role = _roleRepository.GetRoleById(model.RoleId);
 
-                if (assistant == null)
+                if (role == null)
                     return NotFound();
 
-                return View(assistant);
+                return View(role);
             }
             return NotFound();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AssistantEdit(AssistantEditVM model)
+        public IActionResult RoleEdit(RoleEditVM model)
         {
-            ValidationResult assistantValidator = _assistantEditValidator.Validate(model);
+            ValidationResult roleValidator = _roleEditValidator.Validate(model);
             bool success = false;
             var message = $"عملیات ویرایش با شکست مواجه شده است.";
             string checkMessage = "";
-            if (assistantValidator.IsValid)
+            if (roleValidator.IsValid)
             {
                 try
                 {
-                    bool result = _roleRepository.EditAssistant(model, out checkMessage);
+                    bool result = _roleRepository.EditRole(model, out checkMessage);
 
                     if (result)
                     {
@@ -204,14 +252,14 @@ namespace HRM.Areas.Province.Controllers
             }
             else
             {
-                message = $"{assistantValidator}";
+                message = $"{roleValidator}";
             }
             #region Manual Validation
-            foreach (var error in assistantValidator.Errors)
+            foreach (var error in roleValidator.Errors)
             {
                 ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
             }
-            assistantValidator.AddToModelState(this.ModelState);
+            roleValidator.AddToModelState(this.ModelState);
             #endregion
 
             #region Json data
@@ -228,17 +276,17 @@ namespace HRM.Areas.Province.Controllers
 
         #region Disable
         [HttpPost]
-        public IActionResult AssistantDisable(AssistantEdit_Active_DisableVM model)
+        public IActionResult RoleDisable(RoleEdit_Active_DisableVM model)
         {
-            ValidationResult assistantValidator = _assistantEdit_DisableValidator.Validate(model);
+            ValidationResult roleValidator = _roleEdit_DisableValidator.Validate(model);
             bool success = false;
             var message = $"عملیات غیر فعال سازی با شکست مواجه شده است.";
             string checkMessage = "";
-            if (assistantValidator.IsValid)
+            if (roleValidator.IsValid)
             {
                 try
                 {
-                    bool result = _roleRepository.DisableAssistant(model, out checkMessage);
+                    bool result = _roleRepository.DisableRole(model, out checkMessage);
 
                     if (result)
                     {
@@ -262,14 +310,14 @@ namespace HRM.Areas.Province.Controllers
             }
             else
             {
-                message = $"{assistantValidator}";
+                message = $"{roleValidator}";
             }
             #region Manual Validation
-            foreach (var error in assistantValidator.Errors)
+            foreach (var error in roleValidator.Errors)
             {
                 ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
             }
-            assistantValidator.AddToModelState(this.ModelState);
+            roleValidator.AddToModelState(this.ModelState);
             #endregion
 
             #region Json data
@@ -286,17 +334,17 @@ namespace HRM.Areas.Province.Controllers
 
         #region Active
         [HttpPost]
-        public IActionResult AssistantActive(AssistantEdit_Active_DisableVM model)
+        public IActionResult RoleActive(RoleEdit_Active_DisableVM model)
         {
-            ValidationResult assistantValidator = _assistantEdit_DisableValidator.Validate(model);
+            ValidationResult roleValidator = _roleEdit_DisableValidator.Validate(model);
             bool success = false;
             var message = $"عملیات غیر فعال سازی با شکست مواجه شده است.";
             string checkMessage = "";
-            if (assistantValidator.IsValid)
+            if (roleValidator.IsValid)
             {
                 try
                 {
-                    bool result = _roleRepository.ActiveAssistant(model, out checkMessage);
+                    bool result = _roleRepository.ActiveRole(model, out checkMessage);
 
                     if (result)
                     {
@@ -320,14 +368,14 @@ namespace HRM.Areas.Province.Controllers
             }
             else
             {
-                message = $"{assistantValidator}";
+                message = $"{roleValidator}";
             }
             #region Manual Validation
-            foreach (var error in assistantValidator.Errors)
+            foreach (var error in roleValidator.Errors)
             {
                 ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
             }
-            assistantValidator.AddToModelState(this.ModelState);
+            roleValidator.AddToModelState(this.ModelState);
             #endregion
 
             #region Json data

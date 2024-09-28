@@ -2,12 +2,14 @@
 using Domain.DTOs.Security.Login;
 using Domain.DTOs.Security.Role;
 using Domain.DTOs.Security.User;
+using Domain.DTOs.Security.UserRole;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using HRM.Models.Validation;
 using HRM.Models.Validation.Security;
 using HRM.Models.Validation.Security.Role;
 using HRM.Models.Validation.Security.User;
+using HRM.Models.Validation.Security.UserRole;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace HRM.Extensions
@@ -28,9 +30,13 @@ namespace HRM.Extensions
             services.AddScoped<IValidator<AreaVM>,AreaValidator>();
             services.AddScoped<IValidator<UserDelete_ActiveVM>, UserDelete_ActiveValidator>();
 
-            services.AddScoped<IValidator<AssistantRegisterVM>, AssistantRegisterValidator>();
-            services.AddScoped<IValidator<AssistantEditVM>, AssistantEditValidator>();
-            services.AddScoped<IValidator<AssistantEdit_Active_DisableVM>, AssistantEdit_DisableValidator>();
+            services.AddScoped<IValidator<RoleRegisterVM>, RoleRegisterValidator>();
+            services.AddScoped<IValidator<RoleEditVM>, RoleEditValidator>();
+            services.AddScoped<IValidator<RoleEdit_Active_DisableVM>, RoleEdit_Active_DisableValidator>();
+
+            services.AddScoped<IValidator<UserRoleRegisterVM>, UserRoleRegisterValidator>();
+            services.AddScoped<IValidator<UserRoleEditVM>, UserRoleEditValidator>();
+            services.AddScoped<IValidator<UserRoleEdit_Active_DisableVM>, UserRoleEdit_Active_DisableValidator>();
             #endregion
 
             #region Authenication

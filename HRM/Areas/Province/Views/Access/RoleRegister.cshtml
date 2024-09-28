@@ -1,4 +1,4 @@
-﻿@model Domain.DTOs.Security.Role.AssistantRegisterVM
+﻿@model Domain.DTOs.Security.Role.RoleRegisterVM
 @{
     Layout = null;
 }
@@ -51,7 +51,7 @@
 <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
 
 <script type="text/javascript">
-    var _registerUrl = '@Url.Action("AssistantRegister", "Access", new { area = "Province" })';
+    var _registerUrl = '@Url.Action("RoleRegister", "Access", new { area = "Province" })';
 </script>
 
 <script type="text/javascript">
