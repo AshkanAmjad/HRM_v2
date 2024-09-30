@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
 using Data.Context;
 using Data.Extensions;
-using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Security.Role;
-using Domain.DTOs.Security.User;
-using Domain.DTOs.Security.UserRole;
 using Domain.Entities.Security.Models;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -39,27 +36,7 @@ namespace Data.Repositores
             return roles;
         }
 
-        public List<DisplayUserRolesVM> GetUserRoles()
-        {
-            var context = GetUserRolesQuery();
-            var userRoles = (from item in context
-                             orderby item.IsActived descending, item.RegisterDate descending
-                             select new DisplayUserRolesVM
-                             {
-                                 UserRoleId = item.UserRoleId,
-                                 UserName = item.User.UserName,
-                                 FirstName = item.User.FirstName,
-                                 LastName = item.User.LastName,
-                                 Title = item.Role.Title,
-                                 Area = (item.User.Department.Area == "0" ? "استان" : (item.User.Department.Area == "1" ? "شهرستان" : "بخش")),
-                                 County = (item.User.Department.County),
-                                 District = (item.User.Department.District),
-                                 IsActived = (item.IsActived)?"فعال":"غیرفعال",
-                                 RegisterDate = $"{item.RegisterDate.ToShamsi()}"
-                             })
-                             .ToList();
-            return userRoles;
-        }
+
 
         public IQueryable<Role> GetRolesQuery()
         {
@@ -67,14 +44,7 @@ namespace Data.Repositores
                                  .AsQueryable();
         }
 
-        public IQueryable<UserRole> GetUserRolesQuery()
-        {
-            return _context.UserRoles.IgnoreQueryFilters()
-                                     .Include(r=>r.Role)
-                                     .Include(u=>u.User)
-                                     .Include(u => u.User.Department)
-                                     .AsQueryable();
-        }
+
 
 
         public bool RegisterRole(RoleRegisterVM model, out string message)

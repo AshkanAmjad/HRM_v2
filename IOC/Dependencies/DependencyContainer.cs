@@ -15,12 +15,14 @@ namespace IOC.Dependencies
             #region Services
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IDocumentService, DocumentService>();
+            services.AddScoped<IGeneralService, GeneralService>();
             #endregion
 
             #region Repository
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IDocumentRepository, DocumentRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IUserRoleRepository, UserRoleRepository>();
             #endregion
         }
     }

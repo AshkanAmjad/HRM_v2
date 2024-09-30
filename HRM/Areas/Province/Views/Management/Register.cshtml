@@ -1,24 +1,24 @@
 ﻿@model Domain.DTOs.Security.User.UserRegisterVM
 @{
     Layout = null;
-    var genders = ViewData["Gendes"] != null
-            ? ViewData["Gendes"] as List<SelectListItem>
+    var genders = ViewBag.Genders != null
+            ? ViewBag.Genders 
             : new List<SelectListItem>();
 
-    var departments = ViewData["Departments"] != null
-          ? ViewData["Departments"] as List<SelectListItem>
+    var departments = ViewBag.Departments != null
+          ? ViewBag.Departments 
           : new List<SelectListItem>();
 
-    var mariltalTypes = ViewData["Marital"] != null
-    ? ViewData["Marital"] as List<SelectListItem>
-    : new List<SelectListItem>();
+    var mariltalTypes = ViewBag.Marital != null
+             ? ViewBag.Marital 
+             : new List<SelectListItem>();
 
-    var educationTypes = ViewData["Education"] != null
-            ? ViewData["Education"] as List<SelectListItem>
+    var educationTypes = ViewBag.Education != null
+            ? ViewBag.Education 
             : new List<SelectListItem>();
 
-    var employmentTypes = ViewData["Employment"] != null
-             ? ViewData["Employment"] as List<SelectListItem>
+    var employmentTypes = ViewBag.Employment != null
+             ? ViewBag.Employment
              : new List<SelectListItem>();
 }
 <partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPersianDatePickerPartial.cshtml" />
@@ -354,8 +354,8 @@
                         employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.")
                     }
                 });
-                $("#departmentStatus").change(function () {
-                    var $department = $("#departmentStatus").find(':selected').text();
+                $("#provinceDepartmentStatus").change(function () {
+                    var $department = $("#provinceDepartmentStatus").find(':selected').text();
                     if ($department !== "شعبه سطح استان خود را انتخاب کنید ...") {
                         departmentError.text('');
                     } else {

@@ -1,10 +1,14 @@
-﻿using AutoMapper;
+﻿using Application.Services.Interfaces;
+using AutoMapper;
+using Domain.DTOs.General;
 using Domain.DTOs.Security.Role;
+using Domain.DTOs.Security.UserRole;
 using Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HRM.Areas.Province.Controllers
 {
@@ -13,6 +17,8 @@ namespace HRM.Areas.Province.Controllers
     {
         #region Constructor
         private readonly IRoleRepository _roleRepository;
+        private readonly IUserRoleRepository _userRoleRepository;
+        private readonly IGeneralService _generalService;
         private readonly IMapper _mapper;
         private readonly IValidator<RoleRegisterVM> _roleRegisterValidator;
         private readonly IValidator<RoleEditVM> _roleEditValidator;
@@ -20,21 +26,21 @@ namespace HRM.Areas.Province.Controllers
 
         public AccessController(
             IRoleRepository roleRepository,
+            IUserRoleRepository userRoleRepository,
             IMapper mapper,
+            IGeneralService generalService,
             IValidator<RoleRegisterVM> roleRegisterValidator,
             IValidator<RoleEditVM> roleEditValidator,
             IValidator<RoleEdit_Active_DisableVM> roleEdit_DisableValidator)
         {
             _roleRepository = roleRepository;
+            _generalService = generalService;
             _roleEditValidator = roleEditValidator;
             _roleRegisterValidator = roleRegisterValidator;
             _roleEdit_DisableValidator = roleEdit_DisableValidator;
+            _userRoleRepository = userRoleRepository;
             _mapper = mapper;
         }
-        #endregion
-
-        #region Select list
-
         #endregion
 
         #region Index
@@ -97,7 +103,7 @@ namespace HRM.Areas.Province.Controllers
         [HttpPost]
         public IActionResult GetUserRoles()
         {
-            var roles = _roleRepository.GetUserRoles();
+            var roles = _userRoleRepository.GetUserRoles();
 
             #region paging and searching
             int start = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");
@@ -195,7 +201,25 @@ namespace HRM.Areas.Province.Controllers
 
         public IActionResult UserRoleRegister()
         {
+            var departments = _generalService.ProvinceDepartmentTypes();
+            ViewBag.Departments = new SelectList(departments, "Value", "Text");
+
+            var roles = _userRoleRepository.GetRolesForSelectBox();
+            ViewBag.Roles = new SelectList(roles, "Value", "Text");
+
+
             return View();
+        }
+
+        public IActionResult GetUsersForSelectBox(UserRolesDirectionVM direction)
+        {
+            var users = _userRoleRepository.GetUsersForSelectBox(direction);
+
+            #region Json data
+            var jsonData = new SelectList(users, "Value", "Text");
+            #endregion
+
+            return Json(jsonData);
         }
         #endregion
 

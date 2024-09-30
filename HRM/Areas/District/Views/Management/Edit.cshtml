@@ -1,32 +1,32 @@
 ﻿@model Domain.DTOs.Security.User.UserEditVM
 @{
     Layout = null;
-    var genders = ViewData["Gendes"] != null
-            ? ViewData["Gendes"] as List<SelectListItem>
+    var genders = ViewBag.Genders != null
+            ? ViewBag.Genders 
             : new List<SelectListItem>();
 
-    var proviceDepartments = ViewData["ProvinceDepartments"] != null
-          ? ViewData["ProvinceDepartments"] as List<SelectListItem>
+    var proviceDepartments = ViewBag.ProvinceDepartments != null
+          ? ViewBag.ProvinceDepartments
           : new List<SelectListItem>();
 
-    var countyDepartments = ViewData["CountyDepartments"] != null
-        ? ViewData["CountyDepartments"] as List<SelectListItem>
+    var countyDepartments = ViewBag.CountyDepartments != null
+        ? ViewBag.CountyDepartments
         : new List<SelectListItem>();
 
-    var districtDepartments = ViewData["DistrictDepartments"] != null
-        ? ViewData["DistrictDepartments"] as List<SelectListItem>
+    var districtDepartments = ViewBag.DistrictDepartments != null
+        ? ViewBag.DistrictDepartments
         : new List<SelectListItem>();
 
-    var mariltalTypes = ViewData["Marital"] != null
-    ? ViewData["Marital"] as List<SelectListItem>
-    : new List<SelectListItem>();
+    var mariltalTypes = ViewBag.Marital != null
+           ? ViewBag.Marital
+           : new List<SelectListItem>();
 
-    var educationTypes = ViewData["Education"] != null
-            ? ViewData["Education"] as List<SelectListItem>
+    var educationTypes = ViewBag.Education != null
+            ? ViewBag.Education
             : new List<SelectListItem>();
 
-    var employmentTypes = ViewData["Employment"] != null
-             ? ViewData["Employment"] as List<SelectListItem>
+    var employmentTypes = ViewBag.Employment != null
+             ? ViewBag.Employment
              : new List<SelectListItem>();
 
     var isExistAvatar = ViewData["IsExistAvatar"];

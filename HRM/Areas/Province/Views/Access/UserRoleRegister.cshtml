@@ -1,1 +1,168 @@
-﻿
+﻿@model Domain.DTOs.Security.UserRole.UserRoleRegisterVM
+@{
+    Layout = null;
+    var departments = ViewBag.Departments != null
+          ? ViewBag.Departments
+          : new List<SelectListItem>();
+
+    var roles = ViewBag.Roles != null
+        ? ViewBag.Roles
+        : new List<SelectListItem>();
+}
+<div class="modal-dialog modal-xl " id="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title">
+                <div class="btn btn-outline-primary btn-sm  my-2 mx-1">افزودن در سطح استان</div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+        </div>
+        <div class="border border-top-0 ">
+            <p class="fs-8 mt-3 fw-bold">
+                <i class="fa fa-lg me-3 ms-2 fa-bullseye text-primary"></i>
+                مشخصات خواسته شده، را با دقت در ورودی مربوطه وارد کنید.
+            </p>
+        </div>
+        <form id="registerForm" enctype="multipart/form-data" asp-antiforgery="true">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="modal-body">
+                <div class="row px-2">
+                    <div class="col-xl-6">
+                        <div class="row mt-2 p-0">
+                            <div class="col-5 col-lg-4">
+                                <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
+                                <label class="control-label">شعبه استان :</label>
+                            </div>
+                            <div class="col-7 col-lg-8">
+                                <select class="form-select" aria-label=".form-select-sm" asp-items="departments" id="provinceDepartmentStatus" tabindex="3">
+                                    <option selected class="fs-7">شعبه سطح استان خود را انتخاب کنید ...</option>
+                                </select>
+                                <span class="text-danger fs-8" id="departmentError"></span>
+                            </div>
+                        </div>
+                        <div class="row mt-2 p-0">
+                            <div class="col-5 col-lg-4">
+                                <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
+                                <label class="control-label">پرسنل :</label>
+                            </div>
+                            <div class="col-7 col-lg-8">
+                                <select class="form-select" aria-label=".form-select-sm" id="provinceUserStatus" tabindex="2">
+                                    <option selected class="fs-7">پرسنل مورد نظر را انتخاب کنید ...</option>
+                                </select>
+                                <span class="text-danger fs-8" id="userError"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="row mt-2 p-0">
+                            <div class="col-5 col-lg-4">
+                                <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
+                                <label class="control-label">معاونت :</label>
+                            </div>
+                            <div class="col-7 col-lg-8">
+                                <select class="form-select" aria-label=".form-select-sm" asp-items="roles" id="roleStatus" tabindex="1">
+                                    <option selected class="fs-7">معاونت مربوطه، را انتخاب کنید ...</option>
+                                </select>
+                                <span class="text-danger fs-8" id="roleError"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center align-items-center mt-lg-5">
+                <button type="submit" class="btn btn-primary px-5 align-items-center" id="submitBtn" tabindex="3">
+                    <i class="fa fa-save mx-2"></i>
+                    ثبت
+                </button>
+                <button type="button" class="btn btn-secondary cursor-pointer mx-1" tabindex="3" data-bs-dismiss="modal">
+                    &times;
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
+    <partial name="~/Views/Shared/Partials/General/Refrences/js/_DataTablesJsPartial.cshtml">
+
+        <script type="text/javascript">
+            var _getUsersUrl = '@Url.Action("GetUsersForSelectBox", "Access", new{area = "Province"})';
+        </script>
+
+        <script type="text/javascript">
+            $.fn.Validation = function () {
+                var departmentError = $("#departmentError");
+                var userError = $("#userError");
+                var roleError = $("#roleError");
+
+                var $department = $("#provinceDepartmentStatus").find(':selected').text();
+                var $user = $("#provinceUserStatus").find(':selected').text();
+                var $role = $("#roleStatus").find(':selected').text();
+
+                if ($department === "شعبه سطح استان خود را انتخاب کنید ...") {
+                    departmentError.text("تکمیل ورودی شعبه استان ضروری است.");
+                } else {
+                    departmentError.text('');
+                }
+
+                if ($user === "پرسنل مورد نظر را انتخاب کنید ...") {
+                    userError.text("تکمیل ورودی پرسنل ضروری است.")
+                } else {
+                    userError.text('');
+                }
+
+                if ($role === "معاونت مربوطه، را انتخاب کنید ...") {
+                    roleError.text("تکمیل ورودی معاونت ضروری است.")
+                } else {
+                    roleError.text('');
+                }
+
+                $("#provinceDepartmentStatus").change(function () {
+                    var $department = $("#provinceDepartmentStatus").find(':selected').text();
+                    if ($department !== "شعبه سطح استان خود را انتخاب کنید ...") {
+                        departmentError.text('');
+                    } else {
+                        departmentError.text("تکمیل ورودی شعبه استان ضروری است.")
+                    }
+                });
+                $("#provinceUserStatus").change(function () {
+                    var $user = $("#provinceDepartmentStatus").find(':selected').text();
+                    if ($user !== "پرسنل مورد نظر را انتخاب کنید ...") {
+                        departmentError.text('');
+                    } else {
+                        userError.text("تکمیل ورودی پرسنل ضروری است.")
+                    }
+                });
+                $("#roleStatus").change(function () {
+                    var $role = $("#roleStatus").find(':selected').text();
+                    if ($role !== "معاونت مربوطه، را انتخاب کنید ...") {
+                        roleError.text('');
+                    } else {
+                        roleError.text("تکمیل ورودی معاونت ضروری است.")
+                    }
+                });
+            }
+
+            $("#provinceDepartmentStatus").change(function () {
+                $("provinceUsersStatus").empty();
+
+                var provinceDepartment = $("#provinceDepartmentStatus").find(':selected').val();
+
+                var direction = {
+                    level: "0",
+                    province: provinceDepartment,
+                    County: "0",
+                    District: "0"
+                };
+
+                $.get(_getUsersUrl, direction)
+                    .done(function (data) {
+                        $.each(data, function () {
+                            $("#provinceUserStatus").append('<option value=' + this.value + '>' + this.text + '</option>');
+                        });
+                    });
+            });
+ 
+        </script>

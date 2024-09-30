@@ -17,6 +17,7 @@ namespace HRM.Areas.County.Controllers
     {
         #region Constructor
         private readonly IUserService _userService;
+        private readonly IGeneralService _generalService;
         private readonly IUserRepository _userRepository;
         private readonly IDocumentService _documentService;
         private readonly IDocumentRepository _documentRepository;
@@ -31,11 +32,13 @@ namespace HRM.Areas.County.Controllers
             IValidator<UserEditVM> userEditValidators,
             IValidator<UserEdit_DisableVM> userEdit_DeleteValidator,
             IUserRepository userRepository,
+            IGeneralService generalService,
             IDocumentService documentService,
             IDocumentRepository documentRepository,
             IMapper mapper)
         {
             _userService = userService;
+            _generalService = generalService;
             _userRegisterValidator = userRegisterValidator;
             _userRepository = userRepository;
             _documentService = documentService;
@@ -43,130 +46,6 @@ namespace HRM.Areas.County.Controllers
             _userEdit_DeleteValidator = userEdit_DeleteValidator;
             _documentRepository = documentRepository;
             _mapper = mapper;
-        }
-        #endregion
-
-        #region Select lists
-        public List<SelectListItem> GenderTypes()
-        {
-            List<SelectListItem> genders = new()
-            {
-                new SelectListItem
-                {
-                    Text = "مرد",
-                    Value = "M"
-                },
-                new SelectListItem
-                {
-                    Text = "زن",
-                    Value = "W"
-                }
-            };
-            return genders;
-        }
-
-        public List<SelectListItem> EducationTypes()
-        {
-            List<SelectListItem> educationTypes = new()
-            {
-                new SelectListItem
-                {
-                    Text="دیپلم",
-                    Value="Dip"
-                },
-                new SelectListItem
-                {
-                    Text="کارشناسی",
-                    Value="B"
-                },
-                new SelectListItem
-                {
-                    Text="کارشناسی ارشد",
-                    Value="M"
-                },
-                new SelectListItem
-                {
-                    Text="دکترا",
-                    Value="D"
-                }
-            };
-            return educationTypes;
-        }
-        public List<SelectListItem> ProvinceDepartmentTypes()
-        {
-            List<SelectListItem> provinceDepartmentTypes = new()
-            {
-                new SelectListItem
-                {
-                    Text = "شعبه 1",
-                    Value = "1"
-                }
-            };
-            return provinceDepartmentTypes;
-        }
-
-        public List<SelectListItem> MariltalTypes()
-        {
-            List<SelectListItem> maritalTypes = new()
-            {
-                new SelectListItem
-                {
-                    Text = "مجرد",
-                    Value = "S"
-                },
-                new SelectListItem
-                {
-                    Text = "متاهل",
-                    Value = "M"
-                }
-            };
-            return maritalTypes;
-        }
-
-        public List<SelectListItem> CountyDepartmentTypes()
-        {
-            List<SelectListItem> countyDepartmentTypes = new()
-            {
-                new SelectListItem
-                {
-                    Text = "شعبه 1",
-                    Value = "1"
-                },
-                new SelectListItem
-                {
-                    Text = "شعبه 2",
-                    Value = "2"
-                },
-                new SelectListItem
-                {
-                    Text = "شعبه 3",
-                    Value = "3"
-                }
-            };
-            return countyDepartmentTypes;
-        }
-
-        public List<SelectListItem> EmploymentTypes()
-        {
-            List<SelectListItem> employment = new()
-            {
-                new SelectListItem
-                {
-                    Text = "آزمایشی",
-                    Value = "T"
-                },
-                new SelectListItem
-                {
-                    Text = "قراردادی",
-                    Value = "C"
-                },
-                new SelectListItem
-                {
-                    Text = "رسمی",
-                    Value = "O"
-                },
-            };
-            return employment;
         }
         #endregion
 
@@ -221,18 +100,20 @@ namespace HRM.Areas.County.Controllers
         #region Register
         public IActionResult Register()
         {
-            var genders = GenderTypes();
-            var marital = MariltalTypes();
-            var employment = EmploymentTypes();
-            var education = EducationTypes();
-            var provinceDepartments = ProvinceDepartmentTypes();
-            var countyDepartments = CountyDepartmentTypes();
-            ViewData["Gendes"] = genders;
-            ViewData["Marital"] = marital;
-            ViewData["Employment"] = employment;
-            ViewData["Education"] = education;
-            ViewData["ProvinceDepartments"] = provinceDepartments;
-            ViewData["CountyDepartments"] = countyDepartments;
+            var genders = _generalService.GenderTypes();
+            var marital = _generalService.MariltalTypes();
+            var employment = _generalService.EmploymentTypes();
+            var education = _generalService.EducationTypes();
+            var provinceDepartments = _generalService.ProvinceDepartmentTypes();
+            var countyDepartments = _generalService.CountyDepartmentTypes();
+
+            ViewBag.Genders = new SelectList(genders, "Value", "Text");
+            ViewBag.Marital = new SelectList(marital, "Value", "Text");
+            ViewBag.Employment = new SelectList(employment, "Value", "Text");
+            ViewBag.Education = new SelectList(education, "Value", "Text");
+            ViewBag.ProvinceDepartments = new SelectList(provinceDepartments, "Value", "Text");
+            ViewBag.countyDepartments = new SelectList(countyDepartments, "Value", "Text");
+
             return View();
         }
 
@@ -329,18 +210,20 @@ namespace HRM.Areas.County.Controllers
                     }
                 }
 
-                var genders = GenderTypes();
-                var marital = MariltalTypes();
-                var employment = EmploymentTypes();
-                var education = EducationTypes();
-                var provinceDepartments = ProvinceDepartmentTypes();
-                var countyDepartments = CountyDepartmentTypes();
-                ViewData["Gendes"] = genders;
-                ViewData["Marital"] = marital;
-                ViewData["Employment"] = employment;
-                ViewData["Education"] = education;
-                ViewData["ProvinceDepartments"] = provinceDepartments;
-                ViewData["countyDepartments"] = countyDepartments;
+                var genders = _generalService.GenderTypes();
+                var marital = _generalService.MariltalTypes();
+                var employment = _generalService.EmploymentTypes();
+                var education = _generalService.EducationTypes();
+                var provinceDepartments = _generalService.ProvinceDepartmentTypes();
+                var countyDepartments = _generalService.CountyDepartmentTypes();
+
+                ViewBag.Genders = new SelectList(genders, "Value", "Text");
+                ViewBag.Marital = new SelectList(marital, "Value", "Text");
+                ViewBag.Employment = new SelectList(employment, "Value", "Text");
+                ViewBag.Education = new SelectList(education, "Value", "Text");
+                ViewBag.ProvinceDepartments = new SelectList(provinceDepartments, "Value", "Text");
+                ViewBag.countyDepartments = new SelectList(countyDepartments, "Value", "Text");
+
                 ViewData["IsExistAvatar"] = IsExistAvatarOnDb;
 
                 return View(user);

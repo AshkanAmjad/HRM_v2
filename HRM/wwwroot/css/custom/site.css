@@ -266,6 +266,8 @@ header {
     #provinceDepartmentStatus,
     #countyDepartmentStatus,
     #districtDepartmentStatus,
+    #provinceUsersStatus,
+    #roleStatus,
     span {
         font-size: 0.55rem !important;
         padding-top: 0.7rem;
