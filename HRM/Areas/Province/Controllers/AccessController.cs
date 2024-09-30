@@ -7,6 +7,8 @@ using Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
+using HRM.Models.Validation.Security.UserRole;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -23,6 +25,11 @@ namespace HRM.Areas.Province.Controllers
         private readonly IValidator<RoleRegisterVM> _roleRegisterValidator;
         private readonly IValidator<RoleEditVM> _roleEditValidator;
         private readonly IValidator<RoleEdit_Active_DisableVM> _roleEdit_DisableValidator;
+        private readonly IValidator<UserRoleRegisterVM> _userRoleRegisterValidator;
+        private readonly IValidator<UserRoleEditVM> _userRoleEditValidator;
+        private readonly IValidator<UserRoleEdit_Active_DisableVM> _userRoleEdit_DisableValidator;
+
+
 
         public AccessController(
             IRoleRepository roleRepository,
@@ -31,7 +38,12 @@ namespace HRM.Areas.Province.Controllers
             IGeneralService generalService,
             IValidator<RoleRegisterVM> roleRegisterValidator,
             IValidator<RoleEditVM> roleEditValidator,
-            IValidator<RoleEdit_Active_DisableVM> roleEdit_DisableValidator)
+            IValidator<RoleEdit_Active_DisableVM> roleEdit_DisableValidator,
+            IValidator<UserRoleRegisterVM> userRoleRegisterValidator,
+            IValidator<UserRoleEditVM> userRoleEditValidator,
+            IValidator<UserRoleEdit_Active_DisableVM> userRoleEdit_DisableValidator)
+
+
         {
             _roleRepository = roleRepository;
             _generalService = generalService;
@@ -40,6 +52,9 @@ namespace HRM.Areas.Province.Controllers
             _roleEdit_DisableValidator = roleEdit_DisableValidator;
             _userRoleRepository = userRoleRepository;
             _mapper = mapper;
+            _userRoleRegisterValidator = userRoleRegisterValidator;
+            _userRoleEditValidator = userRoleEditValidator;
+           _userRoleEdit_DisableValidator = userRoleEdit_DisableValidator;
         }
         #endregion
 
@@ -211,12 +226,73 @@ namespace HRM.Areas.Province.Controllers
             return View();
         }
 
+        [HttpPost]
         public IActionResult GetUsersForSelectBox(UserRolesDirectionVM direction)
         {
             var users = _userRoleRepository.GetUsersForSelectBox(direction);
 
             #region Json data
-            var jsonData = new SelectList(users, "Value", "Text");
+            var jsonData = new
+            {
+                data = new SelectList(users, "Value", "Text"),
+                success = true
+            };
+            #endregion
+
+            return Json(jsonData);
+        }
+
+        [HttpPost]
+        public IActionResult UserRoleRegister(UserRoleRegisterVM model)
+        {
+            ValidationResult userRoleValidator = _userRoleRegisterValidator.Validate(model);
+            bool success = false;
+            var message = $"عملیات ثبت با شکست مواجه شده است.";
+            string checkMessage = "";
+            if (userRoleValidator.IsValid)
+            {
+                try
+                {
+                    bool result = _userRoleRepository.RegisterUserRole(model, out checkMessage);
+
+                    if (result)
+                    {
+                        _userRoleRepository.SaveChanges();
+                        success = true;
+                        message = $"<h5>عملیات ثبت دسترسی با موفقیت انجام شد.</h5>";
+                    }
+                    else
+                    {
+                        message = checkMessage;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    while (ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    message = $"خطای شکست عملیات  : {ex.Message}";
+                }
+            }
+            else
+            {
+                message = $"{userRoleValidator}";
+            }
+            #region Manual Validation
+            foreach (var error in userRoleValidator.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+            userRoleValidator.AddToModelState(this.ModelState);
+            #endregion
+
+            #region Json data
+            var jsonData = new
+            {
+                success = success,
+                message = message,
+            };
             #endregion
 
             return Json(jsonData);
@@ -296,6 +372,85 @@ namespace HRM.Areas.Province.Controllers
 
             return Json(jsonData);
         }
+
+        public IActionResult UserRoleEdit(UserRoleEdit_Active_DisableVM model)
+        {
+            ValidationResult userRoleValidator = _userRoleEdit_DisableValidator.Validate(model);
+
+            if (userRoleValidator.IsValid)
+            {
+                var userRole = _userRoleRepository.GetUserRoleById(model.UserRoleId);
+
+                if (userRole == null)
+                    return NotFound();
+
+                var departments = _generalService.ProvinceDepartmentTypes();
+                ViewBag.Departments = new SelectList(departments, "Value", "Text");
+
+                var roles = _userRoleRepository.GetRolesForSelectBox();
+                ViewBag.Roles = new SelectList(roles, "Value", "Text");
+
+                return View(userRole);
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UserRoleEdit(UserRoleEditVM model)
+        {
+            ValidationResult userRoleValidator = _userRoleEditValidator.Validate(model);
+            bool success = false;
+            var message = $"عملیات ویرایش با شکست مواجه شده است.";
+            string checkMessage = "";
+            if (userRoleValidator.IsValid)
+            {
+                try
+                {
+                    bool result = _userRoleRepository.EditUserRole(model, out checkMessage);
+
+                    if (result)
+                    {
+                        _roleRepository.SaveChanges();
+                        success = true;
+                        message = $"<h5>عملیات ویرایش دسترسی با موفقیت انجام شد.</h5>";
+                    }
+                    else
+                    {
+                        message = checkMessage;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    while (ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    message = $"خطای شکست عملیات  : {ex.Message}";
+                }
+            }
+            else
+            {
+                message = $"{userRoleValidator}";
+            }
+            #region Manual Validation
+            foreach (var error in userRoleValidator.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+            userRoleValidator.AddToModelState(this.ModelState);
+            #endregion
+
+            #region Json data
+            var jsonData = new
+            {
+                success = success,
+                message = message,
+            };
+            #endregion
+
+            return Json(jsonData);
+        }
         #endregion
 
         #region Disable
@@ -354,6 +509,62 @@ namespace HRM.Areas.Province.Controllers
 
             return Json(jsonData);
         }
+
+        [HttpPost]
+        public IActionResult UserRoleDisable(UserRoleEdit_Active_DisableVM model)
+        {
+            ValidationResult userRoleValidator = _userRoleEdit_DisableValidator.Validate(model);
+            bool success = false;
+            var message = $"عملیات غیر فعال سازی با شکست مواجه شده است.";
+            string checkMessage = "";
+            if (userRoleValidator.IsValid)
+            {
+                try
+                {
+                    bool result = _userRoleRepository.DisableUserRole(model, out checkMessage);
+
+                    if (result)
+                    {
+                        _roleRepository.SaveChanges();
+                        success = true;
+                        message = $"<h5>عملیات غیر فعال سازی دسترسی با موفقیت انجام شد.</h5>";
+                    }
+                    else
+                    {
+                        message = checkMessage;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    while (ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    message = $"خطای شکست عملیات  :  {ex.Message}";
+                }
+            }
+            else
+            {
+                message = $"{userRoleValidator}";
+            }
+            #region Manual Validation
+            foreach (var error in userRoleValidator.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+            userRoleValidator.AddToModelState(this.ModelState);
+            #endregion
+
+            #region Json data
+            var jsonData = new
+            {
+                success = success,
+                message = message,
+            };
+            #endregion
+
+            return Json(jsonData);
+        }
         #endregion
 
         #region Active
@@ -400,6 +611,62 @@ namespace HRM.Areas.Province.Controllers
                 ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
             }
             roleValidator.AddToModelState(this.ModelState);
+            #endregion
+
+            #region Json data
+            var jsonData = new
+            {
+                success = success,
+                message = message,
+            };
+            #endregion
+
+            return Json(jsonData);
+        }
+
+        [HttpPost]
+        public IActionResult UserRoleActive(UserRoleEdit_Active_DisableVM model)
+        {
+            ValidationResult userRoleValidator = _userRoleEdit_DisableValidator.Validate(model);
+            bool success = false;
+            var message = $"عملیات غیر فعال سازی با شکست مواجه شده است.";
+            string checkMessage = "";
+            if (userRoleValidator.IsValid)
+            {
+                try
+                {
+                    bool result = _userRoleRepository.ActiveUserRole(model, out checkMessage);
+
+                    if (result)
+                    {
+                        _roleRepository.SaveChanges();
+                        success = true;
+                        message = $"<h5>عملیات فعال سازی دسترسی با موفقیت انجام شد.</h5>";
+                    }
+                    else
+                    {
+                        message = checkMessage;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    while (ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    message = $"خطای شکست عملیات  :  {ex.Message}";
+                }
+            }
+            else
+            {
+                message = $"{userRoleValidator}";
+            }
+            #region Manual Validation
+            foreach (var error in userRoleValidator.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+            userRoleValidator.AddToModelState(this.ModelState);
             #endregion
 
             #region Json data

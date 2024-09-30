@@ -2,6 +2,7 @@
 using Data.Context;
 using Data.Extensions;
 using Domain.DTOs.General;
+using Domain.DTOs.Security.Role;
 using Domain.DTOs.Security.UserRole;
 using Domain.Entities.Security.Models;
 using Domain.Interfaces;
@@ -101,9 +102,184 @@ namespace Data.Repositores
             return users;
         }
 
+        public bool RegisterUserRole(UserRoleRegisterVM model, out string message)
+        {
+            string checkMessage = "";
+            if (!Similarity(model, out checkMessage))
+            {
+                model.RegisterDate = DateTime.Now;
+                model.IsActived = true;
+                model.UserRoleId = Guid.NewGuid();
+
+                UploadRegisterUserRoleToDb(model);
+
+                message = "";
+                return true;
+            }
+            message = checkMessage;
+            return false;
+        }
+
+        public bool EditUserRole(UserRoleEditVM model, out string message)
+        {
+            string checkMessage = "";
 
 
+            model.RegisterDate = DateTime.Now;
 
+            UploadEditUserRoleToDb(model);
+
+            message = "";
+            return true;
+
+
+            message = checkMessage;
+            return false;
+        }
+
+        public bool DisableUserRole(UserRoleEdit_Active_DisableVM model, out string message)
+        {
+            string checkMessage = "عملیات غیر فعال سازی با شکست مواجه شد.";
+
+            if (model != null)
+            {
+
+                DisableUserRoleDb(model);
+
+                message = "";
+
+                return true;
+
+            }
+            message = checkMessage;
+            return false;
+        }
+
+        public bool ActiveUserRole(UserRoleEdit_Active_DisableVM model, out string message)
+        {
+            string checkMessage = "عملیات فعال سازی با شکست مواجه شد.";
+
+            if (model != null)
+            {
+                ActiveUserRoleDb(model);
+
+                message = "";
+                return true;
+            }
+
+            message = checkMessage;
+            return false;
+        }
+
+        public UserRoleEditVM? GetUserRoleById(Guid userRoleId)
+        {
+            UserRoleEditVM userRole = new();
+            if (userRoleId != Guid.Empty)
+            {
+                userRole = (from item in _context.UserRoles
+                            where (item.UserRoleId == userRoleId)
+                            select new UserRoleEditVM
+                            {
+                                UserRoleId = item.UserRoleId,
+                                UserId = $"{item.UserId}",
+                                RoleId = $"{item.RoleId}"
+                            }).Single();
+            }
+            return userRole;
+        }
+
+        public bool Similarity(UserRoleRegisterVM model, out string message)
+        {
+            bool check = false;
+            var resultMessage = "";
+            if (model != null)
+            {
+                check = _context.UserRoles.IgnoreQueryFilters()
+                                          .Where(ur => ur.UserId == new Guid(model.UserId) &&
+                                                       ur.RoleId == new Guid(model.RoleId))
+                                          .Any();
+                if (check)
+                {
+                    resultMessage = $"دسترسی با همین عنوان معاونت، قبلا برای کاربر ثبت شده است.";
+                }
+            }
+            message = resultMessage;
+            return check;
+        }
+
+        public void DisableUserRoleDb(UserRoleEdit_Active_DisableVM model)
+        {
+            if (model != null)
+            {
+                var userRole = _context.UserRoles
+                                       .Find(model.UserRoleId);
+
+                if (userRole != null)
+                {
+                    userRole.IsActived = false;
+                    userRole.RegisterDate = DateTime.Now;
+
+                    _context.UserRoles.Update(userRole);
+                }
+            }
+        }
+
+        public void ActiveUserRoleDb(UserRoleEdit_Active_DisableVM model)
+        {
+            if (model != null)
+            {
+                var userRole = _context.UserRoles.IgnoreQueryFilters()
+                                                 .Where(ur => ur.UserRoleId == model.UserRoleId)
+                                                 .FirstOrDefault();
+
+                if (userRole != null)
+                {
+                    userRole.IsActived = true;
+                    userRole.RegisterDate = DateTime.Now;
+
+                    _context.UserRoles.Update(userRole);
+                }
+            }
+        }
+
+        public void UploadEditUserRoleToDb(UserRoleEditVM model)
+        {
+            if (model != null)
+            {
+                UserRole initial = _context.UserRoles
+                                           .Find(model.UserRoleId);
+                if (initial != null)
+                {
+                    UserRole userRole = _mapper.Map<UserRole>(model);
+
+                    initial.RoleId = new Guid(model.RoleId);
+                    initial.UserId = new Guid(model.UserId);
+
+                    initial.RegisterDate = userRole.RegisterDate;
+
+                    _context.Update(initial);
+                }
+
+            }
+        }
+
+        public void UploadRegisterUserRoleToDb(UserRoleRegisterVM model)
+        {
+            if (model != null)
+            {
+                UserRole userRole = _mapper.Map<UserRole>(model);
+
+                userRole.RoleId = new Guid(model.RoleId);
+                userRole.UserId = new Guid(model.UserId);
+
+                _context.Add(userRole);
+            }
+        }
+
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
     }
 
 

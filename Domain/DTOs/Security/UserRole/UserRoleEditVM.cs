@@ -8,7 +8,7 @@ namespace Domain.DTOs.Security.UserRole
 {
     public class UserRoleEditVM
     {
-        public Guid UserRolesId { get; set; }
+        public Guid UserRoleId { get; set; }
         public string? UserId { get; set; }
         public string? RoleId { get; set; }
         public DateTime RegisterDate { get; set; }

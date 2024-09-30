@@ -7,9 +7,9 @@ namespace HRM.Models.Validation.Security.UserRole
     {
         public UserRoleEditValidator()
         {
-            RuleFor(x => x.UserRolesId).NotEmpty()
-                                       .NotNull()
-                                       .NotEqual(Guid.Empty);
+            RuleFor(x => x.UserRoleId).NotEmpty()
+                                      .NotNull()
+                                      .NotEqual(Guid.Empty);
 
             RuleFor(x => x.RoleId).NotEqual("معاونت مورد نظر را انتخاب کنید ...")
                                   .WithMessage("تکمیل ورودی معاونت ضروری است.")

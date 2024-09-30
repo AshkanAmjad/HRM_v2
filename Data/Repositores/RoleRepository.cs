@@ -132,8 +132,8 @@ namespace Data.Repositores
         {
             if(model != null)
             {
-                Role assistant = _mapper.Map<Role>(model);
-                _context.Add(assistant);
+                Role role = _mapper.Map<Role>(model);
+                _context.Add(role);
             }
         }
         public void ActiveRoleDb(RoleEdit_Active_DisableVM model)
