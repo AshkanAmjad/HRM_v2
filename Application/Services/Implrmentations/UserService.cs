@@ -1,20 +1,10 @@
 ﻿using Application.Extensions;
 using Application.Services.Interfaces;
 using AutoMapper;
-using Data.Context;
-using Data.Repositores;
-using Domain.DTOs.General;
 using Domain.DTOs.Portal.Document;
-using Domain.DTOs.Security.Login;
 using Domain.DTOs.Security.User;
-using Domain.Entities.Portal.Models;
-using Domain.Entities.Security.Models;
 using Domain.Interfaces;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Cryptography;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Application.Services.Implrmentations
 {

@@ -1,10 +1,5 @@
-﻿using Domain.DTOs.General;
-using Domain.DTOs.Portal.Document;
-using Domain.DTOs.Security.Login;
-using Domain.DTOs.Security.User;
-using Domain.Entities.Security.Models;
-using Microsoft.AspNetCore.Http;
-using System.Web.Mvc;
+﻿using Domain.DTOs.Security.User;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Application.Services.Interfaces
 {

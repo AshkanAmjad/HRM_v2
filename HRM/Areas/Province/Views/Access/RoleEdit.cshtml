@@ -17,7 +17,7 @@
                 مشخصات معاونت را با دقت در ورودی مربوطه وارد کنید.
             </p>
         </div>
-        <form id="registerForm" enctype="multipart/form-data" asp-antiforgery="true">
+        <form id="editForm" enctype="multipart/form-data" asp-antiforgery="true">
             @Html.AntiForgeryToken()
             <input type="hidden" asp-for="RoleId" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -61,7 +61,7 @@
             $("#submitBtn").off("click");
             $("#submitBtn").on("click", function (e) {
                 e.preventDefault();
-                var $form = $('#registerForm');
+                var $form = $('#editForm');
                 if ($form.valid()) {
                     $("#submitBtn").prop('disabled', true);
                     var formData = new FormData($form.get(0));

@@ -48,9 +48,9 @@
                         "zeroRecords": "کاربری یافت نشد.",
                         "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
                         "search": `<span class="ms-2">
-                                                                                  <i class="fa fa-search text-primary"></i>
-                                                                                        جست‌و‌جو بر اساس عنوان معاونت یا نام کاربری: 
-                                                                       </span>`,
+                                                                                              <i class="fa fa-search text-primary"></i>
+                                                                                                    جست‌و‌جو بر اساس عنوان معاونت یا نام کاربری:
+                                                                                   </span>`,
                         "searchPlaceholder": 'مقدار مناسبی وارد کنید ...',
                     },
                     "ajax": {
@@ -60,35 +60,35 @@
                     },
                     "columns": [
                         { "data": "userName", "title": "نام کاربری" },
-                        {"data":"title", "title":"معاونت"},
+                        { "data": "title", "title": "معاونت" },
                         { "data": "firstName", "title": "نام" },
                         { "data": "lastName", "title": "نام خانوادگی" },
                         { "data": "area", "title": "ناحیه" },
                         { "data": "county", "title": "شهرستان" },
                         { "data": "district", "title": "بخش" },
                         { "data": "isActived", "title": "فعالیت" },
-                        { "data": "registerDate", "title": "تاریخ ثبت" },
+                        { "data": "registerDate", "title": "تاریخ ثبت", "width": "10%" },
                         {
-                            "data": "UserRoleId", "title": "عملیات", "width": "20%", render: function (data, type, row) {
+                            "data": "userRoleId", "title": "عملیات", "width": "20%", render: function (data, type, row) {
                                 return `<div class="d-flex justify-content-center">
 
-                                                                          ${row.isActived === "فعال" ?
+                                         ${row.isActived === "فعال" ?
                                         `
-                                                                                <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
-                                                                                   onclick="Edit('${data})">
-                                                                                <i class="fa fa-edit my-2 mx-1" > </i>
-                                                                                    </a>
-                                                                                <a class="btn btn-outline-danger btn-sm rounded-circle"
-                                                                                   onclick = "Disable('${data}')">
-                                                                                   <i class="fa fa-minus my-2 mx-1" > </i>
-                                                                                  </a>`
+                                                                                            <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
+                                                                                               onclick="Edit('${data}')">
+                                                                                            <i class="fa fa-edit my-2 mx-1" > </i>
+                                                                                                </a>
+                                                                                            <a class="btn btn-outline-danger btn-sm rounded-circle"
+                                                                                               onclick = "Disable('${data}')">
+                                                                                               <i class="fa fa-minus my-2 mx-1" > </i>
+                                                                                              </a>`
                                         :
                                         `<a class="btn btn-outline-success btn-sm rounded-circle"
-                                                                                onclick = "Active('${data}','${row.userId}')">
-                                                                                <i class="fa fa-check my-2 mx-1" > </i>
-                                                                                 </a>`
+                                                                                            onclick = "Active('${data}')">
+                                                                                            <i class="fa fa-check my-2 mx-1" > </i>
+                                                                                             </a>`
                                     }
-                                                                          </div>`
+                                                                                      </div>`
                             }
                         }
                     ]
@@ -135,7 +135,7 @@
                     if (result.isConfirmed) {
 
                         var data = {
-                            userRoleId: userRoleId,
+                            userRoleId: userRoleId
                         };
 
                         $.post(_disableUrl, data).done(function (result) {
@@ -186,8 +186,9 @@
                     if (result.isConfirmed) {
 
                         var data = {
-                            userRoleId: userRoleId,
+                            userRoleId: userRoleId
                         };
+
 
                         $.post(_activeUrl, data).done(function (result) {
                             if (result.success) {

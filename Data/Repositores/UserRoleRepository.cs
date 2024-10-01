@@ -1,18 +1,11 @@
 ﻿using AutoMapper;
 using Data.Context;
 using Data.Extensions;
-using Domain.DTOs.General;
-using Domain.DTOs.Security.Role;
 using Domain.DTOs.Security.UserRole;
 using Domain.Entities.Security.Models;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Mvc;
 
 namespace Data.Repositores
 {
@@ -181,7 +174,9 @@ namespace Data.Repositores
                             select new UserRoleEditVM
                             {
                                 UserRoleId = item.UserRoleId,
+                                Title = item.Role.Title,
                                 UserId = $"{item.UserId}",
+                                FullName = $"{item.User.FirstName} {item.User.LastName}",
                                 RoleId = $"{item.RoleId}"
                             }).Single();
             }

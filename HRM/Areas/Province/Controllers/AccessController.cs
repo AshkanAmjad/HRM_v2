@@ -384,9 +384,6 @@ namespace HRM.Areas.Province.Controllers
                 if (userRole == null)
                     return NotFound();
 
-                var departments = _generalService.ProvinceDepartmentTypes();
-                ViewBag.Departments = new SelectList(departments, "Value", "Text");
-
                 var roles = _userRoleRepository.GetRolesForSelectBox();
                 ViewBag.Roles = new SelectList(roles, "Value", "Text");
 
@@ -396,7 +393,6 @@ namespace HRM.Areas.Province.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult UserRoleEdit(UserRoleEditVM model)
         {
             ValidationResult userRoleValidator = _userRoleEditValidator.Validate(model);

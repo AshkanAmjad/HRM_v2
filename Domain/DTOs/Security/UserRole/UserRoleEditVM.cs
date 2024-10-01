@@ -10,7 +10,9 @@ namespace Domain.DTOs.Security.UserRole
     {
         public Guid UserRoleId { get; set; }
         public string? UserId { get; set; }
+        public string? FullName {  get; set; }
         public string? RoleId { get; set; }
+        public string? Title {  get; set; }
         public DateTime RegisterDate { get; set; }
     }
 }
