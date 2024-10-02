@@ -116,9 +116,9 @@ namespace HRM.Areas.Province.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetUserRoles()
+        public IActionResult GetUserRoles(string section)
         {
-            var roles = _userRoleRepository.GetUserRoles();
+            var roles = _userRoleRepository.GetUserRoles(section);
 
             #region paging and searching
             int start = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");

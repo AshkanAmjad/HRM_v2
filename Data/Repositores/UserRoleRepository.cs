@@ -38,10 +38,11 @@ namespace Data.Repositores
         }
 
 
-        public List<DisplayUserRolesVM> GetUserRoles()
+        public List<DisplayUserRolesVM> GetUserRoles(string area)
         {
             var context = GetUserRolesQuery();
             var userRoles = (from item in context
+                             where(item.User.Department.Area == area)
                              orderby item.IsActived descending, item.RegisterDate descending
                              select new DisplayUserRolesVM
                              {

@@ -18,7 +18,7 @@
         <script type="text/javascript">
             var _registerUrl = '@Url.Action("Register", "Management", new { area = "County" })';
             var _gridUrl = '@Url.Action("FillUsersGrid", "Management", new { area = "County" })';
-            var _getUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Management", new { Section = "1", Province = "0", County = "0", District = "0" }))';
+            var _getUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Management", new { Section = "1", Province = "0", County = "0", District = "0", area = "County" }))';
             var _editUrl = '@Url.Action("Edit", "Management", new { area = "County" })';
             var _disableUrl = '@Url.Action("Disable", "Management", new { area = "County" })';
             var direction = {
@@ -54,9 +54,9 @@
                         "zeroRecords": "کاربری یافت نشد.",
                         "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
                         "search": `<span class="ms-2">
-                                                                 <i class="fa fa-search text-primary"></i>
-                                                                                   جست‌و‌جو بر اساس کد ملی:
-                                                           </span>`,
+                                                                             <i class="fa fa-search text-primary"></i>
+                                                                                               جست‌و‌جو بر اساس کد ملی:
+                                                                       </span>`,
                         "searchPlaceholder": 'مقدار مناسبی برای کد ملی وارد کنید ...',
                     },
                     "ajax": {
@@ -88,17 +88,17 @@
                             "data": "userId", "title": "عملیات", render: function (data, type, row) {
 
                                 return `<div class="d-flex py-2">
-                                                                   <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
-                                                                     onclick="Edit('${data}')"
-                                                                   >
-                                                                       <i class="fa fa-edit my-2 mx-1" > </i>
-                                                                   </a>
-                                                                   <a class="btn btn-outline-danger btn-sm rounded-circle"
-                                                                     onclick = "Disable('${data}','${row.userName}')"
-                                                                    >
-                                                                       <i class="fa fa-minus my-2 mx-1" > </i>
-                                                                   </a>
-                                                               <div>`
+                                                                               <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
+                                                                                 onclick="Edit('${data}')"
+                                                                               >
+                                                                                   <i class="fa fa-edit my-2 mx-1" > </i>
+                                                                               </a>
+                                                                               <a class="btn btn-outline-danger btn-sm rounded-circle"
+                                                                                 onclick = "Disable('${data}','${row.userName}')"
+                                                                                >
+                                                                                   <i class="fa fa-minus my-2 mx-1" > </i>
+                                                                               </a>
+                                                                           <div>`
                             }
                         }
                     ]
@@ -148,7 +148,7 @@
                     if (result.isConfirmed) {
 
                         var data = {
-                            area:"1",
+                            area: "1",
                             userId: userId,
                             userName: userName,
                             province: direction.province,

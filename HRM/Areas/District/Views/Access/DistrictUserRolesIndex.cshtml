@@ -4,7 +4,7 @@
 <partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPartial.cshtml">
     <div id="operation-box" class="modal fade" role="dialog" aria-hidden="true">
     </div>
-    <div class="btn btn-outline-primary btn-sm  my-3 mx-1">کنترل دسترسی پرسنل - استان</div>
+    <div class="btn btn-outline-primary btn-sm  my-3 mx-1">کنترل دسترسی پرسنل - بخش</div>
     <div>
         <button class="btn btn-primary text-white d-flex p-2 justify-content-center mb-3 mx-1" id="addBtn">
             <i class="fa fa-lg fa-plus align-self-center"></i>
@@ -14,12 +14,12 @@
     </div>
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
         <script type="text/javascript">
-            var _registerUrl = '@Url.Action("UserRoleRegister", "Access", new { area = "Province" })';
-            var _gridUrl = '@Url.Action("FillUserRolesGrid", "Access", new { area = "Province" })';
-            var _getUserRolesUrl = '@Url.Action("GetUserRoles", "Access", new { section = "0" , area = "Province" })';
-            var _editUrl = '@Url.Action("UserRoleEdit", "Access", new { area = "Province" })';
-            var _disableUrl = '@Url.Action("UserRoleDisable", "Access", new { area = "Province" })';
-            var _activeUrl = '@Url.Action("UserRoleActive", "Access", new { area = "Province" })';
+            var _registerUrl = '@Url.Action("UserRoleRegister", "Access", new { area = "District" })';
+            var _gridUrl = '@Url.Action("FillUserRolesGrid", "Access", new { area = "District" })';
+            var _getUserRolesUrl = '@Url.Action("GetUserRoles", "Access", new { section = "2", area ="District" })';
+            var _editUrl = '@Url.Action("UserRoleEdit", "Access", new { area = "District" })';
+            var _disableUrl = '@Url.Action("UserRoleDisable", "Access", new { area = "District" })';
+            var _activeUrl = '@Url.Action("UserRoleActive", "Access", new { area = "District" })';
         </script>
         <script type="text/javascript">
             //List
@@ -48,9 +48,9 @@
                         "zeroRecords": "کاربری یافت نشد.",
                         "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
                         "search": `<span class="ms-2">
-                                                                                              <i class="fa fa-search text-primary"></i>
-                                                                                                    جست‌و‌جو بر اساس عنوان معاونت یا نام کاربری:
-                                                                                   </span>`,
+                                                                                                          <i class="fa fa-search text-primary"></i>
+                                                                                                                جست‌و‌جو بر اساس عنوان معاونت یا نام کاربری:
+                                                                                               </span>`,
                         "searchPlaceholder": 'مقدار مناسبی وارد کنید ...',
                     },
                     "ajax": {
@@ -72,23 +72,23 @@
                             "data": "userRoleId", "title": "عملیات", "width": "20%", render: function (data, type, row) {
                                 return `<div class="d-flex justify-content-center">
 
-                                         ${row.isActived === "فعال" ?
+                                                     ${row.isActived === "فعال" ?
                                         `
-                                                                                            <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
-                                                                                               onclick="Edit('${data}')">
-                                                                                            <i class="fa fa-edit my-2 mx-1" > </i>
-                                                                                                </a>
-                                                                                            <a class="btn btn-outline-danger btn-sm rounded-circle"
-                                                                                               onclick = "Disable('${data}')">
-                                                                                               <i class="fa fa-minus my-2 mx-1" > </i>
-                                                                                              </a>`
+                                                                                                        <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
+                                                                                                           onclick="Edit('${data}')">
+                                                                                                        <i class="fa fa-edit my-2 mx-1" > </i>
+                                                                                                            </a>
+                                                                                                        <a class="btn btn-outline-danger btn-sm rounded-circle"
+                                                                                                           onclick = "Disable('${data}')">
+                                                                                                           <i class="fa fa-minus my-2 mx-1" > </i>
+                                                                                                          </a>`
                                         :
                                         `<a class="btn btn-outline-success btn-sm rounded-circle"
-                                                                                            onclick = "Active('${data}')">
-                                                                                            <i class="fa fa-check my-2 mx-1" > </i>
-                                                                                             </a>`
+                                                                                                        onclick = "Active('${data}')">
+                                                                                                        <i class="fa fa-check my-2 mx-1" > </i>
+                                                                                                         </a>`
                                     }
-                                                                                      </div>`
+                                                                                                  </div>`
                             }
                         }
                     ]
