@@ -10,7 +10,7 @@ namespace Domain.Interfaces
     {
         #region UserRole
         IQueryable<UserRole> GetUserRolesQuery();
-        List<DisplayUserRolesVM> GetUserRoles();
+        List<DisplayUserRolesVM> GetUserRoles(string area);
         List<SelectListItem> GetRolesForSelectBox();
         List<SelectListItem> GetUsersForSelectBox(UserRolesDirectionVM direction);
         bool RegisterUserRole(UserRoleRegisterVM model, out string message);

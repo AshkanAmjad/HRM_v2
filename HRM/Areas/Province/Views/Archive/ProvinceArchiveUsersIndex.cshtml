@@ -28,7 +28,7 @@
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
         <script type="text/javascript">
             var _gridUrl = '@Url.Action("FillUsersGrid", "Archive", new { area = "Province" })';
-            var _getUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Archive", new { Section = "0", Province = "0", County = "0", District = "0" }))';
+            var _getUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Archive", new { Section = "0", Province = "0", County = "0", District = "0", area="Province" }))';
             var _deleteUrl = '@Url.Action("Delete", "Archive", new{area = "Province"})';
             var _activeUrl = '@Url.Action("Active", "Archive", new { area = "Province" })';
 

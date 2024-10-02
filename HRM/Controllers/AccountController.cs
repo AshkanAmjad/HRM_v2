@@ -88,11 +88,7 @@ namespace HRM.Controllers
                 {
                     var claims = new List<Claim>
                     {
-                        new ("nationalCode",user.UserName.ToString()),
-                        new ("firstName",user.FirstName.ToString()),
-                        new ("lastName",user.LastName.ToString()),
-                        new ("lastActived",user.LastActived.ToString()),
-                        new ("isActived",user.IsActived.ToString())
+                        new ("userId",user.UserId.ToString())
                     };
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var principal = new ClaimsPrincipal(identity);
