@@ -1,9 +1,13 @@
 ﻿@model Domain.DTOs.Security.UserRole.UserRoleRegisterVM
 @{
     Layout = null;
-    var departments = ViewBag.Departments != null
-          ? ViewBag.Departments
+    var proviveDepartments = ViewBag.ProvinceDepartments != null
+          ? ViewBag.ProvinceDepartments
           : new List<SelectListItem>();
+
+    var countyDepartments = ViewBag.CountyDepartments != null
+        ? ViewBag.CountyDepartments
+        : new List<SelectListItem>();
 
     var roles = ViewBag.Roles != null
         ? ViewBag.Roles
@@ -13,7 +17,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <div class="modal-title">
-                <div class="btn btn-outline-primary btn-sm  my-2 mx-1">افزودن در سطح استان</div>
+                <div class="btn btn-outline-primary btn-sm  my-2 mx-1">افزودن در سطح شهرستان</div>
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
@@ -36,22 +40,22 @@
                                 <label class="control-label">شعبه استان :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <select class="form-select" aria-label=".form-select-sm" asp-items="departments" id="provinceDepartmentStatus" tabindex="1">
+                                <select class="form-select" aria-label=".form-select-sm" asp-items="proviveDepartments" id="provinceDepartmentStatus" tabindex="1">
                                     <option selected class="fs-7">شعبه سطح استان خود را انتخاب کنید ...</option>
                                 </select>
-                                <span class="text-danger fs-8" id="departmentError"></span>
+                                <span class="text-danger fs-8" id="provinceDepartmentError"></span>
                             </div>
                         </div>
                         <div class="row mt-2 p-0">
                             <div class="col-5 col-lg-4">
                                 <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
-                                <label class="control-label">پرسنل :</label>
+                                <label class="control-label">شعبه شهرستان :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <select class="form-select" aria-label=".form-select-sm" id="provinceUserStatus" tabindex="2">
-                                    <option selected class="fs-7" id="provinceUserStatus">پرسنل مورد نظر را انتخاب کنید ...</option>
+                                <select class="form-select" aria-label=".form-select-sm" asp-items="countyDepartments" id="countyDepartmentStatus" tabindex="2">
+                                    <option selected class="fs-7">شعبه سطح شهرستان خود را انتخاب کنید ...</option>
                                 </select>
-                                <span class="text-danger fs-8" id="userError"></span>
+                                <span class="text-danger fs-8" id="countyDepartmentError"></span>
                             </div>
                         </div>
 
@@ -60,10 +64,22 @@
                         <div class="row mt-2 p-0">
                             <div class="col-5 col-lg-4">
                                 <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
+                                <label class="control-label">پرسنل :</label>
+                            </div>
+                            <div class="col-7 col-lg-8">
+                                <select class="form-select" aria-label=".form-select-sm" id="countyUserStatus" tabindex="3">
+                                    <option selected class="fs-7" id="countyUserStatus">پرسنل مورد نظر را انتخاب کنید ...</option>
+                                </select>
+                                <span class="text-danger fs-8" id="userError"></span>
+                            </div>
+                        </div>
+                        <div class="row mt-2 p-0">
+                            <div class="col-5 col-lg-4">
+                                <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
                                 <label class="control-label">معاونت :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <select class="form-select" aria-label=".form-select-sm" asp-items="roles" id="roleStatus" tabindex="3">
+                                <select class="form-select" aria-label=".form-select-sm" asp-items="roles" id="roleStatus" tabindex="4">
                                     <option selected class="fs-7">معاونت مربوطه، را انتخاب کنید ...</option>
                                 </select>
                                 <span class="text-danger fs-8" id="roleError"></span>
@@ -73,11 +89,11 @@
                 </div>
             </div>
             <div class="modal-footer d-flex justify-content-center align-items-center mt-lg-5">
-                <button type="submit" class="btn btn-primary px-5 align-items-center" id="submitBtn" tabindex="4">
+                <button type="submit" class="btn btn-primary px-5 align-items-center" id="submitBtn" tabindex="5">
                     <i class="fa fa-save mx-2"></i>
                     ثبت
                 </button>
-                <button type="button" class="btn btn-secondary cursor-pointer mx-1" tabindex="5" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-secondary cursor-pointer mx-1" tabindex="6" data-bs-dismiss="modal">
                     &times;
                 </button>
             </div>
@@ -88,28 +104,37 @@
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_DataTablesJsPartial.cshtml">
 
         <script type="text/javascript">
-            var _getUsersUrl = '@Url.Action("GetUsersForSelectBox", "Access", new { area = "Province" })';
-            var _registerUrl = '@Url.Action("UserRoleRegister", "Access", new { area = "Province" })';
+            var _getUsersUrl = '@Url.Action("GetUsersForSelectBox", "Access", new { area = "County" })';
+            var _registerUrl = '@Url.Action("UserRoleRegister", "Access", new { area = "County" })';
         </script>
 
         <script type="text/javascript">
             $.fn.Validation = function () {
                 var result = true;
-                var departmentError = $("#departmentError");
+                var provinceDepartmentError = $("#provinceDepartmentError");
+                var countyDepartmentError = $("#countyDepartmentError");
                 var userError = $("#userError");
                 var roleError = $("#roleError");
 
-                var $department = $("#provinceDepartmentStatus").find(':selected').text();
+                var $provinceDepartment = $("#provinceDepartmentStatus").find(':selected').text();
+                var $countyDepartment = $("#countyDepartmentStatus").find(':selected').text();
                 var $user = $("#provinceUserStatus").find(':selected').text();
                 var $role = $("#roleStatus").find(':selected').text();
 
-                var isDisabled = $("#provinceUserStatus").is('[disabled]');
+                var isDisabled = $("#countyUserStatus").is('[disabled]');
 
-                if ($department === "شعبه سطح استان خود را انتخاب کنید ...") {
-                    departmentError.text("تکمیل ورودی شعبه استان ضروری است.");
+                if ($provinceDepartment === "شعبه سطح استان خود را انتخاب کنید ...") {
+                    provinceDepartmentError.text("تکمیل ورودی شعبه استان ضروری است.");
                     result = false;
                 } else {
-                    departmentError.text('');
+                    provinceDepartmentError.text('');
+                }
+
+                if ($countyDepartment === "شعبه سطح شهرستان خود را انتخاب کنید ...") {
+                    countyDepartmentError.text("تکمیل ورودی شعبه شهرستان ضروری است.");
+                    result = false;
+                } else {
+                    countyDepartmentError.text('');
                 }
 
                 if ($user === "پرسنل مورد نظر را انتخاب کنید ..." && isDisabled == true) {
@@ -125,15 +150,16 @@
                     roleError.text('');
                 }
 
-                $("#provinceDepartmentStatus").change(function () {
-                    var $department = $("#provinceDepartmentStatus").find(':selected').text();
-                    if ($department !== "شعبه سطح استان خود را انتخاب کنید ...") {
-                        departmentError.text('');
+                $("#countyDepartmentStatus").change(function () {
+                    var $countyDepartment = $("#countyDepartmentStatus").find(':selected').text();
+                    if ($countyDepartment !== "شعبه سطح شهرستان خود را انتخاب کنید ...") {
+                        countyDepartmentError.text('');
                     } else {
-                        departmentError.text("تکمیل ورودی شعبه استان ضروری است.");
+                        countyDepartmentError.text("تکمیل ورودی شعبه شهرستان ضروری است.");
                         result = false;
                     }
                 });
+
                 $("#roleStatus").change(function () {
                     var $role = $("#roleStatus").find(':selected').text();
                     if ($role !== "معاونت مربوطه، را انتخاب کنید ...") {
@@ -150,38 +176,51 @@
             //Seed data to select user
             $("#provinceDepartmentStatus").change(function () {
 
-                $("#provinceUserStatus").empty();
-
                 var provinceDepartment = $("#provinceDepartmentStatus").find(':selected').val();
 
-                if (provinceDepartment !== "شعبه سطح استان خود را انتخاب کنید ..." ) {
-                    $('#provinceUserStatus').attr('disabled', false);
-
-                    var direction = {
-                        level: "0",
-                        province: provinceDepartment,
-                        County: "0",
-                        District: "0"
-                    };
-
-                    $.post(_getUsersUrl, direction)
-                        .done(function (result) {
-                            if (result.success) {
-                                $.each(result.data, function () {
-                                    $("#provinceUserStatus").append('<option value=' + this.value + '>' + this.text + '</option>');
-                                });
-                            }
-                        });
-
+                if (provinceDepartment !== "شعبه سطح استان خود را انتخاب کنید ...") {
+                    $('#provinceDepartmentStatus').attr('disabled', true);
+                    $('#countyDepartmentStatus').attr('disabled', false);
                 } else {
-                    $('#provinceUserStatus').attr('disabled', true);
-                    $("#provinceUserStatus").append('<option class="fs-7" >پرسنل مورد نظر را انتخاب کنید ...</option>');
+                    $('#countyUserStatus').attr('disabled', true);
+                    $('#countyDepartmentStatus').attr('disabled', true);
                 }
 
-            });
+                $("#countyDepartmentStatus").change(function () {
 
-            //Disable select user
-            $('#provinceUserStatus').attr('disabled', true);
+                    $('#countyUserStatus').empty();
+
+                    var countyDepartment = $("#countyDepartmentStatus").find(":selected").val();
+
+                    if (countyDepartment !== "شعبه سطح شهرستان خود را انتخاب کنید ...") {
+                        $('#countyUserStatus').attr('disabled', false);
+
+                        var direction = {
+                            level: "1",
+                            province: provinceDepartment,
+                            County: countyDepartment,
+                            District: "0"
+                        };
+
+                        $.post(_getUsersUrl, direction)
+                            .done(function (result) {
+                                if (result.success) {
+                                    $.each(result.data, function () {
+                                        $("#countyUserStatus").append('<option value=' + this.value + '>' + this.text + '</option>');
+                                    });
+                                }
+                            });
+
+                    } else {
+                        $('#countyUserStatus').attr('disabled', true);
+                        $("#countyUserStatus").append('<option class="fs-7" >پرسنل مورد نظر را انتخاب کنید ...</option>');
+                    }
+                })
+            })
+
+            //Disable select county department and user
+            $('#countyDepartmentStatus, #countyUserStatus').attr('disabled', true);
+
 
             $(function () {
                 $("#submitBtn").off("click");
@@ -191,7 +230,7 @@
                     if (validation == true) {
                         $("#submitBtn").prop('disabled', true);
 
-                        var userId = $("#provinceUserStatus").find(':selected').val();
+                        var userId = $("#countyUserStatus").find(':selected').val();
                         var roleId = $("#roleStatus").find(':selected').val();
 
                         var formData =

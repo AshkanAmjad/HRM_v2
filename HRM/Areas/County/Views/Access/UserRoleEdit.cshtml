@@ -1,22 +1,17 @@
-﻿@model Domain.DTOs.Security.UserRole.UserRoleRegisterVM
+﻿@model Domain.DTOs.Security.UserRole.UserRoleEditVM
 @{
     Layout = null;
-    var departments = ViewBag.Departments != null
-          ? ViewBag.Departments
-          : new List<SelectListItem>();
-
     var roles = ViewBag.Roles != null
-        ? ViewBag.Roles
-        : new List<SelectListItem>();
+            ? ViewBag.Roles
+            : new List<SelectListItem>();
 }
 <div class="modal-dialog modal-xl " id="modal">
     <div class="modal-content">
         <div class="modal-header">
             <div class="modal-title">
-                <div class="btn btn-outline-primary btn-sm  my-2 mx-1">افزودن در سطح استان</div>
+                <div class="btn btn-outline-primary btn-sm  my-2 mx-1">ویرایش در سطح شهرستان</div>
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
         </div>
         <div class="border border-top-0 ">
             <p class="fs-8 mt-3 fw-bold">
@@ -24,34 +19,21 @@
                 مشخصات خواسته شده، را با دقت در ورودی مربوطه وارد کنید.
             </p>
         </div>
-        <form id="registerForm" enctype="multipart/form-data" asp-antiforgery="true">
+        <form id="editForm" enctype="multipart/form-data">
             @Html.AntiForgeryToken()
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="UserRoleId" />
             <div class="modal-body">
                 <div class="row px-2">
                     <div class="col-xl-6">
                         <div class="row mt-2 p-0">
                             <div class="col-5 col-lg-4">
                                 <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
-                                <label class="control-label">شعبه استان :</label>
-                            </div>
-                            <div class="col-7 col-lg-8">
-                                <select class="form-select" aria-label=".form-select-sm" asp-items="departments" id="provinceDepartmentStatus" tabindex="1">
-                                    <option selected class="fs-7">شعبه سطح استان خود را انتخاب کنید ...</option>
-                                </select>
-                                <span class="text-danger fs-8" id="departmentError"></span>
-                            </div>
-                        </div>
-                        <div class="row mt-2 p-0">
-                            <div class="col-5 col-lg-4">
-                                <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
                                 <label class="control-label">پرسنل :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <select class="form-select" aria-label=".form-select-sm" id="provinceUserStatus" tabindex="2">
-                                    <option selected class="fs-7" id="provinceUserStatus">پرسنل مورد نظر را انتخاب کنید ...</option>
-                                </select>
-                                <span class="text-danger fs-8" id="userError"></span>
+                                <input asp-for="FullName" class="form-control w-100" readonly />
                             </div>
                         </div>
 
@@ -63,7 +45,7 @@
                                 <label class="control-label">معاونت :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <select class="form-select" aria-label=".form-select-sm" asp-items="roles" id="roleStatus" tabindex="3">
+                                <select class="form-select" asp-for="RoleId" aria-label=".form-select-sm" asp-items="roles" id="roleStatus" tabindex="1">
                                     <option selected class="fs-7">معاونت مربوطه، را انتخاب کنید ...</option>
                                 </select>
                                 <span class="text-danger fs-8" id="roleError"></span>
@@ -73,11 +55,11 @@
                 </div>
             </div>
             <div class="modal-footer d-flex justify-content-center align-items-center mt-lg-5">
-                <button type="submit" class="btn btn-primary px-5 align-items-center" id="submitBtn" tabindex="4">
+                <button type="submit" class="btn btn-primary px-5 align-items-center" id="submitBtn" tabindex="2">
                     <i class="fa fa-save mx-2"></i>
                     ثبت
                 </button>
-                <button type="button" class="btn btn-secondary cursor-pointer mx-1" tabindex="5" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-secondary cursor-pointer mx-1" tabindex="3" data-bs-dismiss="modal">
                     &times;
                 </button>
             </div>
@@ -86,54 +68,21 @@
 </div>
 <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_DataTablesJsPartial.cshtml">
-
         <script type="text/javascript">
-            var _getUsersUrl = '@Url.Action("GetUsersForSelectBox", "Access", new { area = "Province" })';
-            var _registerUrl = '@Url.Action("UserRoleRegister", "Access", new { area = "Province" })';
+            var _editUrl = '@Url.Action("UserRoleEdit", "Access", new { area = "County" })';
         </script>
-
         <script type="text/javascript">
+
             $.fn.Validation = function () {
-                var result = true;
-                var departmentError = $("#departmentError");
-                var userError = $("#userError");
                 var roleError = $("#roleError");
-
-                var $department = $("#provinceDepartmentStatus").find(':selected').text();
-                var $user = $("#provinceUserStatus").find(':selected').text();
                 var $role = $("#roleStatus").find(':selected').text();
-
-                var isDisabled = $("#provinceUserStatus").is('[disabled]');
-
-                if ($department === "شعبه سطح استان خود را انتخاب کنید ...") {
-                    departmentError.text("تکمیل ورودی شعبه استان ضروری است.");
-                    result = false;
-                } else {
-                    departmentError.text('');
-                }
-
-                if ($user === "پرسنل مورد نظر را انتخاب کنید ..." && isDisabled == true) {
-                    result = false;
-                } else {
-                    userError.text('');
-                }
-
+                var result = true;
                 if ($role === "معاونت مربوطه، را انتخاب کنید ...") {
                     roleError.text("تکمیل ورودی معاونت ضروری است.")
                     result = false;
                 } else {
                     roleError.text('');
                 }
-
-                $("#provinceDepartmentStatus").change(function () {
-                    var $department = $("#provinceDepartmentStatus").find(':selected').text();
-                    if ($department !== "شعبه سطح استان خود را انتخاب کنید ...") {
-                        departmentError.text('');
-                    } else {
-                        departmentError.text("تکمیل ورودی شعبه استان ضروری است.");
-                        result = false;
-                    }
-                });
                 $("#roleStatus").change(function () {
                     var $role = $("#roleStatus").find(':selected').text();
                     if ($role !== "معاونت مربوطه، را انتخاب کنید ...") {
@@ -143,45 +92,8 @@
                         result = false;
                     }
                 });
-
                 return result;
             }
-
-            //Seed data to select user
-            $("#provinceDepartmentStatus").change(function () {
-
-                $("#provinceUserStatus").empty();
-
-                var provinceDepartment = $("#provinceDepartmentStatus").find(':selected').val();
-
-                if (provinceDepartment !== "شعبه سطح استان خود را انتخاب کنید ..." ) {
-                    $('#provinceUserStatus').attr('disabled', false);
-
-                    var direction = {
-                        level: "0",
-                        province: provinceDepartment,
-                        County: "0",
-                        District: "0"
-                    };
-
-                    $.post(_getUsersUrl, direction)
-                        .done(function (result) {
-                            if (result.success) {
-                                $.each(result.data, function () {
-                                    $("#provinceUserStatus").append('<option value=' + this.value + '>' + this.text + '</option>');
-                                });
-                            }
-                        });
-
-                } else {
-                    $('#provinceUserStatus').attr('disabled', true);
-                    $("#provinceUserStatus").append('<option class="fs-7" >پرسنل مورد نظر را انتخاب کنید ...</option>');
-                }
-
-            });
-
-            //Disable select user
-            $('#provinceUserStatus').attr('disabled', true);
 
             $(function () {
                 $("#submitBtn").off("click");
@@ -191,16 +103,19 @@
                     if (validation == true) {
                         $("#submitBtn").prop('disabled', true);
 
-                        var userId = $("#provinceUserStatus").find(':selected').val();
+                        var userId = $("input[name='UserId']").val();
                         var roleId = $("#roleStatus").find(':selected').val();
+                        var userRoleId = $("input[name='UserRoleId']").val();
 
                         var formData =
                         {
                             userId: userId,
-                            roleId: roleId
-                        };
+                            roleId: roleId,
+                            userRoleId: userRoleId,
 
-                        $.post(_registerUrl, formData).done(function (result) {
+                        }
+
+                        $.post(_editUrl, formData).done(function (result) {
                             if (result.success) {
                                 GridReload();
                                 $("#operation-box").modal("toggle");
@@ -239,5 +154,5 @@
                 });
             });
 
-
         </script>
+

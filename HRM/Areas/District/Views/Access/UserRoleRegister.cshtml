@@ -1,9 +1,17 @@
 ﻿@model Domain.DTOs.Security.UserRole.UserRoleRegisterVM
 @{
     Layout = null;
-    var departments = ViewBag.Departments != null
-          ? ViewBag.Departments
+    var proviveDepartments = ViewBag.ProvinceDepartments != null
+          ? ViewBag.ProvinceDepartments
           : new List<SelectListItem>();
+
+    var countyDepartments = ViewBag.CountyDepartments != null
+        ? ViewBag.CountyDepartments
+        : new List<SelectListItem>();
+
+    var districtDepartments = ViewBag.DistrictDepartments != null
+        ? ViewBag.DistrictDepartments
+        : new List<SelectListItem>();
 
     var roles = ViewBag.Roles != null
         ? ViewBag.Roles
@@ -13,7 +21,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <div class="modal-title">
-                <div class="btn btn-outline-primary btn-sm  my-2 mx-1">افزودن در سطح استان</div>
+                <div class="btn btn-outline-primary btn-sm  my-2 mx-1">افزودن در سطح بخش</div>
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
@@ -36,7 +44,7 @@
                                 <label class="control-label">شعبه استان :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <select class="form-select" aria-label=".form-select-sm" asp-items="departments" id="provinceDepartmentStatus" tabindex="1">
+                                <select class="form-select" aria-label=".form-select-sm" asp-items="proviveDepartments" id="provinceDepartmentStatus" tabindex="1">
                                     <option selected class="fs-7">شعبه سطح استان خود را انتخاب کنید ...</option>
                                 </select>
                                 <span class="text-danger fs-8" id="departmentError"></span>
@@ -88,8 +96,8 @@
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_DataTablesJsPartial.cshtml">
 
         <script type="text/javascript">
-            var _getUsersUrl = '@Url.Action("GetUsersForSelectBox", "Access", new { area = "Province" })';
-            var _registerUrl = '@Url.Action("UserRoleRegister", "Access", new { area = "Province" })';
+            var _getUsersUrl = '@Url.Action("GetUsersForSelectBox", "Access", new { area = "District" })';
+            var _registerUrl = '@Url.Action("UserRoleRegister", "Access", new { area = "District" })';
         </script>
 
         <script type="text/javascript">
@@ -154,11 +162,11 @@
 
                 var provinceDepartment = $("#provinceDepartmentStatus").find(':selected').val();
 
-                if (provinceDepartment !== "شعبه سطح استان خود را انتخاب کنید ..." ) {
+                if (provinceDepartment !== "شعبه سطح استان خود را انتخاب کنید ...") {
                     $('#provinceUserStatus').attr('disabled', false);
 
                     var direction = {
-                        level: "0",
+                        level: "2",
                         province: provinceDepartment,
                         County: "0",
                         District: "0"
