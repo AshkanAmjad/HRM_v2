@@ -53,7 +53,7 @@
                             </div>
                             <div class="col-7 col-lg-8">
                                 <select class="form-select" aria-label=".form-select-sm" asp-items="countyDepartments" id="countyDepartmentStatus" tabindex="2">
-                                    <option selected class="fs-7">شعبه سطح شهرستان خود را انتخاب کنید ...</option>
+                                    <option selected id="countyDepartmentStatus" class="fs-7">شعبه سطح شهرستان خود را انتخاب کنید ...</option>
                                 </select>
                                 <span class="text-danger fs-8" id="countyDepartmentError"></span>
                             </div>
@@ -68,7 +68,7 @@
                             </div>
                             <div class="col-7 col-lg-8">
                                 <select class="form-select" aria-label=".form-select-sm" id="countyUserStatus" tabindex="3">
-                                    <option selected class="fs-7" id="countyUserStatus">پرسنل مورد نظر را انتخاب کنید ...</option>
+                                    <option selected class="fs-7" id="userStatus">پرسنل مورد نظر را انتخاب کنید ...</option>
                                 </select>
                                 <span class="text-danger fs-8" id="userError"></span>
                             </div>
@@ -118,7 +118,7 @@
 
                 var $provinceDepartment = $("#provinceDepartmentStatus").find(':selected').text();
                 var $countyDepartment = $("#countyDepartmentStatus").find(':selected').text();
-                var $user = $("#provinceUserStatus").find(':selected').text();
+                var $user = $("#countyUserStatus").find(':selected').text();
                 var $role = $("#roleStatus").find(':selected').text();
 
                 var isDisabled = $("#countyUserStatus").is('[disabled]');
@@ -182,11 +182,12 @@
                     $('#provinceDepartmentStatus').attr('disabled', true);
                     $('#countyDepartmentStatus').attr('disabled', false);
                 } else {
-                    $('#countyUserStatus').attr('disabled', true);
-                    $('#countyDepartmentStatus').attr('disabled', true);
+                    $('#countyUserStatus ,#countyDepartmentStatus').attr('disabled', true);
                 }
 
                 $("#countyDepartmentStatus").change(function () {
+
+                    debugger
 
                     $('#countyUserStatus').empty();
 
@@ -206,14 +207,14 @@
                             .done(function (result) {
                                 if (result.success) {
                                     $.each(result.data, function () {
-                                        $("#countyUserStatus").append('<option value=' + this.value + '>' + this.text + '</option>');
+                                        $("#countyUserStatus").append('<option id="userStatus" value=' + this.value + '>' + this.text + '</option>');
                                     });
                                 }
                             });
 
                     } else {
                         $('#countyUserStatus').attr('disabled', true);
-                        $("#countyUserStatus").append('<option class="fs-7" >پرسنل مورد نظر را انتخاب کنید ...</option>');
+                        $("#countyUserStatus").append('<option class="fs-7" id="userStatus" >پرسنل مورد نظر را انتخاب کنید ...</option>');
                     }
                 })
             })
