@@ -194,6 +194,22 @@ namespace Data.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("Roles", "Security");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = new Guid("b8094aff-e521-4188-869c-7a8399ae3deb"),
+                            IsActived = true,
+                            RegisterDate = new DateTime(2024, 10, 6, 11, 14, 8, 608, DateTimeKind.Local).AddTicks(3781),
+                            Title = "مدیریت"
+                        },
+                        new
+                        {
+                            RoleId = new Guid("2c091b97-d244-48f7-bef6-bcae4bed7b3a"),
+                            IsActived = true,
+                            RegisterDate = new DateTime(2024, 10, 6, 11, 14, 8, 608, DateTimeKind.Local).AddTicks(3800),
+                            Title = "فناوری اطلاعات"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Security.Models.User", b =>

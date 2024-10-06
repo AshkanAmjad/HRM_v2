@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(HRMContext))]
-    [Migration("20240915202340_CreateDB")]
+    [Migration("20241006074409_CreateDB")]
     partial class CreateDB
     {
         /// <inheritdoc />
@@ -33,6 +33,9 @@ namespace Data.Migrations
 
                     b.Property<Guid>("DepartmentId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActived")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("TransferId")
                         .HasColumnType("uniqueidentifier");
@@ -180,6 +183,12 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsActived")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -188,6 +197,22 @@ namespace Data.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("Roles", "Security");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = new Guid("b8094aff-e521-4188-869c-7a8399ae3deb"),
+                            IsActived = true,
+                            RegisterDate = new DateTime(2024, 10, 6, 11, 14, 8, 608, DateTimeKind.Local).AddTicks(3781),
+                            Title = "مدیریت"
+                        },
+                        new
+                        {
+                            RoleId = new Guid("2c091b97-d244-48f7-bef6-bcae4bed7b3a"),
+                            IsActived = true,
+                            RegisterDate = new DateTime(2024, 10, 6, 11, 14, 8, 608, DateTimeKind.Local).AddTicks(3800),
+                            Title = "فناوری اطلاعات"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Security.Models.User", b =>
@@ -271,6 +296,12 @@ namespace Data.Migrations
                     b.Property<Guid>("UserRoleId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActived")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");

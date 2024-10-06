@@ -56,7 +56,24 @@ namespace Data.Context
                         .HasQueryFilter(dt => dt.IsActived);
             modelBuilder.Entity<Role>()
                         .HasQueryFilter(r => r.IsActived);
-        #endregion
+            #endregion
+
+            #region Seed data
+            modelBuilder.Entity<Role>().HasData(new Role()
+            {
+                RoleId = Guid.NewGuid(),
+                Title = "مدیریت",
+                RegisterDate = DateTime.Now,
+                IsActived = true
+            },
+            new Role()
+            {
+                RoleId = Guid.NewGuid(),
+                Title = "فناوری اطلاعات",
+                RegisterDate = DateTime.Now,
+                IsActived = true
+            });
+            #endregion
 
             base.OnModelCreating(modelBuilder);
 

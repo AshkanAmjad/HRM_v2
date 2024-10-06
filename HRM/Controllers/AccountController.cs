@@ -97,6 +97,9 @@ namespace HRM.Controllers
                         IsPersistent = model.RememberMe
                     };
                     HttpContext.SignInAsync(principal, properties);
+
+                    ViewData["isSucess"] = true;
+                    ViewData["area"] = model.Area;
                     return View(model);
                 }
 

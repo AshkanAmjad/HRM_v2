@@ -23,6 +23,7 @@ namespace IOC.Dependencies
             services.AddScoped<IDocumentRepository, DocumentRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+            services.AddScoped<IPermissionRepository, PermissionRepository>();
             #endregion
         }
     }

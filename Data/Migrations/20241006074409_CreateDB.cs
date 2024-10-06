@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Data.Migrations
 {
     /// <inheritdoc />
@@ -23,7 +25,9 @@ namespace Data.Migrations
                 columns: table => new
                 {
                     RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
+                    Title = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    IsActived = table.Column<bool>(type: "bit", nullable: false),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -115,7 +119,9 @@ namespace Data.Migrations
                 {
                     UserRoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsActived = table.Column<bool>(type: "bit", nullable: false),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -143,7 +149,8 @@ namespace Data.Migrations
                 {
                     DepartmentTransferId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TransferId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DepartmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    DepartmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsActived = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -190,6 +197,16 @@ namespace Data.Migrations
                         principalTable: "Departments",
                         principalColumn: "DepartmentId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                schema: "Security",
+                table: "Roles",
+                columns: new[] { "RoleId", "IsActived", "RegisterDate", "Title" },
+                values: new object[,]
+                {
+                    { new Guid("2c091b97-d244-48f7-bef6-bcae4bed7b3a"), true, new DateTime(2024, 10, 6, 11, 14, 8, 608, DateTimeKind.Local).AddTicks(3800), "فناوری اطلاعات" },
+                    { new Guid("b8094aff-e521-4188-869c-7a8399ae3deb"), true, new DateTime(2024, 10, 6, 11, 14, 8, 608, DateTimeKind.Local).AddTicks(3781), "مدیریت" }
                 });
 
             migrationBuilder.CreateIndex(

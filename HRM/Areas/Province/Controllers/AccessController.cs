@@ -1,5 +1,6 @@
 ﻿using Application.Services.Interfaces;
 using AutoMapper;
+using Data.Extensions;
 using Domain.DTOs.General;
 using Domain.DTOs.Security.Role;
 using Domain.DTOs.Security.UserRole;
@@ -15,6 +16,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace HRM.Areas.Province.Controllers
 {
     [Area("Province")]
+    [AreaPermissionChecker("0")]
+    [RolePermissionChecker("مدیریت","فناوری اطلاعات")]
+
     public class AccessController : Controller
     {
         #region Constructor

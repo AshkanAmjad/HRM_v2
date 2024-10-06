@@ -44,9 +44,6 @@ namespace Data.Repositores
                                  .AsQueryable();
         }
 
-
-
-
         public bool RegisterRole(RoleRegisterVM model, out string message)
         {
             string checkMessage = "";

@@ -59,7 +59,7 @@ namespace Data.Repositores
                 user = _context.Users.SingleOrDefault(
                    u => u.UserName == model.UserName
                    &&
-                   u.Department.Province == "0"
+                   u.Department.Province != "0"
                    &&
                    u.Department.County != "0"
                    &&
@@ -70,7 +70,7 @@ namespace Data.Repositores
                 user = _context.Users.SingleOrDefault(
                     u => u.UserName == model.UserName
                     &&
-                    u.Department.Province == "0"
+                    u.Department.Province != "0"
                     &&
                     u.Department.County != "0"
                     &&

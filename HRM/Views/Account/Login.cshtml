@@ -1,10 +1,35 @@
 ﻿@model Domain.DTOs.Security.Login.LoginVM
-@{
+<partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
+    @{
     ViewData["Title"] = "ورود";
     var areas = ViewData["Areas"] != null
     ? ViewData["Areas"] as List<SelectListItem>
     : new List<SelectListItem>();
+
+    var area = ViewData["area"];
+    var isSucess = ViewData["isSucess"];
 }
+
+<script type="text/javascript">
+    $(function () {
+        Swal.fire({
+            icon: "success",
+            text: "ورود با موفقیت انجام شد.",
+            showConfirmButton: false,
+            timer: 4000,
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutDown'
+            }
+        }).then((result) => {
+            var redirectUrl = @area == "0" ? "/province" : (@area == "1" ? "/county" : "/district");
+            setTimeout(function () { window.location.replace(redirectUrl); });
+        });
+    })
+</script>
+
 <div class="row pt-5 m-0">
     <div class="card shadow mx-auto col-11 col-sm-8 col-md-6 col-lg-5 col-xl-4 p-0 my-5">
         <div class="card-header d-flex justify-content-center align-items-center cursor">
@@ -16,7 +41,7 @@
                 <i class="fa fa-warning fa-lg text-danger  p-1"></i>
                 <p class="fw-bold fs-7">اطلاعات خود را با دقت وارد کنید.</p>
             </div>
-            <form asp-action="Login" asp-controller="Account" id="login" method="post">
+            <form asp-action="login" asp-controller="Account" id="loginForm" method="post">
                 @Html.AntiForgeryToken()
                 <div class="form-floating mb-3">
                     <select asp-for="Area" class="form-select form-select-sm py-1" aria-label=".form-select-lg" asp-items="areas" id="areas">
@@ -85,5 +110,5 @@
                 }
             });
         });
-   </script>
+    </script>
 }

@@ -25,8 +25,6 @@ namespace Domain.Interfaces
         bool Similarity(RoleEditVM model, out string message);
         #endregion
 
-
-
         #region DB
         void DisableRoleDb(RoleEdit_Active_DisableVM model);
         void ActiveRoleDb(RoleEdit_Active_DisableVM model);

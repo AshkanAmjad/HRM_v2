@@ -49,9 +49,9 @@
                         "zeroRecords": "معاونتی یافت نشد.",
                         "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
                         "search": `<span class="ms-2">
-                                              <i class="fa fa-search text-primary"></i>
-                                                    جست‌و‌جو بر اساس عنوان معاونت:
-                                   </span>`,
+                                                                      <i class="fa fa-search text-primary"></i>
+                                                                            جست‌و‌جو بر اساس عنوان معاونت:
+                                                           </span>`,
                         "searchPlaceholder": 'مقدار مناسبی برای عنوان معاونت وارد کنید ...',
                     },
                     "ajax": {
@@ -65,25 +65,32 @@
                         { "data": "registerDate", "title": "تاریخ ثبت", "width": "10%" },
                         {
                             "data": "roleId", "title": "عملیات", "width": "20%", render: function (data, type, row) {
-                                return `<div class="d-flex justify-content-center">
-                                            
-                                      ${row.isActived === "فعال" ?
+                                if (row.title === "مدیریت" || row.title === "فناوری اطلاعات") {
+                                    return `<div class="d-flex justify-content-center">
+                                                             <i class="fa fa-lg fa-ban text-danger my-3"></i>
+                                           </div>`;
+                                }
+                                else {
+                                    return `<div class="d-flex justify-content-center">
+
+                                                              ${row.isActived === "فعال" ?
                                             `
-                                            <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
-                                               onclick="Edit('${data}', '${row.title}')">
-                                            <i class="fa fa-edit my-2 mx-1" > </i>
-                                                </a>
-                                            <a class="btn btn-outline-danger btn-sm rounded-circle"
-                                               onclick = "Disable('${data}','${row.title}')">
-                                               <i class="fa fa-minus my-2 mx-1" > </i>
-                                              </a>`
-                                        :
-                                          `<a class="btn btn-outline-success btn-sm rounded-circle"
-                                            onclick = "Active('${data}','${row.title}')">
-                                            <i class="fa fa-check my-2 mx-1" > </i>
-                                             </a>`
-                                         }
-                                      </div>`
+                                                                    <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
+                                                                       onclick="Edit('${data}', '${row.title}')">
+                                                                    <i class="fa fa-edit my-2 mx-1" > </i>
+                                                                        </a>
+                                                                    <a class="btn btn-outline-danger btn-sm rounded-circle"
+                                                                       onclick = "Disable('${data}','${row.title}')">
+                                                                       <i class="fa fa-minus my-2 mx-1" > </i>
+                                                                      </a>`
+                                            :
+                                            `<a class="btn btn-outline-success btn-sm rounded-circle"
+                                                                    onclick = "Active('${data}','${row.title}')">
+                                                                    <i class="fa fa-check my-2 mx-1" > </i>
+                                                                     </a>`
+                                        }
+                                                              </div>`
+                                }
                             }
                         }
                     ]
