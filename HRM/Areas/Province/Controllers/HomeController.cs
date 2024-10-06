@@ -1,4 +1,6 @@
 ﻿using Data.Extensions;
+using Domain.DTOs.Security.Login;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,9 +21,6 @@ namespace HRM.Areas.Province.Controllers
             return View();
         }
 
-        public IActionResult Logout()
-        {
-            return View();
-        }
+
     }
 }

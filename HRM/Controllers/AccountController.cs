@@ -98,8 +98,9 @@ namespace HRM.Controllers
                     };
                     HttpContext.SignInAsync(principal, properties);
 
-                    ViewData["isSucess"] = true;
+                    ViewData["isSuccessLogin"] = true;
                     ViewData["area"] = model.Area;
+
                     return View(model);
                 }
 
@@ -127,7 +128,16 @@ namespace HRM.Controllers
             ViewData["Areas"] = areas;
             #endregion
 
+
+
             return View();
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.SignOutAsync();
+            TempData["isSuccessLogout"] = true;
+            return RedirectToAction("Login", "Account");
         }
     }
 }
