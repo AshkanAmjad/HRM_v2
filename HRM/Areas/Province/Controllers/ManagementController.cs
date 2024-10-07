@@ -106,8 +106,8 @@ namespace HRM.Areas.Province.Controllers
             var employment = _generalService.EmploymentTypes();
             var education = _generalService.EducationTypes();
             var departments = _generalService.ProvinceDepartmentTypes();
-            ViewBag.Genders = new SelectList(genders,"Value","Text");
-            ViewBag.Marital = new SelectList(marital, "Value", "Text"); 
+            ViewBag.Genders = new SelectList(genders, "Value", "Text");
+            ViewBag.Marital = new SelectList(marital, "Value", "Text");
             ViewBag.Employment = new SelectList(employment, "Value", "Text");
             ViewBag.Education = new SelectList(education, "Value", "Text"); ;
             ViewBag.Departments = new SelectList(departments, "Value", "Text");
@@ -347,9 +347,36 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Profile
-        public IActionResult Profile()
+        public IActionResult FillProfileGrid()
         {
-            return View();
+            var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+
+            if (id == "")
+            {
+                return NotFound();
+            }
+
+            var userId = new Guid(id);
+
+            var user = _userRepository.GetProfileById(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
+        public IActionResult EditProfile(UserEdit_DisableVM model)
+        {
+            ValidationResult userValidator = _userEdit_DeleteValidator.Validate(model);
+
+            if (userValidator.IsValid)
+            {
+                return View();
+            }
+            return NotFound();
         }
         #endregion
     }

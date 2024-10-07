@@ -47,7 +47,6 @@
 
 
 
-    var _profileUrl = '@Url.Action("Profile", "Management")';
 </script>
 <script type="text/javascript">
     $('#navbar a').click(function (e) {
@@ -67,14 +66,6 @@
         $("#report").on("click", function (e) {
             e.preventDefault();
             $.get(_reportUrl).done(function (result) {
-                $("#main").html(result);
-            });
-        });
-
-        $("#profile").off("click");
-        $("#profile").on("click", function (e) {
-            e.preventDefault();
-            $.get(_profileUrl).done(function (result) {
                 $("#main").html(result);
             });
         });

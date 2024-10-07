@@ -295,3 +295,8 @@ header {
     border: 2px dotted #ccc;
     cursor: grab;
 }
+
+.avatarProfileBox {
+    width: 15rem;
+    height: 15rem
+}

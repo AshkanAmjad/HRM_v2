@@ -4,6 +4,7 @@ using Data.Extensions;
 using Domain.DTOs.General;
 using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Security.Login;
+using Domain.DTOs.Security.Profile;
 using Domain.DTOs.Security.User;
 using Domain.Entities.Security.Models;
 using Domain.Interfaces;
@@ -519,6 +520,36 @@ namespace Data.Repositores
             return users;
         }
 
+        public DisplayProfileVM GetProfileById(Guid userId)
+        {
+            var user = (from item in _context.Users
+                        where item.UserId == userId
+                        select new DisplayProfileVM
+                        {
+                            UserId = item.UserId,
+                            UserName = item.UserName,
+                            Address = item.Address,
+                            RoleTitle = item.UserRoles.Select(r => r.Role.Title).ToList(),
+                            FirstName = item.FirstName,
+                            LastName = item.LastName,
+                            City = item.City,
+                            CountyDepartment = item.Department.County,
+                            ProvinceDepartment = item.Department.Province,
+                            DistrictDepartment = item.Department.District,
+                            Gender = (item.Gender == "M") ? "مرد" : "زن",
+                            MaritalStatus = (item.MaritalStatus == "S") ? "مجرد" : "متاهل",
+                            EmploymentStatus = (item.Employment == "T") ? "آزمایشی" : ((item.Employment == "C") ? "قراردادی" : "رسمی"),
+                            AreaDepartment = (item.Department.Area == "0" ? "استان" : (item.Department.Area == "1" ? "شهرستان" : "بخش")),
+                            Insurance = (item.Insurance) ? "مشمول" : "در انتظار",
+                            Education = (item.Education == "Dip") ? "دیپلم" : ((item.Education == "B") ? "کارشناسی" : ((item.Education == "M") ? "کارشناسی ارشد" : "دکترا")),
+                            PhoneNumber = item.PhoneNumber,
+                            Email = item.Email,
+                            DateOfBirth = item.DateOfBirth,
+                            DepartmenyId = item.Department.DepartmentId
+                        }).SingleOrDefault();
+            return user;
+        }
+
         public bool Delete(UserDelete_ActiveVM user, out string message)
         {
             string checkMessage = "انجام عملیات حذف با شکست مواحه شد.";
@@ -550,5 +581,7 @@ namespace Data.Repositores
             message = "";
             return true;
         }
+
+
     }
 }

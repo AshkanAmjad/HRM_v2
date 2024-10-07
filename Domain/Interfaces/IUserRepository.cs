@@ -1,6 +1,7 @@
 ﻿using Domain.DTOs.General;
 using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Security.Login;
+using Domain.DTOs.Security.Profile;
 using Domain.DTOs.Security.User;
 using Domain.Entities.Portal.Models;
 using Domain.Entities.Security.Models;
@@ -27,6 +28,10 @@ namespace Domain.Interfaces
         IQueryable<User> GetUsersQuery();
         UserEditVM? GetUserById(Guid userId);
         Guid? GetDepartmentIdByUserId(Guid userId, string area);
+        #endregion
+
+        #region Profile
+        DisplayProfileVM GetProfileById(Guid userId);
         #endregion
 
         #region DB
