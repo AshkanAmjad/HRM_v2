@@ -1,7 +1,9 @@
 ﻿using Application.Services.Interfaces;
 using AutoMapper;
 using Domain.DTOs.General;
+using Domain.DTOs.Security.Profile;
 using Domain.DTOs.Security.User;
+using Domain.Entities.Security.Models;
 using Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -25,6 +27,7 @@ namespace HRM.Areas.Province.Controllers
         private readonly IValidator<UserRegisterVM> _userRegisterValidator;
         private readonly IValidator<UserEditVM> _userEditValidator;
         private readonly IValidator<UserEdit_DisableVM> _userEdit_DeleteValidator;
+        private readonly IValidator<ProfileEditVM> _profileEditValidator;
         private readonly IMapper _mapper;
 
 
@@ -32,6 +35,7 @@ namespace HRM.Areas.Province.Controllers
             IValidator<UserRegisterVM> userRegisterValidator,
             IValidator<UserEditVM> userEditValidator,
             IValidator<UserEdit_DisableVM> userEdit_DeleteValidator,
+            IValidator<ProfileEditVM> profileEditValidator,
             IUserRepository userRepository,
             IDocumentService documentService,
             IGeneralService generalService,
@@ -42,6 +46,7 @@ namespace HRM.Areas.Province.Controllers
             _userRegisterValidator = userRegisterValidator;
             _userRepository = userRepository;
             _documentService = documentService;
+            _profileEditValidator = profileEditValidator;
             _userEditValidator = userEditValidator;
             _userEdit_DeleteValidator = userEdit_DeleteValidator;
             _documentRepository = documentRepository;
@@ -95,6 +100,33 @@ namespace HRM.Areas.Province.Controllers
             };
 
             return Json(jsonData);
+        }
+
+        public IActionResult FillProfileGrid()
+        {
+            var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+
+            if (id == "")
+            {
+                return NotFound();
+            }
+
+            var userId = new Guid(id);
+
+            var user = _userRepository.GetProfileById(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            DirectionVM direction = _mapper.Map<DirectionVM>(user);
+
+            bool IsExistAvatarOnDb = _documentService.CheckingAvatar(user.UserId, user.UserName, direction);
+
+            ViewData["IsExistAvatar"] = IsExistAvatarOnDb;
+
+            return View(user);
         }
         #endregion
 
@@ -186,29 +218,9 @@ namespace HRM.Areas.Province.Controllers
                     return NotFound();
                 }
 
-                bool IsExistAvatarOnDb = _documentRepository.IsExistAvatarOnDb(user.UserId);
+                DirectionVM direction = _mapper.Map<DirectionVM>(user);
 
-                if (IsExistAvatarOnDb)
-                {
-                    DirectionVM direction = _mapper.Map<DirectionVM>(user);
-
-
-                    bool isExistOrginalAvatar = _documentService.IsExistOrginalAvatarOnServer(direction, user.UserName);
-
-                    bool isExistThumbAvatar = _documentService.IsExistThumbAvatarOnServer(direction, user.UserName);
-
-                    if (!isExistOrginalAvatar || !isExistThumbAvatar)
-                    {
-                        var avatar = _documentRepository.GetAvatarWithUserId(user.UserId);
-
-                        if (!isExistOrginalAvatar)
-                            _documentRepository.DownloadOrginalAvatar(avatar);
-
-                        if (!isExistThumbAvatar)
-                            _documentService.UploadDocumentToServer(avatar);
-                    }
-                }
-
+                bool IsExistAvatarOnDb = _documentService.CheckingAvatar(user.UserId, user.UserName, direction);
 
                 var genders = _generalService.GenderTypes();
                 var marital = _generalService.MariltalTypes();
@@ -347,36 +359,89 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Profile
-        public IActionResult FillProfileGrid()
-        {
-            var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
-
-            if (id == "")
-            {
-                return NotFound();
-            }
-
-            var userId = new Guid(id);
-
-            var user = _userRepository.GetProfileById(userId);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return View(user);
-        }
-
         public IActionResult EditProfile(UserEdit_DisableVM model)
         {
             ValidationResult userValidator = _userEdit_DeleteValidator.Validate(model);
 
             if (userValidator.IsValid)
             {
-                return View();
+                var user = _userRepository.GetUserProfileById(model.UserId);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                DirectionVM direction = _mapper.Map<DirectionVM>(user);
+
+                bool IsExistAvatarOnDb = _documentService.CheckingAvatar(user.UserId, user.UserName, direction);
+
+                var marital = _generalService.MariltalTypes();
+                var education = _generalService.EducationTypes();
+                ViewBag.Marital = new SelectList(marital, "Value", "Text");
+                ViewBag.Education = new SelectList(education, "Value", "Text"); ;
+
+                ViewData["IsExistAvatar"] = IsExistAvatarOnDb;
+                return View(user);
             }
             return NotFound();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditProfile(ProfileEditVM user)
+        {
+            ValidationResult userValidator = _profileEditValidator.Validate(user);
+            bool success = false;
+            var message = $"عملیات ویرایش با شکست مواجه شده است.";
+            string checkMessage = "";
+            if (userValidator.IsValid)
+            {
+                try
+                {
+                    bool result = _userService.Edit(user, out checkMessage);
+
+                    if (result)
+                    {
+                        _userRepository.SaveChanges();
+                        success = true;
+                        message = $"<h5>عملیات ویرایش کاربر <span class='text-primary'> {user.FirstName}  {user.LastName} </span> با موفقیت انجام شد.</h5>";
+                    }
+                    else
+                    {
+                        message = checkMessage;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    while (ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    message = $"خطای شکست عملیات  : {ex.Message}";
+                }
+            }
+            else
+            {
+                message = $"{userValidator}";
+            }
+            #region Manual Validation
+            foreach (var error in userValidator.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+            userValidator.AddToModelState(this.ModelState);
+            #endregion
+
+            #region Json data
+            var jsonData = new
+            {
+                success = success,
+                message = message,
+            };
+            #endregion
+
+            return Json(jsonData);
         }
         #endregion
     }

@@ -1,15 +1,17 @@
 ﻿@model Domain.DTOs.Security.Profile.DisplayProfileVM
 @{
     Layout = null;
-    var isExistAvatar = true;
+    var isExistAvatar = ViewData["IsExistAvatar"];
 }
+<div id="operation-box" class="modal fade" role="dialog" aria-hidden="true">
+</div>
 <div class="card shadow mx-1">
     <div class="card-body">
         <div class="btn btn-outline-primary btn-sm  my-2 mx-1">حساب من</div>
         <div class="row px-2">
             <div class="row pb-3 m-0">
                 <div class="d-flex align-items-center justify-content-center flex-column" id="uploadAvatarBox">
-                    <img src=@(isExistAvatar.Equals(true) ? "/Province/Avatars/Province/Thumb-"+Model.UserName+".png" : "/pics/default/uploadBox/registerDefault.png" ) class="border rounded-circle shadow avatarProfileBox" alt="Avatar" />
+                    <img src=@(isExistAvatar.Equals(true) ? "/Province/Avatars/Province/Thumb-"+Model.UserName+".png" : "/pics/default/uploadBox/avatarDefault.png" ) class="border rounded-circle shadow avatarProfileBox" alt="Avatar" />
                 </div>
             </div>
             <div class="table-responsive px-1">

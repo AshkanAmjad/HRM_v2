@@ -6,6 +6,7 @@ using Domain.DTOs.General;
 using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Security.User;
 using Domain.Entities.Portal.Models;
+using Domain.Entities.Security.Models;
 using Domain.Interfaces;
 using SkiaSharp;
 using System;
@@ -20,12 +21,43 @@ namespace Application.Services.Implrmentations
     {
         #region Constructor
         private readonly IMapper _mapper;
+        private readonly IDocumentRepository _documentRepository;
 
-        public DocumentService(HRMContext context, IMapper mapper)
+        public DocumentService(HRMContext context, IMapper mapper, IDocumentRepository documentRepository)
         {
             _mapper = mapper;
+            _documentRepository = documentRepository;
         }
+
         #endregion
+        public bool CheckingAvatar(Guid userId, string userName, DirectionVM direction)
+        {
+            bool IsExistAvatarOnDb = _documentRepository.IsExistAvatarOnDb(userId);
+
+            if (IsExistAvatarOnDb)
+            {
+
+                bool isExistOrginalAvatar = IsExistOrginalAvatarOnServer(direction, userName);
+
+                bool isExistThumbAvatar = IsExistThumbAvatarOnServer(direction, userName);
+
+                if (!isExistOrginalAvatar || !isExistThumbAvatar)
+                {
+                    var avatar = _documentRepository.GetAvatarWithUserId(userId);
+
+                    if (!isExistOrginalAvatar)
+                        _documentRepository.DownloadOrginalAvatar(avatar);
+
+                    if (!isExistThumbAvatar)
+                        UploadDocumentToServer(avatar);
+                }
+
+            }
+
+            return IsExistAvatarOnDb;
+
+        }
+
         public void UploadDocumentToServer(UploadVM document)
         {
             if (document == null)
@@ -113,9 +145,35 @@ namespace Application.Services.Implrmentations
 
             string filePathOriginal = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirOrginal, documentNameOrginal);
 
-            using (var fileStream = new FileStream(filePathOriginal, FileMode.Truncate))
+            //using (var fileStream = new FileStream(filePathOriginal, FileMode.Truncate))
+            //{
+            //    fileStream.Write(bytes);
+            //}
+
+            int retryCount = 0;
+            while (retryCount < 5)
             {
-                fileStream.Write(bytes);
+                try
+                {
+                    using (var fileStream = new FileStream(filePathOriginal, FileMode.Truncate))
+                    {
+                        fileStream.Write(bytes);
+                        break;
+                    }
+                }
+                catch (IOException ex)
+                {
+                    if (ex.Message.Contains("The process cannot access the file"))
+                    {
+                        Console.WriteLine("File is locked. Waiting for 1 second...");
+                        Thread.Sleep(1000);
+                        retryCount++;
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
             }
 
             if (path._saveDirThumb != "")

@@ -1,4 +1,5 @@
-﻿using Domain.DTOs.Security.User;
+﻿using Domain.DTOs.Security.Profile;
+using Domain.DTOs.Security.User;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Application.Services.Interfaces
@@ -11,6 +12,11 @@ namespace Application.Services.Interfaces
         bool Edit(UserEditVM model, out string message);
         bool Disable(UserEdit_DisableVM model, out string message);
         bool Active(UserDelete_ActiveVM model, out string message);
+        #endregion
+
+        #region Profile
+        bool Edit(ProfileEditVM model, out string message);
+
         #endregion
 
 

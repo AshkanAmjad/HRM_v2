@@ -1,0 +1,325 @@
+﻿@model Domain.DTOs.Security.Profile.ProfileEditVM
+@{
+    Layout = null;
+
+    var mariltalTypes = ViewBag.Marital != null
+             ? ViewBag.Marital
+             : new List<SelectListItem>();
+
+    var educationTypes = ViewBag.Education != null
+            ? ViewBag.Education
+            : new List<SelectListItem>();
+
+    var isExistAvatar = ViewData["IsExistAvatar"];
+}
+<div class="modal-dialog modal-xl " id="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title">
+                <div class="btn btn-outline-primary btn-sm  my-2 mx-1">ویرایش در سطح استان</div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="border border-top-0 ">
+            <p class="fs-8 mt-3 fw-bold">
+                <i class="fa fa-lg me-3 ms-2 fa-bullseye text-primary"></i>
+                در صورت نیاز، مشخصات کارمند را با دقت در ورودی های مربوطه وارد کنید.
+            </p>
+        </div>
+        <form id="editForm" enctype="multipart/form-data" asp-antiforgery="true">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="AreaDepartment" />
+            <input type="hidden" asp-for="CountyDepartment" />
+            <input type="hidden" asp-for="DistrictDepartment" />
+            <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="DepartmenyId" />
+            <input type="hidden" asp-for="FirstName"/>
+            <input type="hidden" asp-for="LastName"/>
+            <input type="file" asp-for="Avatar" class="hidden" id="pic" />
+            <div class="modal-body">
+                <div class="row px-2">
+                    <div class="row pb-3 m-0">
+                        <div class="d-flex align-items-center justify-content-center flex-column" id="uploadAvatarBox">
+                            <img src=@(isExistAvatar.Equals(true) ? "/Province/Avatars/Province/Thumb-"+Model.UserName+".png" : "/pics/default/uploadBox/registerDefault.png" ) class="rounded avatarUploadBox" alt="Avatar" id="avatar" />
+                            <span asp-validation-for="Avatar" class="text-danger fs-8"></span>
+                        </div>
+                        <div class="border border-top-0 border-start-0 border-end-0 p-0">
+                            <p class="fs-8 mt-3 fw-bold">
+                                <i class="fa fa-lg ms-2 fa-warning text-warning"></i>
+                                در صورت بارگذاری تصویر، فقط نوع png. مورد پذیرش است.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="row mt-2 p-0">
+                            <div class="col-5 col-lg-4">
+                                <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
+                                <label class="control-label">کد ملی :</label>
+                            </div>
+                            <div class="col-7 col-lg-8">
+                                <input asp-for="UserName" type="number" class="form-control w-100" readonly />
+                                <span asp-validation-for="UserName" class="text-danger fs-8"></span>
+                            </div>
+                        </div>
+                        <div class="row mt-2 p-0 ">
+                            <div class="col-5 col-lg-4">
+                                <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
+                                <label class="control-label">گذر واژه :</label>
+                            </div>
+                            <div class="col-7 col-lg-8">
+                                <input asp-for="Password" class="form-control w-100 " tabindex="1" autocomplete="off" placeholder="مقدار مناسبی برای گذر واژه وارد کنید ..." />
+                                <span asp-validation-for="Password" class="text-danger fs-8"></span>
+                            </div>
+                        </div>
+                        <div class="row mt-2 p-0 ">
+                            <div class="col-5 col-lg-4">
+                                <i class="fa fa fa-caret-square-o-left text-primary ms-2"></i>
+                                <label class="control-label ">تکرار گذر واژه :</label>
+                            </div>
+                            <div class="col-7 col-lg-8">
+                                <input asp-for="ConfirmPassword" class="form-control w-100 " tabindex="2" autocomplete="off" placeholder="گذر واژه را تکرار کنید ..." />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger fs-8"></span>
+                            </div>
+                        </div>
+                        <div class="row my-2 p-0">
+                            <div class="col-5 col-lg-4">
+                                <i class="fa fa fa-caret-square-o-left text-primary ms-2"></i>
+                                <label class="control-label">وضعیت تاهل :</label>
+                            </div>
+                            <div class="col-7 col-lg-8">
+                                @foreach (var item in mariltalTypes)
+                                {
+                                    <div class="form-check form-check-inline ">
+                                        <input asp-for="MaritalStatus" type="radio" name="maritalStatus" value="@item.Value" tabindex="7" />
+                                        <label class="form-check-label">@item.Text</label>
+                                    </div>
+                                }
+                                <span asp-validation-for="MaritalStatus" class="text-danger fs-8 d-block" id="maritalError"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-2 mt-3 p-0">
+                            <div class="col-5 col-lg-4">
+                                <i class="fa fa fa-caret-square-o-left text-primary ms-2"></i>
+                                <label class="control-label">تحصیلات :</label>
+                            </div>
+                            <div class="col-7 col-lg-8">
+                                <select asp-for="Education" class="form-select" aria-label=".form-select-sm" asp-items="educationTypes" id="educationTypes" tabindex="8">
+                                    <option selected class="fs-7">سطح تحصیلات خود را انتخاب کنید ...</option>
+                                </select>
+                                <span asp-validation-for="Education" class="text-danger fs-8" id="educationError"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="row mt-2 p-0 ">
+                            <div class="col-5 col-lg-4">
+                                <i class="fa fa fa-caret-square-o-left text-primary ms-2"></i>
+                                <label class="control-label">پست الکترونیک :</label>
+                            </div>
+                            <div class="col-7 col-lg-8">
+                                <input asp-for="Email" class="form-control w-100 " tabindex="13" autocomplete="off" placeholder="مقدار مناسبی برای پست الکترونیک وارد کنید ..." />
+                                <span asp-validation-for="Email" class="text-danger fs-8"></span>
+                            </div>
+                        </div>
+                        <div class="row mt-2 p-0 ">
+                            <div class="col-5 col-lg-4">
+                                <i class="fa fa fa-caret-square-o-left text-primary ms-2"></i>
+                                <label class="control-label">شماره همراه :</label>
+                            </div>
+                            <div class="col-7 col-lg-8">
+                                <input asp-for="PhoneNumber" type="number" class="form-control w-100 " tabindex="14" autocomplete="off" placeholder="مقدار مناسبی برای شماره همراه وارد کنید ..." />
+                                <span asp-validation-for="PhoneNumber" class="text-danger fs-8"></span>
+                            </div>
+                        </div>
+                        <div class="row mt-2 p-0 ">
+                            <div class="col-5 col-lg-4">
+                                <i class="fa fa fa-caret-square-o-left text-primary ms-2"></i>
+                                <label class="control-label">شهر سکونت :</label>
+                            </div>
+                            <div class="col-7 col-lg-8">
+                                <input asp-for="City" class="form-control w-100 " tabindex="15" autocomplete="off" placeholder="مقدار مناسبی برای شهر سکونت وارد کنید ..." />
+                                <span asp-validation-for="City" class="text-danger fs-8"></span>
+                            </div>
+                        </div>
+                        <div class="row mt-2 p-0 ">
+                            <div class="col-5 col-lg-4">
+                                <i class="fa fa fa-caret-square-o-left text-primary ms-2"></i>
+                                <label class="control-label">نشانی سکونت :</label>
+                            </div>
+                            <div class="col-7 col-lg-8">
+                                <textarea asp-for="Address" class="form-control w-100" tabindex="16" placeholder="آدرس سکونت را به طور دقیق وارد کنید ..."></textarea>
+                                <span asp-validation-for="Address" class="text-danger fs-8"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center align-items-center mt-lg-5">
+                <button type="submit" class="btn btn-primary px-5 align-items-center" id="submitBtn" tabindex="17">
+                    <i class="fa fa-save mx-2"></i>
+                    ثبت
+                </button>
+                <button type="button" class="btn btn-secondary cursor-pointer mx-1" tabindex="17" data-bs-dismiss="modal">
+                    &times;
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
+    <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPersianDatePickerPartial.cshtml" />
+    <script type="text/javascript">
+        var _editUrl = '@Url.Action("EditProfile", "Management", new { area = "Province" })';
+        var _refreshProfileUrl = '@Url.Action("GetProfileData", "Management")';
+        var _myAccountUrl = '@Url.Action("FillProfileGrid", "Management")';
+    </script>
+
+    <script type="text/javascript">
+        $('#dateOfBirth').persianDatepicker({
+            initialValue: false,
+            format: 'YYYY/MM/DD'
+        });
+
+        $.fn.Validation = function () {
+            var educationError = $("#educationError")
+            var maritalError = $("#maritalError");
+            var $userName = $("input[name='UserName']").val();
+            var $password = $("input[name='Password']").val();
+            var $confirmPassword = $("input[name='ConfirmPassword']").val();
+            var $education = $("#educationTypes").find(':selected').text();
+            var $marital = $("input[name='maritalStatus']:checked").val();
+            var $email = $("input[name='Email").val();
+            var $phoneNumber = $("input[name='PhoneNumber']").val();
+            var $city = $("input[name='City']").val();
+            var $address = $("#Address").val();
+            if ($education === "سطح تحصیلات خود را انتخاب کنید ...") {
+                educationError.text("تکمیل ورودی تحصیلات ضروری است.")
+            } else {
+                educationError.text('');
+            }
+            if ($marital === undefined) {
+                maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
+            } else {
+                maritalError.text('');
+            }
+            if (($education === "سطح تحصیلات خود را انتخاب کنید ..." || $marital === undefined)
+                &&
+                ($userName !== "" && $password !== "" && $confirmPassword !== ""
+                 && $email !== "" && $phoneNumber !== "" && $city !== "" && $address !== "")) {
+                if ($education === "سطح تحصیلات خود را انتخاب کنید ...") {
+                    educationError.text("تکمیل ورودی تحصیلات ضروری است.")
+                }
+                if ($marital === undefined) {
+                    maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
+                }
+            }
+            $("#educationTypes").change(function () {
+                var $education = $("#educationTypes").find(':selected').text();
+                if ($education !== "سطح تحصیلات خود را انتخاب کنید ...") {
+                    educationError.text('');
+                } else {
+                    educationError.text("تکمیل ورودی تحصیلات ضروری است.")
+                }
+            });            
+            $("input[name='maritalStatus']").change(function () {
+                var $marital = $("input[name='maritalStatus']:checked").val();
+                if ($marital !== undefined) {
+                    maritalError.text('');
+                } else {
+                    maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
+                }
+            });
+        };
+
+        $(function () {
+            var $file = null;
+            var dropZone = $('#uploadAvatarBox');
+            $("#submitBtn").off("click");
+            $("#submitBtn").on("click", function (e) {
+                $.fn.Validation();
+                e.preventDefault();
+                var $form = $('#editForm');
+                if ($form.valid()) {
+                    $("#submitBtn").prop('disabled', true);
+                    var formData = new FormData($form.get(0));
+                    $.ajax({
+                        url: _editUrl,
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (result) {
+                            if (result.success) {
+
+                                $.get(_myAccountUrl).done(function (result) {
+                                    $("#main").html(result);
+                                });
+
+                                $("#operation-box").modal("toggle");
+                                Swal.fire({
+                                    title: result.message,
+                                    icon: 'success',
+                                    showConfirmButton: false,
+                                    timer: 4000,
+                                    showClass: {
+                                        popup: 'animate__animated animate__fadeInDown'
+                                    },
+                                    hideClass: {
+                                        popup: 'animate__animated animate__fadeOutDown'
+                                    }
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'خطا',
+                                    icon: 'error',
+                                    text: result.message,
+                                    showConfirmButton: false,
+                                    timer: 4000,
+                                    showClass: {
+                                        popup: 'animate__animated animate__fadeInDown'
+                                    },
+                                    hideClass: {
+                                        popup: 'animate__animated animate__fadeOutDown'
+                                    }
+                                })
+                            }
+                        },
+                        complete: function () {
+                            $("#submitBtn").prop('disabled', false);
+                        }
+                    });
+                };
+            });
+
+            // Dragover event
+            dropZone.on('dragover', function (e) {
+                e.preventDefault();
+            });
+
+            // Dragleave event
+            dropZone.on('dragleave', function (e) {
+                e.preventDefault();
+            });
+
+            // Drop event
+            dropZone.on('drop', function (e) {
+                e.preventDefault();
+                var files = e.originalEvent.dataTransfer.files;
+                if (files.length > 0) {
+                    const dataTransfer = new DataTransfer();
+                    $file = files[0];
+                    dataTransfer.items.add($file);
+                    document.getElementById("pic").files = dataTransfer.files;
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#avatar').attr('src', e.target.result);
+                        $('#avatar').show();
+                    };
+                    reader.readAsDataURL($file);
+                }
+            });
+        });
+    </script>
+

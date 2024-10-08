@@ -32,6 +32,8 @@ namespace Domain.Interfaces
 
         #region Profile
         DisplayProfileVM GetProfileById(Guid userId);
+        ProfileEditVM? GetUserProfileById(Guid userId);
+        bool Edit(ProfileEditVM user, out string message);
         #endregion
 
         #region DB
@@ -44,6 +46,9 @@ namespace Domain.Interfaces
         void UploadDepartmentToDb(UserRegisterVM depatment, Guid departmentId);
         void UploadEditDepartmentToDb(UserEditVM model);
         void DeleteAvatarOnDb(Guid departmentId);
+
+        void UploadEditUserToDb(ProfileEditVM userEdit);
+
         void SaveChanges();
         #endregion
 

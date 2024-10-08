@@ -21,12 +21,14 @@ namespace Application.Services.Interfaces
 
         void DeleteDocumentOnServer(string filePathOriginal, string filePathThumb);
         void DeleteDocumentOnServer(UserEdit_DisableVM model);
+        bool CheckingAvatar(Guid userId, string userName, DirectionVM direction);
 
         #endregion
 
         #region Is Exist 
         bool IsExistOrginalAvatarOnServer(DirectionVM direction, string userName);
         bool IsExistThumbAvatarOnServer(DirectionVM direction, string userName);
+        
 
         #endregion
     }

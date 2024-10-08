@@ -1,5 +1,6 @@
 ﻿using Domain.DTOs.General;
 using Domain.DTOs.Security.Login;
+using Domain.DTOs.Security.Profile;
 using Domain.DTOs.Security.Role;
 using Domain.DTOs.Security.User;
 using Domain.DTOs.Security.UserRole;
@@ -7,6 +8,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using HRM.Models.Validation;
 using HRM.Models.Validation.Security;
+using HRM.Models.Validation.Security.Profile;
 using HRM.Models.Validation.Security.Role;
 using HRM.Models.Validation.Security.User;
 using HRM.Models.Validation.Security.UserRole;
@@ -37,6 +39,8 @@ namespace HRM.Extensions
             services.AddScoped<IValidator<UserRoleRegisterVM>, UserRoleRegisterValidator>();
             services.AddScoped<IValidator<UserRoleEditVM>, UserRoleEditValidator>();
             services.AddScoped<IValidator<UserRoleEdit_Active_DisableVM>, UserRoleEdit_Active_DisableValidator>();
+
+            services.AddScoped<IValidator<ProfileEditVM>, ProfileEditValidator>();
             #endregion
 
             #region Authenication

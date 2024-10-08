@@ -191,26 +191,9 @@ namespace HRM.Areas.District.Controllers
                     return NotFound();
                 }
 
-                bool IsExistAvatarOnDb = _documentRepository.IsExistAvatarOnDb(user.UserId);
+                DirectionVM direction = _mapper.Map<DirectionVM>(user);
 
-                if (IsExistAvatarOnDb)
-                {
-                    DirectionVM direction = _mapper.Map<DirectionVM>(user);
-
-                    bool isExistOrginalAvatar = _documentService.IsExistOrginalAvatarOnServer(direction, user.UserName);
-                    bool isExistThumbAvatar = _documentService.IsExistThumbAvatarOnServer(direction, user.UserName);
-
-                    if (!isExistOrginalAvatar || !isExistThumbAvatar)
-                    {
-                        var avatar = _documentRepository.GetAvatarWithUserId(user.UserId);
-
-                        if (!isExistOrginalAvatar)
-                            _documentRepository.DownloadOrginalAvatar(avatar);
-
-                        if (!isExistThumbAvatar)
-                            _documentService.UploadDocumentToServer(avatar);
-                    }
-                }
+                bool IsExistAvatarOnDb = _documentService.CheckingAvatar(user.UserId, user.UserName, direction);
 
                 var genders = _generalService.GenderTypes();
                 var marital = _generalService.MariltalTypes();

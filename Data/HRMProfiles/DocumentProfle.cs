@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Domain.DTOs.General;
 using Domain.DTOs.Portal.Document;
+using Domain.DTOs.Security.Profile;
 using Domain.DTOs.Security.User;
 using Domain.Entities.Portal.Models;
 using Domain.Entities.Security.Models;
@@ -32,6 +33,14 @@ namespace Data.HRMProfiles
                 .ForMember(dest => dest.District, opt => opt.MapFrom(opt => opt.DistrictDepartment))
                 .ForMember(dest => dest.document, opt => opt.MapFrom(opt => opt.Avatar));
 
+            CreateMap<ProfileEditVM, UploadVM>()
+               .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
+               .ForMember(dest => dest.DepartmentId, opt => opt.MapFrom(src => src.DepartmenyId))
+               .ForMember(dest => dest.Area, opt => opt.MapFrom(src => src.AreaDepartment))
+               .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.CountyDepartment))
+               .ForMember(dest => dest.District, opt => opt.MapFrom(opt => opt.DistrictDepartment))
+               .ForMember(dest => dest.document, opt => opt.MapFrom(opt => opt.Avatar));
+
             CreateMap<UploadVM, DirectionVM>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Area, opt => opt.MapFrom(src => src.Area))
@@ -45,6 +54,16 @@ namespace Data.HRMProfiles
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description));
 
             CreateMap<UserEditVM, DirectionVM>()
+                .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.CountyDepartment))
+                .ForMember(dest => dest.Area, opt => opt.MapFrom(src => src.AreaDepartment))
+                .ForMember(dest => dest.District, opt => opt.MapFrom(src => src.DistrictDepartment));
+
+            CreateMap<ProfileEditVM,DirectionVM>()
+                .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.CountyDepartment))
+                .ForMember(dest => dest.Area, opt => opt.MapFrom(src => src.AreaDepartment))
+                .ForMember(dest => dest.District, opt => opt.MapFrom(src => src.DistrictDepartment));
+
+            CreateMap<DisplayProfileVM,DirectionVM>()
                 .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.CountyDepartment))
                 .ForMember(dest => dest.Area, opt => opt.MapFrom(src => src.AreaDepartment))
                 .ForMember(dest => dest.District, opt => opt.MapFrom(src => src.DistrictDepartment));

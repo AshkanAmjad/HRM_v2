@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Domain.DTOs.Security.Profile;
 using Domain.DTOs.Security.User;
 using Domain.Entities.Security.Models;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -65,6 +66,17 @@ namespace Data.HRMProfiles
                 .ForMember(dest => dest.Province, opt => opt.MapFrom(src => src.ProvinceDepartment))
                 .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.CountyDepartment))
                 .ForMember(dest => dest.District, opt => opt.MapFrom(src => src.DistrictDepartment));
+
+            CreateMap<ProfileEditVM, User>()
+                   .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
+                   .ForMember(dest => dest.MaritalStatus, opt => opt.MapFrom(src => src.MaritalStatus))
+                   .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
+                   .ForMember(dest => dest.Education, opt => opt.MapFrom(src => src.Education))
+                   .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email.ToLower()))
+                   .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City))
+                   .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
+                   .ForMember(dest => dest.RegisterDate, opt => opt.MapFrom(src => src.RegisterDate))
+                   .ForMember(dest => dest.LastActived, opt => opt.MapFrom(src => src.LastActived));
 
         }
     }

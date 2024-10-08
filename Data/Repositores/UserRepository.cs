@@ -146,6 +146,42 @@ namespace Data.Repositores
             return false;
         }
 
+        public bool Edit(ProfileEditVM user, out string message)
+        {
+            string checkMessage = "اطلاعات ناقص ارسال شده است.";
+
+            if (user != null)
+            {
+                UploadEditUserToDb(user);
+
+                #region Document
+                if (user.Avatar != null)
+                {
+                    bool IsExist = IsExistAvatar(user.DepartmenyId);
+
+                    if (IsExist)
+                    {
+                        DeleteAvatarOnDb(user.DepartmenyId);
+                    }
+
+                    UploadVM file = _mapper.Map<UploadVM>(user);
+
+                    file.Name = "Avatar";
+                    file.Description = "-";
+                    file.DepartmentId = user.DepartmenyId;
+                    _documentRepository.UploadDocumentToDb(file);
+                }
+                #endregion
+
+                message = "";
+                return true;
+            }
+
+            message = checkMessage;
+            return false;
+        }
+
+
         public void DeleteAvatarOnDb(Guid departmentId)
         {
             if (departmentId != Guid.Empty)
@@ -274,6 +310,35 @@ namespace Data.Repositores
             }
         }
 
+        public void UploadEditUserToDb(ProfileEditVM userEdit)
+        {
+            if (userEdit != null)
+            {
+                User initial = _context.Users
+                                       .Find(userEdit.UserId);
+                if (initial != null)
+                {
+                    User user = _mapper.Map<User>(userEdit);
+
+                    initial.Education = user.Education;
+                    initial.MaritalStatus = user.MaritalStatus;
+                    initial.PhoneNumber = user.PhoneNumber;
+                    initial.Email = user.Email;
+                    initial.City = user.City;
+                    initial.Address = user.Address;
+                    initial.LastActived = user.LastActived;
+                    initial.RegisterDate = user.RegisterDate;
+
+                    if (userEdit.Password != null)
+                    {
+                        user.Password = userEdit.Password;
+                        initial.Password = user.Password;
+                    }
+
+                    _context.Update(initial);
+                }
+            }
+        }
         public void UploadEditDepartmentToDb(UserEditVM model)
         {
             if (model != null)
@@ -342,6 +407,37 @@ namespace Data.Repositores
             }
             return user;
         }
+
+        public ProfileEditVM? GetUserProfileById(Guid userId)
+        {
+            ProfileEditVM user = new();
+            if (userId != Guid.Empty)
+            {
+                user = (from item in _context.Users
+                        where (item.UserId == userId)
+                        select new ProfileEditVM
+                        {
+                            Address = item.Address,
+                            City = item.City,
+                            Education = item.Education,
+                            Email = item.Email,
+                            PhoneNumber = item.PhoneNumber,
+                            LastName = item.LastName,
+                            UserId = item.UserId,
+                            UserName = item.UserName,
+                            DepartmenyId = item.Department.DepartmentId,
+                            MaritalStatus = item.MaritalStatus,
+                            FirstName = item.FirstName,
+                            LastActived = item.LastActived,
+                            CountyDepartment = item.Department.County,
+                            DistrictDepartment = item.Department.District,
+                            AreaDepartment = (item.Department.Province != "0" && item.Department.County == "0" && item.Department.County == "0" ? "0" :
+                                 (item.Department.Province != "0" && item.Department.County != "0" && item.Department.District == "0" ? "1" : "2"))
+                        }).Single();
+            }
+            return user;
+        }
+
 
         public bool Disable(UserEdit_DisableVM model, out string message)
         {
@@ -545,7 +641,6 @@ namespace Data.Repositores
                             PhoneNumber = item.PhoneNumber,
                             Email = item.Email,
                             DateOfBirth = item.DateOfBirth,
-                            DepartmenyId = item.Department.DepartmentId
                         }).SingleOrDefault();
             return user;
         }

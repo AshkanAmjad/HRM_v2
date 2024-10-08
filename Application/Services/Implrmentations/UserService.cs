@@ -2,6 +2,7 @@
 using Application.Services.Interfaces;
 using AutoMapper;
 using Domain.DTOs.Portal.Document;
+using Domain.DTOs.Security.Profile;
 using Domain.DTOs.Security.User;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -101,6 +102,37 @@ namespace Application.Services.Implrmentations
 
             return result;
         }
+
+        public bool Edit(ProfileEditVM model, out string message)
+        {
+            #region Seed Data On Users Table
+            model.RegisterDate = DateTime.Now;
+            model.LastActived = DateTime.Now;
+            #endregion 
+
+            #region Hashing Password
+            if (model.Password != null)
+            {
+                string hashed = Hashing.Hash(model.Password);
+                model.Password = hashed;
+            }
+            #endregion
+
+            bool result = _userRepository.Edit(model, out message);
+
+            #region Save Avatar On Server
+            if (result && model.Avatar != null)
+            {
+                UploadVM uploadToServer = _mapper.Map<UploadVM>(model);
+                uploadToServer.Name = "Avatar";
+                _documentService.UploadDocumentToServer(uploadToServer);
+            }
+            #endregion
+
+            return result;
+
+        }
+
 
         public bool Disable(UserEdit_DisableVM model, out string message)
         {
