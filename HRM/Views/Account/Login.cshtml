@@ -1,5 +1,6 @@
 ﻿@model Domain.DTOs.Security.Login.LoginVM
-<partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
+<partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPartial.cshtml">
+
     @{
         ViewData["Title"] = "ورود";
         var areas = ViewData["Areas"] != null
@@ -52,6 +53,10 @@
         </script>
         TempData.Remove("isSuccessLogout");
     }
+
+    <div id="forgotPassword-box" class="modal fade" role="dialog" aria-hidden="true">
+
+    </div>
     
     <div class="row pt-5 m-0">
         <div class="card shadow mx-auto col-11 col-sm-8 col-md-6 col-lg-5 col-xl-4 p-0 my-5">
@@ -94,15 +99,19 @@
                     </div>
                     <div class="my-3">
                         <i class="fa fa-key text-primary"></i>
-                        <a asp-controller="" asp-action="" class="fs-8 text-decoration-none">گذر واژه خود را فراموش کرده ام</a>
+                        <a id="forgotPassword" class="fs-8 text-decoration-none cursor-pointer">گذر واژه خود را فراموش کرده ام</a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+    <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
 
     @section Scripts {
-        <script>
+        <script type="text/javascript">
+                var _forgotPasswordIndexUrl = '@Url.Action("ForgotPasswordIndex", "ForgotPassword")';
+        </script>
+        <script type="text/javascript">
             $(function () {
                 var areaError = $("#areaError");
 
@@ -133,5 +142,15 @@
                     }
                 });
             });
+
+            //ForgotPassword
+
+            $("#forgotPassword").off("click").on("click", function (e) {
+                e.preventDefault();
+                    $.get(_forgotPasswordIndexUrl).done(function (result) {
+                    $("#forgotPassword-box").html(result);
+                    $("#forgotPassword-box").modal("show");
+                })
+            })
         </script>
     }
