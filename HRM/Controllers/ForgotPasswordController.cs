@@ -57,23 +57,24 @@ namespace HRM.Controllers
             bool success = false;
             var message = $"عملیات اعتبار سنجی با شکست مواجه شده است.";
             string checkMessage = "";
+            Guid checkUserId = Guid.Empty;
 
             if (userNameValidator.IsValid)
             {
                 try
                 {
-                    //bool result = _userRepository.Register(user, out checkMessage);
+                    bool result = _userRepository.UserNameValidation(model, out checkUserId,out checkMessage);
 
-                    //if (result)
-                    //{
-                    //    _userRepository.SaveChanges();
-                    //    success = true;
-                    //    message = $"<h5>ایمیل بازیابی رمز عبور با موفقیت ارسال شد.</h5>";
-                    //}
-                    //else
-                    //{
-                    //    message = checkMessage;
-                    //}
+                    if (result)
+                    {
+                        message = checkMessage;
+                        TempData["UserId"] = checkUserId;
+                        success = true;
+                    }
+                    else
+                    {
+                        message = checkMessage;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -108,5 +109,24 @@ namespace HRM.Controllers
         }
         #endregion
 
+        #region ChooseTheMethod
+        public IActionResult ChooseTheMethod()
+        {
+            return View();
+        }
+        #endregion
+
+        #region Verification
+        public IActionResult SendVerificationCodeByEmail()
+        {
+            var userId=TempData["UserId"];
+            return View();
+        }
+
+        public IActionResult SendVerificationCodeByPhoneNumber()
+        {
+            return View();
+        }
+        #endregion
     }
 }

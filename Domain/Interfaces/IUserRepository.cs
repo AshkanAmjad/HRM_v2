@@ -16,7 +16,6 @@ namespace Domain.Interfaces
     public interface IUserRepository
     {
         #region User
-        User? GetUser(LoginVM loginVM);
         bool Similarity(UserRegisterVM user, out string message);
         bool Register(UserRegisterVM user, out string message);
         bool Edit(UserEditVM user, out string message);
@@ -30,6 +29,12 @@ namespace Domain.Interfaces
         Guid? GetDepartmentIdByUserId(Guid userId, string area);
         #endregion
 
+        #region Login
+        User? GetUser(LoginVM loginVM);
+        bool UserNameValidation(UsernameValidationVM model, out Guid userId,out string message);
+        void GetEmailAndPhoneNumberByUserId(Guid userId, out string phoneNumber, out string email);
+        #endregion
+
         #region Profile
         DisplayProfileVM GetProfileById(Guid userId);
         ProfileEditVM? GetUserProfileById(Guid userId);
@@ -40,13 +45,12 @@ namespace Domain.Interfaces
         void UploadRegisterUserToDb(UserRegisterVM userRegister);
         void DisableUserDb(UserEdit_DisableVM model);
         void ActiveUserDb(UserDelete_ActiveVM model);
-        void DisableDepartmentDb(UserEdit_DisableVM model , out Guid departmentId);
-        void ActiveDepartmentDb(UserDelete_ActiveVM model , out Guid departmentId);
+        void DisableDepartmentDb(UserEdit_DisableVM model, out Guid departmentId);
+        void ActiveDepartmentDb(UserDelete_ActiveVM model, out Guid departmentId);
         void UploadEditUserToDb(UserEditVM userEdit);
         void UploadDepartmentToDb(UserRegisterVM depatment, Guid departmentId);
         void UploadEditDepartmentToDb(UserEditVM model);
         void DeleteAvatarOnDb(Guid departmentId);
-
         void UploadEditUserToDb(ProfileEditVM userEdit);
 
         void SaveChanges();

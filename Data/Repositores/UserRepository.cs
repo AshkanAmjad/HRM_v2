@@ -109,6 +109,49 @@ namespace Data.Repositores
             return false;
         }
 
+        public bool UserNameValidation(UsernameValidationVM model,out Guid userId, out string message)
+        {
+            string checkMessage = "اطلاعات ناقص ارسال شده است.";
+            Guid checkUserId = Guid.Empty;
+            var result = false;
+
+            if (model == null)
+            {
+                message = checkMessage;
+                userId = checkUserId;
+                return result;
+            }
+
+            var user = _context.Users.Where(u => u.Department.Area == model.Area &&
+                                                   u.UserName == model.UserName)
+                                       .FirstOrDefault();
+
+
+            if (user != null)
+            {
+                message = "";
+                userId = user.UserId;
+                result = true;
+
+                return result;
+            }
+
+            checkMessage = "کاربری با مشخصات وارد شده یافت نشد.";
+            message = checkMessage;
+            userId = checkUserId;
+
+            return result;
+        }
+
+        public void GetEmailAndPhoneNumberByUserId(Guid userId, out string phoneNumber, out string email)
+        {
+            var user = _context.Users.Where(u => u.UserId == userId)
+                                     .First();
+                                                 
+            phoneNumber = user.PhoneNumber;
+            email = user.Email;
+        }
+
         public bool Edit(UserEditVM user, out string message)
         {
             string checkMessage = "اطلاعات ناقص ارسال شده است.";

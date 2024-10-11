@@ -1,0 +1,55 @@
+﻿@{
+    Layout = null;
+}
+<div class="modal-content modalCustom">
+    <div class="modal-header">
+        <div class="modal-title">
+            <div class="btn btn-outline-primary btn-sm  my-2 mx-1">فراموشی رمز عبور - روش بازنشانی</div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="border border-top-0 ">
+        <p class="fs-8 mt-3 fw-bold">
+            <i class="fa fa-lg me-3 ms-2 fa-bullseye text-primary"></i>
+            شیوه ارسال پیام تایید هویت را انتخاب کنید
+        </p>
+    </div>
+    <div class="d-flex flex-column flex-lg-row pt-3 pb-5 justify-content-center">
+        <button class="btn btn-lg btn-outline-primary mb-2 mx-2 px-5 fs-8" id="sendByEmail">
+            <i class="fa fa-lg fa-envelope mx-2"></i>
+            ارسال از طریق ایمیل
+        </button>
+        <button class="btn btn-lg btn-outline-primary mb-2 mx-2 fs-8" disabled id="sendByPhoneNumber">
+            <i class="fa fa-lg fa-mobile-phone mx-2"></i>
+            ارسال از طریق شماره تلفن همراه
+        </button>
+    </div>
+</div>
+<partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
+    <script type="text/javascript">
+        var _sendByEmailUrl = '@Url.Action("SendVerificationCodeByEmail", "ForgotPassword")';
+        var _sendByPhoneNumberUrl = '@Url.Action("SendVerificationCodeByPhoneNumber", "ForgotPassword")';
+    </script>
+    <script type="text/javascript">
+        $("#sendByEmail").off("click").on("click", function (e) {
+            $.get(_sendByEmailUrl).done(function () {
+                if (result.success) {
+                    window.parent.LoadVerificationByEmailUrl();
+                } else {
+                    Swal.fire({
+                        title: 'خطا',
+                        icon: 'error',
+                        text: result.message,
+                        showConfirmButton: false,
+                        timer: 4000,
+                        showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__fadeOutDown'
+                        }
+                    })
+                }
+            })
+        })
+    </script>

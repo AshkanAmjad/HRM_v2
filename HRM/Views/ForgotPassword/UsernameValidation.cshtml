@@ -5,7 +5,6 @@
         ? ViewData["Areas"] as List<SelectListItem>
         : new List<SelectListItem>();
 }
-<div class="modal-dialog modal-lg " id="modal">
     <div class="modal-content">
         <div class="modal-header">
             <div class="modal-title">
@@ -60,7 +59,6 @@
             </div>
         </form>
     </div>
-</div>
 <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
     <script type="text/javascript">
         var _userNameValidationUrl = '@Url.Action("UsernameValidation", "ForgotPassword")';
@@ -115,20 +113,7 @@
                     contentType: false,
                     success: function (result) {
                         if (result.success) {
-                            GridReload();
-                            $("#operation-box").modal("toggle");
-                            Swal.fire({
-                                title: result.message,
-                                icon: 'success',
-                                showConfirmButton: false,
-                                timer: 4000,
-                                showClass: {
-                                    popup: 'animate__animated animate__fadeInDown'
-                                },
-                                hideClass: {
-                                    popup: 'animate__animated animate__fadeOutDown'
-                                }
-                            });
+                            window.parent.LoadChooseTheMethodUrl();
                         } else {
                             Swal.fire({
                                 title: 'خطا',

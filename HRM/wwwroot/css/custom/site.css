@@ -288,6 +288,12 @@ header {
     }
 }
 
+@media (min-width:767px){
+    .modalCustom{
+        height:22.7rem;
+    }
+}
+
 /*main*/
 .avatarUploadBox {
     width: 200px;
