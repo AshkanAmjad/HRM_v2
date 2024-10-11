@@ -5,6 +5,30 @@ namespace Application.Services.Implrmentations
 {
     public class GeneralService:IGeneralService
     {
+
+        public List<SelectListItem> Areas()
+        {
+            List<SelectListItem> areas = new()
+            {
+                new SelectListItem
+                {
+                    Text = "استان",
+                    Value = 0.ToString()
+                },
+                new SelectListItem
+                {
+                    Text = "شهرستان",
+                    Value = 1.ToString()
+                },
+                new SelectListItem
+                {
+                    Text = "بخش",
+                    Value = 3.ToString()
+                }
+            };
+            return areas;
+        }
+
         public List<SelectListItem> GenderTypes()
         {
             List<SelectListItem> genders = new()

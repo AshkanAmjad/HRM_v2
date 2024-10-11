@@ -21,44 +21,26 @@ namespace HRM.Controllers
     {
         #region Constructor
         private readonly IUserRepository _userRepository;
+        private readonly IGeneralService _generalService;
         private readonly IValidator<LoginVM> _validator;
 
 
-        public AccountController(IUserService userService, IValidator<LoginVM> validator, IUserRepository userRepository)
+        public AccountController(IUserService userService, IGeneralService generalService, IValidator<LoginVM> validator, IUserRepository userRepository)
         {
+
             _userRepository = userRepository;
+            _generalService = generalService;
             _validator = validator;
 
         }
         #endregion
 
         #region Select lists
-        public List<SelectListItem> Areas()
-        {
-            List<SelectListItem> areas = new()
-            {
-                new SelectListItem
-                {
-                    Text = "استان",
-                    Value = 0.ToString()
-                },
-                new SelectListItem
-                {
-                    Text = "شهرستان",
-                    Value = 1.ToString()
-                },
-                new SelectListItem
-                {
-                    Text = "بخش",
-                    Value = 3.ToString()
-                }
-            };
-            return areas;
-        }
+        
         #endregion
         public IActionResult Login()
         {
-            var areas = Areas();
+            var areas = _generalService.Areas();
             ViewData["Areas"] = areas;
             return View();
         }
@@ -98,8 +80,8 @@ namespace HRM.Controllers
                     };
                     HttpContext.SignInAsync(principal, properties);
 
-                    ViewData["isSuccessLogin"] = true;
-                    ViewData["area"] = model.Area;
+                    ViewData["IsSuccessLogin"] = true;
+                    ViewData["Area"] = model.Area;
 
                     return View(model);
                 }
@@ -124,7 +106,7 @@ namespace HRM.Controllers
             #endregion
 
             #region Areas
-            var areas = Areas();
+            var areas = _generalService.Areas();
             ViewData["Areas"] = areas;
             #endregion
 
@@ -136,7 +118,7 @@ namespace HRM.Controllers
         public IActionResult Logout()
         {
             HttpContext.SignOutAsync();
-            TempData["isSuccessLogout"] = true;
+            TempData["IsSuccessLogout"] = true;
             return RedirectToAction("Login", "Account");
         }
     }

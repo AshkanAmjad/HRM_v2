@@ -273,6 +273,7 @@
             });
 
             $.fn.Validation = function () {
+                var result = true;
                 var employmentError = $("#employmentError");
                 var educationError = $("#educationError")
                 var maritalError = $("#maritalError");
@@ -294,28 +295,38 @@
                 var $phoneNumber = $("input[name='PhoneNumber']").val();
                 var $city = $("input[name='City']").val();
                 var $address = $("#Address").val();
+
                 if ($employment === "وضعیت استخدامی خود را انتخاب کنید ...") {
-                    employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.")
+                    employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.");
+                    result = false;
                 } else {
                     employmentError.text("");
                 }
                 if ($department === "شعبه سطح استان خود را انتخاب کنید ...") {
-                    departmentError.text("تکمیل ورودی شعبه استان ضروری است.")
+                    departmentError.text("تکمیل ورودی شعبه استان ضروری است.");
+                    result = false;
+
                 } else {
                     departmentError.text('');
                 }
                 if ($education === "سطح تحصیلات خود را انتخاب کنید ...") {
-                    educationError.text("تکمیل ورودی تحصیلات ضروری است.")
+                    educationError.text("تکمیل ورودی تحصیلات ضروری است.");
+                    result = false;
+
                 } else {
                     educationError.text('');
                 }
                 if ($marital === undefined) {
                     maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
+                    result = false;
+
                 } else {
                     maritalError.text('');
                 }
                 if ($gender === undefined) {
                     ganderError.text("تکمیل ورودی جنسیت ضروری است.");
+                    result = false;
+
                 } else {
                     ganderError.text('');
                 }
@@ -324,19 +335,29 @@
                     ($userName !== "" && $password !== "" && $confirmPassword !== "" && $firstName !== "" && $lastName !== ""
                         && $dateOfBirth !== "" && $email !== "" && $phoneNumber !== "" && $city !== "" && $address !== "")) {
                     if ($employment === "وضعیت استخدامی خود را انتخاب کنید ...") {
-                        employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.")
+                        employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.");
+                        result = false;
+
                     }
                     if ($department === "شعبه سطح استان خود را انتخاب کنید ...") {
                         departmentError.text("تکمیل ورودی شعبه استان ضروری است.");
+                        result = false;
+
                     }
                     if ($education === "سطح تحصیلات خود را انتخاب کنید ...") {
-                        educationError.text("تکمیل ورودی تحصیلات ضروری است.")
+                        educationError.text("تکمیل ورودی تحصیلات ضروری است.");
+                        result = false;
+
                     }
                     if ($marital === undefined) {
                         maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
+                        result = false;
+
                     }
                     if ($gender === undefined) {
                         ganderError.text("تکمیل ورودی جنسیت ضروری است.");
+                        result = false;
+
                     }
                 }
                 $("#educationTypes").change(function () {
@@ -344,7 +365,9 @@
                     if ($education !== "سطح تحصیلات خود را انتخاب کنید ...") {
                         educationError.text('');
                     } else {
-                        educationError.text("تکمیل ورودی تحصیلات ضروری است.")
+                        educationError.text("تکمیل ورودی تحصیلات ضروری است.");
+                        result = false;
+
                     }
                 });
                 $("#employmentStatus").change(function () {
@@ -352,7 +375,9 @@
                     if ($employment !== "وضعیت استخدامی خود را انتخاب کنید ...") {
                         employmentError.text('');
                     } else {
-                        employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.")
+                        employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.");
+                        result = false;
+
                     }
                 });
                 $("#provinceDepartmentStatus").change(function () {
@@ -360,7 +385,9 @@
                     if ($department !== "شعبه سطح استان خود را انتخاب کنید ...") {
                         departmentError.text('');
                     } else {
-                        departmentError.text("تکمیل ورودی شعبه استان ضروری است.")
+                        departmentError.text("تکمیل ورودی شعبه استان ضروری است.");
+                        result = false;
+
                     }
                 });
                 $("input[name='maritalStatus']").change(function () {
@@ -369,6 +396,8 @@
                         maritalError.text('');
                     } else {
                         maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
+                        result = false;
+
                     }
                 });
                 $("input[name='gender']").change(function () {
@@ -377,8 +406,12 @@
                         ganderError.text('');
                     } else {
                         ganderError.text("تکمیل ورودی جنسیت ضروری است.");
+                        result = false;
+
                     }
                 })
+
+                return result;
             };
 
             $(function () {
@@ -386,10 +419,10 @@
                 var dropZone = $('#uploadAvatarBox');
                 $("#submitBtn").off("click");
                 $("#submitBtn").on("click", function (e) {
-                    $.fn.Validation();
+                    var validation = $.fn.Validation();
                     e.preventDefault();
                     var $form = $('#editForm');
-                    if ($form.valid()) {
+                    if ($form.valid() && validation == true) {
                         $("#submitBtn").prop('disabled', true);
                         var formData = new FormData($form.get(0));
                         $.ajax({

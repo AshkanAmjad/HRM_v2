@@ -1,156 +1,170 @@
 ﻿@model Domain.DTOs.Security.Login.LoginVM
 <partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPartial.cshtml">
-
-    @{
-        ViewData["Title"] = "ورود";
-        var areas = ViewData["Areas"] != null
-        ? ViewData["Areas"] as List<SelectListItem>
-        : new List<SelectListItem>();
-
-        var area = ViewData["area"];
-        var isSuccessLogin = ViewData["isSuccessLogin"];
-        var isSuccessLogout = TempData["isSuccessLogout"];
-    }
-    @if (isSuccessLogin != null)
-    {
-        <script type="text/javascript">
-            $(function () {
-                Swal.fire({
-                    icon: "success",
-                    text: "ورود با موفقیت انجام شد.",
-                    showConfirmButton: false,
-                    timer: 4000,
-                    showClass: {
-                        popup: 'animate__animated animate__fadeInDown'
-                    },
-                    hideClass: {
-                        popup: 'animate__animated animate__fadeOutDown'
-                    }
-                }).then((result) => {
-                    var redirectUrl = @area == "0" ? "/province" : (@area == "1" ? "/county" : "/district");
-                    setTimeout(function () { window.location.replace(redirectUrl); });
-                });
-            })
-        </script>
-    }
-    else if (isSuccessLogout != null)
-    {
-        <script type="text/javascript">
-            $(function () {
-                Swal.fire({
-                    icon: "success",
-                    text: "خروج با موفقیت انجام شد.",
-                    showConfirmButton: false,
-                    timer: 4000,
-                    showClass: {
-                        popup: 'animate__animated animate__fadeInDown'
-                    },
-                    hideClass: {
-                        popup: 'animate__animated animate__fadeOutDown'
-                    }
-                })
-            })
-        </script>
-        TempData.Remove("isSuccessLogout");
-    }
-
-    <div id="forgotPassword-box" class="modal fade" role="dialog" aria-hidden="true">
-
-    </div>
-    
-    <div class="row pt-5 m-0">
-        <div class="card shadow mx-auto col-11 col-sm-8 col-md-6 col-lg-5 col-xl-4 p-0 my-5">
-            <div class="card-header d-flex justify-content-center align-items-center cursor">
-                <h6 class=" mb-0">ورود</h6>
-                <i class="fa fa-sign-in text-primary mx-2"></i>
-            </div>
-            <div class="card-body pb-0">
-                <div class="d-flex cursor">
-                    <i class="fa fa-warning fa-lg text-danger  p-1"></i>
-                    <p class="fw-bold fs-7">اطلاعات خود را با دقت وارد کنید.</p>
-                </div>
-                <form asp-action="login" asp-controller="Account" id="loginForm" method="post">
-                    @Html.AntiForgeryToken()
-                    <div class="form-floating mb-3">
-                        <select asp-for="Area" class="form-select form-select-sm py-1" aria-label=".form-select-lg" asp-items="areas" id="areas">
-                            <option selected class="fs-6">ناحیه شعبه را انتخاب کنید</option>
-                        </select>
-                        <span asp-validation-for="Area" class="text-danger fs-8" id="areaError"></span>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input asp-for="UserName" type="number" class="form-control form-control-sm" autocomplete="off" placeholder="کدملی" aria-required="true" />
-                        <label asp-for="UserName" class="form-label">کد ملی</label>
-                        <span asp-validation-for="UserName" class="text-danger fs-8"></span>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input asp-for="Password" class="form-control " autocomplete="off" aria-required="true" placeholder="گذر واژه" type="password" />
-                        <label asp-for="Password" class="form-label">گذر واژه</label>
-                        <span asp-validation-for="Password" class="text-danger fs-8"></span>
-                    </div>
-
-                    <div class="checkbox mb-2 ">
-                        <label asp-for="RememberMe" class="form-check-label">
-                            مرا به خاطر بسپار
-                            <input asp-for="RememberMe" class="form-check-input" />
-                        </label>
-                    </div>
-                    <div>
-                        <button id="submit" type="submit" class="w-100 btn btn-lg btn-primary">ورود</button>
-                    </div>
-                    <div class="my-3">
-                        <i class="fa fa-key text-primary"></i>
-                        <a id="forgotPassword" class="fs-8 text-decoration-none cursor-pointer">گذر واژه خود را فراموش کرده ام</a>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
 
-    @section Scripts {
-        <script type="text/javascript">
-                var _forgotPasswordIndexUrl = '@Url.Action("ForgotPasswordIndex", "ForgotPassword")';
-        </script>
-        <script type="text/javascript">
-            $(function () {
-                var areaError = $("#areaError");
+        @{
+            ViewData["Title"] = "ورود";
+            var areas = ViewData["Areas"] != null
+            ? ViewData["Areas"] as List<SelectListItem>
+            : new List<SelectListItem>();
 
-                $("#submit").off("click").on("click", function (e) {
-                    var userName = $("input[name='UserName']").val();
-                    var password = $("input[name='Password']").val();
-                    var area = $("#areas").find(':selected').text();
-
-                    if (area === "ناحیه شعبه را انتخاب کنید") {
-                        areaError.text("تکمیل ورودی ناحیه شعبه ضروری است.");
-                    } else {
-                        areaError.text('');
-                    }
-
-                    if (area === "ناحیه شعبه را انتخاب کنید" && userName !== '' && password !== "") {
-                        areaError.text("تکمیل ورودی ناحیه شعبه ضروری است.");
-                        e.preventDefault();
-                    }
-                });
-
-                $("#areas").change(function () {
-                    var area = $("#areas").find(':selected').text();
-
-                    if (area !== "ناحیه شعبه را انتخاب کنید") {
-                        areaError.text('');
-                    } else {
-                        areaError.text("تکمیل ورودی ناحیه شعبه ضروری است.");
-                    }
-                });
-            });
-
-            //ForgotPassword
-
-            $("#forgotPassword").off("click").on("click", function (e) {
-                e.preventDefault();
-                    $.get(_forgotPasswordIndexUrl).done(function (result) {
-                    $("#forgotPassword-box").html(result);
-                    $("#forgotPassword-box").modal("show");
+            var area = ViewData["Area"];
+            var isSuccessLogin = ViewData["IsSuccessLogin"];
+            var isSuccessLogout = TempData["IsSuccessLogout"];
+        }
+        @if (isSuccessLogin != null)
+        {
+            <script type="text/javascript">
+                $(function () {
+                    Swal.fire({
+                        icon: "success",
+                        text: "ورود با موفقیت انجام شد.",
+                        showConfirmButton: false,
+                        timer: 4000,
+                        showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__fadeOutDown'
+                        }
+                    }).then((result) => {
+                        var redirectUrl = @area == "0" ? "/province" : (@area == "1" ? "/county" : "/district");
+                        setTimeout(function () { window.location.replace(redirectUrl); });
+                    });
                 })
-            })
-        </script>
-    }
+            </script>
+        }
+        else if (isSuccessLogout != null)
+        {
+            <script type="text/javascript">
+                $(function () {
+                    Swal.fire({
+                        icon: "success",
+                        text: "خروج با موفقیت انجام شد.",
+                        showConfirmButton: false,
+                        timer: 4000,
+                        showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__fadeOutDown'
+                        }
+                    })
+                })
+            </script>
+            TempData.Remove("IsSuccessLogout");
+        }
+
+        <div id="forgotPassword-box" class="modal fade" role="dialog" aria-hidden="true">
+        </div>
+
+        <div class="row pt-5 m-0">
+            <div class="card shadow mx-auto col-11 col-sm-8 col-md-6 col-lg-5 col-xl-4 p-0 my-5">
+                <div class="card-header d-flex justify-content-center align-items-center cursor">
+                    <h6 class=" mb-0">ورود</h6>
+                    <i class="fa fa-sign-in text-primary mx-2"></i>
+                </div>
+                <div class="card-body pb-0">
+                    <div class="d-flex cursor">
+                        <i class="fa fa-warning fa-lg text-danger  p-1"></i>
+                        <p class="fw-bold fs-7">اطلاعات خود را با دقت وارد کنید.</p>
+                    </div>
+                    <form asp-action="login" asp-controller="Account" id="loginForm" method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="form-floating mb-3">
+                            <select asp-for="Area" class="form-select form-select-sm py-1" aria-label=".form-select-lg" asp-items="areas" id="areas">
+                                <option selected class="fs-6">ناحیه شعبه را انتخاب کنید</option>
+                            </select>
+                            <span asp-validation-for="Area" class="text-danger fs-8" id="areaError"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="UserName" type="number" class="form-control form-control-sm" autocomplete="off" placeholder="کدملی" aria-required="true" />
+                            <label asp-for="UserName" class="form-label">کد ملی</label>
+                            <span asp-validation-for="UserName" class="text-danger fs-8"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Password" class="form-control " autocomplete="off" aria-required="true" placeholder="گذر واژه" type="password" />
+                            <label asp-for="Password" class="form-label">گذر واژه</label>
+                            <span asp-validation-for="Password" class="text-danger fs-8"></span>
+                        </div>
+
+                        <div class="checkbox mb-2 ">
+                            <label asp-for="RememberMe" class="form-check-label">
+                                مرا به خاطر بسپار
+                                <input asp-for="RememberMe" class="form-check-input" />
+                            </label>
+                        </div>
+                        <div>
+                            <button id="submitBtn" type="submit" class="w-100 btn btn-lg btn-primary">ورود</button>
+                        </div>
+                        <div class="my-3">
+                            <i class="fa fa-key text-primary"></i>
+                            <a id="forgotPassword" class="fs-8 text-decoration-none cursor-pointer">گذر واژه خود را فراموش کرده ام</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        @section Scripts {
+            <script type="text/javascript">
+                var _forgotPasswordIndexUrl = '@Url.Action("ForgotPasswordIndex", "ForgotPassword")';
+            </script>
+            <script type="text/javascript">
+                $.fn.Validation = function () {
+                    var result = true;
+
+                    var areaError = $("#areaError");
+
+                    var $userName = $("input[name='UserName']").val();
+                    var $password = $("input[name='Password']").val();
+                    var $area = $("#areas").find(':selected').text();
+
+                    if ($area === "ناحیه شعبه را انتخاب کنید") {
+                        areaError.text("تکمیل ورودی ناحیه شعبه ضروری است.");
+                        result = false;
+                    } else {
+                        areaError.text('');
+                    }
+
+                    if ($area === "ناحیه شعبه را انتخاب کنید" && $userName !== '' && $password !== "") {
+                        areaError.text("تکمیل ورودی ناحیه شعبه ضروری است.");
+
+                        result = false;
+                    }
+
+                    $("#areas").change(function () {
+                        var $area = $("#areas").find(':selected').text();
+
+                        if ($area !== "ناحیه شعبه را انتخاب کنید") {
+                            areaError.text('');
+                        } else {
+                            areaError.text("تکمیل ورودی ناحیه شعبه ضروری است.");
+                            result = false;
+                        }
+                    });
+
+                    return result;
+
+                }
+
+                $("#submitBtn").off("click").on("click", function (e) {
+                    var validation = $.fn.Validation();
+                    var $form = $("#loginForm");
+
+                    if ($form.valid() == true && validation == false) {
+                            e.preventDefault();
+                      }
+                });
+
+                //ForgotPassword
+
+                $("#forgotPassword").off("click").on("click", function (e) {
+                    e.preventDefault();
+                    $.get(_forgotPasswordIndexUrl).done(function (result) {
+                        $("#forgotPassword-box").html(result);
+                        $("#forgotPassword-box").modal("show");
+                    })
+                })
+            </script>
+        }

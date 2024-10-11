@@ -1,7 +1,11 @@
-﻿@{
+﻿@model Domain.DTOs.Security.Login.UsernameValidationVM
+@{
     Layout = null;
+    var areas = ViewData["Areas"] != null
+        ? ViewData["Areas"] as List<SelectListItem>
+        : new List<SelectListItem>();
 }
-<div class="modal-dialog modal-xl " id="modal">
+<div class="modal-dialog modal-lg " id="modal">
     <div class="modal-content">
         <div class="modal-header">
             <div class="modal-title">
@@ -9,6 +13,143 @@
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <div class="border border-top-0 ">
+            <p class="fs-8 mt-3 fw-bold">
+                <i class="fa fa-lg me-3 ms-2 fa-bullseye text-primary"></i>
+                مشخصات کارمند را برای بازنشانی رمز عبور، با دقت در ورودی های مربوطه وارد کنید.
+            </p>
+        </div>
+        <form id="validationForm" enctype="multipart/form-data" asp-antiforgery="true">
+            @Html.AntiForgeryToken()
+            <div class="modal-body">
+                <div class="row px-2">
+                    <div class="col-xl-8">
+                        <div class="row mt-2 p-0">
+                            <div class="col-4">
+                                <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
+                                <label class="control-label">ناحیه شعبه :</label>
+                            </div>
+                            <div class="col-8">
+                                <select asp-for="Area" class="form-select form-select-sm py-1" aria-label=".form-select-lg" asp-items="areas" id="areas" tabindex="1">
+                                    <option selected class="fs-6">ناحیه شعبه را انتخاب کنید</option>
+                                </select>
+                                <span asp-validation-for="Area" class="text-danger fs-8" id="areaError"></span>
+                            </div>
+                        </div>
+                        <div class="row mt-2 p-0">
+                            <div class="col-4">
+                                <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
+                                <label class="control-label">کد ملی :</label>
+                            </div>
+                            <div class="col-8">
+                                <input asp-for="UserName" type="number" class="form-control w-100" tabindex="2" autocomplete="off" placeholder="مقدار مناسبی برای کد ملی وارد کنید ..." />
+                                <span asp-validation-for="UserName" class="text-danger fs-8"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center align-items-center mt-lg-5">
+                <button type="submit" class="btn btn-primary px-5 align-items-center" id="submitBtn" tabindex="3">
+                    <i class="fa fa-save mx-2"></i>
+                    ثبت
+                </button>
+                <button type="button" class="btn btn-secondary cursor-pointer mx-1" tabindex="4" data-bs-dismiss="modal">
+                    &times;
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
+    <script type="text/javascript">
+        var _userNameValidationUrl = '@Url.Action("UsernameValidation", "ForgotPassword")';
+    </script>
+    <script type="text/javascript">
+        $.fn.Validation = function () {
+            var areaError = $("#areaError");
+
+            var $userName = $("input[name='UserName']").val();
+            var $area = $("#areas").find(':selected').text();
+
+            var result = true;
+
+            if ($area === "ناحیه شعبه را انتخاب کنید") {
+                areaError.text("تکمیل ورودی ناحیه شعبه ضروری است.");
+                result = false;
+            } else {
+                areaError.text('');
+            }
+
+            if ($area === "ناحیه شعبه را انتخاب کنید" && $userName !== '') {
+                areaError.text("تکمیل ورودی ناحیه شعبه ضروری است.");
+                result = false;
+            }
+
+            $("#areas").change(function () {
+                var $area = $("#areas").find(':selected').text();
+                if ($area !== "ناحیه شعبه را انتخاب کنید") {
+                    areaError.text('');
+                } else {
+                    areaError.text("تکمیل ورودی ناحیه شعبه ضروری است.");
+                    result = false;
+                }
+            });
+
+            return result;
+
+        }
+
+        $("#submitBtn").off("click").on("click", function (e) {
+            var validation = $.fn.Validation();
+            e.preventDefault();
+            var $form = $("#validationForm");
+            if ($form.valid() && validation == true ) {
+                $("#submitBtn").prop('disabled', true);
+                var formData = new FormData($form.get(0));
+                $.ajax({
+                    url: _userNameValidationUrl,
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (result) {
+                        if (result.success) {
+                            GridReload();
+                            $("#operation-box").modal("toggle");
+                            Swal.fire({
+                                title: result.message,
+                                icon: 'success',
+                                showConfirmButton: false,
+                                timer: 4000,
+                                showClass: {
+                                    popup: 'animate__animated animate__fadeInDown'
+                                },
+                                hideClass: {
+                                    popup: 'animate__animated animate__fadeOutDown'
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'خطا',
+                                icon: 'error',
+                                text: result.message,
+                                showConfirmButton: false,
+                                timer: 4000,
+                                showClass: {
+                                    popup: 'animate__animated animate__fadeInDown'
+                                },
+                                hideClass: {
+                                    popup: 'animate__animated animate__fadeOutDown'
+                                }
+                            })
+                        }
+                    },
+                    complete: function () {
+                        $("#submitBtn").prop('disabled', false);
+                    }
+                })
+            }
+        });
+    </script>
+

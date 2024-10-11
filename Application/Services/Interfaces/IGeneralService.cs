@@ -11,6 +11,7 @@ namespace Application.Services.Interfaces
         List<SelectListItem> CountyDepartmentTypes();
         List<SelectListItem> DistrictDepartmentTypes();
         List<SelectListItem> EmploymentTypes();
+        List<SelectListItem> Areas();
 
     }
 }

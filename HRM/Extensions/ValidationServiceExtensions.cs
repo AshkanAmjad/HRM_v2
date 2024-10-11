@@ -7,6 +7,7 @@ using Domain.DTOs.Security.UserRole;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using HRM.Models.Validation;
+using HRM.Models.Validation.General;
 using HRM.Models.Validation.Security;
 using HRM.Models.Validation.Security.Profile;
 using HRM.Models.Validation.Security.Role;
@@ -26,6 +27,9 @@ namespace HRM.Extensions
 
             #region Life Time
             services.AddScoped<IValidator<LoginVM>, LoginValidator>();
+            services.AddScoped<IValidator<UsernameValidationVM>, UsernameValidationValidator>();
+
+
             services.AddScoped<IValidator<UserRegisterVM>,UserRegisterValidator>();
             services.AddScoped<IValidator<UserEdit_DisableVM>, UserEdit_DisableValidator>();
             services.AddScoped<IValidator<UserEditVM>,UserEditValidator>();

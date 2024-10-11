@@ -287,6 +287,7 @@
             });
 
             $.fn.Validation = function () {
+                var result = true;
                 var employmentError = $("#employmentError");
                 var educationError = $("#educationError")
                 var maritalError = $("#maritalError");
@@ -311,32 +312,44 @@
                 var $city = $("input[name='City']").val();
                 var $address = $("#Address").val();
                 if ($employment === "وضعیت استخدامی خود را انتخاب کنید ...") {
-                    employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.")
+                    employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.");
+                    result = false;
+
                 } else {
                     employmentError.text("");
                 }
                 if ($provinceDepartment === "شعبه سطح استان خود را انتخاب کنید ...") {
-                    provinceDepartmentError.text("تکمیل ورودی شعبه استان ضروری است.")
+                    provinceDepartmentError.text("تکمیل ورودی شعبه استان ضروری است.");
+                    result = false;
+
                 } else {
                     provinceDepartmentError.text('');
                 }
                 if ($countyDepartment === "شعبه سطح شهرستان خود را انتخاب کنید ...") {
-                    countyDepartmentError.text("تکمیل ورودی شعبه شهرستان ضروری است.")
+                    countyDepartmentError.text("تکمیل ورودی شعبه شهرستان ضروری است.");
+                    result = false;
+
                 } else {
                     countyDepartmentError.text('');
                 }
                 if ($education === "سطح تحصیلات خود را انتخاب کنید ...") {
-                    educationError.text("تکمیل ورودی تحصیلات ضروری است.")
+                    educationError.text("تکمیل ورودی تحصیلات ضروری است.");
+                    result = false;
+
                 } else {
                     educationError.text('');
                 }
                 if ($marital === undefined) {
                     maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
+                    result = false;
+
                 } else {
                     maritalError.text('');
                 }
                 if ($gender === undefined) {
                     ganderError.text("تکمیل ورودی جنسیت ضروری است.");
+                    result = false;
+
                 } else {
                     ganderError.text('');
                 }
@@ -368,7 +381,9 @@
                     if ($education !== "سطح تحصیلات خود را انتخاب کنید ...") {
                         educationError.text('');
                     } else {
-                        educationError.text("تکمیل ورودی تحصیلات ضروری است.")
+                        educationError.text("تکمیل ورودی تحصیلات ضروری است.");
+                        result = false;
+
                     }
                 });
                 $("#employmentStatus").change(function () {
@@ -376,7 +391,9 @@
                     if ($employment !== "وضعیت استخدامی خود را انتخاب کنید ...") {
                         employmentError.text('');
                     } else {
-                        employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.")
+                        employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.");
+                        result = false;
+
                     }
                 });
                 $("#provinceDepartmentStatus").change(function () {
@@ -384,7 +401,9 @@
                     if ($provinceDepartment !== "شعبه سطح استان خود را انتخاب کنید ...") {
                         provinceDepartmentError.text('');
                     } else {
-                        provinceDepartmentError.text("تکمیل ورودی شعبه استان ضروری است.")
+                        provinceDepartmentError.text("تکمیل ورودی شعبه استان ضروری است.");
+                        result = false;
+
                     }
                 });
                 $("#countyDepartmentStatus").change(function () {
@@ -392,7 +411,9 @@
                     if ($countyDepartment !== "شعبه سطح شهرستان خود را انتخاب کنید ...") {
                         countyDepartmentError.text('');
                     } else {
-                        countyDepartmentError.text("تکمیل ورودی شعبه شهرستان ضروری است.")
+                        countyDepartmentError.text("تکمیل ورودی شعبه شهرستان ضروری است.");
+                        result = false;
+
                     }
                 });
                 $("input[name='maritalStatus']").change(function () {
@@ -401,6 +422,8 @@
                         maritalError.text('');
                     } else {
                         maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
+                        result = false;
+
                     }
                 });
                 $("input[name='gender']").change(function () {
@@ -409,8 +432,11 @@
                         ganderError.text('');
                     } else {
                         ganderError.text("تکمیل ورودی جنسیت ضروری است.");
+                        result = false;
+
                     }
                 })
+                return result;
             };
 
             $(function () {
@@ -418,10 +444,10 @@
                 var dropZone = $('#uploadAvatarBox');
                 $("#submitBtn").off("click");
                 $("#submitBtn").on("click", function (e) {
-                    $.fn.Validation();
+                    var validation = $.fn.Validation();
                     e.preventDefault();
                     var $form = $('#registerForm');
-                    if ($form.valid()) {
+                    if ($form.valid() && validation == true) {
                         $("#submitBtn").prop('disabled', true);
                         var formData = new FormData($form.get(0));
                         $.ajax({
