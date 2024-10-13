@@ -220,6 +220,14 @@ namespace HRM.Controllers
         }
         #endregion
 
+        #region Reset password
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        #endregion
+
         #region Verification by phone number
         public IActionResult SendVerificationCodeByPhoneNumber()
         {

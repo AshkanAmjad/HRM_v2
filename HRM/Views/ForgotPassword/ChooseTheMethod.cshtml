@@ -36,7 +36,7 @@
                 if (result.success) {
                     Swal.fire({
                         icon: 'success',
-                        text:'کد تایید، با موفقیت ارسال شد.',
+                        text: result.message,
                         showConfirmButton: false,
                         timer: 4000,
                         showClass: {
@@ -49,8 +49,8 @@
                     window.parent.LoadVerificationUrl();
                 } else {
                     Swal.fire({
-                        title: 'خطا',
                         icon: 'error',
+                        text: result.message,
                         showConfirmButton: false,
                         timer: 4000,
                         showClass: {

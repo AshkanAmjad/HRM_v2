@@ -110,9 +110,32 @@
 
                     $.post(_verificationUrl, formData).done(function (result) {
                         if (result.success) {
-
+                            Swal.fire({
+                                icon: 'success',
+                                text: result.message,
+                                showConfirmButton: false,
+                                timer: 4000,
+                                showClass: {
+                                    popup: 'animate__animated animate__fadeInDown'
+                                },
+                                hideClass: {
+                                    popup: 'animate__animated animate__fadeOutDown'
+                                }
+                            })
+                            window.parent.LoadResetPasswordUrl();
                         } else {
-
+                            Swal.fire({
+                                icon: 'error',
+                                text: result.message,
+                                showConfirmButton: false,
+                                timer: 4000,
+                                showClass: {
+                                    popup: 'animate__animated animate__fadeInDown'
+                                },
+                                hideClass: {
+                                    popup: 'animate__animated animate__fadeOutDown'
+                                }
+                            })
                         }
 
                     })
