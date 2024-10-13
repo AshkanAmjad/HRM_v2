@@ -19,8 +19,7 @@
                 مشخصات خواسته شده، را با دقت در ورودی مربوطه وارد کنید.
             </p>
         </div>
-        <form id="editForm" enctype="multipart/form-data">
-            @Html.AntiForgeryToken()
+        <form id="editForm" enctype="multipart/form-data" asp-antiforgery="true">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="UserId" />
             <input type="hidden" asp-for="UserRoleId" />

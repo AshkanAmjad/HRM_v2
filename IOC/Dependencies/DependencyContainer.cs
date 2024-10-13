@@ -1,4 +1,5 @@
-﻿using Application.Services.Implrmentations;
+﻿using Application.Extensions;
+using Application.Services.Implrmentations;
 using Application.Services.Interfaces;
 using Data.Repositores;
 using Domain.DTOs.Security.Login;
@@ -16,6 +17,7 @@ namespace IOC.Dependencies
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IDocumentService, DocumentService>();
             services.AddScoped<IGeneralService, GeneralService>();
+            services.AddScoped<IViewRenderService, RenderViewToString>();
             #endregion
 
             #region Repository

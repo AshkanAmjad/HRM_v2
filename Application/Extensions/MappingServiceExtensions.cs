@@ -1,7 +1,7 @@
 ﻿using Data.HRMProfiles;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Data.Extensions
+namespace Application.Extensions
 {
     public static class MappingServiceExtensions
     {

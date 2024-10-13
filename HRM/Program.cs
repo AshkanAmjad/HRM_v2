@@ -1,10 +1,10 @@
 using IOC.Dependencies;
 using HRM.Extensions;
-using Data.Extensions;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Application.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -36,8 +36,10 @@ namespace HRM.Controllers
         #endregion
 
         #region Select lists
-        
+
         #endregion
+
+        #region Login
         public IActionResult Login()
         {
             var areas = _generalService.Areas();
@@ -114,6 +116,9 @@ namespace HRM.Controllers
 
             return View();
         }
+        #endregion
+
+        #region Logout
 
         public IActionResult Logout()
         {
@@ -121,5 +126,6 @@ namespace HRM.Controllers
             TempData["IsSuccessLogout"] = true;
             return RedirectToAction("Login", "Account");
         }
+        #endregion
     }
 }

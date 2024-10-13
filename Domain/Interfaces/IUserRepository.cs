@@ -33,6 +33,7 @@ namespace Domain.Interfaces
         User? GetUser(LoginVM loginVM);
         bool UserNameValidation(UsernameValidationVM model, out Guid userId,out string message);
         void GetEmailAndPhoneNumberByUserId(Guid userId, out string phoneNumber, out string email);
+        string GetEmailByUserId(Guid userId);
         #endregion
 
         #region Profile

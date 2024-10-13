@@ -18,7 +18,6 @@
             </p>
         </div>
         <form id="editForm" enctype="multipart/form-data" asp-antiforgery="true">
-            @Html.AntiForgeryToken()
             <input type="hidden" asp-for="RoleId" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="modal-body">

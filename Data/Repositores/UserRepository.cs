@@ -108,6 +108,11 @@ namespace Data.Repositores
             message = checkMessage;
             return false;
         }
+        public string GetEmailByUserId(Guid userId)
+            => _context.Users.Where(u => u.UserId == userId)
+                             .First()
+                             .Email;
+
 
         public bool UserNameValidation(UsernameValidationVM model,out Guid userId, out string message)
         {
@@ -124,7 +129,7 @@ namespace Data.Repositores
 
             var user = _context.Users.Where(u => u.Department.Area == model.Area &&
                                                    u.UserName == model.UserName)
-                                       .FirstOrDefault();
+                                      .FirstOrDefault();
 
 
             if (user != null)

@@ -69,8 +69,7 @@
                         <i class="fa fa-warning fa-lg text-danger  p-1"></i>
                         <p class="fw-bold fs-7">اطلاعات خود را با دقت وارد کنید.</p>
                     </div>
-                    <form asp-action="login" asp-controller="Account" id="loginForm" method="post">
-                        @Html.AntiForgeryToken()
+                    <form asp-action="login" asp-controller="Account" id="loginForm" method="post" asp-antiforgery="true">
                         <div class="form-floating mb-3">
                             <select asp-for="Area" class="form-select form-select-sm py-1" aria-label=".form-select-lg" asp-items="areas" id="areas">
                                 <option selected class="fs-6">ناحیه شعبه را انتخاب کنید</option>

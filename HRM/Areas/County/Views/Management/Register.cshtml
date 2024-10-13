@@ -44,7 +44,6 @@
             </p>
         </div>
         <form id="registerForm" enctype="multipart/form-data" asp-antiforgery="true">
-            @Html.AntiForgeryToken()
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="AreaDepartment" value="1" />
             <input type="hidden" asp-for="DistrictDepartment" value="0" />

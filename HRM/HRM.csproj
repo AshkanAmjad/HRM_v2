@@ -33,6 +33,7 @@
     <Folder Include="Areas\Province\Views\Shared\Partials\General\Refrences\css\" />
     <Folder Include="Areas\Province\Views\Shared\Partials\General\Refrences\js\" />
     <Folder Include="Models\Validation\Portal\" />
+    <Folder Include="Views\Shared\EmailTemplate\" />
     <Folder Include="Views\Shared\Partials\Login\" />
   </ItemGroup>
 

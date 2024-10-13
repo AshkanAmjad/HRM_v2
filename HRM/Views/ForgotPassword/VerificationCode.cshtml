@@ -1,0 +1,126 @@
+﻿@{
+    Layout = null;
+}
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title">
+            <div class="btn btn-outline-primary btn-sm  my-2 mx-1">فراموشی رمز عبور - اعتبار سنجی</div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="border border-top-0 ">
+        <p class="fs-8 mt-3 fw-bold">
+            <i class="fa fa-lg me-3 ms-2 fa-bullseye text-primary"></i>
+            کد تایید ارسال شده را با دقت در ورودی مربوطه وارد کنید.
+        </p>
+    </div>
+    <form id="vertificationForm">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <span class="text-danger fs-8" id="veificationError"></span>
+
+        <div class="modal-body">
+            <div class="row px-2 flex-row mt-lg-4 justify-content-center">
+                <input type="text" class="form-control square" maxlength="1" tabindex="5" placeholder="-" id="num5" />
+                <input type="text" class="form-control mx-2 square" maxlength="1" tabindex="4" placeholder="-" id="num4" />
+                <input type="text" class="form-control square" maxlength="1" tabindex="3" placeholder="-" id="num3" />
+                <input type="text" class="form-control mx-2 square" maxlength="1" tabindex="2" placeholder="-" id="num2" />
+                <input type="text" class="form-control  square" maxlength="1" tabindex="1" placeholder="-" id="num1" />
+            </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-center align-items-center mt-lg-4">
+            <button type="submit" class="btn btn-primary px-5 align-items-center" id="submitBtn" tabindex="6">
+                <i class="fa fa-save mx-2"></i>
+                ثبت
+            </button>
+            <button type="button" class="btn btn-secondary cursor-pointer mx-1" tabindex="7" data-bs-dismiss="modal">
+                &times;
+            </button>
+        </div>
+    </form>
+</div>
+<partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
+
+    <script type="text/javascript">
+        var _verificationUrl = '@Url.Action("VerificationCode", "ForgotPassword")';
+    </script>
+    <script type="text/javascript">
+        $.fn.Validation = function () {
+            var result = true;
+            var error = "تکمیل ورودی های کد تایید، ضروری است."
+            var verificationError = $("#veificationError");
+            var $num1 = $("#num1").val();
+            var $num2 = $("#num2").val();
+            var $num3 = $("#num3").val();
+            var $num4 = $("#num4").val();
+            var $num5 = $("#num5").val();
+
+            if ($num1 === "" ||
+                $num2 === "" ||
+                $num3 === "" ||
+                $num4 === "" ||
+                $num5 === ""
+            ) {
+                verificationError.text(error);
+                result = false;
+            } else {
+                verificationError.text("");
+            }
+
+            $("#num1, #num2, #num3, #num4, #num5").change(function () {
+                var $num1 = $("#num1").val();
+                var $num2 = $("#num2").val();
+                var $num3 = $("#num3").val();
+                var $num4 = $("#num4").val();
+                var $num5 = $("#num5").val();
+                if ($num1 !== "" &&
+                    $num2 !== "" &&
+                    $num3 !== "" &&
+                    $num4 !== "" &&
+                    $num5 !== ""
+                ) {
+                    verificationError.text("")
+                } else {
+                    verificationError.text(error);
+                    result = false;
+                }
+            });
+
+            return result;
+        };
+
+        $(function () {
+            $("#submitBtn").off("click");
+            $("#submitBtn").on("click", function (e) {
+                var validation = $.fn.Validation();
+                e.preventDefault();
+
+                if (validation == true) {
+                    $("#submitBtn").prop('disabled', true);
+                    var $num1 = $("#num1").val();
+                    var $num2 = $("#num2").val();
+                    var $num3 = $("#num3").val();
+                    var $num4 = $("#num4").val();
+                    var $num5 = $("#num5").val();
+
+                    var code = $num1 + $num2 + $num3 + $num4 + $num5;
+
+                    var formData = {
+                        code: code
+                    }
+
+                    $.post(_verificationUrl, formData).done(function (result) {
+                        if (result.success) {
+
+                        } else {
+
+                        }
+
+                    })
+                        .always(function () {
+                            $("#submitBtn").prop('disabled', false);
+                        });
+                };
+            });
+        });
+
+    </script>
