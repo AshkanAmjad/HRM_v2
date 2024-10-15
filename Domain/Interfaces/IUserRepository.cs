@@ -22,6 +22,7 @@ namespace Domain.Interfaces
         bool Delete(UserDelete_ActiveVM user, out string message);
         bool Disable(UserEdit_DisableVM model, out string message);
         bool Active(UserDelete_ActiveVM model, out string message);
+        bool ResetPassword(ResetPasswordVM model, out string message);
         List<DisplayUsersVM> GetUsers(AreaVM area);
         List<DisplayUsersVM> GetArchivedUsers(AreaVM area);
         IQueryable<User> GetUsersQuery();
@@ -53,7 +54,7 @@ namespace Domain.Interfaces
         void UploadEditDepartmentToDb(UserEditVM model);
         void DeleteAvatarOnDb(Guid departmentId);
         void UploadEditUserToDb(ProfileEditVM userEdit);
-
+        void UploadResetPasswordToDb(ResetPasswordVM model);
         void SaveChanges();
         #endregion
 

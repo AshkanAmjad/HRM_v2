@@ -17,7 +17,7 @@ namespace HRM.Areas.Province.Controllers
 {
     [Area("Province")]
     [AreaPermissionChecker("0")]
-    [RolePermissionChecker("مدیریت","فناوری اطلاعات")]
+    [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
 
     public class AccessController : Controller
     {

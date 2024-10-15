@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Domain.DTOs.Security.Login;
 using Domain.DTOs.Security.Profile;
 using Domain.DTOs.Security.User;
 using Domain.Entities.Security.Models;
@@ -77,6 +78,11 @@ namespace Data.HRMProfiles
                    .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
                    .ForMember(dest => dest.RegisterDate, opt => opt.MapFrom(src => src.RegisterDate))
                    .ForMember(dest => dest.LastActived, opt => opt.MapFrom(src => src.LastActived));
+
+            CreateMap<ResetPasswordVM, User>()
+                .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password))
+                .ForMember(dest => dest.RegisterDate, opt => opt.MapFrom(src => src.RegisterDate))
+                .ForMember(dest => dest.LastActived, opt => opt.MapFrom(src => src.LastActived));
 
         }
     }

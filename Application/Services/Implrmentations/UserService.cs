@@ -2,6 +2,7 @@
 using Application.Services.Interfaces;
 using AutoMapper;
 using Domain.DTOs.Portal.Document;
+using Domain.DTOs.Security.Login;
 using Domain.DTOs.Security.Profile;
 using Domain.DTOs.Security.User;
 using Domain.Interfaces;
@@ -46,6 +47,22 @@ namespace Application.Services.Implrmentations
             return areas;
         }
 
+        public bool VerificationCode(VerificationCodeVM model, string code, out string message)
+        {
+            bool result = false;
+            string checkMessage = "کد وارد شده با کد ارسال شده تطابق نمی کند.";
+
+            if (model.Code.Equals(code))
+            {
+                result = true;
+                checkMessage = "";
+            }
+
+            message = checkMessage;
+            return result;
+        }
+
+
         public bool Register(UserRegisterVM model, out string message)
         {
             #region Seed Data On Users Table
@@ -73,6 +90,24 @@ namespace Application.Services.Implrmentations
 
             return result;
         }
+
+        public bool ResetPassword(ResetPasswordVM model, out string message)
+        {
+            #region Seed Data On Users Table
+            model.RegisterDate = DateTime.Now;
+            model.LastActived = DateTime.Now;
+            #endregion
+
+            #region Hashing Password
+            string hashed = Hashing.Hash(model.Password);
+            model.Password = hashed;
+            #endregion
+
+            bool result = _userRepository.ResetPassword(model, out message);
+
+            return result;
+        }
+
 
         public bool Edit(UserEditVM model, out string message)
         {

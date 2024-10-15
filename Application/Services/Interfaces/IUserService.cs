@@ -1,4 +1,5 @@
-﻿using Domain.DTOs.Security.Profile;
+﻿using Domain.DTOs.Security.Login;
+using Domain.DTOs.Security.Profile;
 using Domain.DTOs.Security.User;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -16,7 +17,11 @@ namespace Application.Services.Interfaces
 
         #region Profile
         bool Edit(ProfileEditVM model, out string message);
+        #endregion
 
+        #region Login
+        bool VerificationCode(VerificationCodeVM model, string code, out string message);
+        bool ResetPassword(ResetPasswordVM model, out string message);
         #endregion
 
 

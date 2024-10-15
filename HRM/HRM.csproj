@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Views\ForgotPassword\ResetPassword.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\IOC\IOC.csproj" />
   </ItemGroup>
 
@@ -61,18 +57,6 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\ForgotPassword\ResetPassword.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Views\ForgotPassword\ResetPassword.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Views\ForgotPassword\ResetPassword.cshtml" />
   </ItemGroup>
 
 </Project>

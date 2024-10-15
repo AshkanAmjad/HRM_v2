@@ -30,8 +30,7 @@ namespace HRM.Extensions
             services.AddScoped<IValidator<LoginVM>, LoginValidator>();
             services.AddScoped<IValidator<UsernameValidationVM>, UsernameValidationValidator>();
             services.AddScoped<IValidator<VerificationCodeVM>, VerificationCodeValidator>();
-
-
+            services.AddScoped<IValidator<ResetPasswordVM>, ResetPasswordValidator>();
 
             services.AddScoped<IValidator<UserRegisterVM>,UserRegisterValidator>();
             services.AddScoped<IValidator<UserEdit_DisableVM>, UserEdit_DisableValidator>();

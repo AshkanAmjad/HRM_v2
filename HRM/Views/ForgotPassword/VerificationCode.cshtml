@@ -4,7 +4,7 @@
 <div class="modal-content">
     <div class="modal-header">
         <div class="modal-title">
-            <div class="btn btn-outline-primary btn-sm  my-2 mx-1">فراموشی رمز عبور - اعتبار سنجی</div>
+            <div class="btn btn-outline-primary btn-sm  my-2 mx-1">فراموشی گذر واژه - اعتبار سنجی</div>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
@@ -16,7 +16,8 @@
     </div>
     <form id="vertificationForm">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <span class="text-danger fs-8" id="veificationError"></span>
+        <span class="text-danger mx-3 fs-8" id="veificationError">
+        </span>
 
         <div class="modal-body">
             <div class="row px-2 flex-row mt-lg-4 justify-content-center">
@@ -110,18 +111,6 @@
 
                     $.post(_verificationUrl, formData).done(function (result) {
                         if (result.success) {
-                            Swal.fire({
-                                icon: 'success',
-                                text: result.message,
-                                showConfirmButton: false,
-                                timer: 4000,
-                                showClass: {
-                                    popup: 'animate__animated animate__fadeInDown'
-                                },
-                                hideClass: {
-                                    popup: 'animate__animated animate__fadeOutDown'
-                                }
-                            })
                             window.parent.LoadResetPasswordUrl();
                         } else {
                             Swal.fire({

@@ -228,7 +228,18 @@ namespace Data.Repositores
             message = checkMessage;
             return false;
         }
-
+        public bool ResetPassword(ResetPasswordVM model, out string message)
+        {
+            string checkMessage = "اطلاعات ناقص ارسال شده است.";
+            if(model != null)
+            {
+                UploadResetPasswordToDb(model);
+                message = "";
+                return true;
+            }
+            message = checkMessage;
+            return false;
+        }
 
         public void DeleteAvatarOnDb(Guid departmentId)
         {
@@ -554,7 +565,7 @@ namespace Data.Repositores
             }
         }
 
-        public async void ActiveUserDb(UserDelete_ActiveVM model)
+        public void ActiveUserDb(UserDelete_ActiveVM model)
         {
             if (model != null)
             {
@@ -568,6 +579,25 @@ namespace Data.Repositores
                     user.RegisterDate = DateTime.Now;
 
                     _context.Users.Update(user);
+                }
+            }
+        }
+
+        public void UploadResetPasswordToDb(ResetPasswordVM model)
+        {
+            if (model != null)
+            {
+                var initial = _context.Users.Find(model.UserId);
+
+                if (initial != null)
+                {
+                    User user = _mapper.Map<User>(model);
+
+                    initial.Password = user.Password;
+                    initial.RegisterDate = user.RegisterDate;
+                    initial.LastActived = user.LastActived;
+
+                    _context.Users.Update(initial);
                 }
             }
         }

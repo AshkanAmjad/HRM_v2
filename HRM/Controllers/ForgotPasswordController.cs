@@ -22,6 +22,7 @@ namespace HRM.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IValidator<UsernameValidationVM> _userNameValidationvalidator;
         private readonly IValidator<VerificationCodeVM> _verificationValidator;
+        private readonly IValidator<ResetPasswordVM> _resetPasswordValidator;
         private readonly IViewRenderService _viewRenderService;
 
 
@@ -30,15 +31,17 @@ namespace HRM.Controllers
                                         IGeneralService generalService,
                                         IViewRenderService viewRenderService,
                                         IValidator<UsernameValidationVM> userNameValidationvalidator,
-                                        IValidator<VerificationCodeVM> verificationValidator
+                                        IValidator<VerificationCodeVM> verificationValidator,
+                                        IValidator<ResetPasswordVM> resetPasswordValidator
                                         )
         {
             _userService = userService;
             _userNameValidationvalidator = userNameValidationvalidator;
+            _verificationValidator = verificationValidator;
             _generalService = generalService;
             _userRepository = userRepository;
             _viewRenderService = viewRenderService;
-            _verificationValidator=verificationValidator;
+            _resetPasswordValidator=resetPasswordValidator;
         }
         #endregion
 
@@ -131,6 +134,8 @@ namespace HRM.Controllers
             string checkMessage = "";
 
             var id = TempData["UserId"];
+            TempData.Keep("UserId");
+
 
             if (id == null)
             {
@@ -151,7 +156,7 @@ namespace HRM.Controllers
 
             string bodyEmail = _viewRenderService.RenderToStringAsync("_EmailTemplate", code);
 
-            bool result = SendEmail.Send(email, "بازیابی رمز عبور حساب کاربری", bodyEmail , out checkMessage);
+            bool result = SendEmail.Send(email, "بازیابی گذر واژه حساب کاربری", bodyEmail , out checkMessage);
 
             #region Json data
             var jsonData = new
@@ -174,19 +179,28 @@ namespace HRM.Controllers
         [HttpPost]
         public IActionResult VerificationCode(VerificationCodeVM model)
         {
-            ValidationResult result = _verificationValidator.Validate(model);
+            ValidationResult validate = _verificationValidator.Validate(model);
             bool success = false;
             var message = $"عملیات اعتبار سنجی با شکست مواجه شده است.";
 
-            if (result.IsValid)
+            if (validate.IsValid)
             {
                 try
                 {
+                    var code = (string)TempData["Code"];
 
-                    var userId = TempData["UserId"];
-                    var code = TempData["Code"];
+                    bool result = _userService.VerificationCode(model, code, out message);
 
+                    if(result)
+                    {
+                        TempData.Remove("Code");
+                    }
+                    else 
+                    {
+                        TempData.Keep("Code");
+                    }
 
+                    success = result;
                 }
                 catch (Exception ex)
                 {
@@ -200,11 +214,11 @@ namespace HRM.Controllers
             }
             else
             {
-                message = $"{result}";
+                message = $"{validate}";
             }
 
             #region Manual Validation
-            result.AddToModelState(this.ModelState);
+            validate.AddToModelState(this.ModelState);
             #endregion
 
             #region Json data
@@ -226,6 +240,67 @@ namespace HRM.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ResetPassword(ResetPasswordVM model)
+        {
+            ValidationResult resetValidator = _resetPasswordValidator.Validate(model);
+            bool success = false;
+            var message = $"عملیات باز نشانی گذر واژه با شکست مواجه شده است.";
+            string checkMessage = "";
+            if (resetValidator.IsValid)
+            {
+                try
+                {
+                    model.UserId = (Guid)TempData["UserId"];
+
+                    bool result = _userService.ResetPassword(model, out checkMessage);
+
+                    if (result)
+                    {
+                        _userRepository.SaveChanges();
+                        success = true;
+                        message = $"<h5>عملیات باز نشانی گذر واژه، با موفقیت انجام شد.</h5>";
+                        TempData.Remove("UserId");
+                    }
+                    else
+                    {
+                        message = checkMessage;
+                        TempData.Keep("UserId");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    while (ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    message = $"خطای شکست عملیات  : {ex.Message}";
+                }
+            }
+            else
+            {
+                message = $"{resetValidator}";
+            }
+
+            #region Manual Validation
+            foreach (var error in resetValidator.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+            resetValidator.AddToModelState(this.ModelState);
+            #endregion
+
+            #region Json data
+            var jsonData = new
+            {
+                success = success,
+                message = message,
+            };
+            #endregion
+
+            return Json(jsonData);
+        }
         #endregion
 
         #region Verification by phone number
