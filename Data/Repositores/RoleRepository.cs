@@ -144,7 +144,6 @@ namespace Data.Repositores
                 if (role != null)
                 {
                     role.IsActived = true;
-                    role.RegisterDate = DateTime.Now;
 
                     _context.Roles.Update(role);
                 }
@@ -179,7 +178,6 @@ namespace Data.Repositores
                 if (role != null)
                 {
                     role.IsActived = false;
-                    role.RegisterDate = DateTime.Now;
 
                     _context.Roles.Update(role);
                 }

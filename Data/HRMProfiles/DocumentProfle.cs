@@ -3,6 +3,7 @@ using Domain.DTOs.General;
 using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Security.Profile;
 using Domain.DTOs.Security.User;
+using Domain.DTOs.Security.UserRole;
 using Domain.Entities.Portal.Models;
 using Domain.Entities.Security.Models;
 using System;
@@ -67,6 +68,12 @@ namespace Data.HRMProfiles
                 .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.CountyDepartment))
                 .ForMember(dest => dest.Area, opt => opt.MapFrom(src => src.AreaDepartment))
                 .ForMember(dest => dest.District, opt => opt.MapFrom(src => src.DistrictDepartment));
+
+            CreateMap<DisplayDetailsVM, DirectionVM>()
+                .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.CountyDepartment))
+                .ForMember(dest => dest.Area, opt => opt.MapFrom(src => src.AreaDepartment))
+                .ForMember(dest => dest.District, opt => opt.MapFrom(src => src.DistrictDepartment));
+
 
             CreateMap<UserDelete_ActiveVM, DirectionVM>()
                  .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.County))

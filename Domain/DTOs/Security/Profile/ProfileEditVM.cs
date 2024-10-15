@@ -26,7 +26,6 @@ namespace Domain.DTOs.Security.Profile
         public string? AreaDepartment { get; set; }
         public string? CountyDepartment { get; set; }
         public string? DistrictDepartment { get; set; }
-        public DateTime RegisterDate { get; set; }
         public DateTime LastActived { get; set; }
 
     }

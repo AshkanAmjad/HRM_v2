@@ -94,7 +94,6 @@ namespace Application.Services.Implrmentations
         public bool ResetPassword(ResetPasswordVM model, out string message)
         {
             #region Seed Data On Users Table
-            model.RegisterDate = DateTime.Now;
             model.LastActived = DateTime.Now;
             #endregion
 
@@ -112,7 +111,6 @@ namespace Application.Services.Implrmentations
         public bool Edit(UserEditVM model, out string message)
         {
             #region Seed Data On Users Table
-            model.RegisterDate = DateTime.Now;
             model.LastActived = DateTime.Now;
             #endregion 
 
@@ -141,7 +139,6 @@ namespace Application.Services.Implrmentations
         public bool Edit(ProfileEditVM model, out string message)
         {
             #region Seed Data On Users Table
-            model.RegisterDate = DateTime.Now;
             model.LastActived = DateTime.Now;
             #endregion 
 

@@ -1,0 +1,54 @@
+﻿@model Domain.DTOs.Security.UserRole.DisplayDetailsVM
+@{
+    Layout = null;
+    var isExistAvatar = ViewData["IsExistAvatar"];
+}
+<div class="card shadow mx-1">
+    <div class="card-body">
+        <div class="table-responsive px-1">
+            <table class="table table-striped table-bordered mx-auto current fs-8">
+                <tr class="text-center">
+                    <th scope="col" rowspan="2">
+                        <div class="d-flex align-items-center justify-content-center flex-column" id="uploadAvatarBox">
+                            <img src=@(isExistAvatar.Equals(true) ? "/Province/Avatars/Province/Thumb-"+Model.UserName+".png" : "/pics/default/uploadBox/avatarDefault.png" ) class="border avatarDetailsBox" alt="Avatar" />
+                        </div>
+                    </th>
+                    <th scope="col">
+                        نام کاربری
+                    </th>
+                    <th scope="col">
+                        نام و نام خانوادگی
+                    </th>
+                    <th scope="col">
+                        معاونت 
+                    </th>
+                    <th scope="col">
+                       ناحیه
+                    </th>
+                    <th scope="col">
+                        استان
+                    </th>
+                    <th scope="col">
+                        شهرستان
+                    </th>
+                    <th scope="col">
+                        بخش
+                    </th>
+                    <th scope="col">
+                        آخرین فعالیت
+                    </th>
+                </tr>
+                <tr class="text-center">
+                    <td>@Model.UserName</td>
+                    <td>@Model.FullName</td>
+                    <td>@Model.RoleTitle</td>
+                    <td>@Model.AreaDepartment</td>
+                    <td>@Model.ProvinceDepartment</td>
+                    <td>@Model.CountyDepartment</td>
+                    <td>@Model.DistrictDepartment</td>
+                    <td>@Model.LastActived</td>
+                </tr>              
+            </table>
+        </div>
+    </div>
+</div>

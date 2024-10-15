@@ -31,7 +31,6 @@ namespace Domain.DTOs.Security.User
         public string? ProvinceDepartment { get; set; }
         public string? CountyDepartment { get; set; }
         public string? DistrictDepartment { get; set; }
-        public DateTime RegisterDate { get; set; }
         public DateTime LastActived { get; set; }
     }
 }

@@ -60,7 +60,6 @@ namespace Data.HRMProfiles
                    .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
                    .ForMember(dest => dest.Employment, opt => opt.MapFrom(src => src.EmploymentStatus))
                    .ForMember(dest => dest.Insurance, opt => opt.MapFrom(src => src.Insurance))
-                   .ForMember(dest => dest.RegisterDate, opt => opt.MapFrom(src => src.RegisterDate))
                    .ForMember(dest => dest.LastActived, opt => opt.MapFrom(src => src.LastActived));
 
             CreateMap<UserEditVM, Department>()
@@ -76,7 +75,6 @@ namespace Data.HRMProfiles
                    .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email.ToLower()))
                    .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City))
                    .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
-                   .ForMember(dest => dest.RegisterDate, opt => opt.MapFrom(src => src.RegisterDate))
                    .ForMember(dest => dest.LastActived, opt => opt.MapFrom(src => src.LastActived));
 
             CreateMap<ResetPasswordVM, User>()

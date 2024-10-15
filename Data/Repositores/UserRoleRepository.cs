@@ -61,6 +61,25 @@ namespace Data.Repositores
             return userRoles;
         }
 
+        public DisplayDetailsVM GetUserDetails(Guid userId)
+        {
+            var user = _context.UserRoles.Where(u => u.UserId == userId)
+                                         .Include(u => u.User)
+                                         .Include(r => r.Role)
+                                         .Select(u =>  new DisplayDetailsVM
+                                         {
+                                            UserName = u.User.UserName,
+                                            AreaDepartment = (u.User.Department.Area == "0" ? "استان" : (u.User.Department.Area == "1" ? "شهرستان" : "بخش")),
+                                            ProvinceDepartment = u.User.Department.Province,
+                                            CountyDepartment = u.User.Department.County,
+                                            DistrictDepartment = u.User.Department.District,
+                                            RoleTitle = u.Role.Title,
+                                            FullName = $"{u.User.FirstName} {u.User.LastName}",
+                                            LastActived = $"{u.User.LastActived.ToShamsi()}"
+                                         })
+                                         .FirstOrDefault();
+            return user;
+        }
 
         public List<SelectListItem> GetRolesForSelectBox()
         {
@@ -117,9 +136,6 @@ namespace Data.Repositores
         public bool EditUserRole(UserRoleEditVM model, out string message)
         {
             string checkMessage = "";
-
-
-            model.RegisterDate = DateTime.Now;
 
             UploadEditUserRoleToDb(model);
 
@@ -276,6 +292,8 @@ namespace Data.Repositores
         {
             _context.SaveChanges();
         }
+
+
     }
 
 

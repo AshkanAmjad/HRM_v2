@@ -23,7 +23,7 @@ namespace Application.Services.Implrmentations
                 new SelectListItem
                 {
                     Text = "بخش",
-                    Value = 3.ToString()
+                    Value = 2.ToString()
                 }
             };
             return areas;

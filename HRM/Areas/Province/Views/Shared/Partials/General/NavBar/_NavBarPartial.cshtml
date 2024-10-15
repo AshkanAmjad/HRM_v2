@@ -206,10 +206,37 @@
 
     </li>
     <li class="nav-item border-bottom" id="report">
-        <a class="nav-link">
-            <i class="fa fa-area-chart fa-lg mx-2"></i>
-            گزارش
+        <a class="nav-link collapsed d-flex" href="#submenu16" type="button" data-bs-toggle="collapse" aria-controls="#submenu16" aria-expanded="false">
+            <div class="w-75">
+                <i class="fa fa-area-chart fa-lg mx-2"></i>
+                گزارش
+            </div>
+            <div class="w-25 d-flex justify-content-end mx-2 align-items-center">
+                <i class="fa fa-caret-square-o-down"></i>
+            </div>
         </a>
+        <div class="collapse nav-background" id="submenu16">
+            <ul class="flex-column nav flex-nowrap font-weight-light p-0">
+                <li class="nav-item" id="provinceReports">
+                    <a class="nav-link p-1 border-bottom border-top">
+                        <i class="fa fa-navicon mx-3"></i>
+                        سطح استان
+                    </a>
+                </li>
+                <li class="nav-item" id="countyReports">
+                    <a class="nav-link p-1 border-bottom border-top">
+                        <i class="fa fa-navicon mx-3"></i>
+                        سطح شهرستان
+                    </a>
+                </li>
+                <li class="nav-item" id="districtReports">
+                    <a class="nav-link p-1 border-bottom border-top">
+                        <i class="fa fa-navicon mx-3"></i>
+                        سطح یخش
+                    </a>
+                </li>
+            </ul>
+        </div>
     </li>
     <li class="nav-item border-bottom" id="access">
         <a class="nav-link collapsed d-flex" href="#submenu17" type="button" data-bs-toggle="collapse" aria-controls="#submenu17" aria-expanded="false">

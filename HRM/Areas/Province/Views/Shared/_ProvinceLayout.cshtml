@@ -43,10 +43,6 @@
 
 
 
-    var _reportUrl = '@Url.Action("Index", "Report")';
-
-
-
 </script>
 <script type="text/javascript">
     $('#navbar a').click(function (e) {
@@ -62,13 +58,7 @@
                 $("#main").html(result);
             });
         });
-        $("#report").off("click");
-        $("#report").on("click", function (e) {
-            e.preventDefault();
-            $.get(_reportUrl).done(function (result) {
-                $("#main").html(result);
-            });
-        });
+        
     })
 </script>
 

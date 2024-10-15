@@ -44,39 +44,15 @@ namespace Data.Repositores
 
             var user = new User();
 
-            if (model.Area == "0")
-            {
-                user = _context.Users.SingleOrDefault(
-                   u => u.UserName == model.UserName
-                   &&
-                   u.Department.Province != "0"
-                   &&
-                   u.Department.County == "0"
-                   &&
-                   u.Department.District == "0");
-            }
-            if (model.Area == "1")
-            {
-                user = _context.Users.SingleOrDefault(
-                   u => u.UserName == model.UserName
-                   &&
-                   u.Department.Province != "0"
-                   &&
-                   u.Department.County != "0"
-                   &&
-                   u.Department.District == "0");
-            }
-            if (model.Area == "2")
-            {
-                user = _context.Users.SingleOrDefault(
-                    u => u.UserName == model.UserName
-                    &&
-                    u.Department.Province != "0"
-                    &&
-                    u.Department.County != "0"
-                    &&
-                    u.Department.District != "0");
-            }
+
+            user = _context.Users.Where(u => u.UserName == model.UserName
+                                             &&
+                                             u.Department.Area == model.Area
+                                             &&
+                                             u.UserRoles.Where(u => u.User.UserName == model.UserName).Any())
+                                  .SingleOrDefault();
+
+
             return user;
         }
         public bool Register(UserRegisterVM user, out string message)
@@ -114,7 +90,7 @@ namespace Data.Repositores
                              .Email;
 
 
-        public bool UserNameValidation(UsernameValidationVM model,out Guid userId, out string message)
+        public bool UserNameValidation(UsernameValidationVM model, out Guid userId, out string message)
         {
             string checkMessage = "اطلاعات ناقص ارسال شده است.";
             Guid checkUserId = Guid.Empty;
@@ -152,7 +128,7 @@ namespace Data.Repositores
         {
             var user = _context.Users.Where(u => u.UserId == userId)
                                      .First();
-                                                 
+
             phoneNumber = user.PhoneNumber;
             email = user.Email;
         }
@@ -231,7 +207,7 @@ namespace Data.Repositores
         public bool ResetPassword(ResetPasswordVM model, out string message)
         {
             string checkMessage = "اطلاعات ناقص ارسال شده است.";
-            if(model != null)
+            if (model != null)
             {
                 UploadResetPasswordToDb(model);
                 message = "";
@@ -355,7 +331,6 @@ namespace Data.Repositores
                     initial.City = user.City;
                     initial.Address = user.Address;
                     initial.LastActived = user.LastActived;
-                    initial.RegisterDate = user.RegisterDate;
 
                     if (userEdit.Password != null)
                     {
@@ -385,8 +360,7 @@ namespace Data.Repositores
                     initial.Email = user.Email;
                     initial.City = user.City;
                     initial.Address = user.Address;
-                    initial.LastActived = user.LastActived;
-                    initial.RegisterDate = user.RegisterDate;
+                    initial.LastActived = DateTime.Now;
 
                     if (userEdit.Password != null)
                     {
@@ -558,7 +532,7 @@ namespace Data.Repositores
                 if (user != null)
                 {
                     user.IsActived = false;
-                    user.RegisterDate = DateTime.Now;
+                    user.LastActived = DateTime.Now;
 
                     _context.Users.Update(user);
                 }
@@ -570,13 +544,13 @@ namespace Data.Repositores
             if (model != null)
             {
                 var user = _context.Users.IgnoreQueryFilters()
-                                         .Where(u=> u.UserId == model.UserId)
+                                         .Where(u => u.UserId == model.UserId)
                                          .FirstOrDefault();
 
                 if (user != null)
                 {
                     user.IsActived = true;
-                    user.RegisterDate = DateTime.Now;
+                    user.LastActived = DateTime.Now;
 
                     _context.Users.Update(user);
                 }
@@ -594,7 +568,6 @@ namespace Data.Repositores
                     User user = _mapper.Map<User>(model);
 
                     initial.Password = user.Password;
-                    initial.RegisterDate = user.RegisterDate;
                     initial.LastActived = user.LastActived;
 
                     _context.Users.Update(initial);
@@ -619,7 +592,7 @@ namespace Data.Repositores
                 if (department != null)
                 {
                     department.IsActived = false;
-                    department.RegisterDate = DateTime.Now;
+
 
                     id = department.DepartmentId;
 
@@ -639,7 +612,7 @@ namespace Data.Repositores
             {
                 var _departmentId = GetDepartmentIdByUserId(model.UserId, model.Area);
 
-                if( _departmentId != Guid.Empty)
+                if (_departmentId != Guid.Empty)
                 {
                     department = _context.Departments.IgnoreQueryFilters()
                                                      .Where(d => d.DepartmentId == _departmentId)
@@ -649,7 +622,6 @@ namespace Data.Repositores
                 if (department != null)
                 {
                     department.IsActived = true;
-                    department.RegisterDate = DateTime.Now;
 
                     id = department.DepartmentId;
 

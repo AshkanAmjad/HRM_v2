@@ -35,9 +35,6 @@ namespace HRM.Controllers
         }
         #endregion
 
-        #region Select lists
-
-        #endregion
 
         #region Login
         public IActionResult Login()

@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace HRM.Areas.Province.Controllers
+namespace HRM.Areas.County.Controllers
 {
-    [Area("Province")]
+    [Area("County")]
+
     public class ReportController : Controller
     {
         #region Constructor
@@ -10,7 +11,7 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Index
-        public ActionResult ProvinceReportsIndex()
+        public ActionResult CountyReportsIndex()
         {
             return View();
         }
