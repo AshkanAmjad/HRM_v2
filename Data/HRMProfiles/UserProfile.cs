@@ -59,8 +59,7 @@ namespace Data.HRMProfiles
                    .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City))
                    .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
                    .ForMember(dest => dest.Employment, opt => opt.MapFrom(src => src.EmploymentStatus))
-                   .ForMember(dest => dest.Insurance, opt => opt.MapFrom(src => src.Insurance))
-                   .ForMember(dest => dest.LastActived, opt => opt.MapFrom(src => src.LastActived));
+                   .ForMember(dest => dest.Insurance, opt => opt.MapFrom(src => src.Insurance));
 
             CreateMap<UserEditVM, Department>()
                 .ForMember(dest => dest.Province, opt => opt.MapFrom(src => src.ProvinceDepartment))

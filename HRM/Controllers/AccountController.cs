@@ -1,6 +1,7 @@
 ﻿using Application.Extensions;
 using Application.Services.Interfaces;
 using Domain.DTOs.Security.Login;
+using Domain.Entities.Security.Models;
 using Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -79,6 +80,9 @@ namespace HRM.Controllers
                     };
                     HttpContext.SignInAsync(principal, properties);
 
+                    _userRepository.RecordActivity(user.UserId);
+                    _userRepository.SaveChanges();
+
                     ViewData["IsSuccessLogin"] = true;
                     ViewData["Area"] = model.Area;
 
@@ -119,8 +123,15 @@ namespace HRM.Controllers
 
         public IActionResult Logout()
         {
+            var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+            var userId = new Guid(id);
+
+            _userRepository.RecordActivity(userId);
+            _userRepository.SaveChanges();
+
             HttpContext.SignOutAsync();
             TempData["IsSuccessLogout"] = true;
+
             return RedirectToAction("Login", "Account");
         }
         #endregion

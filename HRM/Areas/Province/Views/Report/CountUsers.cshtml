@@ -1,0 +1,26 @@
+﻿@model List<Domain.DTOs.Security.Report.DisplayChartVM>
+@{
+    Layout = null;
+
+    var active = Model[0].ChartValue;
+    var disable = Model[1].ChartValue;
+}
+
+<p class="font-weight-bold text-primary cursor p-0">
+    <i class="fa fa-users mx-2"></i>
+    تعداد کارمندان سطح استان
+</p>
+<div class="btn-group rounded-0 w-100" role="group">
+    <button type="button" class="btn btn-outline-success border-start-0 rounded-0 rounded-end">
+        <p class="p-0 m-0">
+            فعال :
+            <span class="font-weight-bold fs-6">@active</span>
+        </p>
+    </button>
+    <button type="button" class="btn btn-outline-danger border-end-0 rounded-0 rounded-start">
+        <p class="p-0 m-0">
+            غیر فعال :
+            <span class="font-weight-bold fs-6">@disable</span>
+        </p>
+    </button>
+</div>

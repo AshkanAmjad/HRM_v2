@@ -113,6 +113,7 @@ app.UseStaticFiles(district_districtAvatarsOptions);
 //app.UseStaticFiles(province_districtAvatarsOptions);
 
 app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 

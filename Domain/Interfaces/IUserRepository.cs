@@ -55,6 +55,7 @@ namespace Domain.Interfaces
         void DeleteAvatarOnDb(Guid departmentId);
         void UploadEditUserToDb(ProfileEditVM userEdit);
         void UploadResetPasswordToDb(ResetPasswordVM model);
+        void RecordActivity(Guid userId);
         void SaveChanges();
         #endregion
 

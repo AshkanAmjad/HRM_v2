@@ -330,7 +330,6 @@ namespace Data.Repositores
                     initial.DateOfBirth = user.DateOfBirth;
                     initial.City = user.City;
                     initial.Address = user.Address;
-                    initial.LastActived = user.LastActived;
 
                     if (userEdit.Password != null)
                     {
@@ -360,7 +359,6 @@ namespace Data.Repositores
                     initial.Email = user.Email;
                     initial.City = user.City;
                     initial.Address = user.Address;
-                    initial.LastActived = DateTime.Now;
 
                     if (userEdit.Password != null)
                     {
@@ -532,7 +530,6 @@ namespace Data.Repositores
                 if (user != null)
                 {
                     user.IsActived = false;
-                    user.LastActived = DateTime.Now;
 
                     _context.Users.Update(user);
                 }
@@ -550,7 +547,6 @@ namespace Data.Repositores
                 if (user != null)
                 {
                     user.IsActived = true;
-                    user.LastActived = DateTime.Now;
 
                     _context.Users.Update(user);
                 }
@@ -691,6 +687,7 @@ namespace Data.Repositores
                             PhoneNumber = item.PhoneNumber,
                             Email = item.Email,
                             DateOfBirth = item.DateOfBirth,
+                            History = item.RegisterDate.CalculateHistory()
                         }).SingleOrDefault();
             return user;
         }
@@ -727,6 +724,20 @@ namespace Data.Repositores
             return true;
         }
 
+        public void RecordActivity(Guid userId)
+        {
+            if (userId != Guid.Empty)
+            {
+               var user= _context.Users.Find(userId);
 
+                if (user != null) 
+                {
+                    user.LastActived = DateTime.Now;
+
+                    _context.Users.Update(user);
+                }
+            }
+
+        }
     }
 }

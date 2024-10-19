@@ -110,9 +110,6 @@ namespace Application.Services.Implrmentations
 
         public bool Edit(UserEditVM model, out string message)
         {
-            #region Seed Data On Users Table
-            model.LastActived = DateTime.Now;
-            #endregion 
 
             #region Hashing Password
             if (model.Password != null)
@@ -138,10 +135,6 @@ namespace Application.Services.Implrmentations
 
         public bool Edit(ProfileEditVM model, out string message)
         {
-            #region Seed Data On Users Table
-            model.LastActived = DateTime.Now;
-            #endregion 
-
             #region Hashing Password
             if (model.Password != null)
             {

@@ -1,0 +1,35 @@
+﻿@model Domain.DTOs.Security.Report.DisplayHistoriesUsersVM
+@{
+    Layout = null;
+}
+<div class="overflow-auto">
+    <p class="mx-auto mb-4 mt-5 text-primary text-center">
+        <i class="fa fa-long-arrow-down mx-1"></i>
+        کمترین سابقه
+    </p>
+    <table class="table border table-striped table-bordered mx-auto text-center fs-8">
+        <thead>
+            <tr>
+                <th scope="col">نام کاربری</th>
+                <th scope="col">نام و نام خانوادگی</th>
+                <th scope="col">معاونت</th>
+                <th scope="col">سابقه</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.UserName</td>
+                <td>@Model.FullName</td>
+                <td>
+                    @foreach (var role in Model.Roles)
+                    {
+                        @role
+
+                        <br />
+                    }
+                </td>
+                <td>@Model.History</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,54 @@
+﻿@model List<Domain.DTOs.Security.Report.DisplayChartVM>
+@{
+    Layout = null;
+    var colors = ViewBag.PieColors;
+
+
+}
+
+<div class="card-header text-primary">
+    <i class="fa fa-pie-chart mr-1"></i>
+    معاونت ها
+</div>
+<div class="card-body h-100 overflow-auto">
+    <canvas id="rolesChart" class="mx-auto c2"></canvas>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var chartRoleTitle = [];
+        var chartRoleData = [];
+        var colors = [];
+
+    @foreach (var item in Model)
+    {
+        @:chartRoleTitle.push("@item.ChartTitle");
+        @:chartRoleData.push(@item.ChartValue);
+    }
+
+    @foreach (var item in colors)
+    {
+        @:colors.push("@item");
+    }
+
+            Chart.defaults.font.family = 'yekan';
+        new Chart("rolesChart", {
+            type: "pie",
+            data: {
+                labels: chartRoleTitle,
+                datasets: [{
+                    backgroundColor: colors,
+                    data: chartRoleData
+                }]
+            }, options: {
+                plugins: {
+                    legend: {
+                        position: 'left',
+                    }
+                }
+            }
+        });
+
+    });
+
+</script>

@@ -1,0 +1,46 @@
+﻿@model Domain.DTOs.Security.Report.HourlyWorkVM
+@{
+    Layout = null;
+}
+<canvas class="mx-auto c6" id="historiesChart"></canvas>
+
+<script type="text/javascript">
+    $(function () {
+
+        var colors = ["#66A9D4"];
+        var max = @Model.Max;
+        var min = @Model.Min;
+
+        Chart.defaults.font.family = 'yekan';
+
+            new Chart("historiesChart", {
+                type: "bar",
+                data: {
+                    labels: ["بیش ترین", "کم ترین"],
+                    datasets: [{
+                        label: "سابقه (ساعت)",
+                        backgroundColor: ["rgb(0,119,201)"],
+                        data: [max,min],
+                        barThickness: 30,
+                    }]
+                }, options: {
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {
+                            display: false,
+                            position: 'right'
+                        },
+                        title: {
+                            display: true,
+                            text: "سابقه (ساعت)"
+                        },
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+    });
+</script>

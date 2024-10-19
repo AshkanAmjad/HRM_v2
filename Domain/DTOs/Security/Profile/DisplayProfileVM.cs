@@ -29,6 +29,7 @@ namespace Domain.DTOs.Security.Profile
         public string? ProvinceDepartment { get; set; }
         public string? CountyDepartment { get; set; }
         public string? DistrictDepartment { get; set; }
+        public string? History { get; set; }
         public string FullName
         {
             get

@@ -1,0 +1,47 @@
+﻿@model List<Domain.DTOs.Security.Report.DisplayChartVM>
+@{
+    Layout = null;
+}
+
+<div class="card-header text-primary">
+    <i class="fa fa-pie-chart mr-1"></i>
+    جنسیت
+</div>
+<div class="card-body h-100 overflow-auto">
+    <canvas id="gendersChart" class="mx-auto c3"></canvas>
+</div>
+
+ <script type="text/javascript">
+    $(function () {
+        var chartRoleTitle = [];
+        var chartRoleData = [];
+        var colors = ["#66A9D4", "#C972A3"];
+        
+    @foreach (var item in Model)
+    {
+        @:chartRoleTitle.push("@item.ChartTitle");
+        @:chartRoleData.push(@item.ChartValue);
+    }
+
+            Chart.defaults.font.family = 'yekan';
+        new Chart("gendersChart", {
+            type: "doughnut",
+            data: {
+                labels: chartRoleTitle,
+                datasets: [{
+                    backgroundColor: colors,
+                    data: chartRoleData
+                }]
+            }, options: {
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    }
+                }
+            }
+        });
+
+    });
+
+</script>
+ 
