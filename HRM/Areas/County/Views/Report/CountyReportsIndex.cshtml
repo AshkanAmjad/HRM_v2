@@ -1,6 +1,212 @@
 ﻿@{
     Layout = null;
+
+    var proviveDepartments = ViewBag.ProvinceDepartments != null
+      ? ViewBag.ProvinceDepartments
+      : new List<SelectListItem>();
+
+    var countyDepartments = ViewBag.CountyDepartments != null
+        ? ViewBag.CountyDepartments
+        : new List<SelectListItem>();
 }
 <partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPartial.cshtml">
+    <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
+        <partial name="~/Views/Shared/Partials/General/Refrences/js/_ChartJsPartial.cshtml">
+            <div class="btn btn-outline-primary btn-sm  my-3 mx-1">گزارش - شهرستان</div>
+            <div class="row px-1 pb-4">
+                <div class="col-lg-6 ">
+                    <p class="fs-8 mt-3 fw-bold">
+                        <i class="fa fa-lg ms-2 fa-bullseye text-primary"></i>
+                        مشخصات خواسته شده، را با دقت در ورودی مربوطه وارد کنید.
+                    </p>
+                    <div class="row mt-2 p-0">
+                        <div class="col-5 col-lg-4">
+                            <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
+                            <label class="control-label">شعبه استان :</label>
+                        </div>
+                        <div class="col-7 col-lg-8">
+                            <select class="form-select" aria-label=".form-select-sm" asp-items="proviveDepartments" id="provinceDepartmentStatus" tabindex="1">
+                                <option selected class="fs-7">شعبه سطح استان خود را انتخاب کنید ...</option>
+                            </select>
+                            <span class="text-danger fs-8" id="provinceDepartmentError"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-2 p-0">
+                        <div class="col-5 col-lg-4">
+                            <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
+                            <label class="control-label">شعبه شهرستان :</label>
+                        </div>
+                        <div class="col-7 col-lg-8">
+                            <select class="form-select" aria-label=".form-select-sm" asp-items="countyDepartments" id="countyDepartmentStatus" tabindex="2">
+                                <option selected id="countyDepartmentStatus" class="fs-7">شعبه سطح شهرستان خود را انتخاب کنید ...</option>
+                            </select>
+                            <span class="text-danger fs-8" id="countyDepartmentError"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <div class="btn btn-outline-primary btn-sm  my-3 mx-1">گزارش - شهرستان</div>
+            <div class="d-flex flex-column my-2 mx-2 d-none" id="chart-box">
+                <hr />
+                <div class="row mx-0 my-1">
+                    <div class="col-12 px-0" id="r1-box"></div>
+                </div>
+                <div class="row mx-0 my-1">
+                    <div class="card col-12 shadow px-0" id="r2-box"></div>
+                </div>
+                <div class="row mx-0 my-1">
+                    <div class="col-12 col-lg-6 px-0 mb-1 mb-lg-0 my-lg-0 ps-lg-1">
+                        <div class="card shadow px-0" id="r3-box">
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6  px-0 mb-1 mb-lg-0 my-lg-0 pe-lg-1">
+                        <div class="card h-100 shadow px-0" id="r4-box">
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-1 mx-0">
+                    <div class="card col-12 shadow px-0" id="r5-box"></div>
+                </div>
+                <div class="row my-1 mx-0">
+                    <div class="card col-12 shadow px-0">
+                        <div class="card-header text-primary">
+                            <i class="fa fa-pie-chart mr-1"></i>
+                            سابقه
+                        </div>
+                        <div class="card-body h-100 overflow-auto">
+                            <div class="row mx-0">
+                                <div class="col-12 col-lg-6">
+                                    <div class="col-12" id="r6-box"></div>
+                                    <div class="col-12" id="r7-box"></div>
+                                </div>
+                                <div class="col-12 col-lg-6 py-5" id="r8-box">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+
+
+            <script type="text/javascript">
+                var _countUsersUrl = '@Url.Action("CountUsers", "Report", new { area = "County" })';
+                var _doughnutChartOfGendersUrl = '@Url.Action("DoughnutChartOfGenders", "Report", new { area = "County" })';
+                var _pieChartOfRolesUrl = '@Url.Action("PieChartOfRoles", "Report", new { area = "County" })';
+                var _barChartOfEmploymentsUrl = '@Url.Action("BarChartOfEmployments", "Report", new { area = "County" })';
+                var _barChartOfEducationsUrl = '@Url.Action("BarChartOfEducations", "Report", new { area = "County" })';
+                var _minHistoriesUsersUrl = '@Url.Action("MinHistoriesUsers", "Report", new { area = "County" })';
+                var _maxHistoriesUsersUrl = '@Url.Action("MaxHistoriesUsers", "Report", new { area = "County" })';
+                var _barChartOfHistoriesUrl = '@Url.Action("BarChartOfHistories", "Report", new { area = "County" })';
+
+            </script>
+            <script type="text/javascript">
+                //validation
+                $.fn.Validation = function () {
+                    var result = true;
+                    var countyDepartmentError = $("#countyDepartmentError");
+
+                    var $countyDepartment = $("#countyDepartmentStatus").find(':selected').text();
+
+                    var isDisabled = $("#countyUserStatus").is('[disabled]');
+
+                    if ($countyDepartment === "شعبه سطح شهرستان خود را انتخاب کنید ...") {
+                        countyDepartmentError.text("تکمیل ورودی شعبه شهرستان ضروری است.");
+                        result = false;
+                    } else {
+                        countyDepartmentError.text('');
+                    }
+
+                    $("#countyDepartmentStatus").change(function () {
+                        var $countyDepartment = $("#countyDepartmentStatus").find(':selected').text();
+                        if ($countyDepartment !== "شعبه سطح شهرستان خود را انتخاب کنید ...") {
+                            countyDepartmentError.text('');
+                        } else {
+                            countyDepartmentError.text("تکمیل ورودی شعبه شهرستان ضروری است.");
+                            result = false;
+                        }
+                    });
+
+                    return result;
+                }
+
+                //Seed data
+                $("#provinceDepartmentStatus").change(function () {
+
+                    var provinceDepartment = $("#provinceDepartmentStatus").find(':selected').val();
+
+                    if (provinceDepartment !== "شعبه سطح استان خود را انتخاب کنید ...") {
+                        $('#provinceDepartmentStatus').attr('disabled', true);
+                        $('#countyDepartmentStatus').attr('disabled', false);
+                    } else {
+                        $('#countyDepartmentStatus').attr('disabled', true);
+                    }
+
+                    $("#countyDepartmentStatus").change(function () {
+
+                        var countyDepartment = $("#countyDepartmentStatus").find(":selected").val();
+
+                        if (countyDepartment === "شعبه سطح شهرستان خود را انتخاب کنید ...") {
+                            const isExist = $("#chart-box").hasClass('d-none');
+
+                            if (isExist == false) {
+                                $("#chart-box").addClass('d-none');
+                            }
+                        }
+
+
+                        var model = {
+                            section: "1",
+                            province: provinceDepartment,
+                            county: countyDepartment,
+                            district: "0"
+                        }
+
+                        var validation = $.fn.Validation();
+
+                        if (validation == true) {
+                            $.get(_countUsersUrl, model).done(function (result) {
+                                $("#r1-box").html(result);
+                            })
+
+                            $.get(_pieChartOfRolesUrl, model).done(function (result) {
+                                $("#r2-box").html(result);
+                            })
+
+                            $.get(_doughnutChartOfGendersUrl, model).done(function (result) {
+                                $("#r3-box").html(result);
+                            })
+
+                            $.get(_barChartOfEmploymentsUrl, model).done(function (result) {
+                                $("#r4-box").html(result);
+                            })
+
+                            $.get(_barChartOfEducationsUrl, model).done(function (result) {
+                                $("#r5-box").html(result);
+                            })
+
+                            $.get(_minHistoriesUsersUrl, model).done(function (result) {
+                                $("#r6-box").html(result);
+                            })
+
+                            $.get(_maxHistoriesUsersUrl, model).done(function (result) {
+                                $("#r7-box").html(result);
+                            })
+
+                            $.get(_barChartOfHistoriesUrl, model).done(function (result) {
+                                $("#r8-box").html(result);
+                            })
+
+                            $("#chart-box").removeClass("d-none");
+
+                        }
+
+                    })
+                })
+
+                //Disable select county department
+                $('#countyDepartmentStatus').attr('disabled', true);
+
+
+            </script>

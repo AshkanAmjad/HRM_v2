@@ -1,0 +1,58 @@
+﻿@model List<Domain.DTOs.Security.Report.DisplayChartVM>
+@{
+    Layout = null;
+    var colors = ViewBag.BarColors;
+}
+<div class="card-header text-primary cursor">
+    <i class="fa fa-pie-chart mr-1"></i>
+    تحصیلات
+</div>
+<div class="card-body d-flex align-items-center overflow-auto">
+    <canvas id="educationsChart" class="mx-auto c5"></canvas>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var chartEmploymentTitle = [];
+        var chartEmploymentData = [];
+        var colors = [];
+
+    @foreach (var item in Model)
+    {
+        @:chartEmploymentTitle.push("@item.ChartTitle");
+        @:chartEmploymentData.push(@item.ChartValue);
+    }
+
+    @foreach (var item in colors)
+    {
+        @:colors.push("@item");
+    }
+
+            Chart.defaults.font.family = 'yekan';
+
+        new Chart("educationsChart", {
+            type: "bar",
+            data: {
+                labels: chartEmploymentTitle,
+                datasets: [{
+                    label: "تعداد",
+                    backgroundColor: colors,
+                    data: chartEmploymentData,
+                    barThickness: 50,
+
+                }]
+            }, options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>

@@ -30,11 +30,17 @@ namespace HRM.Areas.Province.Controllers
         {
             var count = _reportRepository.GetCountUsers(model);
 
+            if (count == null)
+                return NotFound();
+
             return View(count);
         }
         public IActionResult PieChartOfRoles(DisplayReportVM model)
         {
             var data = _reportRepository.GetCountRoles(model);
+
+            if (data == null)
+                return NotFound();
 
             var colors = ColorGenerator.GenerateMultipleRandomColorHex(data.Count());
 
@@ -47,12 +53,18 @@ namespace HRM.Areas.Province.Controllers
         {
             var count = _reportRepository.GetCountGenders(model);
 
+            if (count == null)
+                return NotFound();
+
             return View(count);
         }
 
         public IActionResult BarChartOfEmployments(DisplayReportVM model)
         {
             var data = _reportRepository.GetCountEmoloyments(model);
+
+            if (data == null)
+                return NotFound();
 
             var colors = ColorGenerator.GenerateMultipleRandomColorHex(data.Count());
 
@@ -65,6 +77,9 @@ namespace HRM.Areas.Province.Controllers
         {
             var data = _reportRepository.GetCountEducations(model);
 
+            if (data == null)
+                return NotFound();
+
             var colors = ColorGenerator.GenerateMultipleRandomColorHex(data.Count());
 
             ViewBag.BarColors = colors;
@@ -76,6 +91,9 @@ namespace HRM.Areas.Province.Controllers
         {
             var history = _reportRepository.CalculateMinHistory(model);
 
+            if (history == null)
+                return NotFound();
+
             return View(history);
         }
 
@@ -83,12 +101,18 @@ namespace HRM.Areas.Province.Controllers
         {
             var history = _reportRepository.CalculateMaxHistory(model);
 
+            if (history == null)
+                return NotFound();
+
             return View(history);
         }
 
         public IActionResult BarChartOfHistories(DisplayReportVM model)
         {
             var hourlyWork = _reportRepository.CalculateHourlyWork(model);
+
+            if (hourlyWork == null)
+                return NotFound();
 
             return View(hourlyWork);
         }
