@@ -10,7 +10,7 @@ namespace Domain.DTOs.Security.UserRole
     {
         public string UserName { get; set; }
         public string FullName {  get; set; }
-        public string RoleTitle {  get; set; }
+        public List<string> RoleTitle {  get; set; }
         public string AreaDepartment {  get; set; }
         public string ProvinceDepartment {  get; set; }
         public string CountyDepartment { get; set; }

@@ -10,7 +10,7 @@
                 <tr class="text-center">
                     <th scope="col" rowspan="2">
                         <div class="d-flex align-items-center justify-content-center flex-column" id="uploadAvatarBox">
-                            <img src=@(isExistAvatar.Equals(true) ? "/Province/Avatars/Province/Thumb-"+Model.UserName+".png" : "/pics/default/uploadBox/avatarDefault.png" ) class="border avatarDetailsBox" alt="Avatar" />
+                            <img src=@(isExistAvatar.Equals(true) ? "/County/Avatars/County/Thumb-"+Model.UserName+".png" : "/pics/default/uploadBox/avatarDefault.png" ) class="border avatarDetailsBox" alt="Avatar" />
                         </div>
                     </th>
                     <th scope="col">
@@ -41,7 +41,14 @@
                 <tr class="text-center">
                     <td>@Model.UserName</td>
                     <td>@Model.FullName</td>
-                    <td>@Model.RoleTitle</td>
+                    <td>
+                        @foreach (var role in Model.RoleTitle)
+                        {
+                            @role
+
+                            <br />
+                        }
+                    </td>
                     <td>@Model.AreaDepartment</td>
                     <td>@Model.ProvinceDepartment</td>
                     <td>@Model.CountyDepartment</td>

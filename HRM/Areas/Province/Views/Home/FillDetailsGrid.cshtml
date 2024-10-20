@@ -41,7 +41,14 @@
                 <tr class="text-center">
                     <td>@Model.UserName</td>
                     <td>@Model.FullName</td>
-                    <td>@Model.RoleTitle</td>
+                    <td>
+                        @foreach (var role in Model.RoleTitle)
+                        {
+                            @role
+
+                            <br />
+                        }
+                    </td>
                     <td>@Model.AreaDepartment</td>
                     <td>@Model.ProvinceDepartment</td>
                     <td>@Model.CountyDepartment</td>
