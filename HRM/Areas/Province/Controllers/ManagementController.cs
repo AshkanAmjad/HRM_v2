@@ -69,9 +69,9 @@ namespace HRM.Areas.Province.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetUsers(AreaVM arae)
+        public IActionResult GetUsers(AreaVM model)
         {
-            var users = _userRepository.GetUsers(arae);
+            var users = _userRepository.GetUsers(model);
 
             #region paging and searching
             int start = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");

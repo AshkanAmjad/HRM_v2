@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Data.Context;
+using Data.Extensions;
 using Domain.DTOs.General;
 using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Security.User;
@@ -225,6 +226,41 @@ namespace Data.Repositores
             }
 
             _context.Documents.UpdateRange(documents);
+        }
+
+        public IQueryable<Document> GetDocumentsQuery()
+        {
+            return _context.Documents.IgnoreQueryFilters()
+                                     .AsQueryable();
+        }
+
+        public List<DisplayDocumentsVM> GetDocuments(AreaVM area)
+        {
+            var context = GetDocumentsQuery();
+            var documents = (from item in context
+                             where (item.Department.Area == area.Section &&
+                                    item.Department.Province == area.Province &&
+                                    item.Department.County == area.County &&
+                                    item.Department.District == area.District &&
+                                    item.IsActived)
+                                    orderby item.UploadDate descending
+                                    select new DisplayDocumentsVM
+                                    {
+                                        DocumentId = item.DocumentId,
+                                        UserName = item.Department.User.UserName,
+                                        UploadDate = $"{item.UploadDate.ToShamsi()}",
+                                        AreaDepartment = (item.Department.Area == "0" ? "استان" : (item.Department.Area == "1" ? "شهرستان" : "بخش")),
+                                        CountyDepartment = item.Department.County,
+                                        ProvinceDepartment = item.Department.Province,
+                                        DistrictDepartment = item.Department.District,
+                                        Description = item.Description,
+                                        FileFormat = item.FileFormat,
+                                        Title = (item.Title == "Avatar" ? "تصویر پروفایل" : item.Title),
+                                        FirstName = item.Department.User.FirstName,
+                                        LastName = item.Department.User.LastName
+                                    })
+                                    .ToList();
+            return documents;
         }
     }
 }

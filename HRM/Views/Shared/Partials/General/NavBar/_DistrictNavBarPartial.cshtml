@@ -1,5 +1,6 @@
 ﻿<script type="text/javascript">
     var _districtManagementUsersUrl = '@Url.Action("DistrictManagementUsersIndex", "Management", new { area = "District" })';
+    var _districtManagementDocumentsUrl = '@Url.Action("DistrictManagementDocumentsIndex", "Document", new { area = "District" })';
     var _districtManagementArchivedUsersUrl = '@Url.Action("DistrictArchiveUsersIndex", "Archive", new { area = "District" })';
     var _districtManagementRolesUrl = '@Url.Action("DistrictRolesIndex", "Access", new { area = "District" })';
     var _districtManagementUserRolesUrl = '@Url.Action("DistrictUserRolesIndex", "Access", new { area = "District" })';
@@ -43,6 +44,14 @@
         $("#districtReports").on("click", function (e) {
             e.preventDefault();
             $.get(_districtReportsUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+        //------------------------------------------------------------------------
+        $("#districtManagementDocuments").off("click");
+        $("#districtManagementDocuments").on("click", function (e) {
+            e.preventDefault();
+            $.get(_districtManagementDocumentsUrl).done(function (result) {
                 $("#main").html(result);
             });
         });

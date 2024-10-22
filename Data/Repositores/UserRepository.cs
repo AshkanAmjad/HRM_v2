@@ -72,7 +72,7 @@ namespace Data.Repositores
                 {
                     UploadVM file = _mapper.Map<UploadVM>(user);
                     file.Name = "Avatar";
-                    file.Description = "-";
+                    file.Description = "ثبت در هنگام افزودن";
                     file.DepartmentId = departmentId;
                     _documentRepository.UploadDocumentToDb(file);
                 }
@@ -156,7 +156,7 @@ namespace Data.Repositores
                     UploadVM file = _mapper.Map<UploadVM>(user);
 
                     file.Name = "Avatar";
-                    file.Description = "-";
+                    file.Description = "ثبت در هنگام ویرایش ";
                     file.DepartmentId = user.DepartmenyId;
                     _documentRepository.UploadDocumentToDb(file);
                 }
@@ -191,7 +191,7 @@ namespace Data.Repositores
                     UploadVM file = _mapper.Map<UploadVM>(user);
 
                     file.Name = "Avatar";
-                    file.Description = "-";
+                    file.Description = "ثبت در هنگام ویرایش حساب کاربری";
                     file.DepartmentId = user.DepartmenyId;
                     _documentRepository.UploadDocumentToDb(file);
                 }

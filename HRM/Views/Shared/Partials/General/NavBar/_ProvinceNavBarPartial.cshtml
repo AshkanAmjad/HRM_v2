@@ -4,6 +4,7 @@
     var _provinceManagementRolesUrl = '@Url.Action("ProvinceRolesIndex", "Access", new { area = "Province" })';
     var _provinceManagementUserRolesUrl = '@Url.Action("ProvinceUserRolesIndex", "Access", new { area = "Province" })';
     var _provinceReportsUrl = '@Url.Action("ProvinceReportsIndex", "Report", new { area = "Province" })';
+    var _provinceManagementDocumentsUrl = '@Url.Action("ProvinceManagementDocumentsIndex", "Document", new { area = "Province" })';
 </script>
 <script type="text/javascript">
     $(function () {
@@ -41,6 +42,14 @@
         $("#provinceReports").on("click", function (e) {
             e.preventDefault();
             $.get(_provinceReportsUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+        //------------------------------------------------------------------------
+        $("#provinceManagementDocuments").off("click");
+        $("#provinceManagementDocuments").on("click", function (e) {
+            e.preventDefault();
+            $.get(_provinceManagementDocumentsUrl).done(function (result) {
                 $("#main").html(result);
             });
         });

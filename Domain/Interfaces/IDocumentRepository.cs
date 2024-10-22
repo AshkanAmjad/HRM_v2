@@ -12,6 +12,11 @@ namespace Domain.Interfaces
 {
     public interface IDocumentRepository
     {
+        #region Documents
+        IQueryable<Document> GetDocumentsQuery();
+        List<DisplayDocumentsVM> GetDocuments(AreaVM area);
+        #endregion
+
         #region DB        
         void UploadDocumentToDb(UploadVM file);
         Task DownloadOrginalAvatar(Document document);
