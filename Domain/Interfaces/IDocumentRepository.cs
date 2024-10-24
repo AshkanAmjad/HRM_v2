@@ -14,7 +14,7 @@ namespace Domain.Interfaces
     {
         #region Documents
         IQueryable<Document> GetDocumentsQuery();
-        List<DisplayDocumentsVM> GetDocuments(AreaVM area);
+        List<DisplayDocumentsVM> GetDocuments(AreaVM area, bool status);
         #endregion
 
         #region DB        
@@ -22,12 +22,14 @@ namespace Domain.Interfaces
         Task DownloadOrginalAvatar(Document document);
         void DisableDocumentsDb(Guid departmentId);
         void ActiveDocumentsDb(Guid departmentId);
-        Document? GetAvatarWithUserId(Guid userId);
+        Document? GetAvatarByUserId(Guid userId);
+        DownloadDocumentVM? GetDocumentById(Guid documentId);
         DirectionVM UploadDirectionOnServer(DirectionVM direction);
         #endregion
 
         #region Is Exist
         bool IsExistAvatarOnDb(Guid userId);
+        bool IsExistDocumentOnDb(Guid documentId);
         #endregion
     }
 }

@@ -43,7 +43,7 @@ namespace Application.Services.Implrmentations
 
                 if (!isExistOrginalAvatar || !isExistThumbAvatar)
                 {
-                    var avatar = _documentRepository.GetAvatarWithUserId(userId);
+                    var avatar = _documentRepository.GetAvatarByUserId(userId);
 
                     if (!isExistOrginalAvatar)
                         _documentRepository.DownloadOrginalAvatar(avatar);

@@ -2,6 +2,7 @@
     var _countyManagementUsersUrl = '@Url.Action("CountyManagementUsersIndex", "Management", new { area = "County" })';
     var _countyManagementDocumentsUrl = '@Url.Action("countyManagementDocumentsIndex", "Document", new { area = "County" })';
     var _countyManagementArchivedUsersUrl = '@Url.Action("CountyArchiveUsersIndex", "Archive", new { area = "County" })';
+    var _countyManagementArchivedDocumentsUrl = '@Url.Action("CountyArchiveDocumentsIndex", "Document", new { area = "County" })';
     var _countyManagementRolesUrl = '@Url.Action("CountyRolesIndex", "Access", new { area = "County" })';
     var _countyManagementUserRolesUrl = '@Url.Action("CountyUserRolesIndex", "Access", new { area = "County" })';
     var _countyReportsUrl = '@Url.Action("CountyReportsIndex", "Report", new { area = "County" })';
@@ -54,5 +55,13 @@
                 $("#main").html(result);
             });
         });
+        //------------------------------------------------------------------------
+        $("#countyManagementArchivedDocuments").off("click");
+        $("#countyManagementArchivedDocuments").on("click", function (e) {
+            $.get(_countyManagementArchivedDocumentsUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+        //------------------------------------------------------------------------
     })
 </script>

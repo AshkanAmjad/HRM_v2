@@ -1,4 +1,5 @@
 ﻿using Domain.DTOs.General;
+using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Security.Login;
 using Domain.DTOs.Security.Profile;
 using Domain.DTOs.Security.Role;
@@ -8,6 +9,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using HRM.Models.Validation;
 using HRM.Models.Validation.General;
+using HRM.Models.Validation.Portal.Document;
 using HRM.Models.Validation.Security;
 using HRM.Models.Validation.Security.Login;
 using HRM.Models.Validation.Security.Profile;
@@ -47,6 +49,9 @@ namespace HRM.Extensions
             services.AddScoped<IValidator<UserRoleEdit_Active_DisableVM>, UserRoleEdit_Active_DisableValidator>();
 
             services.AddScoped<IValidator<ProfileEditVM>, ProfileEditValidator>();
+
+            services.AddScoped<IValidator<DownloadVM>, DownloadValidator>();
+
             #endregion
 
             #region Authenication

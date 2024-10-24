@@ -2,6 +2,7 @@
     var _districtManagementUsersUrl = '@Url.Action("DistrictManagementUsersIndex", "Management", new { area = "District" })';
     var _districtManagementDocumentsUrl = '@Url.Action("DistrictManagementDocumentsIndex", "Document", new { area = "District" })';
     var _districtManagementArchivedUsersUrl = '@Url.Action("DistrictArchiveUsersIndex", "Archive", new { area = "District" })';
+    var _districtManagementArchivedDocumentsUrl = '@Url.Action("DistrictArchiveDocumentsIndex", "Document", new { area = "District" })';
     var _districtManagementRolesUrl = '@Url.Action("DistrictRolesIndex", "Access", new { area = "District" })';
     var _districtManagementUserRolesUrl = '@Url.Action("DistrictUserRolesIndex", "Access", new { area = "District" })';
     var _districtReportsUrl = '@Url.Action("DistrictReportsIndex", "Report", new { area = "District" })';
@@ -55,6 +56,14 @@
                 $("#main").html(result);
             });
         });
+        //------------------------------------------------------------------------
+        $("#districtManagementArchivedDocuments").off("click");
+        $("#districtManagementArchivedDocuments").on("click", function (e) {
+            $.get(_districtManagementArchivedDocumentsUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+        //------------------------------------------------------------------------
     });
 
 </script>

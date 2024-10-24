@@ -6,9 +6,10 @@ using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HRM.Areas.Province.Controllers
+namespace HRM.Areas.District.Controllers
 {
-    [Area("Province")]
+    [Area("District")]
+
     public class DocumentController : Controller
     {
         #region Constructor
@@ -24,12 +25,11 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Index
-        public IActionResult ProvinceManagementDocumentsIndex()
+        public IActionResult DistrictManagementDocumentsIndex()
         {
             return View();
         }
-
-        public IActionResult ProvinceArchiveDocumentsIndex()
+        public IActionResult DistrictArchiveDocumentsIndex()
         {
             return View();
         }

@@ -7,10 +7,12 @@ using Domain.DTOs.Security.User;
 using Domain.Entities.Portal.Models;
 using Domain.Entities.Security.Models;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -78,10 +80,10 @@ namespace Data.Repositores
 
         public bool IsExistAvatarOnDb(Guid userId)
         => _context.Documents.Any(d => d.Department.UserId == userId && d.Title == "Avatar");
-            
-        
 
-        public Document? GetAvatarWithUserId(Guid userId)
+
+
+        public Document? GetAvatarByUserId(Guid userId)
             => _context.Documents.Include(d => d.Department).ThenInclude(d => d.User).Where(d => d.Department.UserId == userId).SingleOrDefault();
 
         public DirectionVM UploadDirectionOnServer(DirectionVM direction)
@@ -234,33 +236,53 @@ namespace Data.Repositores
                                      .AsQueryable();
         }
 
-        public List<DisplayDocumentsVM> GetDocuments(AreaVM area)
+        public List<DisplayDocumentsVM> GetDocuments(AreaVM area, bool status)
         {
             var context = GetDocumentsQuery();
             var documents = (from item in context
                              where (item.Department.Area == area.Section &&
-                                    item.Department.Province == area.Province &&
-                                    item.Department.County == area.County &&
-                                    item.Department.District == area.District &&
-                                    item.IsActived)
-                                    orderby item.UploadDate descending
-                                    select new DisplayDocumentsVM
-                                    {
-                                        DocumentId = item.DocumentId,
-                                        UserName = item.Department.User.UserName,
-                                        UploadDate = $"{item.UploadDate.ToShamsi()}",
-                                        AreaDepartment = (item.Department.Area == "0" ? "استان" : (item.Department.Area == "1" ? "شهرستان" : "بخش")),
-                                        CountyDepartment = item.Department.County,
-                                        ProvinceDepartment = item.Department.Province,
-                                        DistrictDepartment = item.Department.District,
-                                        Description = item.Description,
-                                        FileFormat = item.FileFormat,
-                                        Title = (item.Title == "Avatar" ? "تصویر پروفایل" : item.Title),
-                                        FirstName = item.Department.User.FirstName,
-                                        LastName = item.Department.User.LastName
-                                    })
+                                    item.IsActived == status)
+                             orderby item.UploadDate descending
+                             select new DisplayDocumentsVM
+                             {
+                                 DocumentId = item.DocumentId,
+                                 UserName = item.Department.User.UserName,
+                                 UploadDate = $"{item.UploadDate.ToShamsi()}",
+                                 AreaDepartment = (item.Department.Area == "0" ? "استان" : (item.Department.Area == "1" ? "شهرستان" : "بخش")),
+                                 CountyDepartment = item.Department.County,
+                                 ProvinceDepartment = item.Department.Province,
+                                 DistrictDepartment = item.Department.District,
+                                 Description = item.Description,
+                                 FileFormat = item.FileFormat,
+                                 Title = (item.Title == "Avatar" ? "تصویر پروفایل" : item.Title),
+                                 FirstName = item.Department.User.FirstName,
+                                 LastName = item.Department.User.LastName
+                             })
                                     .ToList();
             return documents;
         }
+
+        public bool IsExistDocumentOnDb(Guid documentId)
+            => _context.Documents.IgnoreQueryFilters()
+                                 .Where(d => d.DocumentId == documentId)
+                                 .Any();
+
+        public DownloadDocumentVM? GetDocumentById(Guid documentId)
+        {
+            var context = GetDocumentsQuery();
+
+            var document = (from item in context
+                            where (item.DocumentId == documentId)
+                            select new DownloadDocumentVM
+                            {
+                                Bytes = item.DataBytes,
+                                ContentType = item.ContentType,
+                                FileName = item.FileName
+                            }).FirstOrDefault();
+            return document;
+        }
+            
+
+
     }
 }

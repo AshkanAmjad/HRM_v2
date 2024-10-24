@@ -182,7 +182,7 @@ namespace HRM.Areas.County.Controllers
 
                             if (!isExistOrginalAvatar || !isExistThumbAvatar)
                             {
-                                var avatar = _documentRepository.GetAvatarWithUserId(model.UserId);
+                                var avatar = _documentRepository.GetAvatarByUserId(model.UserId);
 
                                 if (!isExistOrginalAvatar)
                                     _documentRepository.DownloadOrginalAvatar(avatar);

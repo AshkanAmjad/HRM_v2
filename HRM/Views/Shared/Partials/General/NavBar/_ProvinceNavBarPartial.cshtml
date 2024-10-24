@@ -1,6 +1,7 @@
 ﻿<script type="text/javascript">
     var _provinceManagementUsersUrl = '@Url.Action("ProvinceManagementUsersIndex", "Management", new { area = "Province" })';
     var _provinceManagementArchivedUsersUrl = '@Url.Action("ProvinceArchiveUsersIndex", "Archive", new { area = "Province" })';
+    var _provinceManagementArchivedDocumentsUrl = '@Url.Action("ProvinceArchiveDocumentsIndex", "Document", new { area = "Province" })';
     var _provinceManagementRolesUrl = '@Url.Action("ProvinceRolesIndex", "Access", new { area = "Province" })';
     var _provinceManagementUserRolesUrl = '@Url.Action("ProvinceUserRolesIndex", "Access", new { area = "Province" })';
     var _provinceReportsUrl = '@Url.Action("ProvinceReportsIndex", "Report", new { area = "Province" })';
@@ -18,6 +19,13 @@
         $("#provinceManagementArchivedUsers").off("click");
         $("#provinceManagementArchivedUsers").on("click", function (e) {
             $.get(_provinceManagementArchivedUsersUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+        //------------------------------------------------------------------------
+        $("#provinceManagementArchivedDocuments").off("click");
+        $("#provinceManagementArchivedDocuments").on("click", function (e) {
+            $.get(_provinceManagementArchivedDocumentsUrl).done(function (result) {
                 $("#main").html(result);
             });
         });

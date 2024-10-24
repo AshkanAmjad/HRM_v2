@@ -2,14 +2,14 @@
     Layout = null;
 }
 <partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPartial.cshtml">
-    <div class="btn btn-outline-primary btn-sm  my-3 mx-1">مدیریت مدارک - استان</div>
+    <div class="btn btn-outline-primary btn-sm  my-3 mx-1">بایگانی مدارک - استان</div>
     <div id="documents-box">
     </div>
 
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
         <script type="text/javascript">
             var _gridUrl = '@Url.Action("FillDocumentsGrid", "Document", new { area = "Province" })';
-            var _getDocumentsUrl = '@Html.Raw(@Url.Action("GetDocuments", "Document", new { Section = "0", Province = "0", County = "0", District = "0", Status = true, area = "Province" }))';
+            var _getDocumentsUrl = '@Html.Raw(@Url.Action("GetDocuments", "Document", new { Section = "0", Province = "0", County = "0", District = "0", Status = false, area = "Province" }))';
             var _downloadUrl = '@Url.Action("Download", "Document", new { area = "Province" })';
         </script>
 
@@ -40,9 +40,9 @@
                         "zeroRecords": "داده ای یافت نشد.",
                         "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
                         "search": `<span class="ms-2">
-                                                                           <i class="fa fa-search text-primary"></i>
-                                                                                  جست‌و‌جو بر اساس کد ملی و عنوان:
-                                               </span>`,
+                                                                                       <i class="fa fa-search text-primary"></i>
+                                                                                              جست‌و‌جو بر اساس کد ملی و عنوان:
+                                                           </span>`,
                         "searchPlaceholder": 'مقدار مناسبی وارد کنید ...',
                     },
                     "ajax": {
@@ -65,12 +65,12 @@
                             "data": "documentId", "title": "بارگیری", render: function (data, type, row) {
 
                                 return `<div class="py-2">
-                                                         <a class="btn btn-outline-primary btn-sm rounded-circle mx-auto"
-                                                               onclick="Download('${data}')"
-                                                          >
-                                                                  <i class="fa fa-download my-2 mx-1" > </i>
-                                                         </a>
-                                                   <div>`
+                                                                     <a class="btn btn-outline-primary btn-sm rounded-circle mx-auto"
+                                                                           onclick="Download('${data}')"
+                                                                      >
+                                                                              <i class="fa fa-download my-2 mx-1" > </i>
+                                                                     </a>
+                                                               <div>`
                             }
                         }
                     ]
@@ -87,8 +87,7 @@
 
 
                     $.get(_downloadUrl, model).done(function (result) {
-                        if (result.success == undefined)
-                        {
+                        if (result.success == undefined) {
                             var downloadUrl = _downloadUrl + '?documentId=' + documentId;
 
                             $('<iframe style="display:none;"></iframe>').attr('src', downloadUrl).appendTo('body');
