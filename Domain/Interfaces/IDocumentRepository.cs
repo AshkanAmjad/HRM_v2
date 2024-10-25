@@ -15,6 +15,7 @@ namespace Domain.Interfaces
         #region Documents
         IQueryable<Document> GetDocumentsQuery();
         List<DisplayDocumentsVM> GetDocuments(AreaVM area, bool status);
+        List<DisplayMyDocumentsVM> GetMyDocuments(AreaVM area, Guid userId);
         #endregion
 
         #region DB        

@@ -5,6 +5,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
+using static System.Collections.Specialized.BitVector32;
 
 namespace HRM.Areas.Province.Controllers
 {
@@ -33,10 +34,20 @@ namespace HRM.Areas.Province.Controllers
         {
             return View();
         }
+
+        public IActionResult ManagementMyDocumentsIndex()
+        {
+            return View();
+        }
+
         #endregion
 
         #region Display
         public IActionResult FillDocumentsGrid()
+        {
+            return View();
+        }
+        public IActionResult FillMyDocumentsGrid()
         {
             return View();
         }
@@ -55,6 +66,48 @@ namespace HRM.Areas.Province.Controllers
             var mainData = documents
                 .Where(d => d.UserName.Contains(searchValue) ||
                             d.Title.Contains(searchValue))
+                .Skip(start)
+                .Take(length)
+                .ToList();
+
+            var totalCount = documents
+                .Count();
+
+            #endregion
+
+            var jsonData = new
+            {
+                draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0"),
+                recordTotal = totalCount,
+                recordsFiltered = mainData.Count(),
+                data = mainData
+            };
+
+            return Json(jsonData);
+        }
+
+        [HttpPost]
+        public IActionResult GetMyDocuments(AreaVM model)
+        {
+            var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+
+            if (id == "")
+            {
+                return NotFound();
+            }
+
+            var userId = new Guid(id);
+
+            var documents = _documentRepository.GetMyDocuments(model, userId);
+
+            #region paging and searching
+            int start = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");
+            int length = int.Parse(Request.Form["length"].FirstOrDefault() ?? "10");
+            string searchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
+
+
+            var mainData = documents
+                .Where(d =>  d.Title.Contains(searchValue))
                 .Skip(start)
                 .Take(length)
                 .ToList();

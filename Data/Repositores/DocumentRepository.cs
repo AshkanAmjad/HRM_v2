@@ -281,7 +281,23 @@ namespace Data.Repositores
                             }).FirstOrDefault();
             return document;
         }
-            
+
+        public List<DisplayMyDocumentsVM> GetMyDocuments(AreaVM area, Guid userId)
+        {
+            var documents = _context.Documents.Where(d => d.Department.UserId == userId &&
+                                                          d.Department.Area == area.Section)
+                                              .Select(d => new DisplayMyDocumentsVM
+                                              {
+                                                  DocumentId = d.DocumentId,
+                                                  Description  = d.Description,
+                                                  Title = (d.Title == "Avatar" ? "تصویر پروفایل" : d.Title),
+                                                  FileFormat = d.FileFormat,
+                                                  UploadDate = $"{d.UploadDate.ToShamsi()}"
+                                              }).ToList();
+            return documents;
+        }
+
+
 
 
     }

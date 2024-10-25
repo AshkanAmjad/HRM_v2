@@ -1,0 +1,108 @@
+﻿@{
+    Layout = null;
+}
+<partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPartial.cshtml">
+    <div class="btn btn-outline-primary btn-sm  my-3 mx-1"> مدارک من - استان</div>
+    <div id="documents-box">
+    </div>
+
+    <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
+        <script type="text/javascript">
+            var _gridUrl = '@Url.Action("FillMyDocumentsGrid", "Document", new { area = "Province" })';
+            var _getMyDocumentsUrl = '@Html.Raw(@Url.Action("GetMyDocuments", "Document", new { Section = "0", area = "Province" }))';
+            var _downloadUrl = '@Url.Action("Download", "Document", new { area = "Province" })';
+        </script>
+
+        <script type="text/javascript">
+            //List
+            $(document).ready(function (e) {
+                $.get(_gridUrl).done(function (result) {
+                    $("#documents-box").html(result);
+                });
+            });
+
+            function GridLoad() {
+                table = $("#tableList").DataTable({
+                    initComplete: function () {
+                        $('div.dt-search').addClass("d-flex");
+                        $('div.dt-search input').addClass('form-control');
+                    },
+                    "paging": true,
+                    "pagingType": 'full_numbers',
+                    "pageLength": 10,
+                    "processing": false,
+                    "serverSide": true,
+                    "info": false,
+                    "lengthChange": false,
+                    "ordering": false,
+                    "language": {
+                        "emptyTable": "داده ای ثبت نشده است.",
+                        "zeroRecords": "داده ای یافت نشد.",
+                        "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
+                        "search": `<span class="ms-2">
+                                                                                       <i class="fa fa-search text-primary"></i>
+                                                                                              جست‌و‌جو بر اساس عنوان:
+                                                           </span>`,
+                        "searchPlaceholder": 'مقدار مناسبی وارد کنید ...',
+                    },
+                    "ajax": {
+                        "url": _getMyDocumentsUrl,
+                        "type": "POST",
+                        "datatype": "json"
+                    },
+                    "columns": [
+                        { "data": "title", "title": "عنوان" },
+                        { "data": "description", "title": "توضیحات" },
+                        { "data": "fileFormat", "title": "نوع", "className": "ltr" },
+                        { "data": "uploadDate", "title": "تاریخ ثبت" },
+                        {
+                            "data": "documentId", "title": "بارگیری", render: function (data, type, row) {
+
+                                return `<div class="py-2">
+                                                                     <a class="btn btn-outline-primary btn-sm rounded-circle mx-auto"
+                                                                           onclick="Download('${data}')"
+                                                                      >
+                                                                              <i class="fa fa-download my-2 mx-1" > </i>
+                                                                     </a>
+                                                               <div>`
+                            }
+                        }
+                    ]
+                })
+            };
+
+            //Download
+            function Download(documentId) {
+                if (documentId != null) {
+
+                    var model = {
+                        documentId: documentId
+                    }
+
+
+                    $.get(_downloadUrl, model).done(function (result) {
+                        if (result.success == undefined) {
+                            var downloadUrl = _downloadUrl + '?documentId=' + documentId;
+
+                            $('<iframe style="display:none;"></iframe>').attr('src', downloadUrl).appendTo('body');
+                        }
+                        else {
+                            Swal.fire({
+                                title: "خطا",
+                                text: result.message,
+                                icon: 'error',
+                                showConfirmButton: false,
+                                timer: 4000,
+                                showClass: {
+                                    popup: 'animate__animated animate__fadeInDown'
+                                },
+                                hideClass: {
+                                    popup: 'animate__animated animate__fadeOutDown'
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+
+        </script>

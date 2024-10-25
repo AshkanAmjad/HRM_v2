@@ -1,6 +1,7 @@
 ﻿<script type="text/javascript">
     var _homeUrl = '@Url.Action("Index", "Home")';
     var _myAccountUrl = '@Url.Action("FillProfileGrid", "Management")';
+    var _myDocumentsUrl = '@Url.Action("ManagementMyDocumentsIndex", "Document")';
 </script>
 <script type="text/javascript">
     $(function () {
@@ -16,6 +17,14 @@
         $("#myAccount").on("click", function (e) {
             e.preventDefault();
             $.get(_myAccountUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+        //------------------------------------------------------------------------
+        $("#myDocuments").off("click");
+        $("#myDocuments").on("click", function (e) {
+            e.preventDefault();
+            $.get(_myDocumentsUrl).done(function (result) {
                 $("#main").html(result);
             });
         });
