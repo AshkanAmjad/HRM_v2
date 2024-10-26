@@ -1,5 +1,6 @@
 ﻿using Domain.DTOs.General;
 using Domain.DTOs.Security.Role;
+using Domain.DTOs.Security.User;
 using Domain.DTOs.Security.UserRole;
 using Domain.Entities.Security.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -19,6 +20,7 @@ namespace Domain.Interfaces
         bool DisableUserRole(UserRoleEdit_Active_DisableVM model, out string message);
         bool ActiveUserRole(UserRoleEdit_Active_DisableVM model, out string message);
         UserRoleEditVM? GetUserRoleById(Guid userRoleId);
+        bool GetUserRoleByUserId(Guid userId);
         bool Similarity(UserRoleRegisterVM model, out string message);
         #endregion
 

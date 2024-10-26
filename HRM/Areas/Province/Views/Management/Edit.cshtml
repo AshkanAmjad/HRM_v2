@@ -23,7 +23,6 @@
 
     var isExistAvatar = ViewData["IsExistAvatar"];
 }
-<partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPersianDatePickerPartial.cshtml"/>
 
 <div class="modal-dialog modal-xl " id="modal">
     <div class="modal-content">
@@ -45,7 +44,7 @@
             <input type="hidden" asp-for="CountyDepartment" />
             <input type="hidden" asp-for="DistrictDepartment" />
             <input type="hidden" asp-for="UserId" />
-            <input type="hidden" asp-for="DepartmenyId"/>
+            <input type="hidden" asp-for="DepartmenyId" />
             <input type="file" asp-for="Avatar" class="hidden" id="pic" />
             <div class="modal-body">
                 <div class="row px-2">
@@ -68,7 +67,7 @@
                                 <label class="control-label">کد ملی :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <input asp-for="UserName" type="number" class="form-control w-100" readonly/>
+                                <input asp-for="UserName" type="number" class="form-control w-100" readonly />
                                 <span asp-validation-for="UserName" class="text-danger fs-8"></span>
                             </div>
                         </div>
@@ -257,245 +256,245 @@
         </form>
     </div>
 </div>
+
 <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPersianDatePickerPartial.cshtml" />
-    <partial name="~/Views/Shared/Partials/General/Refrences/js/_DataTablesJsPartial.cshtml">
 
-        <script type="text/javascript">
-            var _editUrl = '@Url.Action("Edit", "Management", new { area = "Province" })';
-        </script>
+    <script type="text/javascript">
+        var _editUrl = '@Url.Action("Edit", "Management", new { area = "Province" })';
+    </script>
 
-        <script type="text/javascript">
-            $('#dateOfBirth').persianDatepicker({
-                initialValue: false,
-                format: 'YYYY/MM/DD'
-            });
+    <script type="text/javascript">
+        $('#dateOfBirth').persianDatepicker({
+            initialValue: false,
+            format: 'YYYY/MM/DD'
+        });
 
-            $.fn.Validation = function () {
-                var result = true;
-                var employmentError = $("#employmentError");
-                var educationError = $("#educationError")
-                var maritalError = $("#maritalError");
-                var ganderError = $("#genderError");
-                var departmentError = $("#departmentError");
-                var $userName = $("input[name='UserName']").val();
-                var $password = $("input[name='Password']").val();
-                var $confirmPassword = $("input[name='ConfirmPassword']").val();
-                var $firstName = $("input[name='FirstName']").val();
-                var $lastName = $("input[name='LastName']").val();
-                var $gender = $("input[name='gender']:checked").val();
-                var $education = $("#educationTypes").find(':selected').text();
-                var $dateOfBirth = $("input[name='DateOfBirth']").val();
-                var $marital = $("input[name='maritalStatus']:checked").val();
-                var $employment = $("#employmentStatus").find(':selected').text();
-                var $department = $("#provinceDepartmentStatus").find(':selected').text();
-                var $gender = $("input[name='gender']:checked").val();
-                var $email = $("input[name='Email").val();
-                var $phoneNumber = $("input[name='PhoneNumber']").val();
-                var $city = $("input[name='City']").val();
-                var $address = $("#Address").val();
+        $.fn.Validation = function () {
+            var result = true;
+            var employmentError = $("#employmentError");
+            var educationError = $("#educationError")
+            var maritalError = $("#maritalError");
+            var ganderError = $("#genderError");
+            var departmentError = $("#departmentError");
+            var $userName = $("input[name='UserName']").val();
+            var $password = $("input[name='Password']").val();
+            var $confirmPassword = $("input[name='ConfirmPassword']").val();
+            var $firstName = $("input[name='FirstName']").val();
+            var $lastName = $("input[name='LastName']").val();
+            var $gender = $("input[name='gender']:checked").val();
+            var $education = $("#educationTypes").find(':selected').text();
+            var $dateOfBirth = $("input[name='DateOfBirth']").val();
+            var $marital = $("input[name='maritalStatus']:checked").val();
+            var $employment = $("#employmentStatus").find(':selected').text();
+            var $department = $("#provinceDepartmentStatus").find(':selected').text();
+            var $gender = $("input[name='gender']:checked").val();
+            var $email = $("input[name='Email").val();
+            var $phoneNumber = $("input[name='PhoneNumber']").val();
+            var $city = $("input[name='City']").val();
+            var $address = $("#Address").val();
 
+            if ($employment === "وضعیت استخدامی خود را انتخاب کنید ...") {
+                employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.");
+                result = false;
+            } else {
+                employmentError.text("");
+            }
+            if ($department === "شعبه سطح استان خود را انتخاب کنید ...") {
+                departmentError.text("تکمیل ورودی شعبه استان ضروری است.");
+                result = false;
+
+            } else {
+                departmentError.text('');
+            }
+            if ($education === "سطح تحصیلات خود را انتخاب کنید ...") {
+                educationError.text("تکمیل ورودی تحصیلات ضروری است.");
+                result = false;
+
+            } else {
+                educationError.text('');
+            }
+            if ($marital === undefined) {
+                maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
+                result = false;
+
+            } else {
+                maritalError.text('');
+            }
+            if ($gender === undefined) {
+                ganderError.text("تکمیل ورودی جنسیت ضروری است.");
+                result = false;
+
+            } else {
+                ganderError.text('');
+            }
+            if (($employment === "وضعیت استخدامی خود را انتخاب کنید ..." || $department === "شعبه سطح استان خود را انتخاب کنید ..." || $education === "سطح تحصیلات خود را انتخاب کنید ..." || $marital === undefined || $gender === undefined)
+                &&
+                ($userName !== "" && $password !== "" && $confirmPassword !== "" && $firstName !== "" && $lastName !== ""
+                    && $dateOfBirth !== "" && $email !== "" && $phoneNumber !== "" && $city !== "" && $address !== "")) {
                 if ($employment === "وضعیت استخدامی خود را انتخاب کنید ...") {
                     employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.");
                     result = false;
-                } else {
-                    employmentError.text("");
+
                 }
                 if ($department === "شعبه سطح استان خود را انتخاب کنید ...") {
                     departmentError.text("تکمیل ورودی شعبه استان ضروری است.");
                     result = false;
 
-                } else {
-                    departmentError.text('');
                 }
                 if ($education === "سطح تحصیلات خود را انتخاب کنید ...") {
                     educationError.text("تکمیل ورودی تحصیلات ضروری است.");
                     result = false;
 
-                } else {
-                    educationError.text('');
                 }
                 if ($marital === undefined) {
                     maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
                     result = false;
 
-                } else {
-                    maritalError.text('');
                 }
                 if ($gender === undefined) {
                     ganderError.text("تکمیل ورودی جنسیت ضروری است.");
                     result = false;
 
+                }
+            }
+            $("#educationTypes").change(function () {
+                var $education = $("#educationTypes").find(':selected').text();
+                if ($education !== "سطح تحصیلات خود را انتخاب کنید ...") {
+                    educationError.text('');
                 } else {
-                    ganderError.text('');
+                    educationError.text("تکمیل ورودی تحصیلات ضروری است.");
+                    result = false;
+
                 }
-                if (($employment === "وضعیت استخدامی خود را انتخاب کنید ..." || $department === "شعبه سطح استان خود را انتخاب کنید ..." || $education === "سطح تحصیلات خود را انتخاب کنید ..." || $marital === undefined || $gender === undefined)
-                    &&
-                    ($userName !== "" && $password !== "" && $confirmPassword !== "" && $firstName !== "" && $lastName !== ""
-                        && $dateOfBirth !== "" && $email !== "" && $phoneNumber !== "" && $city !== "" && $address !== "")) {
-                    if ($employment === "وضعیت استخدامی خود را انتخاب کنید ...") {
-                        employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.");
-                        result = false;
-
-                    }
-                    if ($department === "شعبه سطح استان خود را انتخاب کنید ...") {
-                        departmentError.text("تکمیل ورودی شعبه استان ضروری است.");
-                        result = false;
-
-                    }
-                    if ($education === "سطح تحصیلات خود را انتخاب کنید ...") {
-                        educationError.text("تکمیل ورودی تحصیلات ضروری است.");
-                        result = false;
-
-                    }
-                    if ($marital === undefined) {
-                        maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
-                        result = false;
-
-                    }
-                    if ($gender === undefined) {
-                        ganderError.text("تکمیل ورودی جنسیت ضروری است.");
-                        result = false;
-
-                    }
-                }
-                $("#educationTypes").change(function () {
-                    var $education = $("#educationTypes").find(':selected').text();
-                    if ($education !== "سطح تحصیلات خود را انتخاب کنید ...") {
-                        educationError.text('');
-                    } else {
-                        educationError.text("تکمیل ورودی تحصیلات ضروری است.");
-                        result = false;
-
-                    }
-                });
-                $("#employmentStatus").change(function () {
-                    var $employment = $("#employmentStatus").find(':selected').text();
-                    if ($employment !== "وضعیت استخدامی خود را انتخاب کنید ...") {
-                        employmentError.text('');
-                    } else {
-                        employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.");
-                        result = false;
-
-                    }
-                });
-                $("#provinceDepartmentStatus").change(function () {
-                    var $department = $("#provinceDepartmentStatus").find(':selected').text();
-                    if ($department !== "شعبه سطح استان خود را انتخاب کنید ...") {
-                        departmentError.text('');
-                    } else {
-                        departmentError.text("تکمیل ورودی شعبه استان ضروری است.");
-                        result = false;
-
-                    }
-                });
-                $("input[name='maritalStatus']").change(function () {
-                    var $marital = $("input[name='maritalStatus']:checked").val();
-                    if ($marital !== undefined) {
-                        maritalError.text('');
-                    } else {
-                        maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
-                        result = false;
-
-                    }
-                });
-                $("input[name='gender']").change(function () {
-                    var $gender = $("input[name='gender']:checked").val();
-                    if ($gender !== undefined) {
-                        ganderError.text('');
-                    } else {
-                        ganderError.text("تکمیل ورودی جنسیت ضروری است.");
-                        result = false;
-
-                    }
-                })
-
-                return result;
-            };
-
-            $(function () {
-                var $file = null;
-                var dropZone = $('#uploadAvatarBox');
-                $("#submitBtn").off("click");
-                $("#submitBtn").on("click", function (e) {
-                    var validation = $.fn.Validation();
-                    e.preventDefault();
-                    var $form = $('#editForm');
-                    if ($form.valid() && validation == true) {
-                        $("#submitBtn").prop('disabled', true);
-                        var formData = new FormData($form.get(0));
-                        $.ajax({
-                            url: _editUrl,
-                            type: 'POST',
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            success: function (result) {
-                                if (result.success) {
-                                    GridReload();
-                                    $("#operation-box").modal("toggle");
-                                    Swal.fire({
-                                        title: result.message,
-                                        icon: 'success',
-                                        showConfirmButton: false,
-                                        timer: 4000,
-                                        showClass: {
-                                            popup: 'animate__animated animate__fadeInDown'
-                                        },
-                                        hideClass: {
-                                            popup: 'animate__animated animate__fadeOutDown'
-                                        }
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        title: 'خطا',
-                                        icon: 'error',
-                                        text: result.message,
-                                        showConfirmButton: false,
-                                        timer: 4000,
-                                        showClass: {
-                                            popup: 'animate__animated animate__fadeInDown'
-                                        },
-                                        hideClass: {
-                                            popup: 'animate__animated animate__fadeOutDown'
-                                        }
-                                    })
-                                }
-                            },
-                            complete: function () {
-                                $("#submitBtn").prop('disabled', false);
-                            }
-                        });
-                    };
-                });
-
-                // Dragover event
-                dropZone.on('dragover', function (e) {
-                    e.preventDefault();
-                });
-
-                // Dragleave event
-                dropZone.on('dragleave', function (e) {
-                    e.preventDefault();
-                });
-
-                // Drop event
-                dropZone.on('drop', function (e) {
-                    e.preventDefault();
-                    var files = e.originalEvent.dataTransfer.files;
-                    if (files.length > 0) {
-                        const dataTransfer = new DataTransfer();
-                        $file = files[0];
-                        dataTransfer.items.add($file);
-                        document.getElementById("pic").files = dataTransfer.files;
-                        var reader = new FileReader();
-                        reader.onload = function (e) {
-                            $('#avatar').attr('src', e.target.result);
-                            $('#avatar').show();
-                        };
-                        reader.readAsDataURL($file);
-                    }
-                });
             });
-        </script>
+            $("#employmentStatus").change(function () {
+                var $employment = $("#employmentStatus").find(':selected').text();
+                if ($employment !== "وضعیت استخدامی خود را انتخاب کنید ...") {
+                    employmentError.text('');
+                } else {
+                    employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.");
+                    result = false;
+
+                }
+            });
+            $("#provinceDepartmentStatus").change(function () {
+                var $department = $("#provinceDepartmentStatus").find(':selected').text();
+                if ($department !== "شعبه سطح استان خود را انتخاب کنید ...") {
+                    departmentError.text('');
+                } else {
+                    departmentError.text("تکمیل ورودی شعبه استان ضروری است.");
+                    result = false;
+
+                }
+            });
+            $("input[name='maritalStatus']").change(function () {
+                var $marital = $("input[name='maritalStatus']:checked").val();
+                if ($marital !== undefined) {
+                    maritalError.text('');
+                } else {
+                    maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
+                    result = false;
+
+                }
+            });
+            $("input[name='gender']").change(function () {
+                var $gender = $("input[name='gender']:checked").val();
+                if ($gender !== undefined) {
+                    ganderError.text('');
+                } else {
+                    ganderError.text("تکمیل ورودی جنسیت ضروری است.");
+                    result = false;
+
+                }
+            })
+
+            return result;
+        };
+
+        $(function () {
+            var $file = null;
+            var dropZone = $('#uploadAvatarBox');
+            $("#submitBtn").off("click");
+            $("#submitBtn").on("click", function (e) {
+                var validation = $.fn.Validation();
+                e.preventDefault();
+                var $form = $('#editForm');
+                if ($form.valid() && validation == true) {
+                    $("#submitBtn").prop('disabled', true);
+                    var formData = new FormData($form.get(0));
+                    $.ajax({
+                        url: _editUrl,
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (result) {
+                            if (result.success) {
+                                GridReload();
+                                $("#operation-box").modal("toggle");
+                                Swal.fire({
+                                    title: result.message,
+                                    icon: 'success',
+                                    showConfirmButton: false,
+                                    timer: 4000,
+                                    showClass: {
+                                        popup: 'animate__animated animate__fadeInDown'
+                                    },
+                                    hideClass: {
+                                        popup: 'animate__animated animate__fadeOutDown'
+                                    }
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'خطا',
+                                    icon: 'error',
+                                    text: result.message,
+                                    showConfirmButton: false,
+                                    timer: 4000,
+                                    showClass: {
+                                        popup: 'animate__animated animate__fadeInDown'
+                                    },
+                                    hideClass: {
+                                        popup: 'animate__animated animate__fadeOutDown'
+                                    }
+                                })
+                            }
+                        },
+                        complete: function () {
+                            $("#submitBtn").prop('disabled', false);
+                        }
+                    });
+                };
+            });
+
+            // Dragover event
+            dropZone.on('dragover', function (e) {
+                e.preventDefault();
+            });
+
+            // Dragleave event
+            dropZone.on('dragleave', function (e) {
+                e.preventDefault();
+            });
+
+            // Drop event
+            dropZone.on('drop', function (e) {
+                e.preventDefault();
+                var files = e.originalEvent.dataTransfer.files;
+                if (files.length > 0) {
+                    const dataTransfer = new DataTransfer();
+                    $file = files[0];
+                    dataTransfer.items.add($file);
+                    document.getElementById("pic").files = dataTransfer.files;
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#avatar').attr('src', e.target.result);
+                        $('#avatar').show();
+                    };
+                    reader.readAsDataURL($file);
+                }
+            });
+        });
+    </script>
 

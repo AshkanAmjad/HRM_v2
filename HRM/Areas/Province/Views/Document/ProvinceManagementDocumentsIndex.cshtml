@@ -1,12 +1,14 @@
 ﻿@{
     Layout = null;
 }
-<partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPartial.cshtml">
-    <div class="btn btn-outline-primary btn-sm  my-3 mx-1">مدیریت مدارک - استان</div>
+<partial name="~/Views/Shared/Partials/General/Refrences/css/_DataTablesCssPartial.cshtml">
+    <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
+        <partial name="~/Views/Shared/Partials/General/Refrences/js/_DataTablesJsPartial.cshtml">
+
+            <div class="btn btn-outline-primary btn-sm  my-3 mx-1">مدیریت مدارک - استان</div>
     <div id="documents-box">
     </div>
 
-    <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
         <script type="text/javascript">
             var _gridUrl = '@Url.Action("FillDocumentsGrid", "Document", new { area = "Province" })';
             var _getDocumentsUrl = '@Html.Raw(@Url.Action("GetDocuments", "Document", new { Section = "0", Province = "0", County = "0", District = "0", Status = true, area = "Province" }))';

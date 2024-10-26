@@ -11,3 +11,8 @@ $(document).on('keydown', function (e) {
         $('#submit').trigger('click');
     }
 });
+
+$('#navbar a').click(function (e) {
+    $('#navbar a,#home').removeClass('navBar-active');
+    $(this).addClass('navBar-active');
+});

@@ -1,8 +1,11 @@
 ﻿@{
     Layout = null;
 }
-<partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPartial.cshtml">
-    <div id="operation-box" class="modal fade" role="dialog" aria-hidden="true">
+<partial name="~/Views/Shared/Partials/General/Refrences/css/_DataTablesCssPartial.cshtml">
+    <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
+        <partial name="~/Views/Shared/Partials/General/Refrences/js/_DataTablesJsPartial.cshtml">
+        
+            <div id="operation-box" class="modal fade" role="dialog" aria-hidden="true">
     </div>
     <div class="btn btn-outline-primary btn-sm  my-3 mx-1">کنترل دسترسی پرسنل - بخش</div>
     <div>
@@ -12,7 +15,6 @@
     </div>
     <div id="userRoles-box">
     </div>
-    <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
         <script type="text/javascript">
             var _registerUrl = '@Url.Action("UserRoleRegister", "Access", new { area = "District" })';
             var _gridUrl = '@Url.Action("FillUserRolesGrid", "Access", new { area = "District" })';

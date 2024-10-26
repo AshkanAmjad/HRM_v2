@@ -1,8 +1,10 @@
 ﻿@{
     Layout = null;
 }
-<partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPartial.cshtml">
-    <div id="operation-box" class="modal fade" role="dialog" aria-hidden="true">
+<partial name="~/Views/Shared/Partials/General/Refrences/css/_DataTablesCssPartial.cshtml">
+    <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
+        <partial name="~/Views/Shared/Partials/General/Refrences/js/_DataTablesJsPartial.cshtml">
+            <div id="operation-box" class="modal fade" role="dialog" aria-hidden="true">
     </div>
     <div class="btn btn-outline-primary btn-sm  my-3 mx-1">بایگانی پرسنل - شهرستان</div>
     <div class="d-flex px-5 mb-3 justify-content-center">
@@ -25,7 +27,6 @@
     </div>
     <div id="users-box">
     </div>
-    <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
         <script type="text/javascript">
             var _gridUrl = '@Url.Action("FillUsersGrid", "Archive", new { area = "County" })';
             var _getUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Archive", new { Section = "1", Province = "0", County = "0", District = "0", area="County" }))';

@@ -49,6 +49,8 @@ namespace Domain.Interfaces
         void ActiveUserDb(UserDelete_ActiveVM model);
         void DisableDepartmentDb(UserEdit_DisableVM model, out Guid departmentId);
         void ActiveDepartmentDb(UserDelete_ActiveVM model, out Guid departmentId);
+        void ActiveUserRoleDb(UserDelete_ActiveVM model);
+        void DisableUserRoleDb(UserEdit_DisableVM model);
         void UploadEditUserToDb(UserEditVM userEdit);
         void UploadDepartmentToDb(UserRegisterVM depatment, Guid departmentId);
         void UploadEditDepartmentToDb(UserEditVM model);

@@ -4,8 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] HRM</title>
-    <partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPartial.cshtml">
-        <partial name="~/Views/Shared/Partials/General/Refrences/css/_DataTablesCssPartial.cshtml">
+    <partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPartial.cshtml"/>
 </head>
 <body class="min-vh-100">
     <header class="mb-5 mb-xl-0 pb-5 pb-xl-0">
@@ -28,8 +27,7 @@
         <partial name="~/Views/Shared/Partials/General/Footer/_FooterPartial.cshtml" />
     </footer>
 </body>
-<partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
-<partial name="~/Views/Shared/Partials/General/Refrences/js/_DataTablesJsPartial.cshtml">
+<partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml"/>
 <partial name="~/Views/Shared/Partials/General/NavBar/_GeneralNavBarPartial.cshtml" />
 <partial name="~/Views/Shared/Partials/General/NavBar/_ProvinceNavBarPartial.cshtml" />
 <partial name="~/Views/Shared/Partials/General/NavBar/_CountyNavBarPartial.cshtml" />
@@ -42,10 +40,7 @@
     var _transferUrl = '@Url.Action("Index", "Document")';
 </script>
 <script type="text/javascript">
-    $('#navbar a').click(function (e) {
-        $('#navbar a,#home').removeClass('navBar-active');
-        $(this).addClass('navBar-active');
-    });
+
 
     $(function () {
         $("#transfer").off("click");

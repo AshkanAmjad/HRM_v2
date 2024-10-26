@@ -224,6 +224,7 @@ namespace HRM.Areas.Province.Controllers
             ViewBag.Departments = new SelectList(departments, "Value", "Text");
 
             var roles = _userRoleRepository.GetRolesForSelectBox();
+
             ViewBag.Roles = new SelectList(roles, "Value", "Text");
 
 

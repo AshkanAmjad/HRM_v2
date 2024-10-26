@@ -486,6 +486,8 @@ namespace Data.Repositores
 
                 _documentRepository.DisableDocumentsDb(departmentId);
 
+                DisableUserRoleDb(model);
+
                 message = "";
 
                 return true;
@@ -509,6 +511,8 @@ namespace Data.Repositores
                 Guid departmentId = _departmentId;
 
                 _documentRepository.ActiveDocumentsDb(departmentId);
+
+                ActiveUserRoleDb(model);
 
                 message = "";
                 return true;
@@ -738,6 +742,52 @@ namespace Data.Repositores
                 }
             }
 
+        }
+
+        public void DisableUserRoleDb(UserEdit_DisableVM model)
+        {
+            if (model != null)
+            {
+                var userRoles = _context.UserRoles
+                                       .Where(ur => ur.UserId == model.UserId)
+                                       .ToList();
+
+                if (userRoles != null)
+                {
+                    foreach (var item in userRoles)
+                    {
+                        item.IsActived = false;
+                        item.RegisterDate = DateTime.Now;
+                    }
+
+                    _context.UserRoles.UpdateRange(userRoles);
+                }
+
+
+            }
+        }
+
+        public void ActiveUserRoleDb(UserDelete_ActiveVM model)
+        {
+            if (model != null)
+            {
+                var userRoles = _context.UserRoles.IgnoreQueryFilters()
+                                                  .Where(ur => ur.UserId == model.UserId)
+                                                  .ToList();
+
+                if (userRoles != null)
+                {
+                    foreach (var item in userRoles)
+                    {
+                        item.IsActived = true;
+                        item.RegisterDate = DateTime.Now;
+                    }
+
+                    _context.UserRoles.UpdateRange(userRoles);
+                }
+
+
+            }
         }
     }
 }

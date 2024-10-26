@@ -1,7 +1,9 @@
 ﻿@{
     Layout = null;
 }
-<partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPartial.cshtml">
+<partial name="~/Views/Shared/Partials/General/Refrences/css/_DataTablesCssPartial.cshtml">
+    <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
+        <partial name="~/Views/Shared/Partials/General/Refrences/js/_DataTablesJsPartial.cshtml">
 
     <div id="operation-box" class="modal fade" role="dialog" aria-hidden="true">
     </div>
@@ -13,7 +15,6 @@
     </div>
     <div id="roles-box">
     </div>
-    <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
         <script type="text/javascript">
             var _registerUrl = '@Url.Action("RoleRegister", "Access", new { area = "Province" })';
             var _gridUrl = '@Url.Action("FillRolesGrid", "Access", new { area = "Province" })';

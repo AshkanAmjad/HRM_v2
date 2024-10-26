@@ -1,12 +1,14 @@
 ﻿@{
     Layout = null;
 }
-<partial name="~/Views/Shared/Partials/General/Refrences/css/_CssPartial.cshtml">
+
+<partial name="~/Views/Shared/Partials/General/Refrences/css/_DataTablesCssPartial.cshtml">
+    <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
+        <partial name="~/Views/Shared/Partials/General/Refrences/js/_DataTablesJsPartial.cshtml">
 
     <div class="btn btn-outline-primary btn-sm  my-3 mx-1">مشاهده معاونت ها - شهرستان</div>
     <div id="roles-box">
     </div>
-    <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
         <script type="text/javascript">
             var _gridUrl = '@Url.Action("FillRolesGrid", "Access", new { area = "County" })';
             var _getRolesUrl = '@Url.Action("GetRoles", "Access", new { area = "County" })';

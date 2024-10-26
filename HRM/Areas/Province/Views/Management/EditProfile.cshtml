@@ -33,8 +33,8 @@
             <input type="hidden" asp-for="DistrictDepartment" />
             <input type="hidden" asp-for="UserId" />
             <input type="hidden" asp-for="DepartmenyId" />
-            <input type="hidden" asp-for="FirstName"/>
-            <input type="hidden" asp-for="LastName"/>
+            <input type="hidden" asp-for="FirstName" />
+            <input type="hidden" asp-for="LastName" />
             <input type="file" asp-for="Avatar" class="hidden" id="pic" />
             <div class="modal-body">
                 <div class="row px-2">
@@ -166,9 +166,9 @@
         </form>
     </div>
 </div>
-
 <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPersianDatePickerPartial.cshtml" />
+
     <script type="text/javascript">
         var _editUrl = '@Url.Action("EditProfile", "Management", new { area = "Province" })';
         var _refreshProfileUrl = '@Url.Action("GetProfileData", "Management")';
@@ -211,7 +211,7 @@
             if (($education === "سطح تحصیلات خود را انتخاب کنید ..." || $marital === undefined)
                 &&
                 ($userName !== "" && $password !== "" && $confirmPassword !== ""
-                 && $email !== "" && $phoneNumber !== "" && $city !== "" && $address !== "")) {
+                    && $email !== "" && $phoneNumber !== "" && $city !== "" && $address !== "")) {
                 if ($education === "سطح تحصیلات خود را انتخاب کنید ...") {
                     educationError.text("تکمیل ورودی تحصیلات ضروری است.");
                     result = false;
@@ -232,7 +232,7 @@
                     result = false;
 
                 }
-            });            
+            });
             $("input[name='maritalStatus']").change(function () {
                 var $marital = $("input[name='maritalStatus']:checked").val();
                 if ($marital !== undefined) {

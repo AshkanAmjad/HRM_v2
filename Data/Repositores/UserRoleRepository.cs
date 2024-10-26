@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Data.Context;
 using Data.Extensions;
+using Domain.DTOs.Security.User;
 using Domain.DTOs.Security.UserRole;
 using Domain.Entities.Security.Models;
 using Domain.Interfaces;
@@ -42,7 +43,7 @@ namespace Data.Repositores
         {
             var context = GetUserRolesQuery();
             var userRoles = (from item in context
-                             where(item.User.Department.Area == area)
+                             where (item.User.Department.Area == area)
                              orderby item.IsActived descending, item.RegisterDate descending
                              select new DisplayUserRolesVM
                              {
@@ -64,20 +65,21 @@ namespace Data.Repositores
         public DisplayDetailsVM GetUserDetails(Guid userId)
         {
             var user = _context.Users.Where(u => u.UserId == userId)
-                                     .Select(u =>  new DisplayDetailsVM
+                                     .Select(u => new DisplayDetailsVM
                                      {
-                                            UserName = u.UserName,
-                                            AreaDepartment = (u.Department.Area == "0" ? "استان" : (u.Department.Area == "1" ? "شهرستان" : "بخش")),
-                                            ProvinceDepartment = u.Department.Province,
-                                            CountyDepartment = u.Department.County,
-                                            DistrictDepartment = u.Department.District,
-                                            RoleTitle = u.UserRoles.Select(u => u.Role.Title).ToList(),
-                                            FullName = $"{u.FirstName} {u.LastName}",
-                                            LastActived = $"{u.LastActived.ToShamsi()}"
+                                         UserName = u.UserName,
+                                         AreaDepartment = (u.Department.Area == "0" ? "استان" : (u.Department.Area == "1" ? "شهرستان" : "بخش")),
+                                         ProvinceDepartment = u.Department.Province,
+                                         CountyDepartment = u.Department.County,
+                                         DistrictDepartment = u.Department.District,
+                                         RoleTitle = u.UserRoles.Select(u => u.Role.Title).ToList(),
+                                         FullName = $"{u.FirstName} {u.LastName}",
+                                         LastActived = $"{u.LastActived.ToShamsi()}"
                                      })
                                      .FirstOrDefault();
             return user;
         }
+
 
         public List<SelectListItem> GetRolesForSelectBox()
         {
@@ -252,6 +254,9 @@ namespace Data.Repositores
             }
         }
 
+
+
+
         public void UploadEditUserRoleToDb(UserRoleEditVM model)
         {
             if (model != null)
@@ -285,6 +290,15 @@ namespace Data.Repositores
                 _context.Add(userRole);
             }
         }
+
+        public bool GetUserRoleByUserId(Guid userId)
+                => _context.UserRoles.Where(ur => ur.UserId == userId &&
+                                                 (ur.Role.Title == "مدیریت" ||
+                                                  ur.Role.Title == "فناوری اطلاعات"))
+                                     .Any();
+
+        
+
 
         public void SaveChanges()
         {
