@@ -217,7 +217,7 @@ header {
     cursor: pointer;
 }
 
-.navBar-active, .navBar li a:hover {
+.navbar-active, .navBar li a:hover {
     background: rgb(0,123,255);
     color: #fff !important;
     border-radius: 3px;

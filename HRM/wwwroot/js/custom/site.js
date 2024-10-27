@@ -1,11 +1,4 @@
-﻿//document.body.addEventListener('keydown', function (e) {
-//    var key = e.key;
-//    if (key === 'Enter') {
-//        document.getElementById('submit').click();
-//    }
-//});
-
-$(document).on('keydown', function (e) {
+﻿$(document).on('keydown', function (e) {
     var key = e.key;
     if (key === 'Enter') {
         $('#submit').trigger('click');
@@ -13,6 +6,6 @@ $(document).on('keydown', function (e) {
 });
 
 $('#navbar a').click(function (e) {
-    $('#navbar a,#home').removeClass('navBar-active');
-    $(this).addClass('navBar-active');
+    $('#navbar a,#home').removeClass('navbar-active');
+    $(this).addClass('navbar-active');
 });
