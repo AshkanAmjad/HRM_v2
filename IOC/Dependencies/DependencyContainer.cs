@@ -20,6 +20,7 @@ namespace IOC.Dependencies
             services.AddScoped<IDocumentService, DocumentService>();
             services.AddScoped<IGeneralService, GeneralService>();
             services.AddScoped<IViewRenderService, RenderViewToString>();
+            services.AddScoped<ITransferService, TransferService>();
             #endregion
 
             #region Repository
@@ -29,6 +30,8 @@ namespace IOC.Dependencies
             services.AddScoped<IUserRoleRepository, UserRoleRepository>();
             services.AddScoped<IPermissionRepository, PermissionRepository>();
             services.AddScoped<IReportRepository, ReportRepository>();
+            services.AddScoped<IDepartmentTransferRepository, DepartmentTransferRepository>();
+            services.AddScoped<ITransferRepository, TransferRepository>();
             #endregion
 
             #region General

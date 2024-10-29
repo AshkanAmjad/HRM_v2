@@ -4,6 +4,7 @@ using Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(HRMContext))]
-    partial class HRMContextModelSnapshot : ModelSnapshot
+    [Migration("20241029131100_SecondUpdatingTransferModel")]
+    partial class SecondUpdatingTransferModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,9 +113,6 @@ namespace Data.Migrations
                     b.Property<string>("FileFormat")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FileName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsActived")
                         .HasColumnType("bit");
 
@@ -192,16 +192,16 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            RoleId = new Guid("028ca6e5-dc41-45d5-bad9-4859c1b59b52"),
+                            RoleId = new Guid("90ed8cb5-2141-4509-a898-5b12ad1303d1"),
                             IsActived = true,
-                            RegisterDate = new DateTime(2024, 10, 29, 18, 24, 25, 332, DateTimeKind.Local).AddTicks(4562),
+                            RegisterDate = new DateTime(2024, 10, 29, 16, 40, 59, 728, DateTimeKind.Local).AddTicks(5977),
                             Title = "مدیریت"
                         },
                         new
                         {
-                            RoleId = new Guid("8c337d7b-8d7f-40a1-93f5-4e62af650c50"),
+                            RoleId = new Guid("ab15fa1c-8869-42f5-b77c-ac53dc975f55"),
                             IsActived = true,
-                            RegisterDate = new DateTime(2024, 10, 29, 18, 24, 25, 332, DateTimeKind.Local).AddTicks(4578),
+                            RegisterDate = new DateTime(2024, 10, 29, 16, 40, 59, 728, DateTimeKind.Local).AddTicks(5991),
                             Title = "فناوری اطلاعات"
                         });
                 });

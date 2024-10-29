@@ -1,0 +1,18 @@
+﻿@{
+    Layout = null;
+}
+<div class="btn btn-outline-primary btn-sm  my-3 mx-1">ارسال - استان</div>
+<div id="operation-box">
+</div>
+
+<script type="text/javascript">
+    var _registerUrl = '@Url.Action("Register", "Transfer", new { area = "Province" })';
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function (e) {
+        $.get(_registerUrl).done(function (result) {
+            $("#operation-box").html(result);
+        });
+    });
+</script>

@@ -119,12 +119,85 @@
                 </div>
             </li>
         }
-        <li class="nav-item border-bottom" id="transfer">
-            <a class="nav-link">
-                <i class="fa fa-exchange fa-lg mx-2"></i>
-                تبادل
+        <li class="nav-item border-bottom">
+            <a class="nav-link collapsed d-flex" href="#subMenu5" role="button" data-bs-toggle="collapse" aria-controls="subMenu5" aria-expanded="false">
+                <div class="w-75">
+                    <i class="fa fa-exchange fa-lg mx-2"></i>
+                    تبادل
+                </div>
+                <div class="w-25 d-flex justify-content-end mx-2 align-items-center">
+                    <i class="fa fa-caret-square-o-down"></i>
+                </div>
             </a>
+            <div class="collapse nav-background" id="subMenu5">
+                <ul class="flex-column nav flex-nowrap font-weight-light p-0">
+                    <li class="nav-item p-0">
+                        <a class="nav-link p-1 border-bottom border-top collapsed d-flex" href="#subMenu6" role="button" data-bs-toggle="collapse" aria-controls="subMenu6" aria-expanded="false">
+                            <div class="w-75">
+                                <i class="fa fa-long-arrow-right mx-3 my-1"></i>
+                                ارسال
+                            </div>
+                            <div class="w-25 d-flex justify-content-end mx-2 align-items-center">
+                                <i class="fa fa-caret-square-o-down"></i>
+                            </div>
+                        </a>
+                        <div class="collapse nav-background" id="subMenu6">
+                            <ul class="flex-column nav font-weight-light p-0">
+                                <li class="nav-item" id="provineManagementTransfers">
+                                    <a class="nav-link p-1 border-bottom border-top">
+                                        <i class="fa fa-minus-square mx-3"></i>
+                                        استان
+                                    </a>
+                                </li>
+                                <li class="nav-item" id="countyManagementTransfers">
+                                    <a class="nav-link p-1 border-bottom border-top">
+                                        <i class="fa fa-minus-square mx-3"></i>
+                                        شهرستان
+                                    </a>
+                                </li>
+                                <li class="nav-item" id="districtManagementTransfers">
+                                    <a class="nav-link p-1 border-bottom border-top">
+                                        <i class="fa fa-minus-square mx-3"></i>
+                                        بخش
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item p-0">
+                        <a class="nav-link p-1 border-bottom border-top collapsed d-flex" href="#subMenu7" role="button" data-bs-toggle="collapse" aria-controls="subMenu7" aria-expanded="false">
+                            <div class="w-75">
+                                <i class="fa fa-exchange mx-3 my-1"></i>
+                                تبادلات
+                            </div>
+                            <div class="w-25 d-flex justify-content-end mx-2 align-items-center">
+                                <i class="fa fa-caret-square-o-down"></i>
+                            </div>
+                        </a>
+                        <div class="collapse nav-background" id="subMenu7">
+                            <ul class="flex-column nav font-weight-light p-0">
+                                <li class="nav-item" id="provinceManagementInternalTransfers">
+                                    <a class="nav-link p-1 border-bottom border-top">
+                                        <i class="fa fa-minus-square mx-3"></i>
+                                        درون سطح
+                                    </a>
+                                </li>
+                                <li class="nav-item" id="provinceManagementExternalTransfers">
+                                    <a class="nav-link p-1 border-bottom border-top">
+                                        <i class="fa fa-minus-square mx-3"></i>
+                                        برون سطح
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </li>
+                </ul>
+            </div>
+
         </li>
+
+
         @if (IsUserInRole)
         {
             <li class="nav-item border-bottom">

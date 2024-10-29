@@ -16,12 +16,9 @@ namespace Domain.Entities.Portal.Models
         public string Title { get; set; }
         public string? Description { get; set; }
         public string? ContentType { get; set; }
+        public string? FileName { get; set; }
         public string? FileFormat { get; set; }
         public byte[]? DataBytes { get; set; }
-        public Guid UserUploader { get; set; }
-        public Guid RoleUploader { get; set; }
-        public Guid ReceiverUserId { get; set; }
-        public Guid ReceiverRole { get; set; }
         public DateTime UploadDate { get; set; }
         public bool IsActived{ get; set; }
         #endregion

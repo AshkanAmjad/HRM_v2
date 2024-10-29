@@ -5,7 +5,10 @@
     var _provinceManagementRolesUrl = '@Url.Action("ProvinceRolesIndex", "Access", new { area = "Province" })';
     var _provinceManagementUserRolesUrl = '@Url.Action("ProvinceUserRolesIndex", "Access", new { area = "Province" })';
     var _provinceReportsUrl = '@Url.Action("ProvinceReportsIndex", "Report", new { area = "Province" })';
-    var _provinceManagementDocumentsUrl = '@Url.Action("ProvinceManagementDocumentsIndex", "Document", new { area = "Province" })';
+    var _provinceManagementTransfersUrl = '@Url.Action("ProvinceTransfersIndex", "Transfer", new { area = "Province" })';
+    var _provinceManagementInternalTransfersUrl = '@Url.Action("ProvinceInternalTransfersIndex", "Transfer", new { area = "Province" })';
+    var _provinceManagementExternalTransfersUrl = '@Url.Action("ProvinceExternalTransfersIndex", "Transfer", new { area = "Province" })';
+
 </script>
 <script type="text/javascript">
     $(function () {
@@ -61,5 +64,31 @@
                 $("#main").html(result);
             });
         });
+        //------------------------------------------------------------------------
+        $("#provineManagementTransfers").off("click");
+        $("#provineManagementTransfers").on("click", function (e) {
+            e.preventDefault();
+            $.get(_provinceManagementTransfersUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+        //------------------------------------------------------------------------
+        $("#_provinceManagementInternalTransfers").off("click");
+        $("#_provinceManagementInternalTransfers").on("click", function (e) {
+            e.preventDefault();
+            $.get(_provinceManagementInternalTransfersUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+        //------------------------------------------------------------------------ 
+        $("#provinceManagementExternalTransfers").off("click");
+        $("#provinceManagementExternalTransfers").on("click", function (e) {
+            e.preventDefault();
+            $.get(_provinceManagementExternalTransfersUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+        //------------------------------------------------------------------------
+
     });
 </script>

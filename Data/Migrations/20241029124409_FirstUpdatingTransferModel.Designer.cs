@@ -4,6 +4,7 @@ using Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(HRMContext))]
-    partial class HRMContextModelSnapshot : ModelSnapshot
+    [Migration("20241029124409_FirstUpdatingTransferModel")]
+    partial class FirstUpdatingTransferModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,10 +31,7 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("DepartmentIdReceiver")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("DepartmentIdUploader")
+                    b.Property<Guid>("DepartmentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsActived")
@@ -42,7 +42,7 @@ namespace Data.Migrations
 
                     b.HasKey("DepartmentTransferId");
 
-                    b.HasIndex("DepartmentIdUploader");
+                    b.HasIndex("DepartmentId");
 
                     b.HasIndex("TransferId");
 
@@ -110,9 +110,6 @@ namespace Data.Migrations
                     b.Property<string>("FileFormat")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FileName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsActived")
                         .HasColumnType("bit");
 
@@ -123,6 +120,12 @@ namespace Data.Migrations
 
                     b.Property<DateTime>("UploadDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserIdReceiver")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserIdUploader")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("TransferId");
 
@@ -192,16 +195,16 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            RoleId = new Guid("028ca6e5-dc41-45d5-bad9-4859c1b59b52"),
+                            RoleId = new Guid("b0c7b1dc-feb5-4bcd-a343-83824b3d1909"),
                             IsActived = true,
-                            RegisterDate = new DateTime(2024, 10, 29, 18, 24, 25, 332, DateTimeKind.Local).AddTicks(4562),
+                            RegisterDate = new DateTime(2024, 10, 29, 16, 14, 8, 297, DateTimeKind.Local).AddTicks(709),
                             Title = "مدیریت"
                         },
                         new
                         {
-                            RoleId = new Guid("8c337d7b-8d7f-40a1-93f5-4e62af650c50"),
+                            RoleId = new Guid("ca1d8818-d2b1-447a-a551-e360d2aaf12c"),
                             IsActived = true,
-                            RegisterDate = new DateTime(2024, 10, 29, 18, 24, 25, 332, DateTimeKind.Local).AddTicks(4578),
+                            RegisterDate = new DateTime(2024, 10, 29, 16, 14, 8, 297, DateTimeKind.Local).AddTicks(727),
                             Title = "فناوری اطلاعات"
                         });
                 });
@@ -313,7 +316,7 @@ namespace Data.Migrations
                 {
                     b.HasOne("Domain.Entities.Security.Models.Department", "Department")
                         .WithMany("DepartmentTransfers")
-                        .HasForeignKey("DepartmentIdUploader")
+                        .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -1,5 +1,6 @@
 ﻿using Domain.DTOs.General;
 using Domain.DTOs.Portal.Document;
+using Domain.DTOs.Portal.Transfer;
 using Domain.DTOs.Security.Login;
 using Domain.DTOs.Security.Profile;
 using Domain.DTOs.Security.Role;
@@ -10,6 +11,7 @@ using FluentValidation.AspNetCore;
 using HRM.Models.Validation;
 using HRM.Models.Validation.General;
 using HRM.Models.Validation.Portal.Document;
+using HRM.Models.Validation.Portal.Transfer;
 using HRM.Models.Validation.Security;
 using HRM.Models.Validation.Security.Login;
 using HRM.Models.Validation.Security.Profile;
@@ -51,6 +53,8 @@ namespace HRM.Extensions
             services.AddScoped<IValidator<ProfileEditVM>, ProfileEditValidator>();
 
             services.AddScoped<IValidator<DownloadVM>, DownloadValidator>();
+
+            services.AddScoped<IValidator<TransferRegisterVM>,TransferRegisterValidator>();
 
             #endregion
 

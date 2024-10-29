@@ -17,6 +17,7 @@
     <Folder Include="Areas\County\Models\" />
     <Folder Include="Areas\County\Views\Shared\Partials\General\Refrences\css\" />
     <Folder Include="Areas\County\Views\Shared\Partials\General\Refrences\js\" />
+    <Folder Include="Areas\County\Views\Transfer\" />
     <Folder Include="Areas\District\Data\" />
     <Folder Include="Areas\District\Documents\District\Avatar\Original\" />
     <Folder Include="Areas\District\Documents\District\Avatar\Thumb\" />

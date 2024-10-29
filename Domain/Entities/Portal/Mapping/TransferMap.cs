@@ -18,14 +18,6 @@ namespace Domain.Entities.Portal.Mapping
             builder.Property(t => t.Title)
                             .IsRequired()
                             .HasMaxLength(100);
-            builder.Property(t => t.UserUploader)
-                            .IsRequired();
-            builder.Property(t => t.RoleUploader)
-                .IsRequired();
-            builder.Property(t => t.ReceiverUserId)
-                .IsRequired();
-            builder.Property(t => t.ReceiverRole)
-                .IsRequired();
             builder.Property(t => t.UploadDate)
                 .IsRequired();
             builder.Property(t => t.IsActived)

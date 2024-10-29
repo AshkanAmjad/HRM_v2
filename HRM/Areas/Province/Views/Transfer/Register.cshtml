@@ -1,0 +1,197 @@
+﻿@model Domain.DTOs.Portal.Transfer.TransferRegisterVM
+@{
+    Layout = null;
+    var departments = ViewBag.Departments != null
+      ? ViewBag.Departments
+      : new List<SelectListItem>();
+
+    var roles = ViewBag.Roles != null
+        ? ViewBag.Roles
+        : new List<SelectListItem>();
+}
+<h6 class="mt-lg-3 mb-4 text-center cursor fs-6 border border-top-0 py-2 border-end-0 border-start-0">
+    <i class="fa fa-send mx-2 text-primary"></i>
+    فرم ارسال استان - استان
+</h6>
+<p class="fs-8 mt-3 fw-bold">
+    <i class="fa fa-lg me-3 ms-2 fa-bullseye text-primary"></i>
+    اطلاعات گیرنده را با دقت در ورودی های مربوطه وارد کنید.
+</p>
+<form id="registerForm" enctype="multipart/form-data" class="px-2" asp-antiforgery="true">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="AreaReceiver" value="0" />
+    <input type="hidden" asp-for="AreaUploader" value="0" />
+    <input type="hidden" asp-for="ProvinceUploader" value="1" />
+    <div class="row">
+        <div class="col-xl-7">
+            <div class="row mt-2 px-2">
+                <div class="col-5 col-lg-4">
+                    <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
+                    <label class="control-label">عنوان :</label>
+                </div>
+                <div class="col-7 col-lg-8">
+                    <input asp-for="Title" class="form-control w-100" tabindex="1" autocomplete="off" placeholder="مقدار مناسبی برای عنوان وارد کنید ..." />
+                    <span asp-validation-for="Title" class="text-danger fs-8"></span>
+                </div>
+            </div>
+            <div class="row mt-2 px-2">
+                <div class="col-5 col-lg-4">
+                    <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
+                    <label class="control-label">شعبه استان :</label>
+                </div>
+                <div class="col-7 col-lg-8">
+                    <select class="form-select" aria-label=".form-select-sm" asp-items="departments" id="provinceDepartmentStatus" tabindex="2">
+                        <option selected class="fs-7">شعبه سطح استان خود را انتخاب کنید ...</option>
+                    </select>
+                    <span class="text-danger fs-8" id="departmentError"></span>
+                </div>
+            </div>
+            <p class="help-block cursor fs-8 mt-2 mb-3 px-2 text-black-50">
+                <i class="fa fa-exclamation-circle fa-lg text-warning my-1 ms-2"></i>
+                در صورت ارسال برای کارمند یا معاونت خاصی، تکمیل فقط یکی از دو ورودی زیر الزامی است و در غیر این صورت چیزی وارد نکنید:
+            </p>
+            <div class="row mt-2 px-2">
+                <div class="col-5 col-lg-4">
+                    <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
+                    <label class="control-label">پرسنل <sup class="text-danger fs-6 fw-bold">*</sup> :</label>
+                </div>
+                <div class="col-7 col-lg-8">
+                    <select class="form-select" aria-label=".form-select-sm" id="provinceUserStatus" tabindex="3">
+                        <option selected class="fs-7" id="userStatus">پرسنل مورد نظر را انتخاب کنید ...</option>
+                    </select>
+                    <span class="text-danger fs-8" id="userError"></span>
+                </div>
+            </div>
+            <div class="row mt-2 px-2">
+                <div class="col-5 col-lg-4">
+                    <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
+                    <label class="control-label">معاونت <sup class="text-danger fs-6 fw-bold">*</sup> :</label>
+                </div>
+                <div class="col-7 col-lg-8">
+                    <select class="form-select" aria-label=".form-select-sm" asp-items="roles" id="roleStatus" tabindex="4">
+                        <option selected class="fs-7">معاونت مربوطه، را انتخاب کنید ...</option>
+                    </select>
+                    <span class="text-danger fs-8" id="roleError"></span>
+                </div>
+            </div>
+            <div class="row mt-2 px-2">
+                <div class="col-5 col-lg-4">
+                    <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
+                    <label class="control-label">توضیحات :</label>
+                </div>
+                <div class="col-7 col-lg-8">
+                    <textarea asp-for="Description" class="form-control" tabindex="5" id="editor"></textarea>
+                    <span asp-validation-for="Description" class="text-danger fs-8"></span>
+                </div>
+            </div>
+            <div class="row mt-2 px-2 custom-file">
+                <div class="col-5 col-lg-4">
+                    <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
+                    <label class="control-label">بارگذاری سند :</label>
+                </div>
+                <div class="col-7 col-lg-8 fs-8">
+                    <input asp-for="Document" id="fileInput" class="custom-file-input hidden" tabindex="6" />
+                    <button type="button" class="btn btn-primary fs-8" id="uploadButton">
+                       سندی انتخاب کنید ...
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-4 mb-1 px-2 border border-bottom-0 border-start-0 border-end-0">
+            <button type="submit" class="btn btn-primary px-5 mt-3" id="submitBtn" tabindex="7">
+                <i class="fa fa-send mx-2"></i>
+                ارسال
+            </button>
+        </div>
+</form>
+
+
+<partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
+    <partial name="~/Views/Shared/Partials/General/Refrences/js/_CkEditorPartial.cshtml" />
+
+    <script type="text/javascript">
+        var _getUsersUrl = '@Url.Action("GetUsersForSelectBox", "Access", new { area = "Province" })';
+        var _registerUrl = '@Url.Action("Register", "Transfer", new { area = "Province" })';
+    </script>
+    <script type="text/javascript">
+        $.fn.Validation = function () {
+            var result = true;
+            var departmentError = $("#departmentError");
+
+            var $department = $("#provinceDepartmentStatus").find(':selected').text();
+
+            var isDisabled = $("#provinceUserStatus").is('[disabled]');
+
+            if ($department === "شعبه سطح استان خود را انتخاب کنید ...") {
+                departmentError.text("تکمیل ورودی شعبه استان ضروری است.");
+                result = false;
+            } else {
+                departmentError.text('');
+            }
+
+
+            $("#provinceDepartmentStatus").change(function () {
+                var $department = $("#provinceDepartmentStatus").find(':selected').text();
+                if ($department !== "شعبه سطح استان خود را انتخاب کنید ...") {
+                    departmentError.text('');
+                } else {
+                    departmentError.text("تکمیل ورودی شعبه استان ضروری است.");
+                    result = false;
+                }
+            });
+
+            return result;
+        }
+
+        //Seed data to select user
+        $("#provinceDepartmentStatus").change(function () {
+
+            $("#provinceUserStatus").empty();
+
+            var provinceDepartment = $("#provinceDepartmentStatus").find(':selected').val();
+
+            if (provinceDepartment !== "شعبه سطح استان خود را انتخاب کنید ...") {
+                $('#provinceUserStatus').attr('disabled', false);
+
+                var direction = {
+                    level: "0",
+                    province: provinceDepartment,
+                    County: "0",
+                    District: "0"
+                };
+
+                $.post(_getUsersUrl, direction)
+                    .done(function (result) {
+                        if (result.success) {
+                            $.each(result.data, function () {
+                                $("#provinceUserStatus").append('<option id="userStatus" value=' + this.value + '>' + this.text + '</option>');
+                            });
+                        }
+                    });
+
+            } else {
+                $('#provinceUserStatus').attr('disabled', true);
+                $("#provinceUserStatus").append('<option id="userStatus" class="fs-7" >پرسنل مورد نظر را انتخاب کنید ...</option>');
+            }
+        });
+
+        //Disable select user
+        $('#provinceUserStatus').attr('disabled', true);
+
+        //Editor
+        $('#editor').each(function () {
+            CKEDITOR.replace($(this).prop('id'));
+        });
+
+        //Custom file input
+        $(document).ready(function () {
+            $('#uploadButton').on('click', function () {
+                $('#fileInput').click();
+            });
+
+            $('#fileInput').on('change', function () {
+                var fileName = this.files.length > 0 ? this.files[0].name : 'سندی انتخاب کنید';
+                $('.custom-file-label').text(fileName);
+            });
+        });
+    </script>

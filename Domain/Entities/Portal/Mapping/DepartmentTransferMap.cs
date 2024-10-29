@@ -15,10 +15,13 @@ namespace Domain.Entities.Portal.Mapping
     {
         public void Configure(EntityTypeBuilder<DepartmentTransfer> builder)
         {
-            builder.HasKey(dt => new { dt.DepartmentTransferId});
+            builder.HasKey(dt => new { dt.DepartmentTransferId });
             builder.HasOne(d => d.Department)
                             .WithMany(dt => dt.DepartmentTransfers)
-                            .HasForeignKey(d => d.DepartmentId);
+                            .HasForeignKey(d => d.DepartmentIdReceiver);
+            builder.HasOne(d => d.Department)
+                             .WithMany(dt => dt.DepartmentTransfers)
+                             .HasForeignKey(d => d.DepartmentIdUploader);
             builder.HasOne(t => t.Transfer)
                             .WithMany(dt => dt.DepartmentTransfers)
                             .HasForeignKey(t => t.TransferId);

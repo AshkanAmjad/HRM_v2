@@ -14,7 +14,8 @@ namespace Domain.Entities.Portal.Models
         #region Properties
         public Guid DepartmentTransferId {  get; set; }
         public Guid TransferId { get; set; }
-        public Guid DepartmentId { get; set; }
+        public Guid DepartmentIdUploader { get; set; }
+        public Guid DepartmentIdReceiver { get; set; }
         public bool IsActived { get; set; }
         #endregion
 

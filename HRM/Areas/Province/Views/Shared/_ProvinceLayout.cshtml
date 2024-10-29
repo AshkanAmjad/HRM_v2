@@ -36,21 +36,3 @@
         @await RenderSectionAsync("Scripts", required: false)
 </html>
 
-<script type="text/javascript">
-    var _transferUrl = '@Url.Action("Index", "Document")';
-</script>
-<script type="text/javascript">
-
-
-    $(function () {
-        $("#transfer").off("click");
-        $("#transfer").on("click", function (e) {
-            e.preventDefault();
-            $.get(_transferUrl).done(function (result) {
-                $("#main").html(result);
-            });
-        });
-        
-    })
-</script>
-
