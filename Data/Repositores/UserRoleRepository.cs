@@ -38,6 +38,14 @@ namespace Data.Repositores
                                      .AsQueryable();
         }
 
+        public List<string> GetUserRolesByUserId(Guid userId)
+        {
+            var userRoles = _context.UserRoles.Where(ur => ur.UserId == userId)
+                                              .Select(ur => ur.Role.Title)
+                                              .ToList();
+            return userRoles;
+        }
+
 
         public List<DisplayUserRolesVM> GetUserRoles(string area)
         {
@@ -304,7 +312,6 @@ namespace Data.Repositores
         {
             _context.SaveChanges();
         }
-
 
     }
 

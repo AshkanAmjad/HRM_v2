@@ -28,6 +28,7 @@ namespace Domain.Interfaces
         IQueryable<User> GetUsersQuery();
         UserEditVM? GetUserById(Guid userId);
         Guid? GetDepartmentIdByUserId(Guid userId, string area);
+        AreaVM GetAreaUserByUserId(Guid userId);
         #endregion
 
         #region Login

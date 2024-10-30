@@ -13,6 +13,7 @@ namespace Domain.Interfaces
         IQueryable<UserRole> GetUserRolesQuery();
         List<DisplayUserRolesVM> GetUserRoles(string area);
         DisplayDetailsVM GetUserDetails(Guid userId);
+        List<string> GetUserRolesByUserId(Guid userId);
         List<SelectListItem> GetRolesForSelectBox();
         List<SelectListItem> GetUsersForSelectBox(UserRolesDirectionVM direction);
         bool RegisterUserRole(UserRoleRegisterVM model, out string message);

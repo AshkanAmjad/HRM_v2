@@ -55,6 +55,21 @@ namespace Data.Repositores
 
             return user;
         }
+
+        public AreaVM GetAreaUserByUserId(Guid userId)
+        {
+            var user = _context.Departments.Where(d => d.UserId == userId)
+                                           .Select(d => new AreaVM
+                                           {
+                                               County = d.County,
+                                               District= d.District,
+                                               Province= d.Province,
+                                               Section = d.Area
+                                           })
+                                           .FirstOrDefault();
+            return user;
+        }
+
         public bool Register(UserRegisterVM user, out string message)
         {
             string checkMessage = "";

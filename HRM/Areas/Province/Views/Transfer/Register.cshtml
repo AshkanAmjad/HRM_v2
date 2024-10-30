@@ -21,7 +21,9 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="AreaReceiver" value="0" />
     <input type="hidden" asp-for="AreaUploader" value="0" />
-    <input type="hidden" asp-for="ProvinceUploader" value="1" />
+    <input type="hidden" asp-for="CountyReceiver" value="0" />
+    <input type="hidden" asp-for="DistrictReceiver" value="0" />
+
     <div class="row">
         <div class="col-xl-7">
             <div class="row mt-2 px-2">
@@ -40,7 +42,7 @@
                     <label class="control-label">شعبه استان :</label>
                 </div>
                 <div class="col-7 col-lg-8">
-                    <select class="form-select" aria-label=".form-select-sm" asp-items="departments" id="provinceDepartmentStatus" tabindex="2">
+                    <select asp-for="ProvinceReceiver" class="form-select" aria-label=".form-select-sm" asp-items="departments" id="provinceDepartmentStatus" tabindex="2">
                         <option selected class="fs-7">شعبه سطح استان خود را انتخاب کنید ...</option>
                     </select>
                     <span class="text-danger fs-8" id="departmentError"></span>
@@ -56,7 +58,7 @@
                     <label class="control-label">پرسنل <sup class="text-danger fs-6 fw-bold">*</sup> :</label>
                 </div>
                 <div class="col-7 col-lg-8">
-                    <select class="form-select" aria-label=".form-select-sm" id="provinceUserStatus" tabindex="3">
+                    <select asp-for="UserIdReceiver" class="form-select" aria-label=".form-select-sm" id="provinceUserStatus" tabindex="3">
                         <option selected class="fs-7" id="userStatus">پرسنل مورد نظر را انتخاب کنید ...</option>
                     </select>
                     <span class="text-danger fs-8" id="userError"></span>
@@ -68,7 +70,7 @@
                     <label class="control-label">معاونت <sup class="text-danger fs-6 fw-bold">*</sup> :</label>
                 </div>
                 <div class="col-7 col-lg-8">
-                    <select class="form-select" aria-label=".form-select-sm" asp-items="roles" id="roleStatus" tabindex="4">
+                    <select asp-for="RoleReceiver" class="form-select" aria-label=".form-select-sm" asp-items="roles" id="roleStatus" tabindex="4">
                         <option selected class="fs-7">معاونت مربوطه، را انتخاب کنید ...</option>
                     </select>
                     <span class="text-danger fs-8" id="roleError"></span>
@@ -92,8 +94,10 @@
                 <div class="col-7 col-lg-8 fs-8">
                     <input asp-for="Document" id="fileInput" class="custom-file-input hidden" tabindex="6" />
                     <button type="button" class="btn btn-primary fs-8" id="uploadButton">
-                       سندی انتخاب کنید ...
+                        سندی انتخاب کنید ...
                     </button>
+                    <span id="customFileLabel">سندی انتختب نشده است</span>
+
                 </div>
             </div>
         </div>
@@ -114,13 +118,28 @@
         var _registerUrl = '@Url.Action("Register", "Transfer", new { area = "Province" })';
     </script>
     <script type="text/javascript">
+
+        //Validation
         $.fn.Validation = function () {
             var result = true;
+
             var departmentError = $("#departmentError");
+            var roleError = $("#roleError");
+            var userError = $("#userError");
 
             var $department = $("#provinceDepartmentStatus").find(':selected').text();
+            var $userStatus = $("#provinceUserStatus").find(':selected').text();
+            var $roleStatus = $("#roleStatus").find(':selected').text();
 
-            var isDisabled = $("#provinceUserStatus").is('[disabled]');
+            if (($userStatus !== "پرسنل مورد نظر را انتخاب کنید ...") &&
+                ($roleStatus !== "معاونت مربوطه، را انتخاب کنید ...")) {
+                userError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
+                roleError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
+                result = false;
+            } else {
+                roleError.text('');
+                userError.text('');
+            }
 
             if ($department === "شعبه سطح استان خود را انتخاب کنید ...") {
                 departmentError.text("تکمیل ورودی شعبه استان ضروری است.");
@@ -129,9 +148,41 @@
                 departmentError.text('');
             }
 
+            $("#provinceUserStatus").change(function () {
+                var $userStatus = $("#provinceUserStatus").find(':selected').text();
+                var $roleStatus = $("#roleStatus").find(':selected').text();
+
+                if ($userStatus !== "پرسنل مورد نظر را انتخاب کنید ..." &&
+                    $roleStatus !== "معاونت مربوطه، را انتخاب کنید ...") {
+                    userError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
+                    roleError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
+                    result = false;
+                } else {
+                    userError.text('');
+                    roleError.text('');
+                }
+            })
+
+            $("#roleStatus").change(function () {
+                var $userStatus = $("#provinceUserStatus").find(':selected').text();
+                var $roleStatus = $("#roleStatus").find(':selected').text();
+
+
+                if ($userStatus !== "پرسنل مورد نظر را انتخاب کنید ..." &&
+                    $roleStatus !== "معاونت مربوطه، را انتخاب کنید ...") {
+                    userError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
+                    roleError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
+                    result = false;
+                } else {
+                    userError.text('');
+                    roleError.text('');
+                }
+            })
+
 
             $("#provinceDepartmentStatus").change(function () {
                 var $department = $("#provinceDepartmentStatus").find(':selected').text();
+
                 if ($department !== "شعبه سطح استان خود را انتخاب کنید ...") {
                     departmentError.text('');
                 } else {
@@ -148,10 +199,12 @@
 
             $("#provinceUserStatus").empty();
 
+            $("#provinceUserStatus").append('<option selected class="fs-7" id="userStatus" value="">پرسنل مورد نظر را انتخاب کنید ...</option>');
+
             var provinceDepartment = $("#provinceDepartmentStatus").find(':selected').val();
 
             if (provinceDepartment !== "شعبه سطح استان خود را انتخاب کنید ...") {
-                $('#provinceUserStatus').attr('disabled', false);
+                $('#provinceUserStatus, #roleStatus').attr('disabled', false);
 
                 var direction = {
                     level: "0",
@@ -170,13 +223,14 @@
                     });
 
             } else {
-                $('#provinceUserStatus').attr('disabled', true);
-                $("#provinceUserStatus").append('<option id="userStatus" class="fs-7" >پرسنل مورد نظر را انتخاب کنید ...</option>');
+                $('#provinceUserStatus ,#roleStatus').attr('disabled', true);
             }
         });
 
-        //Disable select user
-        $('#provinceUserStatus').attr('disabled', true);
+        //Disable
+
+        $('#provinceUserStatus, #roleStatus').attr('disabled', true);
+
 
         //Editor
         $('#editor').each(function () {
@@ -190,8 +244,72 @@
             });
 
             $('#fileInput').on('change', function () {
+
                 var fileName = this.files.length > 0 ? this.files[0].name : 'سندی انتخاب کنید';
-                $('.custom-file-label').text(fileName);
+
+                if (fileName !== 'سندی انتخاب کنید') {
+                    $("#uploadButton").text("تغییر سند");
+                }
+
+                $('#customFileLabel').text(fileName);
+
+
+            });
+        });
+
+        //Send
+        $(function () {
+            $("#submitBtn").off("click");
+            $("#submitBtn").on("click", function (e) {
+                var validation = $.fn.Validation();
+                e.preventDefault();
+                var $form = $('#registerForm');
+                if ($form.valid() && validation == true) {
+                    $("#submitBtn").prop('disabled', true);
+                    var formData = new FormData($form.get(0));
+                    $.ajax({
+                        url: _registerUrl,
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (result) {
+                            if (result.success) {
+                                GridReload();
+                                $("#operation-box").modal("toggle");
+                                Swal.fire({
+                                    title: result.message,
+                                    icon: 'success',
+                                    showConfirmButton: false,
+                                    timer: 4000,
+                                    showClass: {
+                                        popup: 'animate__animated animate__fadeInDown'
+                                    },
+                                    hideClass: {
+                                        popup: 'animate__animated animate__fadeOutDown'
+                                    }
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'خطا',
+                                    icon: 'error',
+                                    text: result.message,
+                                    showConfirmButton: false,
+                                    timer: 4000,
+                                    showClass: {
+                                        popup: 'animate__animated animate__fadeInDown'
+                                    },
+                                    hideClass: {
+                                        popup: 'animate__animated animate__fadeOutDown'
+                                    }
+                                })
+                            }
+                        },
+                        complete: function () {
+                            $("#submitBtn").prop('disabled', false);
+                        }
+                    });
+                };
             });
         });
     </script>

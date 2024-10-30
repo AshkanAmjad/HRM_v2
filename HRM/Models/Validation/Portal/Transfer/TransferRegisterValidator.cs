@@ -12,8 +12,8 @@ namespace HRM.Models.Validation.Portal.Transfer
                                  .WithMessage("تکمیل ورودی عنوان ضروری است.")
                                  .MaximumLength(100)
                                  .WithMessage("حداکثر تعداد حروف عنوان 100 حرف می باشد.")
-                                 .MinimumLength(3)
-                                 .WithMessage("حداقل تعداد حروف عنوان 3 حرف می باشد.")
+                                 .MinimumLength(1)
+                                 .WithMessage("حداقل تعداد حروف عنوان 1 حرف می باشد.")
                                  .Matches(@"^[\u0600-\u06FF\s]+$")
                                  .WithMessage("مقدار ورودی عنوان معتبر نیست.");
 
@@ -27,7 +27,7 @@ namespace HRM.Models.Validation.Portal.Transfer
 
             RuleFor(t => t.AreaUploader).NotEmpty()
                                         .NotNull();
-                                        
+
         }
     }
 }

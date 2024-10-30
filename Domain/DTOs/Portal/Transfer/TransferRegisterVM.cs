@@ -9,18 +9,14 @@ namespace Domain.DTOs.Portal.Transfer
 {
     public class TransferRegisterVM
     {
-        public Guid TransferId { get; set; }
+        public Guid? TransferId { get; set; }
         public string? Title {  get; set; }
         public string? Description { get; set; }
-        public string? ContentType { get; set; }
-        public string? FileFormat { get; set; }
-        public string? FileName { get; set; }
         public IFormFile? Document { get; set; }
-        public byte[]? DataBytes { get; set; } 
         public string? RoleUploader {  get; set; }
         public string? RoleReceiver {  get; set; }
-        public string? UserNameReceiver {  get; set; }
-        public string? UserNameUploader {  get; set; }
+        public string? UserIdReceiver {  get; set; }
+        public Guid UserIdUploader {  get; set; }
         public string? AreaUploader {  get; set; }
         public string? AreaReceiver { get; set; }
         public string? ProvinceUploader {  get; set; }
