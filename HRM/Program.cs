@@ -33,7 +33,7 @@ var wwwrootOptions = new StaticFileOptions
 
 var province_provinceAvatarsOptions = new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Areas/Province/Documents/Province/Avatar/Thumb")),
+    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Areas/Province/Documents/Province/Avatars/Thumb")),
     RequestPath = "/Province/Avatars/Province",
     OnPrepareResponse = context =>
     {
@@ -45,7 +45,7 @@ var province_provinceAvatarsOptions = new StaticFileOptions
 
 var county_countyAvatarsOptions = new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Areas/County/Documents/County/Avatar/Thumb")),
+    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Areas/County/Documents/County/Avatars/Thumb")),
     RequestPath = "/County/Avatars/County",
     OnPrepareResponse = context =>
     {
@@ -57,7 +57,7 @@ var county_countyAvatarsOptions = new StaticFileOptions
 
 var district_districtAvatarsOptions = new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Areas/District/Documents/District/Avatar/Thumb")),
+    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Areas/District/Documents/District/Avatars/Thumb")),
     RequestPath = "/District/Avatars/District",
     OnPrepareResponse = context =>
     {
@@ -66,28 +66,6 @@ var district_districtAvatarsOptions = new StaticFileOptions
 
     }
 };
-
-//var province_countyAvatarsOptions = new StaticFileOptions
-//{
-//    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Areas/Province/Documents/County/Avatar/Thumb")),
-//    RequestPath = "/Province/Avatars/County",
-//    OnPrepareResponse = context =>
-//    {
-//        context.Context.Response.Headers.Append("Cache-Control", "no-cache, no-store");
-//        context.Context.Response.Headers.Append("Expires", "-1");
-//    }
-//};
-
-//var province_districtAvatarsOptions = new StaticFileOptions
-//{
-//    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Areas/Province/Documents/District/Avatar/Thumb")),
-//    RequestPath = "/Province/Avatars/District",
-//    OnPrepareResponse = context =>
-//    {
-//        context.Context.Response.Headers.Append("Cache-Control", "no-cache, no-store");
-//        context.Context.Response.Headers.Append("Expires", "-1");
-//    }
-//};
 #endregion
 
 var app = builder.Build();
@@ -108,9 +86,6 @@ app.UseStaticFiles(wwwrootOptions);
 app.UseStaticFiles(province_provinceAvatarsOptions);
 app.UseStaticFiles(county_countyAvatarsOptions);
 app.UseStaticFiles(district_districtAvatarsOptions);
-
-//app.UseStaticFiles(province_countyAvatarsOptions);
-//app.UseStaticFiles(province_districtAvatarsOptions);
 
 app.UseRouting();
 

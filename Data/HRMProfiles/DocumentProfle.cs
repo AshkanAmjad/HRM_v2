@@ -20,14 +20,14 @@ namespace Data.HRMProfiles
         public DocumentProfle()
         {
             CreateMap<UserRegisterVM, UploadVM>()
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.UserName))
                 .ForMember(dest => dest.Area, opt => opt.MapFrom(src => src.AreaDepartment))
                 .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.CountyDepartment))
                 .ForMember(dest => dest.District, opt => opt.MapFrom(opt => opt.DistrictDepartment))
                 .ForMember(dest => dest.document, opt => opt.MapFrom(opt => opt.Avatar));
 
             CreateMap<UserEditVM, UploadVM>()
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.UserName))
                 .ForMember(dest => dest.DepartmentId, opt => opt.MapFrom(src => src.DepartmenyId))
                 .ForMember(dest => dest.Area, opt => opt.MapFrom(src => src.AreaDepartment))
                 .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.CountyDepartment))
@@ -35,7 +35,7 @@ namespace Data.HRMProfiles
                 .ForMember(dest => dest.document, opt => opt.MapFrom(opt => opt.Avatar));
 
             CreateMap<ProfileEditVM, UploadVM>()
-               .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
+               .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.UserName))
                .ForMember(dest => dest.DepartmentId, opt => opt.MapFrom(src => src.DepartmenyId))
                .ForMember(dest => dest.Area, opt => opt.MapFrom(src => src.AreaDepartment))
                .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.CountyDepartment))

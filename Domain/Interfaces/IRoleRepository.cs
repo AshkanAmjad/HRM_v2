@@ -21,6 +21,7 @@ namespace Domain.Interfaces
         bool DisableRole(RoleEdit_Active_DisableVM model, out string message);
         bool ActiveRole(RoleEdit_Active_DisableVM model, out string message);
         RoleEditVM? GetRoleById(Guid roleId);
+        string GetRoleTitleById(Guid roleId);
         bool Similarity(RoleRegisterVM model, out string message);
         bool Similarity(RoleEditVM model, out string message);
         #endregion

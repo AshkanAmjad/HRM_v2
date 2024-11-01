@@ -12,23 +12,25 @@
 
   <ItemGroup>
     <Folder Include="Areas\County\Data\" />
-    <Folder Include="Areas\County\Documents\County\Avatar\Original\" />
-    <Folder Include="Areas\County\Documents\County\Avatar\Thumb\" />
+    <Folder Include="Areas\County\Documents\County\Transfers\" />
+    <Folder Include="Areas\County\Documents\Distrcict\Transfers\" />
+    <Folder Include="Areas\County\Documents\Province\Transfers\" />
     <Folder Include="Areas\County\Models\" />
     <Folder Include="Areas\County\Views\Shared\Partials\General\Refrences\css\" />
     <Folder Include="Areas\County\Views\Shared\Partials\General\Refrences\js\" />
     <Folder Include="Areas\County\Views\Transfer\" />
     <Folder Include="Areas\District\Data\" />
-    <Folder Include="Areas\District\Documents\District\Avatar\Original\" />
-    <Folder Include="Areas\District\Documents\District\Avatar\Thumb\" />
+    <Folder Include="Areas\District\Documents\County\Transfers\" />
+    <Folder Include="Areas\District\Documents\District\Avatars\Original\" />
+    <Folder Include="Areas\District\Documents\District\Avatars\Thumb\" />
+    <Folder Include="Areas\District\Documents\District\Transfers\" />
+    <Folder Include="Areas\District\Documents\Province\Transfers\" />
     <Folder Include="Areas\District\Models\" />
     <Folder Include="Areas\District\Views\Shared\Partials\General\Refrences\css\" />
     <Folder Include="Areas\District\Views\Shared\Partials\General\Refrences\js\" />
     <Folder Include="Areas\Province\Data\" />
-    <Folder Include="Areas\Province\Documents\County\" />
-    <Folder Include="Areas\Province\Documents\District\" />
-    <Folder Include="Areas\Province\Documents\Province\Avatar\Original\" />
-    <Folder Include="Areas\Province\Documents\Province\Avatar\Thumb\" />
+    <Folder Include="Areas\Province\Documents\County\Transfers\" />
+    <Folder Include="Areas\Province\Documents\District\Transfers\" />
     <Folder Include="Areas\Province\Documents\Province\Transfers\" />
     <Folder Include="Areas\Province\Models\" />
     <Folder Include="Areas\Province\Views\Shared\Partials\General\Refrences\css\" />

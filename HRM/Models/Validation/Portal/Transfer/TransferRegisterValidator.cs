@@ -25,8 +25,6 @@ namespace HRM.Models.Validation.Portal.Transfer
             RuleFor(t => t.AreaReceiver).NotNull()
                                         .NotEmpty();
 
-            RuleFor(t => t.AreaUploader).NotEmpty()
-                                        .NotNull();
 
         }
     }

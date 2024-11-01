@@ -3,6 +3,7 @@ using Data.Context;
 using Domain.DTOs.Portal.Transfer;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,15 @@ namespace Data.Repositores
         #endregion
         public bool Register(TransferRegisterVM model, out string message)
         {
-            throw new NotImplementedException();
+            string checkMessage = "اطلاعات ناقص ارسال شده است.";
+            if (model != null)
+            {
+
+                message = "";
+                return true;
+            }
+            message = checkMessage;
+            return false;
         }
 
         public void SaveChanges()

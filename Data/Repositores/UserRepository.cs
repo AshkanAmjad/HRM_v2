@@ -104,6 +104,11 @@ namespace Data.Repositores
                              .First()
                              .Email;
 
+        public string GetUserNameByUserId(Guid userId)
+             => _context.Users.Where(u => u.UserId == userId)
+                              .First()
+                              .UserName;
+
 
         public bool UserNameValidation(UsernameValidationVM model, out Guid userId, out string message)
         {

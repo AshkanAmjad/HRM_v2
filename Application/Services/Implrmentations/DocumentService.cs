@@ -72,7 +72,7 @@ namespace Application.Services.Implrmentations
             if (!dirOrginal)
                 Directory.CreateDirectory(path._saveDirOrginal);
 
-            if (!dirThumb)
+            if (!dirThumb && document.Name == "Avatar")
                 Directory.CreateDirectory(path._saveDirThumb);
 
             var documentNameOrginal = "";
@@ -80,12 +80,12 @@ namespace Application.Services.Implrmentations
 
             if (document.Name == "Avatar")
             {
-                documentNameOrginal = $"Avatar-{document.UserName}{Path.GetExtension(document.document.FileName)}";
-                documentNameThumb = $"Thumb-{document.UserName}{Path.GetExtension(document.document.FileName)}";
+                documentNameOrginal = $"Avatar-{document.Title}{Path.GetExtension(document.document.FileName)}";
+                documentNameThumb = $"Thumb-{document.Title}{Path.GetExtension(document.document.FileName)}";
             }
             else
             {
-                documentNameOrginal = $"Document-{document.UserName}{Path.GetExtension(document.document.FileName)}";
+                documentNameOrginal = $"Document-{document.Title}{Path.GetExtension(document.document.FileName)}";
             }
 
             string filePathOriginal = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirOrginal, documentNameOrginal);
@@ -105,7 +105,7 @@ namespace Application.Services.Implrmentations
 
                 DeleteDocumentOnServer("", filePathThumb);
 
-                SKBitmap resizedBitmap = ImageConverter.ResizeImage(filePathOriginal, 200, 200);
+                SKBitmap resizedBitmap = ImageConverter.ResizeImage(filePathOriginal, 200, 200 );
                 SKBitmap watermarkedBitmap = ImageConverter.WatermarkImage(resizedBitmap, watermarkImagePath);
                 ImageConverter.SaveImage(watermarkedBitmap, filePathThumb, 100);
             }
@@ -144,11 +144,6 @@ namespace Application.Services.Implrmentations
             byte[]? bytes = document.DataBytes;
 
             string filePathOriginal = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirOrginal, documentNameOrginal);
-
-            //using (var fileStream = new FileStream(filePathOriginal, FileMode.Truncate))
-            //{
-            //    fileStream.Write(bytes);
-            //}
 
             int retryCount = 0;
             while (retryCount < 5)
@@ -199,8 +194,8 @@ namespace Application.Services.Implrmentations
                 {
                     if (direction.Name == "Avatar")
                     {
-                        saveDirOrginal = "Areas/Province/Documents/Province/Avatar/Original";
-                        saveDirThumb = "Areas/Province/Documents/Province/Avatar/Thumb";
+                        saveDirOrginal = "Areas/Province/Documents/Province/Avatars/Original";
+                        saveDirThumb = "Areas/Province/Documents/Province/Avatars/Thumb";
 
                     }
                     else
@@ -227,14 +222,14 @@ namespace Application.Services.Implrmentations
             {
                 if (direction.County == "0" && direction.District == "0")
                 {
-                    saveDirOrginal = "Areas/County/Documents/County/Transfer";
+                    saveDirOrginal = "Areas/County/Documents/Province/Transfers";
                 }
                 else if (direction.County != "0" && direction.District == "0")
                 {
                     if (direction.Name == "Avatar")
                     {
-                        saveDirOrginal = "Areas/County/Documents/County/Avatar/Original";
-                        saveDirThumb = "Areas/County/Documents/County/Avatar/Thumb";
+                        saveDirOrginal = "Areas/County/Documents/County/Avatars/Original";
+                        saveDirThumb = "Areas/County/Documents/County/Avatars/Thumb";
 
                     }
                     else
@@ -258,22 +253,22 @@ namespace Application.Services.Implrmentations
             {
                 if (direction.County == "0" && direction.District == "0")
                 {
-                    saveDirOrginal = "Areas/District/Documents/Province/Transfer";
+                    saveDirOrginal = "Areas/District/Documents/Province/Transfers";
                 }
                 else if (direction.County != "0" && direction.District == "0")
                 {
-                    saveDirOrginal = "Areas/District/Documents/County/Transfer";
+                    saveDirOrginal = "Areas/District/Documents/County/Transfers";
                 }
                 else
                 {
                     if (direction.Name == "Avatar")
                     {
-                        saveDirOrginal = "Areas/District/Documents/District/Avatar/Original";
-                        saveDirThumb = "Areas/District/Documents/District/Avatar/Thumb";
+                        saveDirOrginal = "Areas/District/Documents/District/Avatars/Original";
+                        saveDirThumb = "Areas/District/Documents/District/Avatars/Thumb";
                     }
                     else
                     {
-                        saveDirOrginal = "Areas/District/Documents/District/Transfer";
+                        saveDirOrginal = "Areas/District/Documents/District/Transfers";
                     }
                 }
             }

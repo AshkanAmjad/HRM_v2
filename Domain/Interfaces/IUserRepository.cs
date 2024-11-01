@@ -29,6 +29,7 @@ namespace Domain.Interfaces
         UserEditVM? GetUserById(Guid userId);
         Guid? GetDepartmentIdByUserId(Guid userId, string area);
         AreaVM GetAreaUserByUserId(Guid userId);
+        string GetUserNameByUserId(Guid userId);
         #endregion
 
         #region Login

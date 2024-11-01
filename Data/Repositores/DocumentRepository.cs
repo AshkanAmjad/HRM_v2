@@ -39,7 +39,7 @@ namespace Data.Repositores
             if (file.document == null || file.document.Length <= 0)
                 return;
 
-            var userName = file.UserName;
+            var userName = file.Title;
             Document document = _mapper.Map<Document>(file);
             document.IsActived = true;
             document.UploadDate = DateTime.Now;
@@ -97,27 +97,27 @@ namespace Data.Repositores
                 {
                     if (direction.Name == "Avatar")
                     {
-                        saveDirOrginal = "Areas/Province/Documents/Province/Avatar/Original";
-                        saveDirThumb = "Areas/Province/Documents/Province/Avatar/Thumb";
+                        saveDirOrginal = "Areas/Province/Documents/Province/Avatars/Original";
+                        saveDirThumb = "Areas/Province/Documents/Province/Avatars/Thumb";
 
                     }
                     else
                     {
-                        saveDirOrginal = "Areas/Province/Documents/Province/Transfer";
+                        saveDirOrginal = "Areas/Province/Documents/Province/Transfers";
                     }
                 }
                 else if (direction.County != "0" && direction.District == "0")
                 {
                     if (direction.Name != "Avatar")
                     {
-                        saveDirOrginal = "Areas/Province/Documents/County/Transfer";
+                        saveDirOrginal = "Areas/Province/Documents/County/Transfers";
                     }
                 }
                 else
                 {
                     if (direction.Name != "Avatar")
                     {
-                        saveDirOrginal = "Areas/Province/Documents/District/Transfer";
+                        saveDirOrginal = "Areas/Province/Documents/District/Transfers";
                     }
                 }
             }
@@ -125,19 +125,19 @@ namespace Data.Repositores
             {
                 if (direction.County == "0" && direction.District == "0")
                 {
-                    saveDirOrginal = "Areas/County/Documents/County/Transfer";
+                    saveDirOrginal = "Areas/County/Documents/County/Transfers";
                 }
                 else if (direction.County != "0" && direction.District == "0")
                 {
                     if (direction.Name == "Avatar")
                     {
-                        saveDirOrginal = "Areas/County/Documents/County/Avatar/Original";
-                        saveDirThumb = "Areas/County/Documents/County/Avatar/Thumb";
+                        saveDirOrginal = "Areas/County/Documents/County/Avatars/Original";
+                        saveDirThumb = "Areas/County/Documents/County/Avatars/Thumb";
 
                     }
                     else
                     {
-                        saveDirOrginal = "Areas/County/Documents/County/Transfer";
+                        saveDirOrginal = "Areas/County/Documents/County/Transfers";
                     }
                 }
                 else
@@ -146,7 +146,7 @@ namespace Data.Repositores
                     {
                         if (direction.Name != "Avatar")
                         {
-                            saveDirOrginal = "Areas/County/Documents/District/Transfer";
+                            saveDirOrginal = "Areas/County/Documents/District/Transfers";
                         }
 
                     }
@@ -156,22 +156,22 @@ namespace Data.Repositores
             {
                 if (direction.County == "0" && direction.District == "0")
                 {
-                    saveDirOrginal = "Areas/District/Documents/Province/Transfer";
+                    saveDirOrginal = "Areas/District/Documents/Province/Transfers";
                 }
                 else if (direction.County != "0" && direction.District == "0")
                 {
-                    saveDirOrginal = "Areas/District/Documents/County/Transfer";
+                    saveDirOrginal = "Areas/District/Documents/County/Transfers";
                 }
                 else
                 {
                     if (direction.Name == "Avatar")
                     {
-                        saveDirOrginal = "Areas/District/Documents/District/Avatar/Original";
-                        saveDirThumb = "Areas/District/Documents/District/Avatar/Thumb";
+                        saveDirOrginal = "Areas/District/Documents/District/Avatars/Original";
+                        saveDirThumb = "Areas/District/Documents/District/Avatars/Thumb";
                     }
                     else
                     {
-                        saveDirOrginal = "Areas/District/Documents/District/Transfer";
+                        saveDirOrginal = "Areas/District/Documents/District/Transfers";
                     }
                 }
             }

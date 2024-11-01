@@ -17,6 +17,14 @@ namespace Data.Extensions
                    pc.GetDayOfMonth(value).ToString("00") + "\r\n" + pc.GetHour(value).ToString("00") + ":" + pc.GetMinute(value).ToString("00") + ":" + pc.GetSecond(value).ToString("00");
         }
 
+        //مبدل تاریخ میلادی به شمسی با قالب تاریخ زمان برای نام فایل بارگذاری شده 
+        public static string ToShamsiFileUpload(this DateTime value)
+        {
+            PersianCalendar pc = new();
+            return pc.GetYear(value) + pc.GetMonth(value).ToString("00") +
+                   pc.GetDayOfMonth(value).ToString("00") + pc.GetHour(value).ToString("00") + pc.GetMinute(value).ToString("00") + pc.GetSecond(value).ToString("00");
+        }
+
         //محاسبه سابقه
         public static string CalculateHistory(this DateTime value)
         {

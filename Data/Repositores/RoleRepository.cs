@@ -36,6 +36,10 @@ namespace Data.Repositores
             return roles;
         }
 
+        public string GetRoleTitleById(Guid roleId)
+            => _context.Roles.Where(r => r.RoleId == roleId)
+                             .First()
+                             .Title;
 
 
         public IQueryable<Role> GetRolesQuery()
