@@ -9,9 +9,10 @@ namespace Domain.DTOs.Portal.Transfer
 {
     public class TransferRegisterVM
     {
-        public Guid? TransferId { get; set; }
+        public Guid TransferId { get; set; }
         public string? Title {  get; set; }
         public string? Description { get; set; }
+        public string? UserName {  get; set; }
         public IFormFile? Document { get; set; }
         public string? RoleUploader {  get; set; }
         public string? RoleReceiver {  get; set; }

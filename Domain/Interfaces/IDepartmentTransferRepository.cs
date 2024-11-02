@@ -13,5 +13,8 @@ namespace Domain.Interfaces
     {
         //IQueryable<DepartmentTransfer> GetDepartmentTransfersQuery(string AreaUploader, string AreaReceiver);
         //List<DisplayDepartmentTransfersVM> GetDepartmentTransfers(string AreaUploader, string AreaReceiver);
+
+        #region Db
+        #endregion
     }
 }

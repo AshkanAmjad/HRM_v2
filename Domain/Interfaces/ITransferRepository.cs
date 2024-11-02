@@ -17,6 +17,7 @@ namespace Domain.Interfaces
         #endregion
 
         #region DB
+        void UploadDepartmentTransferToDb(TransferRegisterVM model);
         void SaveChanges();
 
         #endregion

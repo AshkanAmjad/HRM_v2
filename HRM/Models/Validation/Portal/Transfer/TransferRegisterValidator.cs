@@ -18,9 +18,7 @@ namespace HRM.Models.Validation.Portal.Transfer
                                  .WithMessage("مقدار ورودی عنوان معتبر نیست.");
 
             RuleFor(t => t.Description).MaximumLength(300)
-                                 .WithMessage("حداکثر تعداد حروف توضیحات 300 حرف می باشد.")
-                                 .Matches(@"^[\u0600-\u06FF\s]+$")
-                                 .WithMessage("مقدار ورودی توضیحات معتبر نیست.");
+                                      .WithMessage("حداکثر تعداد حروف توضیحات 300 حرف می باشد.");
 
             RuleFor(t => t.AreaReceiver).NotNull()
                                         .NotEmpty();

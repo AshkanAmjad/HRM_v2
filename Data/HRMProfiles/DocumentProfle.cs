@@ -24,7 +24,7 @@ namespace Data.HRMProfiles
                 .ForMember(dest => dest.Area, opt => opt.MapFrom(src => src.AreaDepartment))
                 .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.CountyDepartment))
                 .ForMember(dest => dest.District, opt => opt.MapFrom(opt => opt.DistrictDepartment))
-                .ForMember(dest => dest.document, opt => opt.MapFrom(opt => opt.Avatar));
+                .ForMember(dest => dest.Document, opt => opt.MapFrom(opt => opt.Avatar));
 
             CreateMap<UserEditVM, UploadVM>()
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.UserName))
@@ -32,7 +32,7 @@ namespace Data.HRMProfiles
                 .ForMember(dest => dest.Area, opt => opt.MapFrom(src => src.AreaDepartment))
                 .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.CountyDepartment))
                 .ForMember(dest => dest.District, opt => opt.MapFrom(opt => opt.DistrictDepartment))
-                .ForMember(dest => dest.document, opt => opt.MapFrom(opt => opt.Avatar));
+                .ForMember(dest => dest.Document, opt => opt.MapFrom(opt => opt.Avatar));
 
             CreateMap<ProfileEditVM, UploadVM>()
                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.UserName))
@@ -40,7 +40,7 @@ namespace Data.HRMProfiles
                .ForMember(dest => dest.Area, opt => opt.MapFrom(src => src.AreaDepartment))
                .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.CountyDepartment))
                .ForMember(dest => dest.District, opt => opt.MapFrom(opt => opt.DistrictDepartment))
-               .ForMember(dest => dest.document, opt => opt.MapFrom(opt => opt.Avatar));
+               .ForMember(dest => dest.Document, opt => opt.MapFrom(opt => opt.Avatar));
 
             CreateMap<UploadVM, DirectionVM>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
@@ -49,7 +49,7 @@ namespace Data.HRMProfiles
                 .ForMember(dest => dest.District, opt => opt.MapFrom(src => src.District));
 
             CreateMap<UploadVM, Document>()
-                .ForMember(dest => dest.ContentType, opt => opt.MapFrom(src => src.document.ContentType))
+                .ForMember(dest => dest.ContentType, opt => opt.MapFrom(src => src.Document.ContentType))
                 .ForMember(dest => dest.DepartmentId, opt => opt.MapFrom(src => src.DepartmentId))
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description));

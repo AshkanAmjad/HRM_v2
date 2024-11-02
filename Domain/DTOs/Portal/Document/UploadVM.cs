@@ -15,7 +15,7 @@ namespace Domain.DTOs.Portal.Document
         public string? Name { get; set; }
         public string? Description { get; set; }
         public string? Title { get; set; }
-        public IFormFile? document { get; set; }
+        public IFormFile? Document { get; set; }
         public Guid DepartmentId { get; set; }
     }
 }

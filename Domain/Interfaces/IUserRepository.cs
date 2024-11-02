@@ -27,8 +27,9 @@ namespace Domain.Interfaces
         List<DisplayUsersVM> GetArchivedUsers(AreaVM area);
         IQueryable<User> GetUsersQuery();
         UserEditVM? GetUserById(Guid userId);
-        Guid? GetDepartmentIdByUserId(Guid userId, string area);
+        Guid GetDepartmentIdByUserId(Guid userId, string area);
         AreaVM GetAreaUserByUserId(Guid userId);
+        List<Guid> GetDepartmentIds(AreaVM model);
         string GetUserNameByUserId(Guid userId);
         #endregion
 

@@ -80,12 +80,12 @@ namespace Application.Services.Implrmentations
 
             if (document.Name == "Avatar")
             {
-                documentNameOrginal = $"Avatar-{document.Title}{Path.GetExtension(document.document.FileName)}";
-                documentNameThumb = $"Thumb-{document.Title}{Path.GetExtension(document.document.FileName)}";
+                documentNameOrginal = $"Avatar-{document.Title}{Path.GetExtension(document.Document.FileName)}";
+                documentNameThumb = $"Thumb-{document.Title}{Path.GetExtension(document.Document.FileName)}";
             }
             else
             {
-                documentNameOrginal = $"Document-{document.Title}{Path.GetExtension(document.document.FileName)}";
+                documentNameOrginal = $"Document-{document.Title}{Path.GetExtension(document.Document.FileName)}";
             }
 
             string filePathOriginal = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirOrginal, documentNameOrginal);
@@ -94,7 +94,7 @@ namespace Application.Services.Implrmentations
 
             using (var fileStream = new FileStream(filePathOriginal, FileMode.Create))
             {
-                document.document.CopyTo(fileStream);
+                document.Document.CopyTo(fileStream);
             }
 
             if (path._saveDirThumb != "")

@@ -256,13 +256,13 @@ namespace Data.Repositores
                                  .Any();
 
 
-        public Guid? GetDepartmentIdByUserId(Guid userId, string area)
+        public Guid GetDepartmentIdByUserId(Guid userId, string area)
         {
             var department = _context.Departments
                                      .IgnoreQueryFilters()
                                      .FirstOrDefault(d => d.UserId == userId && d.Area == area);
 
-            return department?.DepartmentId;
+            return department.DepartmentId;
         }
 
         public bool Similarity(UserRegisterVM user, out string message)
@@ -763,6 +763,19 @@ namespace Data.Repositores
             }
 
         }
+
+        public List<Guid> GetDepartmentIds(AreaVM model)
+        {
+            List<Guid> departmentIds = new();
+            departmentIds = _context.Departments.Where(d=>d.Area == model.Section &&
+                                                          d.Province == model.Province &&
+                                                          d.County ==  model.County &&
+                                                          d.District == model.District)
+                                                .Select(d => d.DepartmentId)
+                                                .ToList();
+            return departmentIds;
+        }
+
 
         public void DisableUserRoleDb(UserEdit_DisableVM model)
         {

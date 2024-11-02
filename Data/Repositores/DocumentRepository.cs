@@ -36,7 +36,7 @@ namespace Data.Repositores
         #endregion
         public void UploadDocumentToDb(UploadVM file)
         {
-            if (file.document == null || file.document.Length <= 0)
+            if (file.Document == null || file.Document.Length <= 0)
                 return;
 
             var userName = file.Title;
@@ -44,13 +44,13 @@ namespace Data.Repositores
             document.IsActived = true;
             document.UploadDate = DateTime.Now;
             document.DocumentId = Guid.NewGuid();
-            var docName = Path.GetFileName(file.document.FileName);
+            var docName = Path.GetFileName(file.Document.FileName);
             var fileExtension = Path.GetExtension(docName);
             document.FileName = string.Concat($"{file.Name}-{userName}", fileExtension);
             document.FileFormat = fileExtension;
             using (var target = new MemoryStream())
             {
-                file.document.CopyTo(target);
+                file.Document.CopyTo(target);
                 document.DataBytes = target.ToArray();
             }
             _context.Add(document);

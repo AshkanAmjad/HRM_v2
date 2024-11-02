@@ -63,6 +63,7 @@ namespace Application.Services.Implrmentations
                 var userIdReceiver = new Guid(model.UserIdReceiver);
                 var userName = _userRepository.GetUserNameByUserId(userIdReceiver);
                 model.UserIdReceiver = userName;
+                model.UserName = userName;
             }
             else if (model.UserIdReceiver == $"{Guid.Empty}")
             {
@@ -75,7 +76,7 @@ namespace Application.Services.Implrmentations
                 var roleReceiver = _roleRepository.GetRoleTitleById(roleIdReceiver);
                 model.RoleReceiver = roleReceiver;
             }
-            else if (model.UserIdReceiver == $"{Guid.Empty}")
+            else if (model.RoleReceiver == $"{Guid.Empty}")
             {
                 model.RoleReceiver = "";
             }

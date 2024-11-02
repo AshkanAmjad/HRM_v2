@@ -106,6 +106,7 @@
                 ارسال
             </button>
         </div>
+    </div>
 </form>
 
 
@@ -308,7 +309,6 @@
                         contentType: false,
                         success: function (result) {
                             if (result.success) {
-                                $("#operation-box").modal("toggle");
                                 Swal.fire({
                                     title: result.message,
                                     icon: 'success',
