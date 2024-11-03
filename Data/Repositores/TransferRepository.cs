@@ -21,11 +21,14 @@ namespace Data.Repositores
         #region Constructor
         private readonly HRMContext _context;
         private readonly IUserRepository _userRepository;
+        private readonly IUserRoleRepository _userRoleRepository;
         private readonly IMapper _mapper;
         public TransferRepository(HRMContext context,
                                   IUserRepository userRepository,
+                                  IUserRoleRepository userRoleRepository,
                                   IMapper mapper)
         {
+            _userRoleRepository = userRoleRepository;
             _userRepository = userRepository;
             _context = context;
             _mapper = mapper;
@@ -78,15 +81,14 @@ namespace Data.Repositores
 
                 var departmentTransfers = new List<DepartmentTransfer>();
 
-                var departmentIdUploader = _userRepository.GetDepartmentIdByUserId(model.UserIdUploader, area.Section);
-
-                var departmentIds = _userRepository.GetDepartmentIds(area);
-
+                var departmentIdUploader = _userRepository.GetDepartmentIdByUserId(model.UserIdUploader);
 
                 if (model.UserIdReceiver == "" &&
                     model.RoleReceiver == "")
                 {
-                    foreach (var item in departmentIds)
+                    var departmentIdsReceiver = _userRepository.GetDepartmentIds(area);
+
+                    foreach (var item in departmentIdsReceiver)
                     {
                         departmentTransfers.Add(new DepartmentTransfer
                         {
@@ -95,14 +97,47 @@ namespace Data.Repositores
                             DepartmentIdUploader = departmentIdUploader,
                             IsActived = model.IsActived,
                             TransferId = model.TransferId
-                            
+
                         });
                     }
+                }
+                else if (model.UserIdReceiver != "" &&
+                    model.RoleReceiver == "")
+                {
+                    var userIdReceiver = new Guid(model.UserIdReceiver);
 
+                    var departmentIdReceiver = _userRepository.GetDepartmentIdByUserId(userIdReceiver);
+
+                    departmentTransfers.Add(new DepartmentTransfer
+                    {
+                        DepartmentTransferId = new Guid(),
+                        DepartmentIdReceiver = departmentIdReceiver,
+                        DepartmentIdUploader = departmentIdUploader,
+                        IsActived = model.IsActived,
+                        TransferId = model.TransferId
+                    });
+
+                }
+                else if (model.UserIdReceiver == "" &&
+                         model.RoleReceiver != "")
+                {
+                    var roleReceiver = new Guid(model.RoleReceiver);
+                    var departmentIdsReceveiver = _userRepository.GetDepartmentIdsByRoleId(roleReceiver, area);
+
+                    foreach(var item in departmentIdsReceveiver)
+                    {
+                        departmentTransfers.Add(new DepartmentTransfer
+                        {
+                            DepartmentTransferId = new Guid(),
+                            DepartmentIdReceiver = item,
+                            DepartmentIdUploader = departmentIdUploader,
+                            IsActived = model.IsActived,
+                            TransferId = model.TransferId
+                        });
+                    }
                 }
 
                 _context.DepartmentTransfers.AddRange(departmentTransfers);
-
             }
         }
 

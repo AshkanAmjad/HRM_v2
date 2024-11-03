@@ -43,8 +43,8 @@ namespace Application.Services.Implrmentations
 
             var area = _userRepository.GetAreaUserByUserId(model.UserIdUploader);
             var role = _userRoleRepository.GetUserRolesByUserId(model.UserIdUploader);
-
-
+            var userNameReceiver = "";
+            var roleReceiver = "";
 
             string rolesUploader = string.Join("-", role);
 
@@ -56,14 +56,12 @@ namespace Application.Services.Implrmentations
             model.CountyUploader = area.County;
             model.DistrictUploader = area.District;
             model.UploadDate = DateTime.Now;
-            model.IsActived = true;
 
             if (model.UserIdReceiver != $"{Guid.Empty}")
             {
                 var userIdReceiver = new Guid(model.UserIdReceiver);
-                var userName = _userRepository.GetUserNameByUserId(userIdReceiver);
-                model.UserIdReceiver = userName;
-                model.UserName = userName;
+                userNameReceiver = _userRepository.GetUserNameByUserId(userIdReceiver);
+                model.UserName = userNameReceiver;
             }
             else if (model.UserIdReceiver == $"{Guid.Empty}")
             {
@@ -73,8 +71,7 @@ namespace Application.Services.Implrmentations
             if(model.RoleReceiver != $"{Guid.Empty}")
             {
                 var roleIdReceiver = new Guid(model.RoleReceiver);
-                var roleReceiver = _roleRepository.GetRoleTitleById(roleIdReceiver);
-                model.RoleReceiver = roleReceiver;
+                roleReceiver = _roleRepository.GetRoleTitleById(roleIdReceiver);
             }
             else if (model.RoleReceiver == $"{Guid.Empty}")
             {
@@ -88,7 +85,7 @@ namespace Application.Services.Implrmentations
             {
                 UploadVM uploadToServer = _mapper.Map<UploadVM>(model);
                 uploadToServer.Name = "Transfer";
-                uploadToServer.Title = $"{model.Title}-{model.UserIdReceiver}-{model.RoleReceiver}-{model.UploadDate.ToShamsiFileUpload()}";
+                uploadToServer.Title = $"{model.Title}-{userNameReceiver}-{roleReceiver}-{model.UploadDate.ToShamsiFileUpload()}";
 
                 _documentService.UploadDocumentToServer(uploadToServer);
             }

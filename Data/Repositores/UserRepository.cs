@@ -3,6 +3,7 @@ using Data.Context;
 using Data.Extensions;
 using Domain.DTOs.General;
 using Domain.DTOs.Portal.Document;
+using Domain.DTOs.Portal.Transfer;
 using Domain.DTOs.Security.Login;
 using Domain.DTOs.Security.Profile;
 using Domain.DTOs.Security.User;
@@ -69,6 +70,21 @@ namespace Data.Repositores
                                            .FirstOrDefault();
             return user;
         }
+
+        public List<Guid> GetDepartmentIdsByRoleId(Guid roleReceiver, AreaVM area)
+        {
+            List<Guid>departmentIds=new();
+
+            departmentIds = _context.UserRoles.Where(ur => ur.RoleId == roleReceiver &&
+                                                           ur.User.Department.Area == area.Section &&
+                                                           ur.User.Department.Province == area.Province &&
+                                                           ur.User.Department.County == area.County &&
+                                                           ur.User.Department.District == area.District)
+                                             .Select(d => d.User.Department.DepartmentId)
+                                             .ToList();
+            return departmentIds;
+        }
+
 
         public bool Register(UserRegisterVM user, out string message)
         {
@@ -224,6 +240,8 @@ namespace Data.Repositores
             message = checkMessage;
             return false;
         }
+
+        
         public bool ResetPassword(ResetPasswordVM model, out string message)
         {
             string checkMessage = "اطلاعات ناقص ارسال شده است.";
@@ -254,6 +272,12 @@ namespace Data.Repositores
             => _context.Documents.IgnoreQueryFilters()
                                  .Where(d => d.DepartmentId == departmentId)
                                  .Any();
+
+
+        public Guid GetDepartmentIdByUserId(Guid userId)
+            => _context.Departments.Where(d => d.UserId == userId)
+                                   .Select(d => d.DepartmentId)
+                                   .First();
 
 
         public Guid GetDepartmentIdByUserId(Guid userId, string area)
@@ -777,6 +801,7 @@ namespace Data.Repositores
         }
 
 
+
         public void DisableUserRoleDb(UserEdit_DisableVM model)
         {
             if (model != null)
@@ -822,5 +847,6 @@ namespace Data.Repositores
 
             }
         }
+
     }
 }

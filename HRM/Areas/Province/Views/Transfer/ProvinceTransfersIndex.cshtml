@@ -11,8 +11,12 @@
 
 <script type="text/javascript">
     $(document).ready(function (e) {
+        Load();
+    });
+
+    function Load(){
         $.get(_registerUrl).done(function (result) {
             $("#operation-box").html(result);
         });
-    });
+    }
 </script>

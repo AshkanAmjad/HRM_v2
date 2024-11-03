@@ -86,6 +86,8 @@ namespace HRM.Areas.Province.Controllers
 
                     model.UserIdUploader = userId;
                     
+                    model.IsActived = true;
+
                     bool result = _transferService.Register(model, out checkMessage);
 
                     if (result)

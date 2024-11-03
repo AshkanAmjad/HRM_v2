@@ -1,5 +1,6 @@
 ﻿using Domain.DTOs.General;
 using Domain.DTOs.Portal.Document;
+using Domain.DTOs.Portal.Transfer;
 using Domain.DTOs.Security.Login;
 using Domain.DTOs.Security.Profile;
 using Domain.DTOs.Security.User;
@@ -27,10 +28,11 @@ namespace Domain.Interfaces
         List<DisplayUsersVM> GetArchivedUsers(AreaVM area);
         IQueryable<User> GetUsersQuery();
         UserEditVM? GetUserById(Guid userId);
-        Guid GetDepartmentIdByUserId(Guid userId, string area);
+        Guid GetDepartmentIdByUserId(Guid userId);
         AreaVM GetAreaUserByUserId(Guid userId);
         List<Guid> GetDepartmentIds(AreaVM model);
         string GetUserNameByUserId(Guid userId);
+        List<Guid> GetDepartmentIdsByRoleId(Guid roleReceiver,AreaVM area);
         #endregion
 
         #region Login

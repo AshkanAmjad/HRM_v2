@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Data.Context;
 using Data.Extensions;
+using Domain.DTOs.General;
 using Domain.DTOs.Security.User;
 using Domain.DTOs.Security.UserRole;
 using Domain.Entities.Security.Models;
@@ -45,6 +46,7 @@ namespace Data.Repositores
                                               .ToList();
             return userRoles;
         }
+
 
 
         public List<DisplayUserRolesVM> GetUserRoles(string area)
@@ -305,7 +307,7 @@ namespace Data.Repositores
                                                   ur.Role.Title == "فناوری اطلاعات"))
                                      .Any();
 
-        
+
 
 
         public void SaveChanges()
