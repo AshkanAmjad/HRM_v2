@@ -68,6 +68,7 @@ namespace Domain.Interfaces
 
         #region Is Exist
         bool IsExistAvatar(Guid departmentId);
+        bool IsExistUserInArea(string area, Guid userId);
         #endregion
     }
 }

@@ -34,6 +34,7 @@ namespace Data.Repositores
             _mapper = mapper;
         }
         #endregion
+
         public bool Register(TransferRegisterVM model, out string message)
         {
             string checkMessage = "اطلاعات ناقص ارسال شده است.";

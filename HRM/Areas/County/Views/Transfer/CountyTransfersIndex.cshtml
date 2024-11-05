@@ -6,7 +6,7 @@
         <partial name="~/Views/Shared/Partials/General/Refrences/js/_DataTablesJsPartial.cshtml">
             <div id="operation-box" class="modal fade" role="dialog" aria-hidden="true">
             </div>
-            <div class="btn btn-outline-primary btn-sm  my-3 mx-1">تبادلات - استان</div>
+            <div class="btn btn-outline-primary btn-sm  my-3 mx-1">تبادلات - شهرستان</div>
             <div>
                 <button class="btn btn-primary text-white d-flex p-2 justify-content-center mb-3 mx-1" id="addBtn">
                     <i class="fa fa-lg fa-plus align-self-center"></i>
@@ -15,8 +15,8 @@
             <div id="transfers-box">
             </div>
             <script type="text/javascript">
-                var _registerUrl = '@Url.Action("Register", "Transfer", new { area = "Province" })';
-                var _gridUrl = '@Url.Action("FillTransfersGrid", "Transfer", new { area = "Province" })';
+                var _registerUrl = '@Url.Action("Register", "Transfer", new { area = "County" })';
+                var _gridUrl = '@Url.Action("FillTransfersGrid", "Transfer", new { area = "County" })';
 
             </script>
             <script type="text/javascript">

@@ -66,6 +66,7 @@
         //------------------------------------------------------------------------
         $("#countyManagementTransfers").off("click");
         $("#countyManagementTransfers").on("click", function (e) {
+            e.preventDefault();
             $.get(_countyManagementTransfersUrl).done(function (result) {
                 $("#main").html(result);
             });

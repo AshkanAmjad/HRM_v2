@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Data.Context;
+using Domain.DTOs.General;
 using Domain.DTOs.Portal.Transfer;
 using Domain.Entities.Portal.Models;
 using Domain.Interfaces;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Data.Repositores
 {
-    public class DepartmentTransferRepository:IDepartmentTransferRepository
+    public class DepartmentTransferRepository : IDepartmentTransferRepository
     {
         #region Constructor
         private readonly HRMContext _context;
@@ -24,13 +25,21 @@ namespace Data.Repositores
             _context = context;
             _mapper = mapper;
         }
+
+
         #endregion
-        //public IQueryable<DepartmentTransfer> GetInternalDepartmentTransfersQuery(string AreaUploader, string AreaReceiver)
-        //    => _context.DepartmentTransfers.IgnoreQueryFilters()
-        //                                   .Where(dt => dt.Department == AreaReceiver && dt.Department.Area == AreaUploader)
-        //                                   .Include(dt => dt.Department)
-        //                                   .Include(dt => dt.Transfer)
-        //                                   .AsQueryable();
+
+        public IQueryable<DepartmentTransfer> GetTransfersQuery(AreaVM area)
+                  => _context.DepartmentTransfers.Include(dt => dt.Transfer)
+                                                 .Include(dt => dt.Department)
+                                                 .Where(dt => dt.Department.Area == area.Section)
+                                                 .AsQueryable();
+
+        public List<DisplayTransfersVM> GetTransfers(AreaVM area)
+        {
+            throw new NotImplementedException();
+        }
+
         //public List<DisplayDepartmentTransfersVM> GetDepartmentTransfers(string AreaUploader, string AreaReceiver)
         //{
         //    var context = GetInternalDepartmentTransfersQuery(AreaUploader, AreaReceiver);

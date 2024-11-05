@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Portal.Transfer
 {
-    public class DisplayDepartmentTransfersVM
+    public class DisplayTransfersVM
     {
         public Guid TransferId { get; set; }
         public string Title { get; set; }

@@ -1,4 +1,5 @@
-﻿using Domain.DTOs.Portal.Transfer;
+﻿using Domain.DTOs.General;
+using Domain.DTOs.Portal.Transfer;
 using Domain.Entities.Portal.Models;
 using Domain.Entities.Security.Models;
 using System;
@@ -11,7 +12,10 @@ namespace Domain.Interfaces
 {
     public interface IDepartmentTransferRepository
     {
-        //IQueryable<DepartmentTransfer> GetDepartmentTransfersQuery(string AreaUploader, string AreaReceiver);
+        IQueryable<DepartmentTransfer> GetTransfersQuery(AreaVM area);
+
+        List<DisplayTransfersVM> GetTransfers(AreaVM area);
+
         //List<DisplayDepartmentTransfersVM> GetDepartmentTransfers(string AreaUploader, string AreaReceiver);
 
         #region Db

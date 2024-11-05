@@ -65,6 +65,14 @@
             });
         });
         //------------------------------------------------------------------------
+        $("#districtManagementTransfers").off("click");
+        $("#districtManagementTransfers").on("click", function (e) {
+            e.preventDefault();
+            $.get(_districtManagementTransfersUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+        //------------------------------------------------------------------------
     });
 
 </script>
