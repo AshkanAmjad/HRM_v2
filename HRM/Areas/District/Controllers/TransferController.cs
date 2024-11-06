@@ -42,7 +42,7 @@ namespace HRM.Areas.District.Controllers
         #endregion
 
         #region Index
-        public IActionResult DistrictTransfersIndex()
+        public IActionResult DistrictSendTransfersIndex()
         {
             return View();
         }

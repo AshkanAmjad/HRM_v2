@@ -6,7 +6,7 @@
     var _districtManagementRolesUrl = '@Url.Action("DistrictRolesIndex", "Access", new { area = "District" })';
     var _districtManagementUserRolesUrl = '@Url.Action("DistrictUserRolesIndex", "Access", new { area = "District" })';
     var _districtReportsUrl = '@Url.Action("DistrictReportsIndex", "Report", new { area = "District" })';
-    var _districtManagementTransfersUrl = '@Url.Action("DistrictTransfersIndex", "Transfer", new { area = "District" })';
+    var _districtSendTransfersUrl = '@Url.Action("DistrictSendTransfersIndex", "Transfer", new { area = "District" })';
 
 </script>
 <script type="text/javascript">
@@ -65,10 +65,10 @@
             });
         });
         //------------------------------------------------------------------------
-        $("#districtManagementTransfers").off("click");
-        $("#districtManagementTransfers").on("click", function (e) {
+        $("#districtSendTransfers").off("click");
+        $("#districtSendTransfers").on("click", function (e) {
             e.preventDefault();
-            $.get(_districtManagementTransfersUrl).done(function (result) {
+            $.get(_districtSendTransfersUrl).done(function (result) {
                 $("#main").html(result);
             });
         });

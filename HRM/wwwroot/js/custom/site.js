@@ -1,7 +1,7 @@
 ﻿$(document).on('keydown', function (e) {
     var key = e.key;
     if (key === 'Enter') {
-        $('#submit').trigger('click');
+        $('#submitBtn').trigger('click');
     }
 });
 

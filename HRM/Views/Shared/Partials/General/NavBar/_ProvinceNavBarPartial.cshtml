@@ -5,7 +5,7 @@
     var _provinceManagementRolesUrl = '@Url.Action("ProvinceRolesIndex", "Access", new { area = "Province" })';
     var _provinceManagementUserRolesUrl = '@Url.Action("ProvinceUserRolesIndex", "Access", new { area = "Province" })';
     var _provinceReportsUrl = '@Url.Action("ProvinceReportsIndex", "Report", new { area = "Province" })';
-    var _provinceManagementTransfersUrl = '@Url.Action("ProvinceTransfersIndex", "Transfer", new { area = "Province" })';
+    var _provinceSendTransfersUrl = '@Url.Action("ProvinceSendTransfersIndex", "Transfer", new { area = "Province" })';
 
 </script>
 <script type="text/javascript">
@@ -63,10 +63,10 @@
             });
         });
         //------------------------------------------------------------------------
-        $("#provinceManagementTransfers").off("click");
-        $("#provinceManagementTransfers").on("click", function (e) {
+        $("#provinceSendTransfers").off("click");
+        $("#provinceSendTransfers").on("click", function (e) {
             e.preventDefault();
-            $.get(_provinceManagementTransfersUrl).done(function (result) {
+            $.get(_provinceSendTransfersUrl).done(function (result) {
                 $("#main").html(result);
             });
         });

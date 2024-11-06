@@ -119,8 +119,8 @@
                 </div>
             </li>
         }
-        <li class="nav-item border-bottom">
-            <a class="nav-link collapsed d-flex" href="#subMenu5" role="button" data-bs-toggle="collapse" aria-controls="subMenu5" aria-expanded="false">
+        <li class="nav-item p-0">
+            <a class="nav-link border-bottom collapsed d-flex" href="#subMenu5" role="button" data-bs-toggle="collapse" aria-controls="subMenu5" aria-expanded="false">
                 <div class="w-75">
                     <i class="fa fa-exchange fa-lg mx-2"></i>
                     تبادل
@@ -131,23 +131,87 @@
             </a>
             <div class="collapse nav-background" id="subMenu5">
                 <ul class="flex-column nav font-weight-light p-0">
-                    <li class="nav-item" id="provinceManagementTransfers">
-                        <a class="nav-link p-1 border-bottom border-top">
-                            <i class="fa fa-minus-square mx-3"></i>
-                            استان
+                    <li class="nav-item w-100">
+                        <a class="nav-link p-1 border-bottom border-top collapsed d-flex" href="#subMenu6" role="button" data-bs-toggle="collapse" aria-controls="subMenu6" aria-expanded="false">
+                            <div class="w-75">
+                                <i class="fa fa-navicon mx-3 my-1"></i>
+                                استان
+                            </div>
+                            <div class="w-25 d-flex justify-content-end mx-2 align-items-center">
+                                <i class="fa fa-caret-square-o-down"></i>
+                            </div>
                         </a>
+                        <div class="collapse nav-subMenu-background" id="subMenu6">
+                            <ul class="flex-column nav font-weight-light p-0">
+                                <li class="nav-item" id="provinceSendTransfers">
+                                    <a class="nav-link p-1 border-bottom border-top">
+                                        <i class="fa fa-minus-square mx-3"></i>
+                                        ارسال
+                                    </a>
+                                </li>
+                                <li class="nav-item" id="provinceInboxTransfers">
+                                    <a class="nav-link p-1 border-bottom border-top">
+                                        <i class="fa fa-minus-square mx-3"></i>
+                                        صندوق
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
-                    <li class="nav-item" id="countyManagementTransfers">
-                        <a class="nav-link p-1 border-bottom border-top">
-                            <i class="fa fa-minus-square mx-3"></i>
-                            شهرستان
+                    <li class="w-100 nav-item">
+                        <a class="nav-link p-1 border-bottom border-top collapsed d-flex" href="#subMenu7" role="button" data-bs-toggle="collapse" aria-controls="subMenu7" aria-expanded="false">
+                            <div class="w-75">
+                                <i class="fa fa-navicon mx-3 my-1"></i>
+                                شهرستان
+                            </div>
+                            <div class="w-25 d-flex justify-content-end mx-2 align-items-center">
+                                <i class="fa fa-caret-square-o-down"></i>
+                            </div>
                         </a>
+                        <div class="collapse nav-subMenu-background" id="subMenu7">
+                            <ul class="flex-column nav font-weight-light p-0">
+                                <li class="nav-item" id="countySendTransfers">
+                                    <a class="nav-link p-1 border-bottom border-top">
+                                        <i class="fa fa-minus-square mx-3"></i>
+                                        ارسال
+                                    </a>
+                                </li>
+                                <li class="nav-item" id="countyInboxTransfers">
+                                    <a class="nav-link p-1 border-bottom border-top">
+                                        <i class="fa fa-minus-square mx-3"></i>
+                                        صندوق
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
-                    <li class="nav-item" id="districtManagementTransfers">
-                        <a class="nav-link p-1 border-bottom border-top">
-                            <i class="fa fa-minus-square mx-3"></i>
-                            بخش
+
+                    <li class="w-100 nav-item">
+                        <a class="nav-link p-1 border-bottom border-top collapsed d-flex" href="#subMenu8" role="button" data-bs-toggle="collapse" aria-controls="subMenu6" aria-expanded="false">
+                            <div class="w-75">
+                                <i class="fa fa-navicon mx-3 my-1"></i>
+                                بخش
+                            </div>
+                            <div class="w-25 d-flex justify-content-end mx-2 align-items-center">
+                                <i class="fa fa-caret-square-o-down"></i>
+                            </div>
                         </a>
+                        <div class="collapse nav-subMenu-background" id="subMenu8">
+                            <ul class="flex-column nav font-weight-light p-0">
+                                <li class="nav-item" id="districtSendTransfers">
+                                    <a class="nav-link p-1 border-bottom border-top">
+                                        <i class="fa fa-minus-square mx-3"></i>
+                                        ارسال
+                                    </a>
+                                </li>
+                                <li class="nav-item" id="districtInboxTransfers">
+                                    <a class="nav-link p-1 border-bottom border-top">
+                                        <i class="fa fa-minus-square mx-3"></i>
+                                        صندوق
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                 </ul>
             </div>

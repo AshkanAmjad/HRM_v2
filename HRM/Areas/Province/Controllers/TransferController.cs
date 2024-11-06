@@ -51,7 +51,7 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Index
-        public IActionResult ProvinceTransfersIndex()
+        public IActionResult ProvinceSendTransfersIndex()
         {
             return View();
         }
