@@ -10,10 +10,7 @@ namespace Domain.DTOs.Portal.Transfer
     {
         public Guid TransferId { get; set; }
         public string Title { get; set; }
-        public string? Description { get; set; }
-        public string? ContentType { get; set; }
         public string? FileFormat { get; set; }
-        public byte[]? DataBytes { get; set; }
         public string AreaUploader {  get; set; }
         public string NationalCodeUploader { get; set; }
         public string RoleUploader { get; set; }
@@ -26,7 +23,7 @@ namespace Domain.DTOs.Portal.Transfer
         public string ProvinceReceiver { get; set; }
         public string CountyReceiver { get; set; }
         public string DistrictReceiver { get; set; }
-        public DateTime UploadDate { get; set; }
-        public bool IsActived { get; set; }
+        public string UploadDate { get; set; }
+        public string IsActived { get; set; }
     }
 }

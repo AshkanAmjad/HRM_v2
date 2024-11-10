@@ -30,7 +30,7 @@ namespace Domain.Entities.Security.Models
 
         #region Relations
         public virtual ICollection<UserRole> UserRoles { get; set; }
-        public Department Department { get; set; }
+        public virtual Department Department { get; set; }
         #endregion
 
     }

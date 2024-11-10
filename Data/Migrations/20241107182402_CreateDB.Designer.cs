@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(HRMContext))]
-    [Migration("20241029131100_SecondUpdatingTransferModel")]
-    partial class SecondUpdatingTransferModel
+    [Migration("20241107182402_CreateDB")]
+    partial class CreateDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,23 +31,25 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("DepartmentIdReceiver")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("DepartmentIdUploader")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<bool>("IsActived")
                         .HasColumnType("bit");
+
+                    b.Property<Guid>("ReceiverDepartmentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("TransferId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("UploaderDepartmentId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("DepartmentTransferId");
 
-                    b.HasIndex("DepartmentIdUploader");
+                    b.HasIndex("ReceiverDepartmentId");
 
                     b.HasIndex("TransferId");
+
+                    b.HasIndex("UploaderDepartmentId");
 
                     b.ToTable("DepartmentTransfers", "Portal");
                 });
@@ -111,6 +113,9 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FileFormat")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActived")
@@ -192,16 +197,16 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            RoleId = new Guid("90ed8cb5-2141-4509-a898-5b12ad1303d1"),
+                            RoleId = new Guid("696a76ec-ba0d-4792-b414-772cddac9cc4"),
                             IsActived = true,
-                            RegisterDate = new DateTime(2024, 10, 29, 16, 40, 59, 728, DateTimeKind.Local).AddTicks(5977),
+                            RegisterDate = new DateTime(2024, 11, 7, 21, 54, 2, 98, DateTimeKind.Local).AddTicks(7917),
                             Title = "مدیریت"
                         },
                         new
                         {
-                            RoleId = new Guid("ab15fa1c-8869-42f5-b77c-ac53dc975f55"),
+                            RoleId = new Guid("70e1ec05-c2ea-4143-8d0a-bc78b1a53a91"),
                             IsActived = true,
-                            RegisterDate = new DateTime(2024, 10, 29, 16, 40, 59, 728, DateTimeKind.Local).AddTicks(5991),
+                            RegisterDate = new DateTime(2024, 11, 7, 21, 54, 2, 98, DateTimeKind.Local).AddTicks(7935),
                             Title = "فناوری اطلاعات"
                         });
                 });
@@ -311,21 +316,29 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Domain.Entities.Portal.Models.DepartmentTransfer", b =>
                 {
-                    b.HasOne("Domain.Entities.Security.Models.Department", "Department")
-                        .WithMany("DepartmentTransfers")
-                        .HasForeignKey("DepartmentIdUploader")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("Domain.Entities.Security.Models.Department", "ReceiverDepartment")
+                        .WithMany("ReceiverTransfers")
+                        .HasForeignKey("ReceiverDepartmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.Portal.Models.Transfer", "Transfer")
                         .WithMany("DepartmentTransfers")
                         .HasForeignKey("TransferId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Department");
+                    b.HasOne("Domain.Entities.Security.Models.Department", "UploaderDepartment")
+                        .WithMany("UploaderTransfers")
+                        .HasForeignKey("UploaderDepartmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ReceiverDepartment");
 
                     b.Navigation("Transfer");
+
+                    b.Navigation("UploaderDepartment");
                 });
 
             modelBuilder.Entity("Domain.Entities.Portal.Models.Document", b =>
@@ -376,9 +389,11 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Domain.Entities.Security.Models.Department", b =>
                 {
-                    b.Navigation("DepartmentTransfers");
-
                     b.Navigation("Documents");
+
+                    b.Navigation("ReceiverTransfers");
+
+                    b.Navigation("UploaderTransfers");
                 });
 
             modelBuilder.Entity("Domain.Entities.Security.Models.Role", b =>

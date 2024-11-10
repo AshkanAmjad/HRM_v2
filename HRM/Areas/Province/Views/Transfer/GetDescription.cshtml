@@ -1,0 +1,27 @@
+﻿@model Domain.DTOs.Portal.Transfer.GetDescriptionVM
+@{
+    Layout = null;
+}
+<div class="modal-dialog modal-lg " id="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title">
+                <div class="btn btn-outline-primary btn-sm  my-2 mx-1">توضیحات</div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="text-center my-2 fw-bold fs-8">
+            @if (Model.Description != null)
+            {
+                @Html.Raw(Model.Description)
+            }
+            else 
+            {
+                <p class="fw-normal text-end me-4">
+                    <i class="fa fa-exclamation-circle fa-lg text-warning ms-2"></i>
+                    توضیحات ثبت نشده است.
+                </p>
+
+            }
+        </div>
+    </div>

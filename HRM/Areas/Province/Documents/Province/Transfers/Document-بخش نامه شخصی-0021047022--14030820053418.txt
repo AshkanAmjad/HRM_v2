@@ -1,0 +1,11 @@
+https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1?view=net-8.0
+https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2?view=net-8.0
+
+
+https://learn.microsoft.com/en-us/sql/t-sql/data-types/data-types-transact-sql?view=sql-server-ver16
+
+https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/indexers/
+
+https://www.ebooksworld.ir/post/index/1020/%D8%AF%D8%A7%D9%86%D9%84%D9%88%D8%AF-%DA%A9%D8%AA%D8%A7%D8%A8-c-12-in-a-nutshell-the-definitive-reference?utm_source=feed&utm_medium=rss&utm_campaign=featured&utm_updated=1402-10-25-20-17
+
+https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/delegates/

@@ -378,19 +378,6 @@ namespace Application.Services.Implrmentations
                 if (avatarPathOriginal != null || avatarPathThumb != null)
                     DeleteDocumentOnServer(avatarPathOriginal, avatarPathThumb);
 
-
-                direction.Name = "Document";
-
-                path = UploadDirectionOnServer(direction);
-
-                if (direction.Name != "Avatar")
-                {
-                    documentNameOrginal = Path.GetFileNameWithoutExtension($"Document-{model.UserName}");
-                }
-
-                string filePathOriginal = Path.Combine(Directory.GetCurrentDirectory(), path._saveDirOrginal, documentNameOrginal);
-
-                DeleteDocumentOnServer(filePathOriginal, "");
             }
 
         }

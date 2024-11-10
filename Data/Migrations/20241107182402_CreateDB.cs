@@ -43,12 +43,9 @@ namespace Data.Migrations
                     Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ContentType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FileFormat = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DataBytes = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    UserUploader = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RoleUploader = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReceiverUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReceiverRole = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UploadDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsActived = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -149,26 +146,34 @@ namespace Data.Migrations
                 {
                     DepartmentTransferId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TransferId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DepartmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UploaderDepartmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ReceiverDepartmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsActived = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DepartmentTransfers", x => x.DepartmentTransferId);
                     table.ForeignKey(
-                        name: "FK_DepartmentTransfers_Departments_DepartmentId",
-                        column: x => x.DepartmentId,
+                        name: "FK_DepartmentTransfers_Departments_ReceiverDepartmentId",
+                        column: x => x.ReceiverDepartmentId,
                         principalSchema: "Security",
                         principalTable: "Departments",
                         principalColumn: "DepartmentId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_DepartmentTransfers_Departments_UploaderDepartmentId",
+                        column: x => x.UploaderDepartmentId,
+                        principalSchema: "Security",
+                        principalTable: "Departments",
+                        principalColumn: "DepartmentId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_DepartmentTransfers_Transfers_TransferId",
                         column: x => x.TransferId,
                         principalSchema: "Portal",
                         principalTable: "Transfers",
                         principalColumn: "TransferId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -205,8 +210,8 @@ namespace Data.Migrations
                 columns: new[] { "RoleId", "IsActived", "RegisterDate", "Title" },
                 values: new object[,]
                 {
-                    { new Guid("2c091b97-d244-48f7-bef6-bcae4bed7b3a"), true, new DateTime(2024, 10, 6, 11, 14, 8, 608, DateTimeKind.Local).AddTicks(3800), "فناوری اطلاعات" },
-                    { new Guid("b8094aff-e521-4188-869c-7a8399ae3deb"), true, new DateTime(2024, 10, 6, 11, 14, 8, 608, DateTimeKind.Local).AddTicks(3781), "مدیریت" }
+                    { new Guid("696a76ec-ba0d-4792-b414-772cddac9cc4"), true, new DateTime(2024, 11, 7, 21, 54, 2, 98, DateTimeKind.Local).AddTicks(7917), "مدیریت" },
+                    { new Guid("70e1ec05-c2ea-4143-8d0a-bc78b1a53a91"), true, new DateTime(2024, 11, 7, 21, 54, 2, 98, DateTimeKind.Local).AddTicks(7935), "فناوری اطلاعات" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -217,16 +222,22 @@ namespace Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_DepartmentTransfers_DepartmentId",
+                name: "IX_DepartmentTransfers_ReceiverDepartmentId",
                 schema: "Portal",
                 table: "DepartmentTransfers",
-                column: "DepartmentId");
+                column: "ReceiverDepartmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DepartmentTransfers_TransferId",
                 schema: "Portal",
                 table: "DepartmentTransfers",
                 column: "TransferId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DepartmentTransfers_UploaderDepartmentId",
+                schema: "Portal",
+                table: "DepartmentTransfers",
+                column: "UploaderDepartmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Documents_DepartmentId",

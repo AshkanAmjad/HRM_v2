@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Data.Context;
 using Domain.DTOs.General;
+using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Portal.Transfer;
 using Domain.Entities.Portal.Models;
 using Domain.Interfaces;
@@ -82,7 +83,7 @@ namespace Data.Repositores
 
                 var departmentTransfers = new List<DepartmentTransfer>();
 
-                var departmentIdUploader = _userRepository.GetDepartmentIdByUserId(model.UserIdUploader);
+                var uploaderDepartmentId = _userRepository.GetDepartmentIdByUserId(model.UserIdUploader);
 
                 if (model.UserIdReceiver == "" &&
                     model.RoleReceiver == "")
@@ -94,8 +95,8 @@ namespace Data.Repositores
                         departmentTransfers.Add(new DepartmentTransfer
                         {
                             DepartmentTransferId = new Guid(),
-                            DepartmentIdReceiver = item,
-                            DepartmentIdUploader = departmentIdUploader,
+                            ReceiverDepartmentId = item,
+                            UploaderDepartmentId = uploaderDepartmentId,
                             IsActived = model.IsActived,
                             TransferId = model.TransferId
 
@@ -105,15 +106,15 @@ namespace Data.Repositores
                 else if (model.UserIdReceiver != "" &&
                     model.RoleReceiver == "")
                 {
-                    var userIdReceiver = new Guid(model.UserIdReceiver);
+                    var receiverUserId = new Guid(model.UserIdReceiver);
 
-                    var departmentIdReceiver = _userRepository.GetDepartmentIdByUserId(userIdReceiver);
+                    var receiverDepartmentId = _userRepository.GetDepartmentIdByUserId(receiverUserId);
 
                     departmentTransfers.Add(new DepartmentTransfer
                     {
                         DepartmentTransferId = new Guid(),
-                        DepartmentIdReceiver = departmentIdReceiver,
-                        DepartmentIdUploader = departmentIdUploader,
+                        ReceiverDepartmentId = receiverDepartmentId,
+                        UploaderDepartmentId = uploaderDepartmentId,
                         IsActived = model.IsActived,
                         TransferId = model.TransferId
                     });
@@ -123,15 +124,15 @@ namespace Data.Repositores
                          model.RoleReceiver != "")
                 {
                     var roleReceiver = new Guid(model.RoleReceiver);
-                    var departmentIdsReceveiver = _userRepository.GetDepartmentIdsByRoleId(roleReceiver, area);
+                    var receiverdepartmentIds = _userRepository.GetDepartmentIdsByRoleId(roleReceiver, area);
 
-                    foreach(var item in departmentIdsReceveiver)
+                    foreach (var item in receiverdepartmentIds)
                     {
                         departmentTransfers.Add(new DepartmentTransfer
                         {
                             DepartmentTransferId = new Guid(),
-                            DepartmentIdReceiver = item,
-                            DepartmentIdUploader = departmentIdUploader,
+                            ReceiverDepartmentId = item,
+                            UploaderDepartmentId = uploaderDepartmentId,
                             IsActived = model.IsActived,
                             TransferId = model.TransferId
                         });
@@ -142,9 +143,101 @@ namespace Data.Repositores
             }
         }
 
+        public DownloadDocumentVM? GetTransferById(Guid transferId)
+        {
+            var transfer = _context.Transfers.IgnoreQueryFilters()
+                                             .Where(t => t.TransferId == transferId)
+                                             .Select(t => new DownloadDocumentVM
+                                             {
+                                                 Bytes = t.DataBytes,
+                                                 ContentType = t.ContentType,
+                                                 FileName = t.FileName
+                                             }
+                                             ).FirstOrDefault();
+            return transfer;
+        }
+
+        public bool IsExistTransferOnDb(Guid transferId)
+            => _context.Transfers.IgnoreQueryFilters()
+                                 .Where(t => t.TransferId == transferId)
+                                 .Any();
+
+
         public void SaveChanges()
         {
             _context.SaveChanges();
         }
+
+        public bool Disable(TransferActive_Disable_DescriptionVM model, out string message)
+        {
+            string checkMessage = "عملیات غیر فعال سازی با شکست مواجه شد.";
+            if (model != null)
+            {
+                DisableTransferDb(model);
+
+                message = "";
+                return true;
+            }
+            message = checkMessage;
+            return false;
+        }
+
+        public bool Active(TransferActive_Disable_DescriptionVM model, out string message)
+        {
+            string checkMessage = "عملیات فعال سازی با شکست مواجه شد.";
+            if (model != null)
+            {
+                ActiveTransferDb(model);
+
+                message = "";
+                return true;
+            }
+            message = checkMessage;
+            return false;
+        }
+
+        public void ActiveTransferDb(TransferActive_Disable_DescriptionVM model)
+        {
+            if (model != null)
+            {
+                var transfer = _context.Transfers
+                                       .IgnoreQueryFilters()
+                                       .Where(t => t.TransferId == model.TransferId)
+                                       .FirstOrDefault();
+
+                if (transfer != null)
+                {
+                    transfer.IsActived = true;
+                    _context.Transfers.Update(transfer);
+                }
+            }
+        }
+
+        public void DisableTransferDb(TransferActive_Disable_DescriptionVM model)
+        {
+            if (model != null)
+            {
+                var transfer = _context.Transfers
+                                       .Find(model.TransferId);
+
+                if (transfer != null)
+                {
+                    transfer.IsActived = false;
+                    _context.Transfers.Update(transfer);
+                }
+            }
+        }
+
+        public GetDescriptionVM GetDescription(TransferActive_Disable_DescriptionVM model)
+        {
+            var description = _context.Transfers.Where(t => t.TransferId == model.TransferId)
+                                                .Select(t => new GetDescriptionVM
+                                                {
+                                                    Description = t.Description
+                                                })
+                                                .FirstOrDefault();
+            return description;
+        }
+
     }
 }

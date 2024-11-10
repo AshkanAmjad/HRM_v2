@@ -55,6 +55,7 @@ namespace HRM.Extensions
             services.AddScoped<IValidator<DownloadVM>, DownloadValidator>();
 
             services.AddScoped<IValidator<TransferRegisterVM>,TransferRegisterValidator>();
+            services.AddScoped<IValidator<TransferActive_Disable_DescriptionVM>, TransferActive_Disable_DescriptionValidator>();
 
             #endregion
 

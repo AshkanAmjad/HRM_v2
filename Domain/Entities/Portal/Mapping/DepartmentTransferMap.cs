@@ -15,16 +15,21 @@ namespace Domain.Entities.Portal.Mapping
     {
         public void Configure(EntityTypeBuilder<DepartmentTransfer> builder)
         {
-            builder.HasKey(dt => new { dt.DepartmentTransferId });
-            builder.HasOne(d => d.Department)
+            builder.HasKey(dt => dt.DepartmentTransferId);
+
+            builder.HasOne(dt => dt.UploaderDepartment)
+                            .WithMany(dt => dt.UploaderTransfers)
+                            .HasForeignKey(dt => dt.UploaderDepartmentId)
+                            .OnDelete(DeleteBehavior.Restrict); ;
+            builder.HasOne(dt => dt.ReceiverDepartment)
+                             .WithMany(dt => dt.ReceiverTransfers)
+                             .HasForeignKey(dt => dt.ReceiverDepartmentId)
+                             .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(dt => dt.Transfer)
                             .WithMany(dt => dt.DepartmentTransfers)
-                            .HasForeignKey(d => d.DepartmentIdReceiver);
-            builder.HasOne(d => d.Department)
-                             .WithMany(dt => dt.DepartmentTransfers)
-                             .HasForeignKey(d => d.DepartmentIdUploader);
-            builder.HasOne(t => t.Transfer)
-                            .WithMany(dt => dt.DepartmentTransfers)
-                            .HasForeignKey(t => t.TransferId);
+                            .HasForeignKey(dt => dt.TransferId)
+                            .OnDelete(DeleteBehavior.Restrict);
+
             builder.Property(dt => dt.IsActived)
                    .IsRequired();
         }

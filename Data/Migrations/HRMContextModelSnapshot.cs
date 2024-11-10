@@ -28,23 +28,25 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("DepartmentIdReceiver")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("DepartmentIdUploader")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<bool>("IsActived")
                         .HasColumnType("bit");
+
+                    b.Property<Guid>("ReceiverDepartmentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("TransferId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("UploaderDepartmentId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("DepartmentTransferId");
 
-                    b.HasIndex("DepartmentIdUploader");
+                    b.HasIndex("ReceiverDepartmentId");
 
                     b.HasIndex("TransferId");
+
+                    b.HasIndex("UploaderDepartmentId");
 
                     b.ToTable("DepartmentTransfers", "Portal");
                 });
@@ -192,16 +194,16 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            RoleId = new Guid("028ca6e5-dc41-45d5-bad9-4859c1b59b52"),
+                            RoleId = new Guid("696a76ec-ba0d-4792-b414-772cddac9cc4"),
                             IsActived = true,
-                            RegisterDate = new DateTime(2024, 10, 29, 18, 24, 25, 332, DateTimeKind.Local).AddTicks(4562),
+                            RegisterDate = new DateTime(2024, 11, 7, 21, 54, 2, 98, DateTimeKind.Local).AddTicks(7917),
                             Title = "مدیریت"
                         },
                         new
                         {
-                            RoleId = new Guid("8c337d7b-8d7f-40a1-93f5-4e62af650c50"),
+                            RoleId = new Guid("70e1ec05-c2ea-4143-8d0a-bc78b1a53a91"),
                             IsActived = true,
-                            RegisterDate = new DateTime(2024, 10, 29, 18, 24, 25, 332, DateTimeKind.Local).AddTicks(4578),
+                            RegisterDate = new DateTime(2024, 11, 7, 21, 54, 2, 98, DateTimeKind.Local).AddTicks(7935),
                             Title = "فناوری اطلاعات"
                         });
                 });
@@ -311,21 +313,29 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Domain.Entities.Portal.Models.DepartmentTransfer", b =>
                 {
-                    b.HasOne("Domain.Entities.Security.Models.Department", "Department")
-                        .WithMany("DepartmentTransfers")
-                        .HasForeignKey("DepartmentIdUploader")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("Domain.Entities.Security.Models.Department", "ReceiverDepartment")
+                        .WithMany("ReceiverTransfers")
+                        .HasForeignKey("ReceiverDepartmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.Portal.Models.Transfer", "Transfer")
                         .WithMany("DepartmentTransfers")
                         .HasForeignKey("TransferId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Department");
+                    b.HasOne("Domain.Entities.Security.Models.Department", "UploaderDepartment")
+                        .WithMany("UploaderTransfers")
+                        .HasForeignKey("UploaderDepartmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ReceiverDepartment");
 
                     b.Navigation("Transfer");
+
+                    b.Navigation("UploaderDepartment");
                 });
 
             modelBuilder.Entity("Domain.Entities.Portal.Models.Document", b =>
@@ -376,9 +386,11 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Domain.Entities.Security.Models.Department", b =>
                 {
-                    b.Navigation("DepartmentTransfers");
-
                     b.Navigation("Documents");
+
+                    b.Navigation("ReceiverTransfers");
+
+                    b.Navigation("UploaderTransfers");
                 });
 
             modelBuilder.Entity("Domain.Entities.Security.Models.Role", b =>

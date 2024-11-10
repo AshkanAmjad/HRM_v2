@@ -24,9 +24,10 @@ namespace Domain.Entities.Security.Models
         #endregion
 
         #region Relations
-        public virtual ICollection<DepartmentTransfer> DepartmentTransfers { get; set; }
+        public virtual ICollection<DepartmentTransfer> UploaderTransfers { get; set; }
+        public virtual ICollection<DepartmentTransfer> ReceiverTransfers { get; set; }
         public virtual ICollection<Document>Documents { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
         #endregion
     }
 }

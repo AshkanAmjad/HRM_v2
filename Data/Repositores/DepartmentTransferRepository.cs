@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Data.Context;
+using Data.Extensions;
 using Domain.DTOs.General;
 using Domain.DTOs.Portal.Transfer;
 using Domain.Entities.Portal.Models;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,38 +27,44 @@ namespace Data.Repositores
             _context = context;
             _mapper = mapper;
         }
-
-
         #endregion
 
-        public IQueryable<DepartmentTransfer> GetTransfersQuery(AreaVM area)
-                  => _context.DepartmentTransfers.Include(dt => dt.Transfer)
-                                                 .Include(dt => dt.Department)
-                                                 .Where(dt => dt.Department.Area == area.Section)
-                                                 .AsQueryable();
+        public IQueryable<DepartmentTransfer> GetSendTransfersQuery(AreaVM area)
+          => _context.DepartmentTransfers.IgnoreQueryFilters()
+                                         .Where(dt => dt.UploaderDepartment.Area == area.Section)
+                                         .AsQueryable();
 
-        public List<DisplayTransfersVM> GetTransfers(AreaVM area)
+
+        public List<DisplayTransfersVM> GetSendTransfers(AreaVM area)
         {
-            throw new NotImplementedException();
+            var context = GetSendTransfersQuery(area);
+            var transfers = (from item in context 
+                             orderby item.Transfer.UploadDate descending
+                             select new DisplayTransfersVM
+                             {
+                                 TransferId = item.Transfer.TransferId,
+                                 Title = item.Transfer.Title,
+                                 NationalCodeUploader = item.UploaderDepartment.User.UserName,
+                                 RoleUploader = string.Join("\n",item.UploaderDepartment.User.UserRoles.Select(ur => ur.Role.Title)),
+                                 AreaUploader = item.UploaderDepartment.Area,
+                                 ProvinceUploader = item.UploaderDepartment.Province,
+                                 CountyUploader = item.UploaderDepartment.County,
+                                 DistrictUploader = item.UploaderDepartment.District,
+                                 NationalCodeReceiver = item.ReceiverDepartment.User.UserName,
+                                 RoleReceiver = string.Join("\n", item.ReceiverDepartment.User.UserRoles.Select(ur => ur.Role.Title)),
+                                 AreaReceiver = item.ReceiverDepartment.Area,
+                                 ProvinceReceiver = item.ReceiverDepartment.Province,
+                                 CountyReceiver = item.ReceiverDepartment.County,
+                                 DistrictReceiver = item.ReceiverDepartment.District,
+                                 FileFormat = (item.Transfer.FileFormat != null ? item.Transfer.FileFormat : "-"),
+                                 UploadDate = item.Transfer.UploadDate.ToShamsiFileUpload(),
+                                 IsActived = (item.Transfer.IsActived) ? "فعال" : "غیرفعال",
+                             }).ToList();
+            return transfers;
         }
 
-        //public List<DisplayDepartmentTransfersVM> GetDepartmentTransfers(string AreaUploader, string AreaReceiver)
-        //{
-        //    var context = GetInternalDepartmentTransfersQuery(AreaUploader, AreaReceiver);
 
-        //    var transfers = (from item in context
-        //                     orderby item.IsActived descending, item.Transfer.UploadDate descending
-        //                     select new DisplayDepartmentTransfersVM
-        //                     {
-        //                         TransferId = item.Transfer.TransferId,
-        //                         NationalCodeReceiver = item.Department.User.UserName,
-        //                         NationalCodeUploader = item.Department.User.UserName,
-        //                         AreaReceiver = item.Department.Area,
-        //                         AreaUploader = item.Department.Area,
 
-        //                     })
-        //                     .ToList();
-        //    return transfers;
-        //}
+
     }
 }

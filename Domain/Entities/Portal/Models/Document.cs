@@ -26,7 +26,7 @@ namespace Domain.Entities.Portal.Models
         #endregion
 
         #region Relations
-        public Department Department { get; set; }
+        public virtual Department Department { get; set; }
         #endregion
     }
 }
