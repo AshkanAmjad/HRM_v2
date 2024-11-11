@@ -17,7 +17,11 @@
             <script type="text/javascript">
                 var _registerUrl = '@Url.Action("Register", "Transfer", new { area = "District" })';
                 var _gridUrl = '@Url.Action("FillTransfersGrid", "Transfer", new { area = "District" })';
-
+                var _getSendTransfersUrl = '@Html.Raw(@Url.Action("GetSendTransfers", "Transfer", new { ReceiverArea = "2", area = "District" }))';
+                var _downloadUrl = '@Url.Action("Download", "Transfer", new { area = "District" })';
+                var _disableUrl = '@Url.Action("Disable", "Transfer", new { area = "District" })';
+                var _activeUrl = '@Url.Action("Active", "Transfer", new { area = "District" })';
+                var _getDescriptionUrl = '@Url.Action("GetDescription", "Transfer", new { area = "District" })';
             </script>
             <script type="text/javascript">
                 //List
@@ -26,6 +30,94 @@
                         $("#transfers-box").html(result);
                     });
                 });
+
+                function GridLoad() {
+                    table = $("#tableList").DataTable({
+                        initComplete: function () {
+                            $('div.dt-search').addClass("d-flex");
+                            $('div.dt-search input').addClass('form-control');
+                        },
+                        "paging": true,
+                        "pagingType": 'full_numbers',
+                        "pageLength": 10,
+                        "processing": false,
+                        "serverSide": true,
+                        "info": false,
+                        "lengthChange": false,
+                        "ordering": false,
+                        "language": {
+                            "emptyTable": "داده ای ثبت نشده است.",
+                            "zeroRecords": "داده ای یافت نشد.",
+                            "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
+                            "search": `<span class="ms-2">
+                                                                                                                                                                                                                 <i class="fa fa-search text-primary"></i>
+                                                                                                                                                                                                                                   جست‌و‌جو بر اساس عنوان:
+                                                                                                                                                                                                           </span>`,
+                            "searchPlaceholder": 'مقدار مناسبی برای عنوان وارد کنید ...',
+                        },
+                        "ajax": {
+                            "url": _getSendTransfersUrl,
+                            "type": "POST",
+                            "datatype": "json"
+                        },
+                        "columns": [
+                            { "data": "title", "title": "عنوان" },
+                            { "data": "nationalCodeUploader", "title": "نام کاربری فرستنده" },
+                            { "data": "roleUploader", "title": "معاونت فرستنده" },
+                            { "data": "areaUploader", "title": "ناحیه مبدا " },
+                            { "data": "provinceUploader", "title": "استان مبدا " },
+                            { "data": "countyUploader", "title": "شهرستان مبدا " },
+                            { "data": "districtUploader", "title": "بخش مبدا " },
+                            { "data": "nationalCodeReceiver", "title": "نام کاربری گیرنده" },
+                            { "data": "roleReceiver", "title": "معاونت گیرنده" },
+                            { "data": "areaReceiver", "title": "ناحیه مقصد " },
+                            { "data": "provinceReceiver", "title": "استان مقصد " },
+                            { "data": "countyReceiver", "title": "شهرستان مقصد " },
+                            { "data": "districtReceiver", "title": "بخش مقصد " },
+                            { "data": "fileFormat", "title": "نوع", "className": "ltr" },
+                            {
+                                "data": "transferId", "title": "توضیحات", render: function (data, type, row) {
+                                    return `<div class="d-flex py-2">
+                                                                                                  <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
+                                                                                                         onclick="Description('${data}')">
+                                                                                                        <i class="fa fa-external-link-square my-2 mx-1" > </i>
+                                                                                                  </a>
+                                                                                           </div>`
+                                }
+                            },
+                            { "data": "isActived", "title": "وضعیت" },
+                            { "data": "uploadDate", "title": "تاریخ ثبت" },
+                            {
+                                "data": "transferId", "title": "عملیات", render: function (data, type, row) {
+
+                                    return `<div class="py-2 d-flex justify-content-center">
+                                                                                                    ${row.isActived === "فعال" ?
+                                            `
+                                                                                                                                    <a class="btn btn-outline-danger btn-sm rounded-circle mx-1"
+                                                                                                                                       onclick = "Disable('${data}')">
+                                                                                                                                       <i class="fa fa-minus my-2 mx-1" > </i>
+                                                                                                                                      </a>`
+                                            :
+                                            `<a class="btn btn-outline-success btn-sm rounded-circle"
+                                                                                                                                    onclick = "Active('${data}')">
+                                                                                                                                    <i class="fa fa-check my-2 mx-1" > </i>
+                                                                                                                                     </a>`
+                                        }
+                                                                                                 ${row.fileFormat != "-" ?
+                                            `
+                                                                                                        <a class="btn btn-outline-primary btn-sm rounded-circle mx-1"
+                                                                                                                                                                           onclick="Download('${data}')">
+                                                                                                                                                                              <i class="fa fa-download my-2 mx-1" > </i>
+                                                                                                                                                                     </a>`
+                                            : ``
+                                        }
+                                                                                    </div>`
+
+                                }
+                            }
+                        ]
+                    })
+                };
 
                 //Reload
                 function GridReload() {
@@ -40,5 +132,152 @@
                         $("#operation-box").modal("show");
                     });
                 });
-            </script>
 
+                //Description
+                function Description(transferId) {
+
+                    var data = {
+                        transferId: transferId
+                    }
+
+                    $.get(_getDescriptionUrl, data).done(function (result) {
+                        $("#operation-box").html(result);
+                        $("#operation-box").modal("show");
+                    })
+                }
+
+                //Download
+                function Download(transferId) {
+                    if (transferId != null) {
+
+                        var model = {
+                            documentId: transferId
+                        }
+
+
+                        $.get(_downloadUrl, model).done(function (result) {
+                            if (result.success == undefined) {
+                                var downloadUrl = _downloadUrl + '?documentId=' + transferId;
+
+                                $('<iframe style="display:none;"></iframe>').attr('src', downloadUrl).appendTo('body');
+                            }
+                            else {
+                                Swal.fire({
+                                    title: "خطا",
+                                    text: result.message,
+                                    icon: 'error',
+                                    showConfirmButton: false,
+                                    timer: 4000,
+                                    showClass: {
+                                        popup: 'animate__animated animate__fadeInDown'
+                                    },
+                                    hideClass: {
+                                        popup: 'animate__animated animate__fadeOutDown'
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
+
+                //Disable
+                function Disable(transferId) {
+                    Swal.fire({
+                        text: "آیا از غیر فعال کردن تبادل مطمئن هستید؟",
+                        showCancelButton: true,
+                        icon: "warning",
+                        confirmButtonText: "تایید",
+                        confirmButtonColor: "#DC3545",
+                        cancelButtonText: "خیر"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            var data = {
+                                transferId: transferId
+                            };
+
+                            $.post(_disableUrl, data).done(function (result) {
+                                if (result.success) {
+                                    GridReload();
+                                    Swal.fire({
+                                        title: result.message,
+                                        icon: 'success',
+                                        showConfirmButton: false,
+                                        timer: 4000,
+                                        showClass: {
+                                            popup: 'animate__animated animate__fadeInDown'
+                                        },
+                                        hideClass: {
+                                            popup: 'animate__animated animate__fadeOutDown'
+                                        }
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'خطا',
+                                        icon: 'error',
+                                        text: result.message,
+                                        showConfirmButton: false,
+                                        timer: 4000,
+                                        showClass: {
+                                            popup: 'animate__animated animate__fadeInDown'
+                                        },
+                                        hideClass: {
+                                            popup: 'animate__animated animate__fadeOutDown'
+                                        }
+                                    })
+                                }
+                            });
+                        }
+                    })
+                };
+
+                //Active
+                function Active(transferId) {
+                    Swal.fire({
+                        text: " آیا از فعال کردن تبادل مطمئن هستید؟",
+                        showCancelButton: true,
+                        icon: "warning",
+                        confirmButtonText: "تایید",
+                        confirmButtonColor: "#198754",
+                        cancelButtonText: "خیر"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+
+                            var data = {
+                                transferId: transferId
+                            };
+
+                            $.post(_activeUrl, data).done(function (result) {
+                                if (result.success) {
+                                    GridReload();
+                                    Swal.fire({
+                                        title: result.message,
+                                        icon: 'success',
+                                        showConfirmButton: false,
+                                        timer: 4000,
+                                        showClass: {
+                                            popup: 'animate__animated animate__fadeInDown'
+                                        },
+                                        hideClass: {
+                                            popup: 'animate__animated animate__fadeOutDown'
+                                        }
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'خطا',
+                                        icon: 'error',
+                                        text: result.message,
+                                        showConfirmButton: false,
+                                        timer: 4000,
+                                        showClass: {
+                                            popup: 'animate__animated animate__fadeInDown'
+                                        },
+                                        hideClass: {
+                                            popup: 'animate__animated animate__fadeOutDown'
+                                        }
+                                    })
+                                }
+                            });
+                        }
+                    })
+                };
+            </script>

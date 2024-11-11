@@ -17,7 +17,7 @@
             <script type="text/javascript">
                 var _registerUrl = '@Url.Action("Register", "Transfer", new { area = "Province" })';
                 var _gridUrl = '@Url.Action("FillTransfersGrid", "Transfer", new { area = "Province" })';
-                var _getSendTransfersUrl = '@Html.Raw(@Url.Action("GetSendTransfers", "Transfer", new { Section = "0", Province = "0", County = "0", District = "0", area = "Province" }))';
+                var _getSendTransfersUrl = '@Html.Raw(@Url.Action("GetSendTransfers", "Transfer", new { ReceiverArea = "0", area = "Province" }))';
                 var _downloadUrl = '@Url.Action("Download", "Transfer", new { area = "Province" })';
                 var _disableUrl = '@Url.Action("Disable", "Transfer", new { area = "Province" })';
                 var _activeUrl = '@Url.Action("Active", "Transfer", new { area = "Province" })';

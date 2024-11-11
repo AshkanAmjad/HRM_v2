@@ -44,7 +44,7 @@ namespace HRM.Areas.County.Controllers
         #region Display details
         public IActionResult FillDetailsGrid()
         {
-            var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+            var id = User.Claims.Where(c => c.Type == "userId").FirstOrDefault().Value;
 
             if (id == "")
             {

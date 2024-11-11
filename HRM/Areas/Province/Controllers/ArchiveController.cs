@@ -62,15 +62,16 @@ namespace HRM.Areas.Province.Controllers
             int length = int.Parse(Request.Form["length"].FirstOrDefault() ?? "10");
             string searchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
 
+            var filteredData = users.Where(u => u.UserName.Contains(searchValue))
+                                    .ToList();
 
-            var mainData = users
-                .Where(u => u.UserName.Contains(searchValue))
-                .Skip(start)
-                .Take(length)
-                .ToList();
+            var mainData = filteredData.Skip(start)
+                                       .Take(length)
+                                       .ToList();
 
-            var totalCount = users
-                .Count();
+            var totalCount = users.Count();
+
+            var filteredCount = filteredData.Count();
 
             #endregion
 
@@ -78,8 +79,8 @@ namespace HRM.Areas.Province.Controllers
             var jsonData = new
             {
                 draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0"),
-                recordTotal = totalCount,
-                recordsFiltered = mainData.Count(),
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
                 data = mainData
             };
 

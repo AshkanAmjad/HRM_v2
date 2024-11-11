@@ -73,9 +73,32 @@ namespace HRM.Areas.Province.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetSendTransfers(AreaVM model)
+        public IActionResult GetSendTransfers(TransferAreaVM model)
         {
-            var transfers = _departmentTransferRepository.GetSendTransfers(model);
+            var id = User.Claims.Where(c => c.Type == "userId").FirstOrDefault().Value;
+
+            if (id == "")
+            {
+                return NotFound();
+            }
+
+            var userId = new Guid(id);
+
+            var userArea = _userRepository.GetAreaUserByUserId(userId);
+
+            var transferArea = new TransferAreaVM()
+            {
+                ReceiverArea = model.ReceiverArea,
+                ReceiverProvince = userArea.Province,
+                ReceiverCounty = userArea.County,
+                ReceiverDistrict = userArea.District,
+                UploaderArea = userArea.Section,
+                UploaderCounty = userArea.County,
+                UploaderDistrict = userArea.District,
+                UploaderProvince = userArea.Province
+            };
+
+            var transfers = _departmentTransferRepository.GetSendTransfers(transferArea);
 
             #region paging and searching
             int start = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");
@@ -83,22 +106,24 @@ namespace HRM.Areas.Province.Controllers
             string searchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
 
 
-            var mainData = transfers
-                .Where(t => t.Title.Contains(searchValue))
-                .Skip(start)
-                .Take(length)
-                .ToList();
+            var filteredData = transfers.Where(t => t.Title.Contains(searchValue))
+                                        .ToList();
 
-            var totalCount = transfers
-                .Count();
+            var mainData = filteredData.Skip(start)
+                                       .Take(length)
+                                       .ToList();
+
+            var totalCount = transfers.Count();
+
+            var filteredCount = filteredData.Count();
 
             #endregion
 
             var jsonData = new
             {
                 draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0"),
-                recordTotal = totalCount,
-                recordsFiltered = mainData.Count(),
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
                 data = mainData
             };
 
@@ -131,7 +156,7 @@ namespace HRM.Areas.Province.Controllers
             {
                 try
                 {
-                    var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+                    var id = User.Claims.Where(c => c.Type == "userId").FirstOrDefault().Value;
 
                     if (id == "")
                     {
@@ -142,10 +167,7 @@ namespace HRM.Areas.Province.Controllers
 
                     model.UserIdUploader = userId;
 
-                    if (!_userRepository.IsExistUserInArea("2", userId))
-                    {
-                        model.IsActived = true;
-                    }
+                    model.IsActived = true;
 
                     bool result = _transferService.Register(model, out checkMessage);
 
@@ -267,7 +289,7 @@ namespace HRM.Areas.Province.Controllers
 
                     if (result)
                     {
-                        _userRepository.SaveChanges();
+                        _transferRepository.SaveChanges();
                         success = true;
                         message = $"<h5>عملیات غیر فعال سازی تبادل با موفقیت انجام شد.</h5>";
                     }
@@ -326,7 +348,7 @@ namespace HRM.Areas.Province.Controllers
 
                     if (result)
                     {
-                        _userRepository.SaveChanges();
+                        _transferRepository.SaveChanges();
                         success = true;
                         message = $"<h5>عملیات فعال سازی تبادل با موفقیت انجام شد.</h5>";
                     }
@@ -376,7 +398,7 @@ namespace HRM.Areas.Province.Controllers
             if (transferValidator.IsValid)
             {
 
-                 result = _transferRepository.GetDescription(transfer);
+                result = _transferRepository.GetDescription(transfer);
 
             }
 

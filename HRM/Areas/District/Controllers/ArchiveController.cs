@@ -63,14 +63,16 @@ namespace HRM.Areas.District.Controllers
             string searchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
 
 
-            var mainData = users
-                .Where(u => u.UserName.Contains(searchValue))
-                .Skip(start)
-                .Take(length)
-                .ToList();
+            var filteredData = users.Where(u => u.UserName.Contains(searchValue))
+                                    .ToList();
 
-            var totalCount = users
-                .Count();
+            var mainData = filteredData.Skip(start)
+                                       .Take(length)
+                                       .ToList();
+
+            var totalCount = users.Count();
+
+            var filteredCount = filteredData.Count();
 
             #endregion
 
@@ -78,8 +80,8 @@ namespace HRM.Areas.District.Controllers
             var jsonData = new
             {
                 draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0"),
-                recordTotal = totalCount,
-                recordsFiltered = mainData.Count(),
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
                 data = mainData
             };
 

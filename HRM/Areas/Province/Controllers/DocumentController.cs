@@ -62,24 +62,25 @@ namespace HRM.Areas.Province.Controllers
             int length = int.Parse(Request.Form["length"].FirstOrDefault() ?? "10");
             string searchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
 
+            var filteredData = documents.Where(d => d.UserName.Contains(searchValue) ||
+                                                    d.Title.Contains(searchValue))
+                                        .ToList();
 
-            var mainData = documents
-                .Where(d => d.UserName.Contains(searchValue) ||
-                            d.Title.Contains(searchValue))
-                .Skip(start)
-                .Take(length)
-                .ToList();
+            var mainData = filteredData.Skip(start)
+                                       .Take(length)
+                                       .ToList();
 
-            var totalCount = documents
-                .Count();
+            var totalCount = documents.Count();
+
+            var filteredCount = filteredData.Count();
 
             #endregion
 
             var jsonData = new
             {
                 draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0"),
-                recordTotal = totalCount,
-                recordsFiltered = mainData.Count(),
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
                 data = mainData
             };
 
@@ -105,23 +106,24 @@ namespace HRM.Areas.Province.Controllers
             int length = int.Parse(Request.Form["length"].FirstOrDefault() ?? "10");
             string searchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
 
+            var filteredData = documents.Where(d => d.Title.Contains(searchValue))
+                                        .ToList();
 
-            var mainData = documents
-                .Where(d =>  d.Title.Contains(searchValue))
-                .Skip(start)
-                .Take(length)
-                .ToList();
+            var mainData = filteredData.Skip(start)
+                                       .Take(length)
+                                       .ToList();
 
-            var totalCount = documents
-                .Count();
+            var totalCount = documents.Count();
+
+            var filteredCount = filteredData.Count();
 
             #endregion
 
             var jsonData = new
             {
                 draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0"),
-                recordTotal = totalCount,
-                recordsFiltered = mainData.Count(),
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
                 data = mainData
             };
 

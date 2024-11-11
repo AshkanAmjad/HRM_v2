@@ -373,7 +373,7 @@
                         contentType: false,
                         success: function (result) {
                             if (result.success) {
-                                // GridReload();
+                                GridReload();
                                 $("#operation-box").modal("toggle");
                                 Swal.fire({
                                     title: result.message,

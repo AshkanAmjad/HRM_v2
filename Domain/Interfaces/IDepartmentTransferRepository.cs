@@ -12,8 +12,8 @@ namespace Domain.Interfaces
 {
     public interface IDepartmentTransferRepository
     {
-        IQueryable<DepartmentTransfer> GetSendTransfersQuery(AreaVM area);
-        List<DisplayTransfersVM> GetSendTransfers(AreaVM area);
+        IQueryable<DepartmentTransfer> GetSendTransfersQuery(TransferAreaVM area);
+        List<DisplayTransfersVM> GetSendTransfers(TransferAreaVM area);
 
         #region Db
 

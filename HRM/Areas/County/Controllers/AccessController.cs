@@ -89,22 +89,24 @@ namespace HRM.Areas.County.Controllers
             string searchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
 
 
-            var mainData = roles
-                .Where(a => a.Title.Contains(searchValue))
-                .Skip(start)
-                .Take(length)
-                .ToList();
+            var filteredData = roles.Where(a => a.Title.Contains(searchValue))
+                                    .ToList();
 
-            var totalCount = roles
-                .Count();
+            var mainData = filteredData.Skip(start)
+                                       .Take(length)
+                                       .ToList();
+
+            var totalCount = roles.Count();
+
+            var filteredCount = filteredData.Count();
 
             #endregion
 
             var jsonData = new
             {
                 draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0"),
-                recordTotal = totalCount,
-                recordsFiltered = mainData.Count(),
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
                 data = mainData
             };
 
@@ -122,23 +124,25 @@ namespace HRM.Areas.County.Controllers
             string searchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
 
 
-            var mainData = roles
-                .Where(a => (a.Title.Contains(searchValue)) ||
-                      (a.UserName.Contains(searchValue)))
-                .Skip(start)
-                .Take(length)
-                .ToList();
+            var filteredData = roles.Where(a => (a.Title.Contains(searchValue)) ||
+                                                (a.UserName.Contains(searchValue)))
+                                    .ToList();
 
-            var totalCount = roles
-                .Count();
+
+            var mainData = filteredData.Skip(start)
+                                       .Take(length)
+                                       .ToList();
+
+            var totalCount = roles.Count();
+            var filteredCount = filteredData.Count();
 
             #endregion
 
             var jsonData = new
             {
                 draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0"),
-                recordTotal = totalCount,
-                recordsFiltered = mainData.Count(),
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
                 data = mainData
             };
 
