@@ -57,6 +57,10 @@ namespace HRM.Areas.District.Controllers
         {
             return View();
         }
+        public IActionResult DistrictInboxTransfersIndex()
+        {
+            return View();
+        }
         #endregion
 
         #region Display

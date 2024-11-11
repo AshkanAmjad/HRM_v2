@@ -7,6 +7,7 @@
     var _countyManagementUserRolesUrl = '@Url.Action("CountyUserRolesIndex", "Access", new { area = "County" })';
     var _countyReportsUrl = '@Url.Action("CountyReportsIndex", "Report", new { area = "County" })';
     var _countySendTransfersUrl = '@Url.Action("CountySendTransfersIndex", "Transfer", new { area = "County" })';
+    var _countyInboxTransfersUrl = '@Url.Action("CountyInboxTransfersIndex", "Transfer", new { area = "County" })';
 
 </script>
 <script type="text/javascript">
@@ -68,6 +69,14 @@
         $("#countySendTransfers").on("click", function (e) {
             e.preventDefault();
             $.get(_countySendTransfersUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+        //------------------------------------------------------------------------
+        $("#countyInboxTransfers").off("click");
+        $("#countyInboxTransfers").on("click", function (e) {
+            e.preventDefault();
+            $.get(_countyInboxTransfersUrl).done(function (result) {
                 $("#main").html(result);
             });
         });

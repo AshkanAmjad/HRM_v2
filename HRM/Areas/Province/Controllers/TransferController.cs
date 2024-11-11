@@ -64,6 +64,14 @@ namespace HRM.Areas.Province.Controllers
         {
             return View();
         }
+        public IActionResult ProvinceInboxTransfersIndex()
+        {
+            return View();
+        }
+        public IActionResult ManagementMyInboxTransfersIndex()
+        {
+            return View();
+        }
         #endregion
 
         #region Display

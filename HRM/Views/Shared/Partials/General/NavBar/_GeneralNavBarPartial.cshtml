@@ -2,6 +2,8 @@
     var _homeUrl = '@Url.Action("Index", "Home")';
     var _myAccountUrl = '@Url.Action("FillProfileGrid", "Management")';
     var _myDocumentsUrl = '@Url.Action("ManagementMyDocumentsIndex", "Document")';
+    var _myInboxTransfersUrl = '@Url.Action("ManagementMyInboxTransfersIndex", "Transfer")';
+
 </script>
 <script type="text/javascript">
     $(function () {
@@ -25,6 +27,14 @@
         $("#myDocuments").on("click", function (e) {
             e.preventDefault();
             $.get(_myDocumentsUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+        //------------------------------------------------------------------------
+        $("#myInboxTransfers").off("click");
+        $("#myInboxTransfers").on("click", function (e) {
+            e.preventDefault();
+            $.get(_myInboxTransfersUrl).done(function (result) {
                 $("#main").html(result);
             });
         });

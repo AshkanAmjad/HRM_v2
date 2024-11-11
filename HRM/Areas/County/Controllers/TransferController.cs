@@ -60,6 +60,10 @@ namespace HRM.Areas.County.Controllers
         {
             return View();
         }
+        public IActionResult CountyInboxTransfersIndex()
+        {
+            return View();
+        }
         #endregion
 
         #region Display
