@@ -9,6 +9,7 @@ namespace Domain.DTOs.Portal.Transfer
     public class TransferAreaVM
     {
         public string? UploaderArea { get; set; }
+        public Guid UploaderUserId {  get; set; }
         public string? UploaderProvince {  get; set; }
         public string? UploaderCounty { get; set; }
         public string? UploaderDistrict { get; set; }
@@ -16,7 +17,6 @@ namespace Domain.DTOs.Portal.Transfer
         public string? ReceiverProvince { get; set; }
         public string? ReceiverCounty { get; set; }
         public string? ReceiverDistrict { get; set; }
-
-
+        public Guid ReceiverUserId {  get; set; }
     }
 }

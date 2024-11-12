@@ -4,15 +4,16 @@
 <partial name="~/Views/Shared/Partials/General/Refrences/css/_DataTablesCssPartial.cshtml">
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
         <partial name="~/Views/Shared/Partials/General/Refrences/js/_DataTablesJsPartial.cshtml">
-            <div class="btn btn-outline-primary btn-sm  my-3 mx-1">صندوق - شهرستان</div>
-
+            <div id="operation-box" class="modal fade" role="dialog" aria-hidden="true">
+            </div>
+            <div class="btn btn-outline-primary btn-sm  my-3 mx-1">ارسالی های من - استان</div>
             <div id="transfers-box">
             </div>
             <script type="text/javascript">
-                var _gridUrl = '@Url.Action("FillTransfersGrid", "Transfer", new { area = "County" })';
-                var _getInboxTransfersUrl = '@Html.Raw(@Url.Action("GetInboxTransfers", "Transfer", new { ReceiverArea = "1", area = "County" }))';
-                var _downloadUrl = '@Url.Action("Download", "Transfer", new { area = "County" })';
-                var _getDescriptionUrl = '@Url.Action("GetDescription", "Transfer", new { area = "County" })';
+                var _gridUrl = '@Url.Action("FillTransfersGrid", "Transfer", new { area = "Province" })';
+                var _getMySendTransfersUrl = '@Html.Raw(@Url.Action("GetMySendTransfers", "Transfer", new { area = "Province" }))';
+                var _downloadUrl = '@Url.Action("Download", "Transfer", new { area = "Province" })';
+                var _getDescriptionUrl = '@Url.Action("GetDescription", "Transfer", new { area = "Province" })';
             </script>
             <script type="text/javascript">
                 //List
@@ -41,13 +42,13 @@
                             "zeroRecords": "داده ای یافت نشد.",
                             "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
                             "search": `<span class="ms-2">
-                                                                                                                                                                                                                 <i class="fa fa-search text-primary"></i>
-                                                                                                                                                                                                                                   جست‌و‌جو بر اساس عنوان:
-                                                                                                                                                                                                           </span>`,
+                                                                                                                                                                                                                                 <i class="fa fa-search text-primary"></i>
+                                                                                                                                                                                                                                                   جست‌و‌جو بر اساس عنوان:
+                                                                                                                                                                                                                           </span>`,
                             "searchPlaceholder": 'مقدار مناسبی برای عنوان وارد کنید ...',
                         },
                         "ajax": {
-                            "url": _getInboxTransfersUrl,
+                            "url": _getMySendTransfersUrl,
                             "type": "POST",
                             "datatype": "json"
                         },
@@ -69,11 +70,11 @@
                             {
                                 "data": "transferId", "title": "توضیحات", render: function (data, type, row) {
                                     return `<div class="d-flex py-2">
-                                                                                                  <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
-                                                                                                         onclick="Description('${data}')">
-                                                                                                        <i class="fa fa-external-link-square my-2 mx-1" > </i>
-                                                                                                  </a>
-                                                                                           </div>`
+                                                                                                                  <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
+                                                                                                                         onclick="Description('${data}')">
+                                                                                                                        <i class="fa fa-external-link-square my-2 mx-1" > </i>
+                                                                                                                  </a>
+                                                                                                           </div>`
                                 }
                             },
                             { "data": "isActived", "title": "وضعیت" },
@@ -82,15 +83,15 @@
                                 "data": "transferId", "title": "عملیات", render: function (data, type, row) {
 
                                     return `<div class="py-2 d-flex justify-content-center">
-                                                              ${row.fileFormat != "-" ?
+                                                                              ${row.fileFormat != "-" ?
                                             `
-                                                                                                        <a class="btn btn-outline-primary btn-sm rounded-circle mx-1"
-                                                                                                                                                                           onclick="Download('${data}')">
-                                                                                                                                                                              <i class="fa fa-download my-2 mx-1" > </i>
-                                                                                                                                                                     </a>`
+                                                                                                                        <a class="btn btn-outline-primary btn-sm rounded-circle mx-1"
+                                                                                                                                                                                           onclick="Download('${data}')">
+                                                                                                                                                                                              <i class="fa fa-download my-2 mx-1" > </i>
+                                                                                                                                                                                     </a>`
                                             : ``
                                         }
-                                                                                    </div>`
+                                                                                                    </div>`
 
                                 }
                             }

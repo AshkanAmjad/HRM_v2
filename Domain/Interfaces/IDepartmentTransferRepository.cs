@@ -13,7 +13,11 @@ namespace Domain.Interfaces
     public interface IDepartmentTransferRepository
     {
         IQueryable<DepartmentTransfer> GetSendTransfersQuery(TransferAreaVM area);
+        IQueryable<DepartmentTransfer> GetInboxTransfersQuery(TransferAreaVM area);
         List<DisplayTransfersVM> GetSendTransfers(TransferAreaVM area);
+        List<DisplayTransfersVM> GetInboxTransfers(TransferAreaVM area);
+        List<DisplayTransfersVM> GetMyInboxTransfers(TransferAreaVM area);
+        List<DisplayTransfersVM> GetMySendTransfers(TransferAreaVM area);
 
         #region Db
 

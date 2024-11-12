@@ -27,14 +27,15 @@
         <partial name="~/Views/Shared/Partials/General/Footer/_FooterPartial.cshtml" />
     </footer>
 </body>
-<partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
-    @await RenderSectionAsync("Scripts", required: false)
+
+<partial name="~/Views/Shared/Partials/General/NavBar/_GeneralNavBarPartial.cshtml" />
+<partial name="~/Views/Shared/Partials/General/NavBar/_ProvinceNavBarPartial.cshtml" />
+<partial name="~/Views/Shared/Partials/General/NavBar/_CountyNavBarPartial.cshtml" />
+<partial name="~/Views/Shared/Partials/General/NavBar/_DistrictNavBarPartial.cshtml" />
+
+@await RenderSectionAsync("Scripts", required: false)
+
 </html>
 
-<script type="text/javascript">
-    $('#navbar a').click(function (e) {
-        $('#navbar a,#home').removeClass('navBar-active');
-        $(this).addClass('navBar-active');
-    });
-</script>
+
 

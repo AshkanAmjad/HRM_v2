@@ -129,6 +129,61 @@ namespace HRM.Areas.County.Controllers
 
             return Json(jsonData);
         }
+
+        [HttpPost]
+        public IActionResult GetInboxTransfers()
+        {
+            var id = User.Claims.Where(c => c.Type == "userId").FirstOrDefault().Value;
+
+            if (id == "")
+            {
+                return NotFound();
+            }
+
+            var userId = new Guid(id);
+
+            var userArea = _userRepository.GetAreaUserByUserId(userId);
+
+            var transferArea = new TransferAreaVM()
+            {
+                ReceiverArea = userArea.Section,
+                ReceiverProvince = userArea.Province,
+                ReceiverCounty = userArea.County,
+                ReceiverDistrict = userArea.District,
+                UploaderArea = "1"
+            };
+
+            var transfers = _departmentTransferRepository.GetInboxTransfers(transferArea);
+
+            #region paging and searching
+            int start = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");
+            int length = int.Parse(Request.Form["length"].FirstOrDefault() ?? "10");
+            string searchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
+
+
+            var filteredData = transfers.Where(t => t.Title.Contains(searchValue))
+                                        .ToList();
+
+            var mainData = filteredData.Skip(start)
+                                       .Take(length)
+                                       .ToList();
+
+            var totalCount = transfers.Count();
+
+            var filteredCount = filteredData.Count();
+
+            #endregion
+
+            var jsonData = new
+            {
+                draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0"),
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
+                data = mainData
+            };
+
+            return Json(jsonData);
+        }
         #endregion
 
         #region Register

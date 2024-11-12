@@ -1,8 +1,10 @@
 ﻿<script type="text/javascript">
     var _homeUrl = '@Url.Action("Index", "Home")';
+    var _logoutUrl = '@Url.Action("Logout", "Account", new { area = "" })';
     var _myAccountUrl = '@Url.Action("FillProfileGrid", "Management")';
     var _myDocumentsUrl = '@Url.Action("ManagementMyDocumentsIndex", "Document")';
     var _myInboxTransfersUrl = '@Url.Action("ManagementMyInboxTransfersIndex", "Transfer")';
+    var _mySendTransfersUrl = '@Url.Action("ManagementMySendTransfersIndex", "Transfer")';
 
 </script>
 <script type="text/javascript">
@@ -35,6 +37,20 @@
         $("#myInboxTransfers").on("click", function (e) {
             e.preventDefault();
             $.get(_myInboxTransfersUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+        //------------------------------------------------------------------------
+        $("#logout").off("click");
+        $("#logout").on("click", function (e) {
+            e.preventDefault();
+            window.location.href = _logoutUrl;
+        });
+        //------------------------------------------------------------------------
+        $("#mySendTransfers").off("click");
+        $("#mySendTransfers").on("click", function (e) {
+            e.preventDefault();
+            $.get(_mySendTransfersUrl).done(function (result) {
                 $("#main").html(result);
             });
         });

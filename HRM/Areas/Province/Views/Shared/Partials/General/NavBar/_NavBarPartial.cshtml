@@ -447,59 +447,80 @@
                 </div>
             </li>
         }
-            <li class="nav-item border-bottom" id="profile">
-                <a class="nav-link collapsed d-flex" href="#subMenu21" role="button" data-bs-toggle="collapse" aria-controls="subMenu21" aria-expanded="false">
-                    <div class="w-75">
-                        <i class="fa fa-user fa-lg mx-2"></i>
-                        حساب کاربری
-                    </div>
-                    <div class="w-25 d-flex justify-content-end mx-2 align-items-center">
-                        <i class="fa fa-caret-square-o-down"></i>
-                    </div>
-                </a>
-                <div class="collapse nav-background" id="subMenu21">
-                    <ul class="flex-column nav font-weight-light p-0">
-                        <li class="nav-item" id="myAccount">
-                            <a class="nav-link p-1 border-bottom border-top">
-                                <i class="fa fa-minus-square mx-3 my-1"></i>
-                                حساب من
-                            </a>
-                        </li>
-                        <li class="nav-item w-100">
-                            <a class="nav-link collapsed d-flex" href="#subMenu22" role="button" data-bs-toggle="collapse" aria-controls="subMenu22" aria-expanded="false">
-                                <div class="w-75">
-                                    <i class="fa fa-navicon mx-3"></i>
-                                    مدارک
-                                </div>
-                                <div class="w-25 d-flex mx-2 justify-content-end align-items-center">
-                                    <i class="fa fa-caret-square-o-down"></i>
-                                </div>
-                            </a>
-                            <div class="collapse nav-subMenu-background" id="subMenu22">
-                                <ul class="flex-column nav font-weight-light p-0">
-                                    <li class="nav-item" id="myDocuments">
-                                        <a class="nav-link p-1 border-bottom border-top">
-                                            <i class="fa fa-minus-square mx-3"></i>
-                                            مدارک من
-                                        </a>
-                                    </li>
-                                    <li class="nav-item" id="myInboxTransfers">
-                                        <a class="nav-link p-1 border-bottom border-top">
-                                            <i class="fa fa-minus-square mx-3"></i>
-                                            صندوق من
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
+        <li class="nav-item border-bottom" id="profile">
+            <a class="nav-link collapsed d-flex" href="#subMenu21" role="button" data-bs-toggle="collapse" aria-controls="subMenu21" aria-expanded="false">
+                <div class="w-75">
+                    <i class="fa fa-user fa-lg mx-2"></i>
+                    حساب کاربری
                 </div>
-            </li>
-            <li class="nav-item border-bottom" id="logout">
-                <a class="nav-link" asp-action="Logout" asp-area="" asp-controller="Account" asp-area="Province">
-                    <i class="fa fa-sign-out fa-lg mx-2"></i>
-                    خروج
-                </a>
-            </li>
-        </ul>
-    </nav>
+                <div class="w-25 d-flex justify-content-end mx-2 align-items-center">
+                    <i class="fa fa-caret-square-o-down"></i>
+                </div>
+            </a>
+            <div class="collapse nav-background" id="subMenu21">
+                <ul class="flex-column nav font-weight-light p-0">
+                    <li class="nav-item" id="myAccount">
+                        <a class="nav-link p-1 border-bottom border-top">
+                            <i class="fa fa-minus-square mx-3 my-1"></i>
+                            حساب من
+                        </a>
+                    </li>
+                    <li class="nav-item w-100">
+                        <a class="nav-link collapsed d-flex" href="#subMenu22" role="button" data-bs-toggle="collapse" aria-controls="subMenu22" aria-expanded="false">
+                            <div class="w-75">
+                                <i class="fa fa-navicon mx-3"></i>
+                                مدارک
+                            </div>
+                            <div class="w-25 d-flex mx-2 justify-content-end align-items-center">
+                                <i class="fa fa-caret-square-o-down"></i>
+                            </div>
+                        </a>
+                        <div class="collapse nav-subMenu-background" id="subMenu22">
+                            <ul class="flex-column nav font-weight-light p-0">
+                                <li class="nav-item" id="myDocuments">
+                                    <a class="nav-link p-1 border-bottom border-top">
+                                        <i class="fa fa-minus-square mx-3"></i>
+                                        مدارک من
+                                    </a>
+                                </li>
+                                <li class="nav-item w-100" >
+                                    <a class="nav-link collapsed d-flex" href="#subMenu23" role="button" data-bs-toggle="collapse" aria-controls="subMenu22" aria-expanded="false">
+                                        <div class="w-75">
+                                            <i class="fa fa-navicon mx-3"></i>
+                                            تبادل های من
+                                        </div>
+                                        <div class="w-25 d-flex mx-2 justify-content-end align-items-center">
+                                            <i class="fa fa-caret-square-o-down"></i>
+                                        </div>
+                                    </a>
+                                    <div class="collapse nav-subMenu-background" id="subMenu23">
+                                        <ul class="flex-column nav font-weight-light p-0">
+                                            <li class="nav-item" id="mySendTransfers">
+                                                <a class="nav-link p-1 border-bottom border-top">
+                                                    <i class="fa fa-minus-square mx-3"></i>
+                                                    ارسالی 
+                                                </a>
+                                            </li>
+                                            <li class="nav-item" id="myInboxTransfers">
+                                                <a class="nav-link p-1 border-bottom border-top">
+                                                    <i class="fa fa-minus-square mx-3"></i>
+                                                    صندوق
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item border-bottom w-100" id="logout">
+            <a class="nav-link">
+                <i class="fa fa-sign-out fa-lg mx-2"></i>
+                خروج
+            </a>
+        </li>
+    </ul>
+</nav>

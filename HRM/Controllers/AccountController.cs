@@ -26,7 +26,10 @@ namespace HRM.Controllers
         private readonly IValidator<LoginVM> _validator;
 
 
-        public AccountController(IUserService userService, IGeneralService generalService, IValidator<LoginVM> validator, IUserRepository userRepository)
+        public AccountController(IUserService userService,
+                                 IGeneralService generalService,
+                                 IValidator<LoginVM> validator,
+                                 IUserRepository userRepository)
         {
 
             _userRepository = userRepository;
@@ -120,10 +123,9 @@ namespace HRM.Controllers
         #endregion
 
         #region Logout
-
         public IActionResult Logout()
         {
-            var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+            var id = User.Claims.Where(c => c.Type == "userId").FirstOrDefault().Value;
             var userId = new Guid(id);
 
             _userRepository.RecordActivity(userId);
