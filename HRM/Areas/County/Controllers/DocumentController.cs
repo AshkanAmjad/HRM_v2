@@ -33,10 +33,20 @@ namespace HRM.Areas.County.Controllers
         {
             return View();
         }
+
+        public IActionResult ManagementMyDocumentsIndex()
+        {
+            return View();
+        }
         #endregion
 
         #region Display
         public IActionResult FillDocumentsGrid()
+        {
+            return View();
+        }
+
+        public IActionResult FillMyDocumentsGrid()
         {
             return View();
         }

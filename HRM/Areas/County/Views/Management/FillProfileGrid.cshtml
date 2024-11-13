@@ -1,0 +1,129 @@
+﻿@model Domain.DTOs.Security.Profile.DisplayProfileVM
+@{
+    Layout = null;
+    var isExistAvatar = ViewData["IsExistAvatar"];
+}
+<div id="operation-box" class="modal fade" role="dialog" aria-hidden="true">
+</div>
+<div class="card shadow mx-1">
+    <div class="card-body">
+        <div class="btn btn-outline-primary btn-sm  my-2 mx-1">حساب من</div>
+        <div class="row px-2">
+            <div class="row pb-3 m-0">
+                <div class="d-flex align-items-center justify-content-center flex-column" id="uploadAvatarBox">
+                    <img src=@(isExistAvatar.Equals(true) ? "/County/Avatars/County/Thumb-"+Model.UserName+".png" : "/pics/default/uploadBox/avatarDefault.png" ) class="border rounded-circle shadow avatarProfileBox" alt="Avatar" />
+                </div>
+            </div>
+            <div class="table-responsive px-1">
+                <table class="table table-hover table-bordered mx-auto cursor fs-8" id="tableList">
+                    <tbody>
+                        <tr>
+                            <td scope="col" class="fw-bold">کد ملی :</td>
+                            <td scope="col">@Model.UserName</td>
+                            <td scope="col" class="fw-bold">نام و نام خانوادگی :</td>
+                            <td scope="col">@Model.FullName</td>
+                        </tr>
+                        <tr>
+                            <td scope="col" class="fw-bold">جنسیت :</td>
+                            <td scope="col">@Model.Gender</td>
+                            <td scope="col" class="fw-bold">تاریخ تولد :</td>
+                            <td class="col">@Model.DateOfBirth</td>
+                        </tr>
+                        <tr>
+                            <td scope="col" class="fw-bold">سطح دسترسی :</td>
+                            <td scope="col">@Model.AreaDepartment</td>
+                            <td scope="col" class="fw-bold">شعبه استان :</td>
+                            <td scope="col">@Model.ProvinceDepartment</td>
+                        </tr>
+                        <tr>
+                            <td scope="col" class="fw-bold">شعبه شهرستان :</td>
+                            <td scope="col">@Model.CountyDepartment</td>
+                            <td scope="col" class="fw-bold">شعبه بخش :</td>
+                            <td scope="col">@Model.DistrictDepartment</td>
+                        </tr>
+                        <tr>
+                            <td scope="col" class="fw-bold">وضعیت استخدامی :</td>
+                            <td scope="col">@Model.EmploymentStatus</td>
+                            <td scope="col" class="fw-bold">معاونت :</td>
+                            <td scope="col">
+                                @foreach (var role in Model.RoleTitle)
+                                {
+                                    @role
+
+                                    <br />
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td scope="col" class="fw-bold">وضعیت بیمه :</td>
+                            <td scope="col">@Model.Insurance</td>
+                            <td scope="col" class="fw-bold">سابقه :</td>
+                            <td scope="col">@Model.History</td>
+                        </tr>
+                        <tr>
+                            <td scope="col" class="fw-bold">تحصیلات :</td>
+                            <td scope="col">@Model.Education</td>
+                            <td scope="col" class="fw-bold">وضعیت تاهل :</td>
+                            <td scope="col">@Model.MaritalStatus</td>
+
+                        </tr>
+                        <tr>
+                            <td scope="col" class="fw-bold">پست الکترونیک :</td>
+                            <td scope="col">@Model.Email</td>
+                            <td scope="col" class="fw-bold">شماره همراه :</td>
+                            <td scope="col">@Model.PhoneNumber</td>
+
+                        </tr>
+                        <tr>
+                            <td scope="col" class="fw-bold">شهر سکونت :</td>
+                            <td scope="col">@Model.City</td>
+                            <td scope="col" class="fw-bold">نشانی سکونت :</td>
+                            <td scope="col" colspan="3">@Model.Address</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <button type="submit" class="btn btn-primary px-5 align-items-center justify-content-center mx-auto w-25 d-flex"
+                        data-user-id="@Model.UserId"
+                        data-user-name="@Model.UserName"
+                        data-province="@Model.ProvinceDepartment"
+                        data-county="@Model.CountyDepartment"
+                        data-district="@Model.DistrictDepartment" " id="editBtn">
+                    <i class="fa fa-edit ms-2 mt-1"></i>
+                    <span class="m-0">ویرایش</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    var _editProfileUrl = '@Url.Action("EditProfile", "Management")';
+</script>
+<script type="text/javascript">
+    $("#editBtn").off("click").on("click", function (e) {
+        e.preventDefault();
+
+        var userId = $(this).data('user-id');
+        var userName = $(this).data('user-name');
+        var province = $(this).data('province');
+        var county = $(this).data('county');
+        var district = $(this).data('district');
+
+        var data = {
+            userId: userId,
+            userName: userName,
+            province: province,
+            county: county,
+            district: district
+        }
+
+        $.get(_editProfileUrl, data).done(function (result) {
+            $("#operation-box").html(result);
+            $("#operation-box").modal("show");
+        });
+    });
+</script>

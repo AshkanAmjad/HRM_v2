@@ -33,6 +33,11 @@ namespace HRM.Areas.District.Controllers
         {
             return View();
         }
+
+        public IActionResult ManagementMyDocumentsIndex()
+        {
+            return View();
+        }
         #endregion
 
         #region Display
@@ -41,6 +46,10 @@ namespace HRM.Areas.District.Controllers
             return View();
         }
 
+        public IActionResult FillMyDocumentsGrid()
+        {
+            return View();
+        }
         [HttpPost]
         public IActionResult GetDocuments(AreaVM model, bool status)
         {

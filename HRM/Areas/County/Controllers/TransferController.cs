@@ -64,6 +64,16 @@ namespace HRM.Areas.County.Controllers
         {
             return View();
         }
+
+        public IActionResult ManagementMyInboxTransfersIndex()
+        {
+            return View();
+        }
+
+        public IActionResult ManagementMySendTransfersIndex()
+        {
+            return View();
+        }
         #endregion
 
         #region Display
@@ -154,6 +164,106 @@ namespace HRM.Areas.County.Controllers
             };
 
             var transfers = _departmentTransferRepository.GetInboxTransfers(transferArea);
+
+            #region paging and searching
+            int start = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");
+            int length = int.Parse(Request.Form["length"].FirstOrDefault() ?? "10");
+            string searchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
+
+
+            var filteredData = transfers.Where(t => t.Title.Contains(searchValue))
+                                        .ToList();
+
+            var mainData = filteredData.Skip(start)
+                                       .Take(length)
+                                       .ToList();
+
+            var totalCount = transfers.Count();
+
+            var filteredCount = filteredData.Count();
+
+            #endregion
+
+            var jsonData = new
+            {
+                draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0"),
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
+                data = mainData
+            };
+
+            return Json(jsonData);
+        }
+
+
+        [HttpPost]
+        public IActionResult GetMySendTransfers()
+        {
+            var id = User.Claims.Where(c => c.Type == "userId").FirstOrDefault().Value;
+
+            if (id == "")
+            {
+                return NotFound();
+            }
+
+            var userId = new Guid(id);
+
+            var transferArea = new TransferAreaVM()
+            {
+                UploaderUserId = userId,
+            };
+
+            var transfers = _departmentTransferRepository.GetMySendTransfers(transferArea);
+
+            #region paging and searching
+            int start = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");
+            int length = int.Parse(Request.Form["length"].FirstOrDefault() ?? "10");
+            string searchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
+
+
+            var filteredData = transfers.Where(t => t.Title.Contains(searchValue))
+                                        .ToList();
+
+            var mainData = filteredData.Skip(start)
+                                       .Take(length)
+                                       .ToList();
+
+            var totalCount = transfers.Count();
+
+            var filteredCount = filteredData.Count();
+
+            #endregion
+
+            var jsonData = new
+            {
+                draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0"),
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
+                data = mainData
+            };
+
+            return Json(jsonData);
+        }
+
+        [HttpPost]
+        public IActionResult GetMyInboxTransfers()
+        {
+            var id = User.Claims.Where(c => c.Type == "userId").FirstOrDefault().Value;
+
+            if (id == "")
+            {
+                return NotFound();
+            }
+
+            var userId = new Guid(id);
+
+            var transferArea = new TransferAreaVM()
+            {
+                ReceiverUserId = userId,
+                UploaderUserId = userId,
+            };
+
+            var transfers = _departmentTransferRepository.GetMyInboxTransfers(transferArea);
 
             #region paging and searching
             int start = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");

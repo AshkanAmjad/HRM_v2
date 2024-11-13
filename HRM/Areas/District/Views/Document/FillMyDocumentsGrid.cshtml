@@ -1,0 +1,30 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="card shadow mx-1">
+    <div class="card-body">
+        <div class="table-responsive px-1">
+            <table class="table table-hover table-bordered mx-auto text-center fs-8 cursor" id="tableList">
+                <thead>
+                    <tr>
+                        <th scope="col">عنوان</th>
+                        <th scope="col">توضیحات</th>
+                        <th scope="col">نوع</th>
+                        <th scope="col">تاریخ ثبت</th>
+                        <th scope="col">بارگیری</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GridLoad();
+    });
+</script>
