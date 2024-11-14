@@ -18,7 +18,7 @@ namespace Domain.Interfaces
         List<DisplayTransfersVM> GetInboxTransfers(TransferAreaVM area);
         List<DisplayTransfersVM> GetMyInboxTransfers(TransferAreaVM area);
         List<DisplayTransfersVM> GetMySendTransfers(TransferAreaVM area);
-
+        Task<List<DisplayMyLatestTaransfersVM>> GetMyLatestTransfersTransfersAsync(TransferAreaVM area);
         #region Db
 
         #endregion

@@ -1,0 +1,59 @@
+﻿@model List<Domain.DTOs.Portal.Transfer.DisplayMyLatestTaransfersVM>
+@{
+    Layout = null;
+}
+<div class="card shadow mx-1">
+    <div class="card-body">
+        <div class="table-responsive px-1">
+            <table class="table table-striped table-hover table-bordered mx-auto current fs-8 text-center">
+                <tr>
+                    <th scope="col">عنوان</th>
+                    <th scope="col">نام کاربری فرستنده</th>
+                    <th scope="col">معاونت فرستنده</th>
+                    <th scope="col">ناحیه مبدا</th>
+                    <th scope="col">استان مبدا</th>
+                    <th scope="col">شهرستان مبدا</th>
+                    <th scope="col">بخش مبدا</th>
+                    <th scope="col">نوع</th>
+                    <th scope="col">توضیحات</th>
+                    <th scope="col">تاریخ ثبت</th>
+                    <th scope="col">بارگذاری</th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Title</td>
+                        <td>@item.NationalCodeUploader</td>
+                        <td>@item.RoleUploader</td>
+                        <td>@item.AreaUploader</td>
+                        <td>@item.ProvinceUploader</td>
+                        <td>@item.CountyUploader</td>
+                        <td>@item.DistrictUploader</td>
+                        <td>@item.FileFormat</td>
+                        <td>
+                            <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
+                               onclick="Description('@item.TransferId')">
+                                <i class="fa fa-external-link-square my-2 mx-1"> </i>
+                            </a>
+                        </td>
+                        <td>@item.UploadDate</td>
+                        <td>
+                            @if(item.FileFormat != "-"){
+                                <a class="btn btn-outline-primary btn-sm rounded-circle mx-1"
+                                    onclick="Download('@item.TransferId')">
+                                    <i class="fa fa-download my-2 mx-1"> </i>
+                                </a>
+                            }
+                            else{
+                                <span>-</span>
+                            }
+                    </td>
+                </tr>
+
+                    }
+            </table>
+        </div>
+    </div>
+</div>
+

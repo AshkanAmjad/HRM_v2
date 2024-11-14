@@ -42,7 +42,7 @@ namespace HRM.Areas.District.Controllers
         #endregion
 
         #region Display details
-        public IActionResult FillDetailsGrid()
+        public async Task<IActionResult> FillDetailsGrid()
         {
             var id = User.Claims.Where(c => c.Type == "userId").FirstOrDefault().Value;
 
@@ -53,7 +53,7 @@ namespace HRM.Areas.District.Controllers
 
             var userId = new Guid(id);
 
-            var user = _userRoleRepository.GetUserDetails(userId);
+            var user =await _userRoleRepository.GetUserDetailsAsync(userId);
 
             if (user == null)
             {

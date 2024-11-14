@@ -1,9 +1,13 @@
 ﻿using Application.Services.Interfaces;
 using AutoMapper;
 using Data.Extensions;
+using Data.Repositores;
 using Domain.DTOs.General;
+using Domain.DTOs.Portal.Document;
+using Domain.DTOs.Portal.Transfer;
 using Domain.DTOs.Security.Login;
 using Domain.Interfaces;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,14 +22,20 @@ namespace HRM.Areas.Province.Controllers
         #region Constructor
         private readonly IUserRoleRepository _userRoleRepository;
         private readonly IDocumentService _documentService;
+        private readonly IDepartmentTransferRepository _departmentTransferRepository;
+        private readonly IValidator<DownloadVM> _downloadValidator;
         private readonly IMapper _mapper;
 
         public HomeController(IUserRoleRepository userRoleRepository,
                               IDocumentService documentService,
+                              IDepartmentTransferRepository departmentTransferRepository,
+                              IValidator<DownloadVM> downloadValidator,
                               IMapper mapper)
         {
             _userRoleRepository = userRoleRepository;
+            _departmentTransferRepository = departmentTransferRepository;
             _documentService = documentService;
+            _downloadValidator = downloadValidator;
             _mapper = mapper;
         }
         #endregion
@@ -45,7 +55,7 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Display details
-        public IActionResult FillDetailsGrid()
+        public async Task<IActionResult> FillDetailsGrid()
         {
             var id = User.Claims.Where(c => c.Type == "userId").FirstOrDefault().Value;
 
@@ -56,7 +66,7 @@ namespace HRM.Areas.Province.Controllers
 
             var userId = new Guid(id);
 
-            var user = _userRoleRepository.GetUserDetails(userId);
+            var user = await _userRoleRepository.GetUserDetailsAsync(userId);
 
             if (user == null)
             {
@@ -68,6 +78,28 @@ namespace HRM.Areas.Province.Controllers
             ViewData["IsExistAvatar"] = IsExistAvatarOnDb;
 
             return View(user);
+
+        }
+
+        public async Task<IActionResult>  FillMyLatestTransfersGrid()
+        {
+            var id = User.Claims.Where(c => c.Type == "userId").FirstOrDefault().Value;
+
+            if (id == "")
+            {
+                return NotFound();
+            }
+
+            var userId = new Guid(id);
+
+            var transferArea = new TransferAreaVM()
+            {
+                ReceiverUserId = userId,
+            };
+
+            var transfers = await _departmentTransferRepository.GetMyLatestTransfersTransfersAsync(transferArea);
+
+            return View(transfers);
 
         }
         #endregion

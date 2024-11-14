@@ -72,9 +72,10 @@ namespace Data.Repositores
             return userRoles;
         }
 
-        public DisplayDetailsVM GetUserDetails(Guid userId)
+        public async Task<DisplayDetailsVM> GetUserDetailsAsync(Guid userId)
         {
-            var user = _context.Users.Where(u => u.UserId == userId)
+
+            var user = await _context.Users.Where(u => u.UserId == userId)
                                      .Select(u => new DisplayDetailsVM
                                      {
                                          UserName = u.UserName,
@@ -86,8 +87,11 @@ namespace Data.Repositores
                                          FullName = $"{u.FirstName} {u.LastName}",
                                          LastActived = $"{u.LastActived.ToShamsi()}"
                                      })
-                                     .FirstOrDefault();
+                                     .FirstOrDefaultAsync();
+            
+
             return user;
+
         }
 
 

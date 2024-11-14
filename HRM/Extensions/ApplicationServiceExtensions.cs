@@ -11,8 +11,7 @@ namespace HRM.Extensions
             #region DB Context
             services.AddDbContext<HRMContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("HRMConnectionString"),
-                        sqlServerOptions => sqlServerOptions.CommandTimeout(120));
+                options.UseSqlServer(configuration.GetConnectionString("HRMConnectionString"));
                 options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 
             });

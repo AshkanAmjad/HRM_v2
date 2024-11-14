@@ -12,7 +12,7 @@ namespace Domain.Interfaces
         #region UserRole
         IQueryable<UserRole> GetUserRolesQuery();
         List<DisplayUserRolesVM> GetUserRoles(string area);
-        DisplayDetailsVM GetUserDetails(Guid userId);
+        Task<DisplayDetailsVM> GetUserDetailsAsync(Guid userId);
         List<string> GetUserRolesByUserId(Guid userId);
         List<SelectListItem> GetRolesForSelectBox();
         List<SelectListItem> GetUsersForSelectBox(UserRolesDirectionVM direction);

@@ -116,7 +116,7 @@ namespace Data.Repositores
         {
             var transfers = _context.DepartmentTransfers.Where(dt => dt.ReceiverDepartment.UserId == area.ReceiverUserId &&
                                                                      dt.IsActived)
-                                                         .OrderByDescending(dt => dt.Transfer.UploadDate)
+                                                         .OrderByDescending(dt => dt.Transfer.UploadDate)                             
                                                          .Select(dt => new DisplayTransfersVM
                                                          {
                                                              TransferId = dt.Transfer.TransferId,
@@ -142,6 +142,29 @@ namespace Data.Repositores
             return transfers;
 
         }
+
+        public async Task<List<DisplayMyLatestTaransfersVM>> GetMyLatestTransfersTransfersAsync(TransferAreaVM area)
+        {
+            var transfers =await _context.DepartmentTransfers.Where(dt => dt.ReceiverDepartment.UserId == area.ReceiverUserId &&
+                                                                     dt.IsActived)
+                                                         .OrderByDescending(dt => dt.Transfer.UploadDate)
+                                                         .Take(5)
+                                                         .Select(dt => new DisplayMyLatestTaransfersVM
+                                                         {
+                                                             TransferId = dt.Transfer.TransferId,
+                                                             Title = dt.Transfer.Title,
+                                                             NationalCodeUploader = dt.UploaderDepartment.User.UserName,
+                                                             RoleUploader = string.Join("\n", dt.UploaderDepartment.User.UserRoles.Select(ur => ur.Role.Title)),
+                                                             AreaUploader = dt.UploaderDepartment.Area,
+                                                             ProvinceUploader = dt.UploaderDepartment.Province,
+                                                             CountyUploader = dt.UploaderDepartment.County,
+                                                             DistrictUploader = dt.UploaderDepartment.District,
+                                                             FileFormat = (dt.Transfer.FileFormat != null ? dt.Transfer.FileFormat : "-"),
+                                                             UploadDate = dt.Transfer.UploadDate.ToShamsi(),
+                                                         }).ToListAsync();
+            return transfers;
+        }
+
 
         public List<DisplayTransfersVM> GetMySendTransfers(TransferAreaVM area)
         {
@@ -172,6 +195,7 @@ namespace Data.Repositores
             return transfers;
 
         }
+
 
     }
 }

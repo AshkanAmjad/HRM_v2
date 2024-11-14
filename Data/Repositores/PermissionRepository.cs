@@ -3,6 +3,7 @@ using Data.Context;
 using Domain.Entities.Security.Models;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,8 @@ namespace Data.Repositores
             var result = false;
             if (userId != Guid.Empty)
             {
-                result = _context.Departments.Where(d => d.UserId == userId && d.Area == area).Any();
+                result = _context.Departments.AsNoTracking()
+                                             .Where(d => d.UserId == userId && d.Area == area).Any();
             }
             return result;
         }
@@ -60,7 +62,7 @@ namespace Data.Repositores
             if (userId != Guid.Empty)
             {
 
-                userRoles = (from item in _context.UserRoles
+                userRoles = (from item in _context.UserRoles.AsNoTracking()
                              where (item.UserId == userId)
                              select item.Role.Title)
                              .ToList();

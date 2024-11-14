@@ -260,7 +260,6 @@ namespace HRM.Areas.County.Controllers
             var transferArea = new TransferAreaVM()
             {
                 ReceiverUserId = userId,
-                UploaderUserId = userId,
             };
 
             var transfers = _departmentTransferRepository.GetMyInboxTransfers(transferArea);
