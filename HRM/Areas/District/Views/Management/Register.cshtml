@@ -290,295 +290,295 @@
 <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPersianDatePickerPartial.cshtml" />
 
-        <script type="text/javascript">
-            var _registerUrl = '@Url.Action("Register", "Management", new { area = "District" })';
-        </script>
-        
-        <script type="text/javascript">
-            $('#dateOfBirth').persianDatepicker({
-                initialValue: false,
-                format: 'YYYY/MM/DD'
-            });
+    <script type="text/javascript">
+        var _registerUrl = '@Url.Action("Register", "Management", new { area = "District" })';
+    </script>
 
-            $.fn.Validation = function () {
-                var result = true;
-                var employmentError = $("#employmentError");
-                var educationError = $("#educationError")
-                var maritalError = $("#maritalError");
-                var ganderError = $("#genderError");
-                var provinceDepartmentError = $("#provinceDepartmentError");
-                var countyDepartmentError = $("#countyDepartmentError");
-                var districtDepartmentError = $("#districtDepartmentError");
-                var $userName = $("input[name='UserName']").val();
-                var $password = $("input[name='Password']").val();
-                var $confirmPassword = $("input[name='ConfirmPassword']").val();
-                var $firstName = $("input[name='FirstName']").val();
-                var $lastName = $("input[name='LastName']").val();
-                var $gender = $("input[name='gender']:checked").val();
-                var $education = $("#educationTypes").find(':selected').text();
-                var $dateOfBirth = $("input[name='DateOfBirth']").val();
-                var $marital = $("input[name='maritalStatus']:checked").val();
-                var $employment = $("#employmentStatus").find(':selected').text();
-                var $provinceDepartment = $("#provinceDepartmentStatus").find(':selected').text();
-                var $countyDepartment = $("#countyDepartmentStatus").find(':selected').text();
-                var $districtDepartment = $("#districtDepartmentStatus").find(':selected').text();
-                var $gender = $("input[name='gender']:checked").val();
-                var $email = $("input[name='Email").val();
-                var $phoneNumber = $("input[name='PhoneNumber']").val();
-                var $city = $("input[name='City']").val();
-                var $address = $("#Address").val();
+    <script type="text/javascript">
+        $('#dateOfBirth').persianDatepicker({
+            initialValue: false,
+            format: 'YYYY/MM/DD'
+        });
+
+        $.fn.Validation = function () {
+            var result = true;
+            var employmentError = $("#employmentError");
+            var educationError = $("#educationError")
+            var maritalError = $("#maritalError");
+            var ganderError = $("#genderError");
+            var provinceDepartmentError = $("#provinceDepartmentError");
+            var countyDepartmentError = $("#countyDepartmentError");
+            var districtDepartmentError = $("#districtDepartmentError");
+            var $userName = $("input[name='UserName']").val();
+            var $password = $("input[name='Password']").val();
+            var $confirmPassword = $("input[name='ConfirmPassword']").val();
+            var $firstName = $("input[name='FirstName']").val();
+            var $lastName = $("input[name='LastName']").val();
+            var $gender = $("input[name='gender']:checked").val();
+            var $education = $("#educationTypes").find(':selected').text();
+            var $dateOfBirth = $("input[name='DateOfBirth']").val();
+            var $marital = $("input[name='maritalStatus']:checked").val();
+            var $employment = $("#employmentStatus").find(':selected').text();
+            var $provinceDepartment = $("#provinceDepartmentStatus").find(':selected').text();
+            var $countyDepartment = $("#countyDepartmentStatus").find(':selected').text();
+            var $districtDepartment = $("#districtDepartmentStatus").find(':selected').text();
+            var $gender = $("input[name='gender']:checked").val();
+            var $email = $("input[name='Email").val();
+            var $phoneNumber = $("input[name='PhoneNumber']").val();
+            var $city = $("input[name='City']").val();
+            var $address = $("#Address").val();
+            if ($employment === "وضعیت استخدامی خود را انتخاب کنید ...") {
+                employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.");
+                result = false;
+
+            } else {
+                employmentError.text("");
+            }
+            if ($provinceDepartment === "شعبه سطح استان خود را انتخاب کنید ...") {
+                provinceDepartmentError.text("تکمیل ورودی شعبه استان ضروری است.");
+                result = false;
+
+            } else {
+                provinceDepartmentError.text('');
+            }
+            if ($countyDepartment === "شعبه سطح شهرستان خود را انتخاب کنید ...") {
+                countyDepartmentError.text("تکمیل ورودی شعبه شهرستان ضروری است.");
+                result = false;
+
+            } else {
+                countyDepartmentError.text('');
+            }
+            if ($districtDepartment === "شعبه سطح بخش خود را انتخاب کنید ...") {
+                districtDepartmentError.text("تکمیل ورودی شعبه بخش ضروری است.");
+                result = false;
+
+            } else {
+                districtDepartmentError.text('');
+            }
+            if ($education === "سطح تحصیلات خود را انتخاب کنید ...") {
+                educationError.text("تکمیل ورودی تحصیلات ضروری است.");
+                result = false;
+
+            } else {
+                educationError.text('');
+            }
+            if ($marital === undefined) {
+                maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
+                result = false;
+
+            } else {
+                maritalError.text('');
+            }
+            if ($gender === undefined) {
+                ganderError.text("تکمیل ورودی جنسیت ضروری است.");
+                result = false;
+
+            } else {
+                ganderError.text('');
+            }
+            if (($employment === "وضعیت استخدامی خود را انتخاب کنید ..." ||
+                $provinceDepartment === "شعبه سطح استان خود را انتخاب کنید ..." ||
+                $countyDepartment === "شعبه سطح شهرستان خود را انتخاب کنید ..." ||
+                $districtDepartment === "شعبه سطح شهرستان خود را انتخاب کنید ..." ||
+                $education === "سطح تحصیلات خود را انتخاب کنید ..." ||
+                $marital === undefined ||
+                $gender === undefined)
+                &&
+                ($userName !== "" && $password !== "" && $confirmPassword !== "" && $firstName !== "" && $lastName !== ""
+                    && $dateOfBirth !== "" && $email !== "" && $phoneNumber !== "" && $city !== "" && $address !== "")) {
                 if ($employment === "وضعیت استخدامی خود را انتخاب کنید ...") {
                     employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.");
                     result = false;
 
-                } else {
-                    employmentError.text("");
                 }
                 if ($provinceDepartment === "شعبه سطح استان خود را انتخاب کنید ...") {
                     provinceDepartmentError.text("تکمیل ورودی شعبه استان ضروری است.");
                     result = false;
 
-                } else {
-                    provinceDepartmentError.text('');
                 }
                 if ($countyDepartment === "شعبه سطح شهرستان خود را انتخاب کنید ...") {
                     countyDepartmentError.text("تکمیل ورودی شعبه شهرستان ضروری است.");
                     result = false;
 
-                } else {
-                    countyDepartmentError.text('');
                 }
                 if ($districtDepartment === "شعبه سطح بخش خود را انتخاب کنید ...") {
                     districtDepartmentError.text("تکمیل ورودی شعبه بخش ضروری است.");
                     result = false;
 
-                } else {
-                    districtDepartmentError.text('');
                 }
                 if ($education === "سطح تحصیلات خود را انتخاب کنید ...") {
                     educationError.text("تکمیل ورودی تحصیلات ضروری است.");
                     result = false;
 
-                } else {
-                    educationError.text('');
                 }
                 if ($marital === undefined) {
                     maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
                     result = false;
 
-                } else {
-                    maritalError.text('');
                 }
                 if ($gender === undefined) {
                     ganderError.text("تکمیل ورودی جنسیت ضروری است.");
                     result = false;
 
+                }
+            }
+            $("#educationTypes").change(function () {
+                var $education = $("#educationTypes").find(':selected').text();
+                if ($education !== "سطح تحصیلات خود را انتخاب کنید ...") {
+                    educationError.text('');
                 } else {
-                    ganderError.text('');
+                    educationError.text("تکمیل ورودی تحصیلات ضروری است.");
+                    result = false;
+
                 }
-                if (($employment === "وضعیت استخدامی خود را انتخاب کنید ..." ||
-                     $provinceDepartment === "شعبه سطح استان خود را انتخاب کنید ..." ||
-                     $countyDepartment === "شعبه سطح شهرستان خود را انتخاب کنید ..." ||
-                     $districtDepartment === "شعبه سطح شهرستان خود را انتخاب کنید ..." ||
-                     $education === "سطح تحصیلات خود را انتخاب کنید ..." ||
-                     $marital === undefined ||
-                     $gender === undefined)
-                    &&
-                    ($userName !== "" && $password !== "" && $confirmPassword !== "" && $firstName !== "" && $lastName !== ""
-                        && $dateOfBirth !== "" && $email !== "" && $phoneNumber !== "" && $city !== "" && $address !== "")) {
-                    if ($employment === "وضعیت استخدامی خود را انتخاب کنید ...") {
-                        employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.");
-                        result = false;
-
-                    }
-                    if ($provinceDepartment === "شعبه سطح استان خود را انتخاب کنید ...") {
-                        provinceDepartmentError.text("تکمیل ورودی شعبه استان ضروری است.");
-                        result = false;
-
-                    }
-                    if ($countyDepartment === "شعبه سطح شهرستان خود را انتخاب کنید ...") {
-                        countyDepartmentError.text("تکمیل ورودی شعبه شهرستان ضروری است.");
-                        result = false;
-
-                    }
-                    if ($districtDepartment === "شعبه سطح بخش خود را انتخاب کنید ...") {
-                        districtDepartmentError.text("تکمیل ورودی شعبه بخش ضروری است.");
-                        result = false;
-
-                    }
-                    if ($education === "سطح تحصیلات خود را انتخاب کنید ...") {
-                        educationError.text("تکمیل ورودی تحصیلات ضروری است.");
-                        result = false;
-
-                    }
-                    if ($marital === undefined) {
-                        maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
-                        result = false;
-
-                    }
-                    if ($gender === undefined) {
-                        ganderError.text("تکمیل ورودی جنسیت ضروری است.");
-                        result = false;
-
-                    }
-                }
-                $("#educationTypes").change(function () {
-                    var $education = $("#educationTypes").find(':selected').text();
-                    if ($education !== "سطح تحصیلات خود را انتخاب کنید ...") {
-                        educationError.text('');
-                    } else {
-                        educationError.text("تکمیل ورودی تحصیلات ضروری است.");
-                        result = false;
-
-                    }
-                });
-                $("#employmentStatus").change(function () {
-                    var $employment = $("#employmentStatus").find(':selected').text();
-                    if ($employment !== "وضعیت استخدامی خود را انتخاب کنید ...") {
-                        employmentError.text('');
-                    } else {
-                        employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.");
-                        result = false;
-
-                    }
-                });
-                $("#provinceDepartmentStatus").change(function () {
-                    var $provinceDepartment = $("#provinceDepartmentStatus").find(':selected').text();
-                    if ($provinceDepartment !== "شعبه سطح استان خود را انتخاب کنید ...") {
-                        provinceDepartmentError.text('');
-                    } else {
-                        provinceDepartmentError.text("تکمیل ورودی شعبه استان ضروری است.");
-                        result = false;
-
-                    }
-                });
-                $("#countyDepartmentStatus").change(function () {
-                    var $countyDepartment = $("#countyDepartmentStatus").find(':selected').text();
-                    if ($countyDepartment !== "شعبه سطح شهرستان خود را انتخاب کنید ...") {
-                        countyDepartmentError.text('');
-                    } else {
-                        countyDepartmentError.text("تکمیل ورودی شعبه شهرستان ضروری است.");
-                        result = false;
-
-                    }
-                });
-                $("#districtDepartmentStatus").change(function () {
-                    var $districtDepartment = $("#districtDepartmentStatus").find(':selected').text();
-                    if ($districtDepartment !== "شعبه سطح بخش خود را انتخاب کنید ...") {
-                        districtDepartmentError.text('');
-                    } else {
-                        districtDepartmentError.text("تکمیل ورودی شعبه بخش ضروری است.");
-                        result = false;
-
-                    }
-                });
-                $("input[name='maritalStatus']").change(function () {
-                    var $marital = $("input[name='maritalStatus']:checked").val();
-                    if ($marital !== undefined) {
-                        maritalError.text('');
-                    } else {
-                        maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
-                        result = false;
-
-                    }
-                });
-                $("input[name='gender']").change(function () {
-                    var $gender = $("input[name='gender']:checked").val();
-                    if ($gender !== undefined) {
-                        ganderError.text('');
-                    } else {
-                        ganderError.text("تکمیل ورودی جنسیت ضروری است.");
-                        result = false;
-
-                    }
-                })
-                return result;
-            };
-
-            $(function () {
-                var $file = null;
-                var dropZone = $('#uploadAvatarBox');
-                $("#submitBtn").off("click");
-                $("#submitBtn").on("click", function (e) {
-                    var validation = $.fn.Validation();
-                    e.preventDefault();
-                    var $form = $('#registerForm');
-                    if ($form.valid() && validation == true) {
-                        $("#submitBtn").prop('disabled', true);
-                        var formData = new FormData($form.get(0));
-                        $.ajax({
-                            url: _registerUrl,
-                            type: 'POST',
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            success: function (result) {
-                                if (result.success) {
-                                    GridReload();
-                                    $("#operation-box").modal("toggle");
-                                    Swal.fire({
-                                        title: result.message,
-                                        icon: 'success',
-                                        showConfirmButton: false,
-                                        timer: 4000,
-                                        showClass: {
-                                            popup: 'animate__animated animate__fadeInDown'
-                                        },
-                                        hideClass: {
-                                            popup: 'animate__animated animate__fadeOutDown'
-                                        }
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        title: 'خطا',
-                                        icon: 'error',
-                                        text: result.message,
-                                        showConfirmButton: false,
-                                        timer: 4000,
-                                        showClass: {
-                                            popup: 'animate__animated animate__fadeInDown'
-                                        },
-                                        hideClass: {
-                                            popup: 'animate__animated animate__fadeOutDown'
-                                        }
-                                    })
-                                }
-                            },
-                            complete: function () {
-                                $("#submitBtn").prop('disabled', false);
-                            }
-                        });
-                    };
-                });
-
-                // Dragover event
-                dropZone.on('dragover', function (e) {
-                    e.preventDefault();
-                });
-
-                // Dragleave event
-                dropZone.on('dragleave', function (e) {
-                    e.preventDefault();
-                });
-
-                // Drop event
-                dropZone.on('drop', function (e) {
-                    e.preventDefault();
-                    var files = e.originalEvent.dataTransfer.files;
-                    if (files.length > 0) {
-                        const dataTransfer = new DataTransfer();
-                        $file = files[0];
-                        dataTransfer.items.add($file);
-                        document.getElementById("pic").files = dataTransfer.files;
-                        var reader = new FileReader();
-                        reader.onload = function (e) {
-                            $('#avatar').attr('src', e.target.result);
-                            $('#avatar').show();
-                        };
-                        reader.readAsDataURL($file);
-                    }
-                });
             });
-        </script>
+            $("#employmentStatus").change(function () {
+                var $employment = $("#employmentStatus").find(':selected').text();
+                if ($employment !== "وضعیت استخدامی خود را انتخاب کنید ...") {
+                    employmentError.text('');
+                } else {
+                    employmentError.text("تکمیل ورودی وضعیت استخدامی ضروری است.");
+                    result = false;
+
+                }
+            });
+            $("#provinceDepartmentStatus").change(function () {
+                var $provinceDepartment = $("#provinceDepartmentStatus").find(':selected').text();
+                if ($provinceDepartment !== "شعبه سطح استان خود را انتخاب کنید ...") {
+                    provinceDepartmentError.text('');
+                } else {
+                    provinceDepartmentError.text("تکمیل ورودی شعبه استان ضروری است.");
+                    result = false;
+
+                }
+            });
+            $("#countyDepartmentStatus").change(function () {
+                var $countyDepartment = $("#countyDepartmentStatus").find(':selected').text();
+                if ($countyDepartment !== "شعبه سطح شهرستان خود را انتخاب کنید ...") {
+                    countyDepartmentError.text('');
+                } else {
+                    countyDepartmentError.text("تکمیل ورودی شعبه شهرستان ضروری است.");
+                    result = false;
+
+                }
+            });
+            $("#districtDepartmentStatus").change(function () {
+                var $districtDepartment = $("#districtDepartmentStatus").find(':selected').text();
+                if ($districtDepartment !== "شعبه سطح بخش خود را انتخاب کنید ...") {
+                    districtDepartmentError.text('');
+                } else {
+                    districtDepartmentError.text("تکمیل ورودی شعبه بخش ضروری است.");
+                    result = false;
+
+                }
+            });
+            $("input[name='maritalStatus']").change(function () {
+                var $marital = $("input[name='maritalStatus']:checked").val();
+                if ($marital !== undefined) {
+                    maritalError.text('');
+                } else {
+                    maritalError.text("تکمیل ورودی وضعیت تاهل ضروری است.");
+                    result = false;
+
+                }
+            });
+            $("input[name='gender']").change(function () {
+                var $gender = $("input[name='gender']:checked").val();
+                if ($gender !== undefined) {
+                    ganderError.text('');
+                } else {
+                    ganderError.text("تکمیل ورودی جنسیت ضروری است.");
+                    result = false;
+
+                }
+            })
+            return result;
+        };
+
+        $(function () {
+            var $file = null;
+            var dropZone = $('#uploadAvatarBox');
+            $("#submitBtn").off("click");
+            $("#submitBtn").on("click", function (e) {
+                var validation = $.fn.Validation();
+                e.preventDefault();
+                var $form = $('#registerForm');
+                if ($form.valid() && validation == true) {
+                    $("#submitBtn").prop('disabled', true);
+                    var formData = new FormData($form.get(0));
+                    $.ajax({
+                        url: _registerUrl,
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (result) {
+                            if (result.success) {
+                                GridReload();
+                                $("#operation-box").modal("toggle");
+                                Swal.fire({
+                                    title: result.message,
+                                    icon: 'success',
+                                    showConfirmButton: false,
+                                    timer: 5000,
+                                    showClass: {
+                                        popup: 'animate__animated animate__fadeInDown'
+                                    },
+                                    hideClass: {
+                                        popup: 'animate__animated animate__fadeOutDown'
+                                    }
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'خطا',
+                                    icon: 'error',
+                                    text: result.message,
+                                    showConfirmButton: false,
+                                    timer: 4000,
+                                    showClass: {
+                                        popup: 'animate__animated animate__fadeInDown'
+                                    },
+                                    hideClass: {
+                                        popup: 'animate__animated animate__fadeOutDown'
+                                    }
+                                })
+                            }
+                        },
+                        complete: function () {
+                            $("#submitBtn").prop('disabled', false);
+                        }
+                    });
+                };
+            });
+
+            // Dragover event
+            dropZone.on('dragover', function (e) {
+                e.preventDefault();
+            });
+
+            // Dragleave event
+            dropZone.on('dragleave', function (e) {
+                e.preventDefault();
+            });
+
+            // Drop event
+            dropZone.on('drop', function (e) {
+                e.preventDefault();
+                var files = e.originalEvent.dataTransfer.files;
+                if (files.length > 0) {
+                    const dataTransfer = new DataTransfer();
+                    $file = files[0];
+                    dataTransfer.items.add($file);
+                    document.getElementById("pic").files = dataTransfer.files;
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#avatar').attr('src', e.target.result);
+                        $('#avatar').show();
+                    };
+                    reader.readAsDataURL($file);
+                }
+            });
+        });
+    </script>
 
 
