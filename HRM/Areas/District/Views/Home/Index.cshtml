@@ -1,17 +1,75 @@
 ﻿@{
     Layout = null;
 }
-    <div class="row m-0" id="details-box">
-    </div>
+<div id="operation-box" class="modal fade" role="dialog" aria-hidden="true">
+</div>
+<div class="btn btn-outline-primary btn-sm  my-3 mx-1">مشخصات</div>
+<div class="row m-0 mb-lg-5" id="details-box">
+</div>
+
+<div class="btn btn-outline-primary btn-sm my-3 mx-1">آخرین تبادل ها</div>
+<div class="row m-0" id="recevicer-box">
+</div>
 
 <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
-        <script type="text/javascript">
-            var _getUserDetailsUrl = '@Url.Action("FillDetailsGrid", "Home", new { area = "District" })'
-        </script>
-        <script type="text/javascript">
-            $(document).ready(function (e) {
-                $.get(_getUserDetailsUrl).done(function (result) {
-                    $("#details-box").html(result);
-                })
+    <script type="text/javascript">
+        var _getUserDetailsUrl = '@Url.Action("FillDetailsGrid", "Home", new { area = "District" })';
+        var _getMyLatestTransfersUrl = '@Url.Action("FillMyLatestTransfersGrid", "Home", new { area = "District" })';
+        var _downloadUrl = '@Url.Action("Download", "Transfer", new { area = "District" })';
+        var _getDescriptionUrl = '@Url.Action("GetDescription", "Transfer", new { area = "District" })';
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $.get(_getUserDetailsUrl).done(function (result) {
+                $("#details-box").html(result);
+
+                $.get(_getMyLatestTransfersUrl).done(function (result) {
+                    $("#recevicer-box").html(result);
+                });
+            });
+        });
+
+        //Download
+        function Download(transferId) {
+            if (transferId != null) {
+                var model = {
+                    documentId: transferId
+                }
+                $.get(_downloadUrl, model).done(function (result) {
+                    if (result.success == undefined) {
+                        var downloadUrl = _downloadUrl + '?documentId=' + transferId;
+
+                        $('<iframe style="display:none;"></iframe>').attr('src', downloadUrl).appendTo('body');
+                    }
+                    else {
+                        Swal.fire({
+                            title: "خطا",
+                            text: result.message,
+                            icon: 'error',
+                            showConfirmButton: false,
+                            timer: 4000,
+                            showClass: {
+                                popup: 'animate__animated animate__fadeInDown'
+                            },
+                            hideClass: {
+                                popup: 'animate__animated animate__fadeOutDown'
+                            }
+                        });
+                    }
+                });
+            }
+        }
+
+        //Description
+        function Description(transferId) {
+
+            var data = {
+                transferId: transferId
+            }
+
+            $.get(_getDescriptionUrl, data).done(function (result) {
+                $("#operation-box").html(result);
+                $("#operation-box").modal("show");
             })
-        </script>
+        }
+    </script>

@@ -54,7 +54,7 @@ namespace HRM.Areas.Province.Controllers
         }
         #endregion
 
-        #region Display details
+        #region Display 
         public async Task<IActionResult> FillDetailsGrid()
         {
             var id = User.Claims.Where(c => c.Type == "userId").FirstOrDefault().Value;

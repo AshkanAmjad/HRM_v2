@@ -1,7 +1,9 @@
 ﻿using Application.Services.Interfaces;
 using AutoMapper;
 using Data.Extensions;
+using Data.Repositores;
 using Domain.DTOs.General;
+using Domain.DTOs.Portal.Transfer;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,13 +17,16 @@ namespace HRM.Areas.District.Controllers
         #region Constructor
         private readonly IUserRoleRepository _userRoleRepository;
         private readonly IDocumentService _documentService;
+        private readonly IDepartmentTransferRepository _departmentTransferRepository;
         private readonly IMapper _mapper;
 
         public HomeController(IUserRoleRepository userRoleRepository,
                               IDocumentService documentService,
+                              IDepartmentTransferRepository departmentTransferRepository,
                               IMapper mapper)
         {
             _userRoleRepository = userRoleRepository;
+            _departmentTransferRepository = departmentTransferRepository;
             _documentService = documentService;
             _mapper = mapper;
         }
@@ -41,7 +46,7 @@ namespace HRM.Areas.District.Controllers
         }
         #endregion
 
-        #region Display details
+        #region Display 
         public async Task<IActionResult> FillDetailsGrid()
         {
             var id = User.Claims.Where(c => c.Type == "userId").FirstOrDefault().Value;
@@ -53,7 +58,7 @@ namespace HRM.Areas.District.Controllers
 
             var userId = new Guid(id);
 
-            var user =await _userRoleRepository.GetUserDetailsAsync(userId);
+            var user = await _userRoleRepository.GetUserDetailsAsync(userId);
 
             if (user == null)
             {
@@ -65,6 +70,28 @@ namespace HRM.Areas.District.Controllers
             ViewData["IsExistAvatar"] = IsExistAvatarOnDb;
 
             return View(user);
+
+        }
+
+        public async Task<IActionResult> FillMyLatestTransfersGrid()
+        {
+            var id = User.Claims.Where(c => c.Type == "userId").FirstOrDefault().Value;
+
+            if (id == "")
+            {
+                return NotFound();
+            }
+
+            var userId = new Guid(id);
+
+            var transferArea = new TransferAreaVM()
+            {
+                ReceiverUserId = userId,
+            };
+
+            var transfers = await _departmentTransferRepository.GetMyLatestTransfersTransfersAsync(transferArea);
+
+            return View(transfers);
 
         }
         #endregion

@@ -39,19 +39,21 @@
                         </td>
                         <td>@item.UploadDate</td>
                         <td>
-                            @if(item.FileFormat != "-"){
+                            @if (item.FileFormat != "-")
+                            {
                                 <a class="btn btn-outline-primary btn-sm rounded-circle mx-1"
-                                    onclick="Download('@item.TransferId')">
+                                   onclick="Download('@item.TransferId')">
                                     <i class="fa fa-download my-2 mx-1"> </i>
                                 </a>
                             }
-                            else{
+                            else
+                            {
                                 <span>-</span>
                             }
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
 
-                    }
+                }
             </table>
         </div>
     </div>
