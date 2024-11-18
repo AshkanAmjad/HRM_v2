@@ -1,15 +1,20 @@
-﻿using Domain.DTOs.General;
+﻿using Data.Extensions;
+using Domain.DTOs.General;
 using Domain.DTOs.Portal.Document;
 using Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static System.Collections.Specialized.BitVector32;
 
 namespace HRM.Areas.Province.Controllers
 {
     [Area("Province")]
+    [Authorize]
+    [AreaPermissionChecker("0")]
+
     public class DocumentController : Controller
     {
         #region Constructor
@@ -25,11 +30,13 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Index
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult ProvinceManagementDocumentsIndex()
         {
             return View();
         }
 
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult ProvinceArchiveDocumentsIndex()
         {
             return View();
@@ -43,16 +50,21 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Display
+
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult FillDocumentsGrid()
         {
             return View();
         }
+
         public IActionResult FillMyDocumentsGrid()
         {
             return View();
         }
 
         [HttpPost]
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
+
         public IActionResult GetDocuments(AreaVM model, bool status)
         {
             var documents = _documentRepository.GetDocuments(model, status);

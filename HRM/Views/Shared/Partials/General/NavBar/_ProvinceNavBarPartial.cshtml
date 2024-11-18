@@ -8,6 +8,7 @@
     var _provinceReportsUrl = '@Url.Action("ProvinceReportsIndex", "Report", new { area = "Province" })';
     var _provinceSendTransfersUrl = '@Url.Action("ProvinceSendTransfersIndex", "Transfer", new { area = "Province" })';
     var _provinceInboxTransfersUrl = '@Url.Action("ProvinceInboxTransfersIndex", "Transfer", new { area = "Province" })';
+    var _provinceRegisterTransferUrl = '@Url.Action("UserRegister", "Transfer", new { area = "Province" })';
 
 </script>
 <script type="text/javascript">
@@ -81,5 +82,12 @@
             });
         });
         //------------------------------------------------------------------------
+        $("#provinceUserSendTransfers").off("click");
+        $("#provinceUserSendTransfers").on("click", function (e) {
+            e.preventDefault();
+            $.get(_provinceRegisterTransferUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
     });
 </script>

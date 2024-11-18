@@ -200,8 +200,9 @@ namespace Data.Repositores
             UserRoleEditVM userRole = new();
             if (userRoleId != Guid.Empty)
             {
+
                 userRole = (from item in _context.UserRoles
-                            where (item.UserRoleId == userRoleId)
+                            where (item.UserRoleId.Equals(userRoleId))
                             select new UserRoleEditVM
                             {
                                 UserRoleId = item.UserRoleId,
@@ -209,7 +210,7 @@ namespace Data.Repositores
                                 UserId = $"{item.UserId}",
                                 FullName = $"{item.User.FirstName} {item.User.LastName}",
                                 RoleId = $"{item.RoleId}"
-                            }).Single();
+                            }).FirstOrDefault();
             }
             return userRole;
         }
@@ -279,12 +280,10 @@ namespace Data.Repositores
                                            .Find(model.UserRoleId);
                 if (initial != null)
                 {
-                    UserRole userRole = _mapper.Map<UserRole>(model);
 
                     initial.RoleId = new Guid(model.RoleId);
                     initial.UserId = new Guid(model.UserId);
-
-                    initial.RegisterDate = userRole.RegisterDate;
+                    initial.RegisterDate = DateTime.Now;
 
                     _context.Update(initial);
                 }

@@ -1,11 +1,15 @@
 ﻿using Application.Extensions;
+using Data.Extensions;
 using Domain.DTOs.Security.Report;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HRM.Areas.Province.Controllers
 {
     [Area("Province")]
+    [Authorize]
+    [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
     public class ReportController : Controller
     {
         #region Constructor

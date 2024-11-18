@@ -19,8 +19,7 @@ namespace Data.HRMProfiles
                 .ForMember(dest => dest.RegisterDate, opt => opt.MapFrom(src => src.RegisterDate))
                 .ForMember(dest => dest.IsActived, opt => opt.MapFrom(src => src.IsActived));
 
-            CreateMap<UserRoleEditVM, UserRole>()
-                .ForMember(dest => dest.UserRoleId, opt => opt.MapFrom(src => src.UserRoleId));
+  
         }
     }
 }

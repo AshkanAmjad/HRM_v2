@@ -103,7 +103,7 @@
             }
 
             //Register
-            $("#addBtn").off("click").on("click", function (e) {
+                $("#addBtn").off("click").on("click", function (e) {
                 e.preventDefault();
                 $.get(_registerUrl).done(function (result) {
                     $("#operation-box").html(result);

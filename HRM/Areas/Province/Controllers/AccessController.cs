@@ -9,6 +9,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using HRM.Models.Validation.Security.UserRole;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,7 +17,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace HRM.Areas.Province.Controllers
 {
     [Area("Province")]
-    [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
+    [Authorize]
+    [AreaPermissionChecker("0")]
 
     public class AccessController : Controller
     {
@@ -62,11 +64,13 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Index
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult ProvinceRolesIndex()
         {
             return View();
         }
 
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult ProvinceUserRolesIndex()
         {
             return View();
@@ -75,17 +79,20 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Display
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult FillRolesGrid()
         {
             return View();
         }
 
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult FillUserRolesGrid()
         {
             return View();
         }
 
         [HttpPost]
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult GetRoles()
         {
             var roles = _roleRepository.GetRoles();
@@ -121,6 +128,7 @@ namespace HRM.Areas.Province.Controllers
         }
 
         [HttpPost]
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult GetUserRoles(string section)
         {
             var roles = _userRoleRepository.GetUserRoles(section);
@@ -158,6 +166,8 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Register
+
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult RoleRegister()
         {
             return View();
@@ -165,6 +175,7 @@ namespace HRM.Areas.Province.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult RoleRegister(RoleRegisterVM model)
         {
             ValidationResult roleValidator = _roleRegisterValidator.Validate(model);
@@ -221,6 +232,7 @@ namespace HRM.Areas.Province.Controllers
 
         }
 
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult UserRoleRegister()
         {
             var departments = _generalService.ProvinceDepartmentTypes();
@@ -251,6 +263,7 @@ namespace HRM.Areas.Province.Controllers
         }
 
         [HttpPost]
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult UserRoleRegister(UserRoleRegisterVM model)
         {
             ValidationResult userRoleValidator = _userRoleRegisterValidator.Validate(model);
@@ -308,6 +321,7 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Edit
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult RoleEdit(RoleEdit_Active_DisableVM model)
         {
             ValidationResult roleValidator = _roleEdit_DisableValidator.Validate(model);
@@ -326,6 +340,7 @@ namespace HRM.Areas.Province.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult RoleEdit(RoleEditVM model)
         {
             ValidationResult roleValidator = _roleEditValidator.Validate(model);
@@ -381,6 +396,7 @@ namespace HRM.Areas.Province.Controllers
             return Json(jsonData);
         }
 
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult UserRoleEdit(UserRoleEdit_Active_DisableVM model)
         {
             ValidationResult userRoleValidator = _userRoleEdit_DisableValidator.Validate(model);
@@ -401,6 +417,7 @@ namespace HRM.Areas.Province.Controllers
         }
 
         [HttpPost]
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult UserRoleEdit(UserRoleEditVM model)
         {
             ValidationResult userRoleValidator = _userRoleEditValidator.Validate(model);
@@ -459,6 +476,7 @@ namespace HRM.Areas.Province.Controllers
 
         #region Disable
         [HttpPost]
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult RoleDisable(RoleEdit_Active_DisableVM model)
         {
             ValidationResult roleValidator = _roleEdit_DisableValidator.Validate(model);
@@ -515,6 +533,7 @@ namespace HRM.Areas.Province.Controllers
         }
 
         [HttpPost]
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult UserRoleDisable(UserRoleEdit_Active_DisableVM model)
         {
             ValidationResult userRoleValidator = _userRoleEdit_DisableValidator.Validate(model);
@@ -573,6 +592,7 @@ namespace HRM.Areas.Province.Controllers
 
         #region Active
         [HttpPost]
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult RoleActive(RoleEdit_Active_DisableVM model)
         {
             ValidationResult roleValidator = _roleEdit_DisableValidator.Validate(model);
@@ -629,6 +649,7 @@ namespace HRM.Areas.Province.Controllers
         }
 
         [HttpPost]
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult UserRoleActive(UserRoleEdit_Active_DisableVM model)
         {
             ValidationResult userRoleValidator = _userRoleEdit_DisableValidator.Validate(model);

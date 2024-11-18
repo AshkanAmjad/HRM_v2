@@ -1,5 +1,6 @@
 ﻿using Application.Services.Interfaces;
 using AutoMapper;
+using Data.Extensions;
 using Domain.DTOs.General;
 using Domain.DTOs.Security.Profile;
 using Domain.DTOs.Security.User;
@@ -15,6 +16,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace HRM.Areas.Province.Controllers
 {
     [Area("Province")]
+    [Authorize]
+    [AreaPermissionChecker("0")]
+
 
     public class ManagementController : Controller
     {
@@ -56,6 +60,7 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Index
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult ProvinceManagementUsersIndex()
         {
             return View();
@@ -63,12 +68,14 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Display
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult FillUsersGrid()
         {
             return View();
         }
 
         [HttpPost]
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult GetUsers(AreaVM model)
         {
             var users = _userRepository.GetUsers(model);
@@ -132,6 +139,7 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Register
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult Register()
         {
             var genders = _generalService.GenderTypes();
@@ -149,6 +157,7 @@ namespace HRM.Areas.Province.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult Register(UserRegisterVM user)
         {
             ValidationResult userValidator = _userRegisterValidator.Validate(user);
@@ -207,6 +216,7 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Edit
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult Edit(UserEdit_DisableVM model)
         {
             ValidationResult userValidator = _userEdit_DeleteValidator.Validate(model);
@@ -245,6 +255,7 @@ namespace HRM.Areas.Province.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult Edit(UserEditVM user)
         {
             ValidationResult userValidator = _userEditValidator.Validate(user);
@@ -304,6 +315,7 @@ namespace HRM.Areas.Province.Controllers
         #region Disable
 
         [HttpPost]
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult Disable(UserEdit_DisableVM user)
         {
             ValidationResult userValidator = _userEdit_DeleteValidator.Validate(user);

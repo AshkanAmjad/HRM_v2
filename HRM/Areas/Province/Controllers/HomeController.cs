@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HRM.Areas.Province.Controllers
 {
     [Area("Province")]
+    [Authorize]
     [AreaPermissionChecker("0")]
 
     public class HomeController : Controller

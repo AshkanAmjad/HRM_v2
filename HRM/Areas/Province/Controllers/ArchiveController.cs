@@ -1,5 +1,6 @@
 ﻿using Application.Services.Interfaces;
 using AutoMapper;
+using Data.Extensions;
 using Domain.DTOs.General;
 using Domain.DTOs.Security.User;
 using Domain.Entities.Security.Models;
@@ -7,11 +8,16 @@ using Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HRM.Areas.Province.Controllers
 {
     [Area("Province")]
+    [Authorize]
+    [AreaPermissionChecker("0")]
+    [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
+
     public class ArchiveController : Controller
     {
         #region Constructor

@@ -9,114 +9,104 @@
         ? ViewBag.Roles
         : new List<SelectListItem>();
 }
-<div class="modal-dialog modal-lg " id="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <div class="modal-title">
-                <div class="btn btn-outline-primary btn-sm  my-2 mx-1">افزودن در سطح استان</div>
-            </div>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="border border-top-0 ">
-            <p class="fs-8 mt-3 fw-bold">
-                <i class="fa fa-lg me-3 ms-2 fa-bullseye text-primary"></i>
-                اطلاعات گیرنده را با دقت در ورودی های مربوطه وارد کنید.
-            </p>
-        </div>
+<div class="btn btn-outline-primary btn-sm  my-2 mx-1">افزودن در سطح استان</div>
+
+<p class="fs-8 mt-3 fw-bold">
+    <i class="fa fa-lg me-3 ms-2 fa-bullseye text-primary"></i>
+    اطلاعات گیرنده را با دقت در ورودی های مربوطه وارد کنید.
+</p>
+<div class="row m-0 border border-start-0 border-end-0">
+    <div class="col-lg-7 pt-2 pb-3">
         <form id="registerForm" enctype="multipart/form-data" class="px-2" asp-antiforgery="true">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="AreaReceiver" value="0" />
             <input type="hidden" asp-for="CountyReceiver" value="0" />
             <input type="hidden" asp-for="DistrictReceiver" value="0" />
-            <div class="modal-body">
 
 
-                <div class="row mt-2 px-2">
-                    <div class="col-5 col-lg-4">
-                        <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
-                        <label class="control-label">عنوان :</label>
-                    </div>
-                    <div class="col-7 col-lg-8">
-                        <input asp-for="Title" class="form-control w-100" tabindex="1" autocomplete="off" placeholder="مقدار مناسبی برای عنوان وارد کنید ..." />
-                        <span asp-validation-for="Title" class="text-danger fs-8"></span>
-                    </div>
+            <div class="row mt-2 px-2">
+                <div class="col-5 col-lg-4">
+                    <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
+                    <label class="control-label">عنوان :</label>
                 </div>
-                <div class="row mt-2 px-2">
-                    <div class="col-5 col-lg-4">
-                        <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
-                        <label class="control-label">شعبه استان :</label>
-                    </div>
-                    <div class="col-7 col-lg-8">
-                        <select asp-for="ProvinceReceiver" class="form-select" aria-label=".form-select-sm" asp-items="departments" id="provinceDepartmentStatus" tabindex="2">
-                            <option selected class="fs-7">شعبه سطح استان خود را انتخاب کنید ...</option>
-                        </select>
-                        <span class="text-danger fs-8" id="departmentError"></span>
-                    </div>
-                </div>
-                <p class="help-block cursor fs-8 mt-2 mb-3 px-2 text-black-50">
-                    <i class="fa fa-exclamation-circle fa-lg text-warning my-1 ms-2"></i>
-                    در صورت ارسال برای کارمند یا معاونت خاصی، تکمیل فقط یکی از دو ورودی زیر الزامی است و در غیر این صورت چیزی وارد نکنید:
-                </p>
-                <div class="row mt-2 px-2">
-                    <div class="col-5 col-lg-4">
-                        <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
-                        <label class="control-label">پرسنل <sup class="text-danger fs-6 fw-bold">*</sup> :</label>
-                    </div>
-                    <div class="col-7 col-lg-8">
-                        <select asp-for="UserIdReceiver" class="form-select" aria-label=".form-select-sm" id="provinceUserStatus" tabindex="3">
-                            <option selected class="fs-7" id="userStatus" value="@Guid.Empty">پرسنل مورد نظر را انتخاب کنید ...</option>
-                        </select>
-                        <span class="text-danger fs-8" id="userError"></span>
-                    </div>
-                </div>
-                <div class="row mt-2 px-2">
-                    <div class="col-5 col-lg-4">
-                        <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
-                        <label class="control-label">معاونت <sup class="text-danger fs-6 fw-bold">*</sup> :</label>
-                    </div>
-                    <div class="col-7 col-lg-8">
-                        <select asp-for="RoleReceiver" class="form-select" aria-label=".form-select-sm" asp-items="roles" id="roleStatus" tabindex="4">
-                            <option selected class="fs-7" value="@Guid.Empty">معاونت مربوطه، را انتخاب کنید ...</option>
-                        </select>
-                        <span class="text-danger fs-8" id="roleError"></span>
-                    </div>
-                </div>
-                <div class="row mt-2 px-2">
-                    <div class="col-5 col-lg-4">
-                        <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
-                        <label class="control-label">توضیحات :</label>
-                    </div>
-                    <div class="col-7 col-lg-8">
-                        <textarea asp-for="Description" class="form-control" tabindex="5" id="editor"></textarea>
-                        <span asp-validation-for="Description" id="descriptionError" class="text-danger fs-8"></span>
-                    </div>
-                </div>
-                <div class="row mt-2 px-2 custom-file">
-                    <div class="col-5 col-lg-4">
-                        <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
-                        <label class="control-label">بارگذاری سند :</label>
-                    </div>
-                    <div class="col-7 col-lg-8 fs-8">
-                        <input asp-for="Document" id="fileInput" class="custom-file-input hidden" tabindex="6" />
-                        <button type="button" class="btn btn-primary fs-8" id="uploadButton">
-                            سندی انتخاب کنید ...
-                        </button>
-                        <span id="customFileLabel">سندی انتخاب نشده است</span>
-
-                    </div>
-                </div>
-                <div class="modal-footer d-flex justify-content-center align-items-center mt-lg-5">
-                    <button type="submit" class="btn btn-primary px-5 align-items-center" id="submitBtn" tabindex="7">
-                        <i class="fa fa-send mx-2"></i>
-                        ارسال
-                    </button>
-                    <button type="button" class="btn btn-secondary cursor-pointer mx-1" tabindex="8" data-bs-dismiss="modal">
-                        &times;
-                    </button>
+                <div class="col-7 col-lg-8">
+                    <input asp-for="Title" class="form-control w-100" tabindex="1" autocomplete="off" placeholder="مقدار مناسبی برای عنوان وارد کنید ..." />
+                    <span asp-validation-for="Title" class="text-danger fs-8"></span>
                 </div>
             </div>
+            <div class="row mt-2 px-2">
+                <div class="col-5 col-lg-4">
+                    <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
+                    <label class="control-label">شعبه استان :</label>
+                </div>
+                <div class="col-7 col-lg-8">
+                    <select asp-for="ProvinceReceiver" class="form-select" aria-label=".form-select-sm" asp-items="departments" id="provinceDepartmentStatus" tabindex="2">
+                        <option selected class="fs-7">شعبه سطح استان خود را انتخاب کنید ...</option>
+                    </select>
+                    <span class="text-danger fs-8" id="departmentError"></span>
+                </div>
+            </div>
+            <p class="help-block cursor fs-8 mt-2 mb-3 px-2 text-black-50">
+                <i class="fa fa-exclamation-circle fa-lg text-warning my-1 ms-2"></i>
+                در صورت ارسال برای کارمند یا معاونت خاصی، تکمیل فقط یکی از دو ورودی زیر الزامی است و در غیر این صورت چیزی وارد نکنید:
+            </p>
+            <div class="row mt-2 px-2">
+                <div class="col-5 col-lg-4">
+                    <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
+                    <label class="control-label">پرسنل <sup class="text-danger fs-6 fw-bold">*</sup> :</label>
+                </div>
+                <div class="col-7 col-lg-8">
+                    <select asp-for="UserIdReceiver" class="form-select" aria-label=".form-select-sm" id="provinceUserStatus" tabindex="3">
+                        <option selected class="fs-7" id="userStatus" value="@Guid.Empty">پرسنل مورد نظر را انتخاب کنید ...</option>
+                    </select>
+                    <span class="text-danger fs-8" id="userError"></span>
+                </div>
+            </div>
+            <div class="row mt-2 px-2">
+                <div class="col-5 col-lg-4">
+                    <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
+                    <label class="control-label">معاونت <sup class="text-danger fs-6 fw-bold">*</sup> :</label>
+                </div>
+                <div class="col-7 col-lg-8">
+                    <select asp-for="RoleReceiver" class="form-select" aria-label=".form-select-sm" asp-items="roles" id="roleStatus" tabindex="4">
+                        <option selected class="fs-7" value="@Guid.Empty">معاونت مربوطه، را انتخاب کنید ...</option>
+                    </select>
+                    <span class="text-danger fs-8" id="roleError"></span>
+                </div>
+            </div>
+            <div class="row mt-2 px-2">
+                <div class="col-5 col-lg-4">
+                    <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
+                    <label class="control-label">توضیحات :</label>
+                </div>
+                <div class="col-7 col-lg-8">
+                    <textarea asp-for="Description" class="form-control" tabindex="5" id="editor"></textarea>
+                    <span asp-validation-for="Description" id="descriptionError" class="text-danger fs-8"></span>
+                </div>
+            </div>
+            <div class="row mt-2 px-2 custom-file">
+                <div class="col-5 col-lg-4">
+                    <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
+                    <label class="control-label">بارگذاری سند :</label>
+                </div>
+                <div class="col-7 col-lg-8 fs-8">
+                    <input asp-for="Document" id="fileInput" class="custom-file-input hidden" tabindex="6" />
+                    <button type="button" class="btn btn-primary fs-8" id="uploadButton">
+                        سندی انتخاب کنید ...
+                    </button>
+                    <span id="customFileLabel">سندی انتخاب نشده است</span>
+
+                </div>
+            </div>
+
         </form>
     </div>
+</div>
+<div class=" d-flex justify-content-center align-items-center mt-4">
+    <button type="submit" class="btn btn-primary px-5 align-items-center" id="submitBtn" tabindex="7">
+        <i class="fa fa-send mx-2"></i>
+        ارسال
+    </button>
 </div>
 
 <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
@@ -126,6 +116,8 @@
 
         var _getUsersUrl = '@Url.Action("GetUsersForSelectBox", "Access", new { area = "Province" })';
         var _registerUrl = '@Url.Action("Register", "Transfer", new { area = "Province" })';
+        var _provinceRegisterTransferUrl = '@Url.Action("UserRegister", "Transfer", new { area = "Province" })';
+
     </script>
     <script type="text/javascript">
 
@@ -317,7 +309,9 @@
                         contentType: false,
                         success: function (result) {
                             if (result.success) {
-                                GridReload();
+                                $.get(_provinceRegisterTransferUrl).done(function (result) {
+                                    $("#main").html(result);
+                                });
                                 $("#operation-box").modal("toggle");
                                 Swal.fire({
                                     title: result.message,

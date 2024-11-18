@@ -1,17 +1,20 @@
 ﻿using Application.Services.Interfaces;
 using AutoMapper;
+using Data.Extensions;
 using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Portal.Transfer;
 using Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HRM.Areas.Province.Controllers
 {
     [Area("Province")]
+    [Authorize]
 
     public class TransferController : Controller
     {
@@ -52,10 +55,13 @@ namespace HRM.Areas.Province.Controllers
         #endregion
 
         #region Index
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult ProvinceSendTransfersIndex()
         {
             return View();
         }
+
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult ProvinceInboxTransfersIndex()
         {
             return View();
@@ -78,6 +84,7 @@ namespace HRM.Areas.Province.Controllers
         }
 
         [HttpPost]
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult GetSendTransfers(TransferAreaVM model)
         {
             var id = User.Claims.Where(c => c.Type == "userId").FirstOrDefault().Value;
@@ -136,6 +143,7 @@ namespace HRM.Areas.Province.Controllers
         }
 
         [HttpPost]
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
         public IActionResult GetInboxTransfers()
         {
             var id = User.Claims.Where(c => c.Type == "userId").FirstOrDefault().Value;
@@ -191,6 +199,7 @@ namespace HRM.Areas.Province.Controllers
         }
 
         [HttpPost]
+        [AreaPermissionChecker("0")]
         public IActionResult GetMySendTransfers()
         {
             var id = User.Claims.Where(c => c.Type == "userId").FirstOrDefault().Value;
@@ -240,6 +249,7 @@ namespace HRM.Areas.Province.Controllers
         }
 
         [HttpPost]
+        [AreaPermissionChecker("0")]
         public IActionResult GetMyInboxTransfers()
         {
             var id = User.Claims.Where(c => c.Type == "userId").FirstOrDefault().Value;
@@ -294,6 +304,21 @@ namespace HRM.Areas.Province.Controllers
         public IActionResult Register()
         {
             var departments = _generalService.ProvinceDepartmentTypes();
+
+            ViewBag.Departments = new SelectList(departments, "Value", "Text");
+
+            var roles = _userRoleRepository.GetRolesForSelectBox();
+
+            ViewBag.Roles = new SelectList(roles, "Value", "Text");
+
+            return View();
+        }
+
+        [AreaPermissionChecker("0")]
+        public IActionResult UserRegister()
+        {
+            var departments = _generalService.ProvinceDepartmentTypes();
+
             ViewBag.Departments = new SelectList(departments, "Value", "Text");
 
             var roles = _userRoleRepository.GetRolesForSelectBox();
@@ -434,6 +459,8 @@ namespace HRM.Areas.Province.Controllers
         #region Disable
 
         [HttpPost]
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
+
         public IActionResult Disable(TransferActive_Disable_DescriptionVM transfer)
         {
             ValidationResult transferValidator = _transferActive_Disable_DescriptionValidator.Validate(transfer);
@@ -493,6 +520,8 @@ namespace HRM.Areas.Province.Controllers
         #region Active
 
         [HttpPost]
+        [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
+
         public IActionResult Active(TransferActive_Disable_DescriptionVM transfer)
         {
             ValidationResult transferValidator = _transferActive_Disable_DescriptionValidator.Validate(transfer);
