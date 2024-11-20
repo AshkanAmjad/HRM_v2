@@ -30,7 +30,7 @@
     </div>
         <script type="text/javascript">
             var _gridUrl = '@Url.Action("FillUsersGrid", "Archive", new { area = "District" })';
-            var _getUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Archive", new { Section = "2", Province = "0", County = "0", District = "0", area = "District" }))';
+            var _getUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Archive", new { area = "District" }))';
             var _deleteUrl = '@Url.Action("Delete", "Archive", new { area = "District" })';
             var _activeUrl = '@Url.Action("Active", "Archive", new { area = "District" })';
 

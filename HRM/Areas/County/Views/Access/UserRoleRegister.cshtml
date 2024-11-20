@@ -101,179 +101,180 @@
 </div>
 <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
 
-        <script type="text/javascript">
-            var _getUsersUrl = '@Url.Action("GetUsersForSelectBox", "Access", new { area = "County" })';
-            var _registerUrl = '@Url.Action("UserRoleRegister", "Access", new { area = "County" })';
-        </script>
+    <script type="text/javascript">
+        var _getUsersUrl = '@Url.Action("GetUsersForSelectBox", "Access", new { area = "County" })';
+        var _registerUrl = '@Url.Action("UserRoleRegister", "Access", new { area = "County" })';
+    </script>
 
-        <script type="text/javascript">
-            $.fn.Validation = function () {
-                var result = true;
-                var provinceDepartmentError = $("#provinceDepartmentError");
-                var countyDepartmentError = $("#countyDepartmentError");
-                var userError = $("#userError");
-                var roleError = $("#roleError");
+    <script type="text/javascript">
+        $.fn.Validation = function () {
+            var result = true;
+            var provinceDepartmentError = $("#provinceDepartmentError");
+            var countyDepartmentError = $("#countyDepartmentError");
+            var userError = $("#userError");
+            var roleError = $("#roleError");
 
-                var $provinceDepartment = $("#provinceDepartmentStatus").find(':selected').text();
-                var $countyDepartment = $("#countyDepartmentStatus").find(':selected').text();
-                var $user = $("#countyUserStatus").find(':selected').text();
-                var $role = $("#roleStatus").find(':selected').text();
+            var $provinceDepartment = $("#provinceDepartmentStatus").find(':selected').text();
+            var $countyDepartment = $("#countyDepartmentStatus").find(':selected').text();
+            var $user = $("#countyUserStatus").find(':selected').text();
+            var $role = $("#roleStatus").find(':selected').text();
 
-                var isDisabled = $("#countyUserStatus").is('[disabled]');
+            var isDisabled = $("#countyUserStatus").is('[disabled]');
 
-                if ($provinceDepartment === "شعبه سطح استان خود را انتخاب کنید ...") {
-                    provinceDepartmentError.text("تکمیل ورودی شعبه استان ضروری است.");
-                    result = false;
-                } else {
-                    provinceDepartmentError.text('');
-                }
-
-                if ($countyDepartment === "شعبه سطح شهرستان خود را انتخاب کنید ...") {
-                    countyDepartmentError.text("تکمیل ورودی شعبه شهرستان ضروری است.");
-                    result = false;
-                } else {
-                    countyDepartmentError.text('');
-                }
-
-                if ($user === "پرسنل مورد نظر را انتخاب کنید ..." && isDisabled == true) {
-                    result = false;
-                } else {
-                    userError.text('');
-                }
-
-                if ($role === "معاونت مربوطه، را انتخاب کنید ...") {
-                    roleError.text("تکمیل ورودی معاونت ضروری است.")
-                    result = false;
-                } else {
-                    roleError.text('');
-                }
-
-                $("#countyDepartmentStatus").change(function () {
-                    var $countyDepartment = $("#countyDepartmentStatus").find(':selected').text();
-                    if ($countyDepartment !== "شعبه سطح شهرستان خود را انتخاب کنید ...") {
-                        countyDepartmentError.text('');
-                    } else {
-                        countyDepartmentError.text("تکمیل ورودی شعبه شهرستان ضروری است.");
-                        result = false;
-                    }
-                });
-
-                $("#roleStatus").change(function () {
-                    var $role = $("#roleStatus").find(':selected').text();
-                    if ($role !== "معاونت مربوطه، را انتخاب کنید ...") {
-                        roleError.text('');
-                    } else {
-                        roleError.text("تکمیل ورودی معاونت ضروری است.");
-                        result = false;
-                    }
-                });
-
-                return result;
+            if ($provinceDepartment === "شعبه سطح استان خود را انتخاب کنید ...") {
+                provinceDepartmentError.text("تکمیل ورودی شعبه استان ضروری است.");
+                result = false;
+            } else {
+                provinceDepartmentError.text('');
             }
 
-            //Seed data to select user
-            $("#provinceDepartmentStatus").change(function () {
+            if ($countyDepartment === "شعبه سطح شهرستان خود را انتخاب کنید ...") {
+                countyDepartmentError.text("تکمیل ورودی شعبه شهرستان ضروری است.");
+                result = false;
+            } else {
+                countyDepartmentError.text('');
+            }
 
-                var provinceDepartment = $("#provinceDepartmentStatus").find(':selected').val();
+            if ($user === "پرسنل مورد نظر را انتخاب کنید ..." && isDisabled == true) {
+                result = false;
+            } else {
+                userError.text('');
+            }
 
-                if (provinceDepartment !== "شعبه سطح استان خود را انتخاب کنید ...") {
-                    $('#provinceDepartmentStatus').attr('disabled', true);
-                    $('#countyDepartmentStatus').attr('disabled', false);
+            if ($role === "معاونت مربوطه، را انتخاب کنید ...") {
+                roleError.text("تکمیل ورودی معاونت ضروری است.")
+                result = false;
+            } else {
+                roleError.text('');
+            }
+
+            $("#countyDepartmentStatus").change(function () {
+                var $countyDepartment = $("#countyDepartmentStatus").find(':selected').text();
+                if ($countyDepartment !== "شعبه سطح شهرستان خود را انتخاب کنید ...") {
+                    countyDepartmentError.text('');
                 } else {
-                    $('#countyUserStatus ,#countyDepartmentStatus').attr('disabled', true);
+                    countyDepartmentError.text("تکمیل ورودی شعبه شهرستان ضروری است.");
+                    result = false;
                 }
-
-                $("#countyDepartmentStatus").change(function () {
-
-                    $('#countyUserStatus').empty();
-
-                    var countyDepartment = $("#countyDepartmentStatus").find(":selected").val();
-
-                    if (countyDepartment !== "شعبه سطح شهرستان خود را انتخاب کنید ...") {
-                        $('#countyUserStatus').attr('disabled', false);
-
-                        var direction = {
-                            level: "1",
-                            province: provinceDepartment,
-                            County: countyDepartment,
-                            District: "0"
-                        };
-
-                        $.post(_getUsersUrl, direction)
-                            .done(function (result) {
-                                if (result.success) {
-                                    $.each(result.data, function () {
-                                        $("#countyUserStatus").append('<option id="userStatus" value=' + this.value + '>' + this.text + '</option>');
-                                    });
-                                }
-                            });
-
-                    } else {
-                        $('#countyUserStatus').attr('disabled', true);
-                        $("#countyUserStatus").append('<option class="fs-7" id="userStatus" >پرسنل مورد نظر را انتخاب کنید ...</option>');
-                    }
-                })
-            })
-
-            //Disable select county department and user
-            $('#countyDepartmentStatus, #countyUserStatus').attr('disabled', true);
-
-
-            $(function () {
-                $("#submitBtn").off("click");
-                $("#submitBtn").on("click", function (e) {
-                    var validation = $.fn.Validation();
-                    e.preventDefault();
-                    if (validation == true) {
-                        $("#submitBtn").prop('disabled', true);
-
-                        var userId = $("#countyUserStatus").find(':selected').val();
-                        var roleId = $("#roleStatus").find(':selected').val();
-
-                        var formData =
-                        {
-                            userId: userId,
-                            roleId: roleId
-                        };
-
-                        $.post(_registerUrl, formData).done(function (result) {
-                            if (result.success) {
-                                GridReload();
-                                $("#operation-box").modal("toggle");
-                                Swal.fire({
-                                    title: result.message,
-                                    icon: 'success',
-                                    showConfirmButton: false,
-                                    timer: 4000,
-                                    showClass: {
-                                        popup: 'animate__animated animate__fadeInDown'
-                                    },
-                                    hideClass: {
-                                        popup: 'animate__animated animate__fadeOutDown'
-                                    }
-                                });
-                            } else {
-                                Swal.fire({
-                                    title: 'خطا',
-                                    icon: 'error',
-                                    text: result.message,
-                                    showConfirmButton: false,
-                                    timer: 4000,
-                                    showClass: {
-                                        popup: 'animate__animated animate__fadeInDown'
-                                    },
-                                    hideClass: {
-                                        popup: 'animate__animated animate__fadeOutDown'
-                                    }
-                                })
-                            }
-                        })
-                            .always(function () {
-                                $("#submitBtn").prop('disabled', false);
-                            });
-                    };
-                });
             });
 
+            $("#roleStatus").change(function () {
+                var $role = $("#roleStatus").find(':selected').text();
+                if ($role !== "معاونت مربوطه، را انتخاب کنید ...") {
+                    roleError.text('');
+                } else {
+                    roleError.text("تکمیل ورودی معاونت ضروری است.");
+                    result = false;
+                }
+            });
 
-        </script>
+            return result;
+        }
+
+        //Seed data to select user
+        $("#provinceDepartmentStatus").change(function () {
+
+            var provinceDepartment = $("#provinceDepartmentStatus").find(':selected').val();
+
+            if (provinceDepartment !== "شعبه سطح استان خود را انتخاب کنید ...") {
+                $('#provinceDepartmentStatus').attr('disabled', true);
+                $('#countyDepartmentStatus').attr('disabled', false);
+            } else {
+                $('#countyUserStatus ,#countyDepartmentStatus').attr('disabled', true);
+            }
+
+            $("#countyDepartmentStatus").change(function () {
+
+                $('#countyUserStatus').empty();
+
+                var countyDepartment = $("#countyDepartmentStatus").find(":selected").val();
+
+                if (countyDepartment !== "شعبه سطح شهرستان خود را انتخاب کنید ...") {
+                    $('#countyUserStatus').attr('disabled', false);
+
+                    var direction = {
+                        level: "1",
+                        province: provinceDepartment,
+                        County: countyDepartment,
+                        District: "0"
+                    };
+
+                    $.post(_getUsersUrl, direction)
+                        .done(function (result) {
+                            if (result.success) {
+                                $.each(result.data, function () {
+                                    $("#countyUserStatus").append('<option id="userStatus" value=' + this.value + '>' + this.text + '</option>');
+                                });
+                            }
+                            $('#roleStatus').attr('disabled', false);
+                        });
+
+                } else {
+                    $('#countyUserStatus, #roleStatus').attr('disabled', true);
+                    $("#countyUserStatus").append('<option class="fs-7" id="userStatus" >پرسنل مورد نظر را انتخاب کنید ...</option>');
+                }
+            })
+        })
+
+        //Disable select county department and user
+        $('#countyDepartmentStatus, #countyUserStatus, #roleStatus').attr('disabled', true);
+
+
+        $(function () {
+            $("#submitBtn").off("click");
+            $("#submitBtn").on("click", function (e) {
+                var validation = $.fn.Validation();
+                e.preventDefault();
+                if (validation == true) {
+                    $("#submitBtn").prop('disabled', true);
+
+                    var userId = $("#countyUserStatus").find(':selected').val();
+                    var roleId = $("#roleStatus").find(':selected').val();
+
+                    var formData =
+                    {
+                        userId: userId,
+                        roleId: roleId
+                    };
+
+                    $.post(_registerUrl, formData).done(function (result) {
+                        if (result.success) {
+                            GridReload();
+                            $("#operation-box").modal("toggle");
+                            Swal.fire({
+                                title: result.message,
+                                icon: 'success',
+                                showConfirmButton: false,
+                                timer: 4000,
+                                showClass: {
+                                    popup: 'animate__animated animate__fadeInDown'
+                                },
+                                hideClass: {
+                                    popup: 'animate__animated animate__fadeOutDown'
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'خطا',
+                                icon: 'error',
+                                text: result.message,
+                                showConfirmButton: false,
+                                timer: 4000,
+                                showClass: {
+                                    popup: 'animate__animated animate__fadeInDown'
+                                },
+                                hideClass: {
+                                    popup: 'animate__animated animate__fadeOutDown'
+                                }
+                            })
+                        }
+                    })
+                        .always(function () {
+                            $("#submitBtn").prop('disabled', false);
+                        });
+                };
+            });
+        });
+
+
+    </script>

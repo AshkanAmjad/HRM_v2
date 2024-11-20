@@ -1,103 +1,103 @@
-﻿@{
+﻿﻿@{
     Layout = null;
 }
-    <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
-        <partial name="~/Views/Shared/Partials/General/Refrences/js/_ChartJsPartial.cshtml">
+<partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
+    <partial name="~/Views/Shared/Partials/General/Refrences/js/_ChartJsPartial.cshtml">
 
-            <div class="btn btn-outline-primary btn-sm  my-3 mx-1">گزارش - استان</div>
-            <div class="d-flex flex-column my-2 mx-2">
-                <div class="row mx-0 my-1">
-                    <div class="col-12 px-0" id="r1-box"></div>
-                </div>
-                <div class="row mx-0 my-1">
-                    <div class="card col-12 shadow px-0" id="r2-box"></div>
-                </div>
-                <div class="row mx-0 my-1">
-                    <div class="col-12 col-lg-6 px-0 mb-1 mb-lg-0 my-lg-0 ps-lg-1">
-                        <div class="card shadow px-0" id="r3-box">
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-6  px-0 mb-1 mb-lg-0 my-lg-0 pe-lg-1">
-                        <div class="card h-100 shadow px-0" id="r4-box">
-                        </div>
+        <div class="btn btn-outline-primary btn-sm  my-3 mx-1">گزارش - استان</div>
+        <div class="d-flex flex-column my-2 mx-2">
+            <div class="row mx-0 my-1">
+                <div class="col-12 px-0" id="r1-box"></div>
+            </div>
+            <div class="row mx-0 my-1">
+                <div class="card col-12 shadow px-0" id="r2-box"></div>
+            </div>
+            <div class="row mx-0 my-1">
+                <div class="col-12 col-lg-6 px-0 mb-1 mb-lg-0 my-lg-0 ps-lg-1">
+                    <div class="card shadow px-0" id="r3-box">
                     </div>
                 </div>
-                <div class="row my-1 mx-0">
-                    <div class="card col-12 shadow px-0" id="r5-box"></div>
+                <div class="col-12 col-lg-6  px-0 mb-1 mb-lg-0 my-lg-0 pe-lg-1">
+                    <div class="card h-100 shadow px-0" id="r4-box">
+                    </div>
                 </div>
-                <div class="row my-1 mx-0">
-                    <div class="card col-12 shadow px-0">
-                        <div class="card-header text-primary">
-                            <i class="fa fa-pie-chart mr-1"></i>
-                            سابقه
-                        </div>
-                        <div class="card-body h-100 overflow-auto">
-                            <div class="row mx-0">
-                                <div class="col-12 col-lg-6">
-                                    <div class="col-12" id="r6-box"></div>
-                                    <div class="col-12" id="r7-box"></div>
-                                </div>
-                                <div class="col-12 col-lg-6 py-5" id="r8-box">
-                                </div>
+            </div>
+            <div class="row my-1 mx-0">
+                <div class="card col-12 shadow px-0" id="r5-box"></div>
+            </div>
+            <div class="row my-1 mx-0">
+                <div class="card col-12 shadow px-0">
+                    <div class="card-header text-primary">
+                        <i class="fa fa-pie-chart mr-1"></i>
+                        سابقه
+                    </div>
+                    <div class="card-body h-100 overflow-auto">
+                        <div class="row mx-0">
+                            <div class="col-12 col-lg-6">
+                                <div class="col-12" id="r6-box"></div>
+                                <div class="col-12" id="r7-box"></div>
+                            </div>
+                            <div class="col-12 col-lg-6 py-5" id="r8-box">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            </div>
+        </div>
 
 
-            <script type="text/javascript">
-                var _countUsersUrl = '@Url.Action("CountUsers", "Report", new { area = "Province" })';
-                var _doughnutChartOfGendersUrl = '@Url.Action("DoughnutChartOfGenders", "Report", new { area = "Province" })';
-                var _pieChartOfRolesUrl = '@Url.Action("PieChartOfRoles", "Report", new { area = "Province" })';
-                var _barChartOfEmploymentsUrl = '@Url.Action("BarChartOfEmployments", "Report", new { area = "Province" })';
-                var _barChartOfEducationsUrl = '@Url.Action("BarChartOfEducations", "Report", new { area = "Province" })';
-                var _minHistoriesUsersUrl = '@Url.Action("MinHistoriesUsers", "Report", new { area = "Province" })';
-                var _maxHistoriesUsersUrl = '@Url.Action("MaxHistoriesUsers", "Report", new { area = "Province" })';
-                var _barChartOfHistoriesUrl = '@Url.Action("BarChartOfHistories", "Report", new { area = "Province" })';
+        <script type="text/javascript">
+            var _countUsersUrl = '@Url.Action("CountUsers", "Report", new { area = "Province" })';
+            var _doughnutChartOfGendersUrl = '@Url.Action("DoughnutChartOfGenders", "Report", new { area = "Province" })';
+            var _pieChartOfRolesUrl = '@Url.Action("PieChartOfRoles", "Report", new { area = "Province" })';
+            var _barChartOfEmploymentsUrl = '@Url.Action("BarChartOfEmployments", "Report", new { area = "Province" })';
+            var _barChartOfEducationsUrl = '@Url.Action("BarChartOfEducations", "Report", new { area = "Province" })';
+            var _minHistoriesUsersUrl = '@Url.Action("MinHistoriesUsers", "Report", new { area = "Province" })';
+            var _maxHistoriesUsersUrl = '@Url.Action("MaxHistoriesUsers", "Report", new { area = "Province" })';
+            var _barChartOfHistoriesUrl = '@Url.Action("BarChartOfHistories", "Report", new { area = "Province" })';
 
-                var model = {
-                    section: "0",
-                    province: "1",
-                    county: "0",
-                    district: "0"
-                }
+            var model = {
+                section: "0",
+                province: "1",
+                county: "0",
+                district: "0"
+            }
 
-            </script>
-            <script type="text/javascript">
-                $(document).ready(function (e) {
-                    $.get(_countUsersUrl, model).done(function (result) {
-                        $("#r1-box").html(result);
-                    })
-
-                    $.get(_pieChartOfRolesUrl, model).done(function (result) {
-                        $("#r2-box").html(result);
-                    })
-
-                    $.get(_doughnutChartOfGendersUrl, model).done(function (result) {
-                        $("#r3-box").html(result);
-                    })
-
-                    $.get(_barChartOfEmploymentsUrl, model).done(function (result) {
-                        $("#r4-box").html(result);
-                    })
-
-                    $.get(_barChartOfEducationsUrl, model).done(function (result) {
-                        $("#r5-box").html(result);
-                    })
-
-                    $.get(_minHistoriesUsersUrl, model).done(function (result) {
-                        $("#r6-box").html(result);
-                    })
-
-                    $.get(_maxHistoriesUsersUrl, model).done(function (result) {
-                        $("#r7-box").html(result);
-                    })
-
-                    $.get(_barChartOfHistoriesUrl, model).done(function (result) {
-                        $("#r8-box").html(result);
-                    })
+        </script>
+        <script type="text/javascript">
+            $(document).ready(function (e) {
+                $.get(_countUsersUrl, model).done(function (result) {
+                    $("#r1-box").html(result);
                 })
-            </script>
+
+                $.get(_pieChartOfRolesUrl, model).done(function (result) {
+                    $("#r2-box").html(result);
+                })
+
+                $.get(_doughnutChartOfGendersUrl, model).done(function (result) {
+                    $("#r3-box").html(result);
+                })
+
+                $.get(_barChartOfEmploymentsUrl, model).done(function (result) {
+                    $("#r4-box").html(result);
+                })
+
+                $.get(_barChartOfEducationsUrl, model).done(function (result) {
+                    $("#r5-box").html(result);
+                })
+
+                $.get(_maxHistoriesUsersUrl, model).done(function (result) {
+                    $("#r6-box").html(result);
+                })
+
+                $.get(_minHistoriesUsersUrl, model).done(function (result) {
+                    $("#r7-box").html(result);
+                })
+
+                $.get(_barChartOfHistoriesUrl, model).done(function (result) {
+                    $("#r8-box").html(result);
+                })
+            })
+        </script>

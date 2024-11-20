@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Data.Context;
 using Data.Extensions;
+using Domain.DTOs.General;
 using Domain.DTOs.Security.Report;
 using Domain.DTOs.Security.User;
 using Domain.Entities.Security.Models;
@@ -34,32 +35,24 @@ namespace Data.Repositores
         #endregion
 
 
-        public List<DisplayChartVM>? GetCountUsers(DisplayReportVM model)
+        public List<DisplayChartVM>? GetCountUsers(AreaVM model)
         {
             if (model == null)
                 return null;
 
-            var context = _userRepository.GetUsersQuery();
+            var context = _userRepository.GetUsersQuery(model);
 
             List<DisplayChartVM> result = new();
 
-            var active = context.Where(u => u.Department.Area == model.Section &&
-                                               u.Department.Province == model.Province &&
-                                               u.Department.County == model.County &&
-                                               u.Department.District == model.District &&
-                                               u.IsActived)
-                                   .Count();
+            var active = context.Where(u => u.IsActived)
+                                .Count();
 
             result.Add(new DisplayChartVM { ChartTitle = "active", ChartValue = active });
 
 
 
-            var disable = context.Where(u => u.Department.Area == model.Section &&
-                                               u.Department.Province == model.Province &&
-                                               u.Department.County == model.County &&
-                                               u.Department.District == model.District &&
-                                               !u.IsActived)
-                                    .Count();
+            var disable = context.Where(u => !u.IsActived)
+                                 .Count();
 
             result.Add(new DisplayChartVM { ChartTitle = "disable", ChartValue = disable });
 
@@ -71,7 +64,7 @@ namespace Data.Repositores
             if (model == null)
                 return null;
 
-            var context =  _context.UserRoles.Include(ur => ur.User)
+            var context = _context.UserRoles.Include(ur => ur.User)
                                              .Include(ur => ur.Role)
                                              .Include(ur => ur.User.Department)
                                              .IgnoreQueryFilters()
@@ -104,7 +97,7 @@ namespace Data.Repositores
                                                   u.Department.Province == model.Province &&
                                                   u.Department.County == model.County &&
                                                   u.Department.District == model.District &&
-                                                  u.IsActived )
+                                                  u.IsActived)
                                         .ToList();
 
             List<DisplayChartVM> result = new();
@@ -119,13 +112,13 @@ namespace Data.Repositores
                 result.Add(new DisplayChartVM { ChartTitle = titles[i], ChartValue = count });
             }
 
-            for(int i = 0; i < result.Count; i++)
+            for (int i = 0; i < result.Count; i++)
             {
                 if (result[i].ChartTitle == "T")
                 {
                     result[i].ChartTitle = "آزمایشی";
                 }
-                else if(result[i].ChartTitle == "C")
+                else if (result[i].ChartTitle == "C")
                 {
                     result[i].ChartTitle = "قراردادی";
                 }
@@ -141,35 +134,27 @@ namespace Data.Repositores
         }
 
 
-        public List<DisplayChartVM>? GetCountGenders(DisplayReportVM model)
+        public List<DisplayChartVM>? GetCountGenders(AreaVM model)
         {
             if (model == null)
                 return null;
 
-            var context = _userRepository.GetUsersQuery();
+            var context = _userRepository.GetUsersQuery(model);
 
             List<DisplayChartVM> result = new();
 
-            var man = context.Where(u => u.Department.Area == model.Section &&
-                                         u.Department.Province == model.Province &&
-                                         u.Department.County == model.County &&
-                                         u.Department.District == model.District &&
-                                         u.IsActived &&
+            var man = context.Where(u => u.IsActived &&
                                          u.Gender == "M")
                                 .Count();
 
             result.Add(new DisplayChartVM { ChartTitle = "مرد", ChartValue = man });
 
 
-            var woman = context.Where(u => u.Department.Area == model.Section &&
-                                         u.Department.Province == model.Province &&
-                                         u.Department.County == model.County &&
-                                         u.Department.District == model.District &&
-                                         u.IsActived &&
-                                         u.Gender == "W")
+            var woman = context.Where(u => u.IsActived &&
+                                           u.Gender == "W")
                                .Count();
 
-            result.Add(new DisplayChartVM {ChartTitle = "زن", ChartValue = woman });
+            result.Add(new DisplayChartVM { ChartTitle = "زن", ChartValue = woman });
 
             return result;
         }
@@ -208,7 +193,7 @@ namespace Data.Repositores
                 {
                     result[i].ChartTitle = "کارشناسی";
                 }
-                else if(result[i].ChartTitle == "M")
+                else if (result[i].ChartTitle == "M")
                 {
                     result[i].ChartTitle = "کارشناسی ارشد";
                 }
@@ -222,7 +207,7 @@ namespace Data.Repositores
         }
         public DisplayHistoriesUsersVM? CalculateMinHistory(DisplayReportVM model)
         {
-            if(model == null)
+            if (model == null)
                 return null;
             var user = (from item in _context.Users
                         where item.Department.Area == model.Section &&
@@ -241,7 +226,7 @@ namespace Data.Repositores
                         }
                         ).FirstOrDefault();
 
-            return user;      
+            return user;
         }
 
         public DisplayHistoriesUsersVM? CalculateMaxHistory(DisplayReportVM model)

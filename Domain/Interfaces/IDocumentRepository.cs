@@ -13,13 +13,13 @@ namespace Domain.Interfaces
     public interface IDocumentRepository
     {
         #region Documents
-        IQueryable<Document> GetDocumentsQuery();
         List<DisplayDocumentsVM> GetDocuments(AreaVM area, bool status);
         List<DisplayMyDocumentsVM> GetMyDocuments(AreaVM area, Guid userId);
         #endregion
 
         #region DB        
         void UploadDocumentToDb(UploadVM file);
+        IQueryable<Document> GetDocumentsQuery(AreaVM area);
         Task DownloadOrginalAvatar(Document document);
         void DisableDocumentsDb(Guid departmentId);
         void ActiveDocumentsDb(Guid departmentId);

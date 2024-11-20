@@ -20,6 +20,7 @@ namespace HRM.Areas.District.Controllers
         #region Constructor
         private readonly IRoleRepository _roleRepository;
         private readonly IUserRoleRepository _userRoleRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IGeneralService _generalService;
         private readonly IMapper _mapper;
         private readonly IValidator<RoleRegisterVM> _roleRegisterValidator;
@@ -31,6 +32,7 @@ namespace HRM.Areas.District.Controllers
 
         public AccessController(
               IRoleRepository roleRepository,
+              IUserRepository userRepository,
               IUserRoleRepository userRoleRepository,
               IMapper mapper,
               IGeneralService generalService,
@@ -44,6 +46,7 @@ namespace HRM.Areas.District.Controllers
 
         {
             _roleRepository = roleRepository;
+            _userRepository = userRepository;
             _generalService = generalService;
             _roleEditValidator = roleEditValidator;
             _roleRegisterValidator = roleRegisterValidator;
@@ -114,9 +117,22 @@ namespace HRM.Areas.District.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetUserRoles(string section)
+        public IActionResult GetUserRoles()
         {
-            var roles = _userRoleRepository.GetUserRoles(section);
+            var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+
+            if (id == "")
+            {
+                return NotFound();
+            }
+
+            var userId = new Guid(id);
+
+            var area = _userRepository.GetAreaUserByUserId(userId);
+
+            area.Display = "2";
+
+            var roles = _userRoleRepository.GetUserRoles(area);
 
             #region paging and searching
             int start = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");

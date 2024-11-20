@@ -34,10 +34,35 @@ namespace Data.Repositores
         }
         #endregion
 
-        public IQueryable<User> GetUsersQuery()
+        public IQueryable<User> GetUsersQuery(AreaVM area)
         {
-            return _context.Users.IgnoreQueryFilters()
-                                 .AsQueryable();
+            IQueryable<User> context;
+
+            if(area.Section == "0")
+            {
+                context = _context.Users.IgnoreQueryFilters()
+                                        .Where(u => u.Department.Area == area.Display)
+                                        .AsQueryable();
+            }
+            else if(area.Section == "1")
+            {
+                context = _context.Users.IgnoreQueryFilters()
+                                        .Where(u => u.Department.Area == area.Display &&
+                                                    u.Department.Province == area.Province &&
+                                                    u.Department.County == area.County)
+                                        .AsQueryable();
+            }
+            else
+            {
+                context = _context.Users.IgnoreQueryFilters()
+                                        .Where(u => u.Department.Area == area.Display &&
+                                                    u.Department.Province == area.Province &&
+                                                    u.Department.County == area.County &&
+                                                    u.Department.District == area.District)
+                                        .AsQueryable();
+            }
+
+            return context;
         }
 
         public User? GetUser(LoginVM model)
@@ -313,9 +338,9 @@ namespace Data.Repositores
         }
         public List<DisplayUsersVM> GetUsers(AreaVM area)
         {
-            var context = GetUsersQuery();
+            var context = GetUsersQuery(area);
             var users = (from item in context
-                         where (item.Department.Area == area.Section && item.IsActived)
+                         where(item.IsActived)
                          orderby item.RegisterDate descending
                          select new DisplayUsersVM
                          {
@@ -682,9 +707,9 @@ namespace Data.Repositores
 
         public List<DisplayUsersVM> GetArchivedUsers(AreaVM area)
         {
-            var context = GetUsersQuery();
+            var context = GetUsersQuery(area);
             var users = (from item in context
-                         where (item.Department.Area == area.Section && !item.IsActived)
+                         where (!item.IsActived)
                          orderby item.RegisterDate descending
                          select new DisplayUsersVM
                          {
@@ -753,16 +778,8 @@ namespace Data.Repositores
                 return false;
             }
 
-            var context = GetUsersQuery();
-
-            if (context == null)
-            {
-                message = checkMessage;
-                return false;
-            }
-
-            var data = context.Where(u => u.UserId == user.UserId)
-                              .FirstOrDefault();
+            var data = _context.Users.Where(u => u.UserId == user.UserId)
+                                     .FirstOrDefault();
 
             if (data == null)
             {

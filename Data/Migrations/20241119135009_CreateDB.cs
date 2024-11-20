@@ -210,9 +210,27 @@ namespace Data.Migrations
                 columns: new[] { "RoleId", "IsActived", "RegisterDate", "Title" },
                 values: new object[,]
                 {
-                    { new Guid("696a76ec-ba0d-4792-b414-772cddac9cc4"), true, new DateTime(2024, 11, 7, 21, 54, 2, 98, DateTimeKind.Local).AddTicks(7917), "مدیریت" },
-                    { new Guid("70e1ec05-c2ea-4143-8d0a-bc78b1a53a91"), true, new DateTime(2024, 11, 7, 21, 54, 2, 98, DateTimeKind.Local).AddTicks(7935), "فناوری اطلاعات" }
+                    { new Guid("549ab934-3ec0-4522-a2b5-b50d15850a58"), true, new DateTime(2024, 11, 19, 17, 20, 8, 612, DateTimeKind.Local).AddTicks(8618), "مدیریت" },
+                    { new Guid("8905869c-f95a-4331-9010-99f5ee0e9faf"), true, new DateTime(2024, 11, 19, 17, 20, 8, 612, DateTimeKind.Local).AddTicks(8621), "فناوری اطلاعات" }
                 });
+
+            migrationBuilder.InsertData(
+                schema: "Security",
+                table: "Users",
+                columns: new[] { "UserId", "Address", "City", "DateOfBirth", "Education", "Email", "Employment", "FirstName", "Gender", "Insurance", "IsActived", "LastActived", "LastName", "MaritalStatus", "Password", "PhoneNumber", "RegisterDate", "UserName" },
+                values: new object[] { new Guid("35d3a8fd-687a-4002-a759-2a7a1a87b982"), "فردیس، کانال غربی", "کرج", "۱377/۰2/20", "B", "amjad.ashkan@gmial.com", "O", "اشکان", "M", true, true, new DateTime(2024, 11, 19, 17, 20, 8, 612, DateTimeKind.Local).AddTicks(8458), "مطهری امجد", "S", "5azbtevuaoQ26HISs22qug==;gMy6szlOD6Tahllohab+FUajHmWdeBeYxA0FJQvv3jo=", "09351225600", new DateTime(2024, 11, 19, 17, 20, 8, 612, DateTimeKind.Local).AddTicks(8470), "0021047022" });
+
+            migrationBuilder.InsertData(
+                schema: "Security",
+                table: "Departments",
+                columns: new[] { "DepartmentId", "Area", "County", "District", "IsActived", "Province", "RegisterDate", "UserId" },
+                values: new object[] { new Guid("a04f006d-c80b-4a1a-b438-485ec2f1b807"), "0", "0", "0", true, "1", new DateTime(2024, 11, 19, 17, 20, 8, 612, DateTimeKind.Local).AddTicks(8586), new Guid("35d3a8fd-687a-4002-a759-2a7a1a87b982") });
+
+            migrationBuilder.InsertData(
+                schema: "Security",
+                table: "UserRoles",
+                columns: new[] { "UserRoleId", "IsActived", "RegisterDate", "RoleId", "UserId" },
+                values: new object[] { new Guid("da777268-69b1-4887-9cb4-27f43a7288b8"), true, new DateTime(2024, 11, 19, 17, 20, 8, 612, DateTimeKind.Local).AddTicks(8602), new Guid("549ab934-3ec0-4522-a2b5-b50d15850a58"), new Guid("35d3a8fd-687a-4002-a759-2a7a1a87b982") });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Departments_UserId",

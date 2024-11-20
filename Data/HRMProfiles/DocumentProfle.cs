@@ -94,6 +94,7 @@ namespace Data.HRMProfiles
                 .ForMember(dest => dest.County, opt => opt.MapFrom(src => src.County))
                 .ForMember(dest => dest.District, opt => opt.MapFrom(src => src.District))
                 .ForMember(dest => dest.Area, opt => opt.MapFrom(src => GetArea(src.Province, src.County, src.District)));
+
         }
 
         private int GetArea(Department department)

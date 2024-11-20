@@ -230,18 +230,42 @@ namespace Data.Repositores
             _context.Documents.UpdateRange(documents);
         }
 
-        public IQueryable<Document> GetDocumentsQuery()
+        public IQueryable<Document> GetDocumentsQuery(AreaVM area)
         {
-            return _context.Documents.IgnoreQueryFilters()
-                                     .AsQueryable();
+            IQueryable<Document> context;
+
+            if (area.Section == "0")
+            {
+                context = _context.Documents.IgnoreQueryFilters()
+                                            .Where(d => d.Department.Area == area.Display)
+                                            .AsQueryable();
+            }
+            else if (area.Section == "1")
+            {
+                context = _context.Documents.IgnoreQueryFilters()
+                                            .Where(d => d.Department.Area == area.Display &&
+                                                        d.Department.Province == area.Province &&
+                                                        d.Department.County == area.County)
+                                            .AsQueryable();
+            }
+            else
+            {
+                context = _context.Documents.IgnoreQueryFilters()
+                                            .Where(d => d.Department.Area == area.Display &&
+                                                        d.Department.Province == area.Province &&
+                                                        d.Department.County == area.County &&
+                                                        d.Department.District == area.District)
+                                            .AsQueryable();
+            }
+            return context;
+
         }
 
         public List<DisplayDocumentsVM> GetDocuments(AreaVM area, bool status)
         {
-            var context = GetDocumentsQuery();
+            var context = GetDocumentsQuery(area);
             var documents = (from item in context
-                             where (item.Department.Area == area.Section &&
-                                    item.IsActived == status)
+                             where (item.IsActived == status)
                              orderby item.UploadDate descending
                              select new DisplayDocumentsVM
                              {
@@ -269,16 +293,19 @@ namespace Data.Repositores
 
         public DownloadDocumentVM? GetDocumentById(Guid documentId)
         {
-            var context = GetDocumentsQuery();
-
-            var document = (from item in context
-                            where (item.DocumentId == documentId)
-                            select new DownloadDocumentVM
-                            {
-                                Bytes = item.DataBytes,
-                                ContentType = item.ContentType,
-                                FileName = item.FileName
-                            }).FirstOrDefault();
+            DownloadDocumentVM document = new();
+            if (documentId != Guid.Empty)
+            {
+                document = _context.Documents.IgnoreQueryFilters()
+                                             .Where(d => d.DocumentId == documentId)
+                                             .Select(d => new DownloadDocumentVM
+                                             {
+                                                 Bytes = d.DataBytes,
+                                                 ContentType = d.ContentType,
+                                                 FileName = d.FileName
+                                             })
+                                             .FirstOrDefault();
+            }
             return document;
         }
 
@@ -289,7 +316,7 @@ namespace Data.Repositores
                                               .Select(d => new DisplayMyDocumentsVM
                                               {
                                                   DocumentId = d.DocumentId,
-                                                  Description  = d.Description,
+                                                  Description = d.Description,
                                                   Title = (d.Title == "Avatar" ? "تصویر پروفایل" : d.Title),
                                                   FileFormat = d.FileFormat,
                                                   UploadDate = $"{d.UploadDate.ToShamsi()}"

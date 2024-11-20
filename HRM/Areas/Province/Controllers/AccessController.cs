@@ -1,6 +1,7 @@
 ﻿using Application.Services.Interfaces;
 using AutoMapper;
 using Data.Extensions;
+using Data.Repositores;
 using Domain.DTOs.General;
 using Domain.DTOs.Security.Role;
 using Domain.DTOs.Security.UserRole;
@@ -25,6 +26,7 @@ namespace HRM.Areas.Province.Controllers
         #region Constructor
         private readonly IRoleRepository _roleRepository;
         private readonly IUserRoleRepository _userRoleRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IGeneralService _generalService;
         private readonly IMapper _mapper;
         private readonly IValidator<RoleRegisterVM> _roleRegisterValidator;
@@ -40,6 +42,7 @@ namespace HRM.Areas.Province.Controllers
             IRoleRepository roleRepository,
             IUserRoleRepository userRoleRepository,
             IMapper mapper,
+            IUserRepository userRepository,
             IGeneralService generalService,
             IValidator<RoleRegisterVM> roleRegisterValidator,
             IValidator<RoleEditVM> roleEditValidator,
@@ -57,6 +60,7 @@ namespace HRM.Areas.Province.Controllers
             _roleEdit_DisableValidator = roleEdit_DisableValidator;
             _userRoleRepository = userRoleRepository;
             _mapper = mapper;
+            _userRepository = userRepository;
             _userRoleRegisterValidator = userRoleRegisterValidator;
             _userRoleEditValidator = userRoleEditValidator;
            _userRoleEdit_DisableValidator = userRoleEdit_DisableValidator;
@@ -129,9 +133,22 @@ namespace HRM.Areas.Province.Controllers
 
         [HttpPost]
         [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
-        public IActionResult GetUserRoles(string section)
+        public IActionResult GetUserRoles()
         {
-            var roles = _userRoleRepository.GetUserRoles(section);
+            var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+
+            if (id == "")
+            {
+                return NotFound();
+            }
+
+            var userId = new Guid(id);
+
+            var area = _userRepository.GetAreaUserByUserId(userId);
+
+            area.Display = "0";
+
+            var roles = _userRoleRepository.GetUserRoles(area);
 
             #region paging and searching
             int start = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");

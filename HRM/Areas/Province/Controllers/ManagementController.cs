@@ -76,9 +76,22 @@ namespace HRM.Areas.Province.Controllers
 
         [HttpPost]
         [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
-        public IActionResult GetUsers(AreaVM model)
+        public IActionResult GetUsers()
         {
-            var users = _userRepository.GetUsers(model);
+            var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+
+            if (id == "")
+            {
+                return NotFound();
+            }
+
+            var userId = new Guid(id);
+
+            var area = _userRepository.GetAreaUserByUserId(userId);
+
+            area.Display = "0";
+
+            var users = _userRepository.GetUsers(area);
 
             #region paging and searching
             int start = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");

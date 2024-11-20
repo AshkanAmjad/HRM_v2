@@ -11,6 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\County\Documents\County\Avatars\Original\" />
+    <Folder Include="Areas\County\Documents\County\Avatars\Thumb\" />
     <Folder Include="Areas\County\Documents\County\Transfers\" />
     <Folder Include="Areas\County\Documents\Distrcict\Transfers\" />
     <Folder Include="Areas\County\Documents\Province\Transfers\" />

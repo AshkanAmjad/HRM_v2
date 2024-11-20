@@ -10,8 +10,8 @@ namespace Domain.Interfaces
     public interface IUserRoleRepository
     {
         #region UserRole
-        IQueryable<UserRole> GetUserRolesQuery();
-        List<DisplayUserRolesVM> GetUserRoles(string area);
+        IQueryable<UserRole> GetUserRolesQuery(AreaVM area);
+        List<DisplayUserRolesVM> GetUserRoles(AreaVM area);
         Task<DisplayDetailsVM> GetUserDetailsAsync(Guid userId);
         List<string> GetUserRolesByUserId(Guid userId);
         List<SelectListItem> GetRolesForSelectBox();

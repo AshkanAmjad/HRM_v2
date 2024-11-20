@@ -20,7 +20,7 @@
                 <script type="text/javascript">
                     var _registerUrl = '@Url.Action("Register", "Management", new { area = "Province" })';
                     var _gridUrl = '@Url.Action("FillUsersGrid", "Management", new { area = "Province" })';
-                    var _getUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Management", new { Section = "0", Province = "1", County = "0", District = "0", area = "Province" }))';
+                    var _getUsersUrl = '@Html.Raw(@Url.Action("GetUsers", "Management", new { area = "Province" }))';
                     var _editUrl = '@Url.Action("Edit", "Management", new { area = "Province" })';
                     var _disableUrl = '@Url.Action("Disable", "Management", new { area = "Province" })';
                     var direction = {

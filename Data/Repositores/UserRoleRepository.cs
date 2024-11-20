@@ -30,13 +30,45 @@ namespace Data.Repositores
         }
         #endregion
 
-        public IQueryable<UserRole> GetUserRolesQuery()
+        public IQueryable<UserRole> GetUserRolesQuery(AreaVM area)
         {
-            return _context.UserRoles.IgnoreQueryFilters()
-                                     .Include(r => r.Role)
-                                     .Include(u => u.User)
-                                     .Include(u => u.User.Department)
-                                     .AsQueryable();
+            IQueryable<UserRole> context;
+
+            if (area.Section == "0")
+            {
+                context = _context.UserRoles.IgnoreQueryFilters()
+                                            .Include(r => r.Role)
+                                            .Include(u => u.User)
+                                            .Include(u => u.User.Department)
+                                            .Where(ur => ur.User.Department.Area == area.Display)
+                                            .AsQueryable();
+            }
+            else if (area.Section == "1")
+            {
+                context = _context.UserRoles.IgnoreQueryFilters()
+                                            .Include(r => r.Role)
+                                            .Include(u => u.User)
+                                            .Include(u => u.User.Department)
+                                            .Where(ur => ur.User.Department.Area == area.Display &&
+                                                         ur.User.Department.Province == area.Province &&
+                                                         ur.User.Department.County == area.County)
+                                            .AsQueryable();
+            }
+            else
+            {
+                context = _context.UserRoles.IgnoreQueryFilters()
+                                            .Include(r => r.Role)
+                                            .Include(u => u.User)
+                                            .Include(u => u.User.Department)
+                                            .Where(ur => ur.User.Department.Area == area.Display &&
+                                                         ur.User.Department.Province == area.Province &&
+                                                         ur.User.Department.County == area.County &&
+                                                         ur.User.Department.District == area.District)
+                                            .AsQueryable();
+            }
+
+            return context;
+            
         }
 
         public List<string> GetUserRolesByUserId(Guid userId)
@@ -49,11 +81,10 @@ namespace Data.Repositores
 
 
 
-        public List<DisplayUserRolesVM> GetUserRoles(string area)
+        public List<DisplayUserRolesVM> GetUserRoles(AreaVM area)
         {
-            var context = GetUserRolesQuery();
+            var context = GetUserRolesQuery(area);
             var userRoles = (from item in context
-                             where (item.User.Department.Area == area)
                              orderby item.IsActived descending, item.RegisterDate descending
                              select new DisplayUserRolesVM
                              {
@@ -88,7 +119,7 @@ namespace Data.Repositores
                                          LastActived = $"{u.LastActived.ToShamsi()}"
                                      })
                                      .FirstOrDefaultAsync();
-            
+
 
             return user;
 

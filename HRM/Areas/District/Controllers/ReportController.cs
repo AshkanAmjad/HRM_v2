@@ -1,24 +1,32 @@
 ﻿using Application.Extensions;
 using Application.Services.Interfaces;
+using AutoMapper;
+using Data.Extensions;
+using Domain.DTOs.General;
 using Domain.DTOs.Security.Report;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HRM.Areas.District.Controllers
 {
     [Area("District")]
-
+    [Authorize]
     public class ReportController : Controller
     {
         #region Constructor
         private readonly IReportRepository _reportRepository;
         private readonly IGeneralService _generalService;
+        private readonly IMapper _mapper;
+
 
         public ReportController(IReportRepository reportRepository,
-                                IGeneralService generalService)
+                                IGeneralService generalService,
+                                IMapper mapper)
 
         {
+            _mapper = mapper;
             _reportRepository = reportRepository;
             _generalService = generalService;
         }
@@ -43,7 +51,10 @@ namespace HRM.Areas.District.Controllers
         #region Display
         public IActionResult CountUsers(DisplayReportVM model)
         {
-            var count = _reportRepository.GetCountUsers(model);
+            var area = _mapper.Map<AreaVM>(model);
+            area.Display = "2";
+
+            var count = _reportRepository.GetCountUsers(area);
 
             if (count == null)
                 return NotFound();
@@ -66,7 +77,9 @@ namespace HRM.Areas.District.Controllers
 
         public IActionResult DoughnutChartOfGenders(DisplayReportVM model)
         {
-            var count = _reportRepository.GetCountGenders(model);
+            var area = _mapper.Map<AreaVM>(model);
+            
+            var count = _reportRepository.GetCountGenders(area);
 
             if (count == null)
                 return NotFound();

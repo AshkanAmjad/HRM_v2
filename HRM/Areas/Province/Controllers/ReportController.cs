@@ -1,5 +1,7 @@
 ﻿using Application.Extensions;
+using AutoMapper;
 using Data.Extensions;
+using Domain.DTOs.General;
 using Domain.DTOs.Security.Report;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -9,13 +11,15 @@ namespace HRM.Areas.Province.Controllers
 {
     [Area("Province")]
     [Authorize]
-    [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
     public class ReportController : Controller
     {
         #region Constructor
         private readonly IReportRepository _reportRepository;
-        public ReportController(IReportRepository reportRepository)
+        private readonly IMapper _mapper;
+        public ReportController(IReportRepository reportRepository,
+                                IMapper mapper)
         {
+            _mapper = mapper;
             _reportRepository = reportRepository;
         }
         #endregion
@@ -32,7 +36,10 @@ namespace HRM.Areas.Province.Controllers
         #region Display
         public IActionResult CountUsers(DisplayReportVM model)
         {
-            var count = _reportRepository.GetCountUsers(model);
+            var area = _mapper.Map<AreaVM>(model);
+            area.Display = "0";
+
+            var count = _reportRepository.GetCountUsers(area);
 
             if (count == null)
                 return NotFound();
@@ -55,7 +62,11 @@ namespace HRM.Areas.Province.Controllers
 
         public IActionResult DoughnutChartOfGenders(DisplayReportVM model)
         {
-            var count = _reportRepository.GetCountGenders(model);
+            var area = _mapper.Map<AreaVM>(model);
+
+            area.Display = "0";
+
+            var count = _reportRepository.GetCountGenders(area);
 
             if (count == null)
                 return NotFound();

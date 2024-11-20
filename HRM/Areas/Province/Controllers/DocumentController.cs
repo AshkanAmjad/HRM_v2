@@ -1,4 +1,5 @@
 ﻿using Data.Extensions;
+using Data.Repositores;
 using Domain.DTOs.General;
 using Domain.DTOs.Portal.Document;
 using Domain.Interfaces;
@@ -19,13 +20,16 @@ namespace HRM.Areas.Province.Controllers
     {
         #region Constructor
         private readonly IDocumentRepository _documentRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IValidator<DownloadVM> _downloadValidator;
 
         public DocumentController(IDocumentRepository documentRepository,
-                                  IValidator<DownloadVM> downloadValidator)
+                                  IValidator<DownloadVM> downloadValidator,
+                                  IUserRepository userRepository)
         {
             _documentRepository = documentRepository;
             _downloadValidator = downloadValidator;
+            _userRepository = userRepository;
         }
         #endregion
 
@@ -65,9 +69,21 @@ namespace HRM.Areas.Province.Controllers
         [HttpPost]
         [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
 
-        public IActionResult GetDocuments(AreaVM model, bool status)
+        public IActionResult GetDocuments(bool status)
         {
-            var documents = _documentRepository.GetDocuments(model, status);
+            var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+
+            if (id == "")
+            {
+                return NotFound();
+            }
+
+            var userId = new Guid(id);
+
+            var area = _userRepository.GetAreaUserByUserId(userId);
+            area.Display = "0";
+
+            var documents = _documentRepository.GetDocuments(area, status);
 
             #region paging and searching
             int start = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");
@@ -100,7 +116,7 @@ namespace HRM.Areas.Province.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetMyDocuments(AreaVM model)
+        public IActionResult GetMyDocuments()
         {
             var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
 
@@ -110,6 +126,8 @@ namespace HRM.Areas.Province.Controllers
             }
 
             var userId = new Guid(id);
+
+            var model = _userRepository.GetAreaUserByUserId(userId);
 
             var documents = _documentRepository.GetMyDocuments(model, userId);
 

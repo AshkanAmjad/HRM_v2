@@ -59,9 +59,55 @@ namespace Data.Context
             #endregion
 
             #region Seed data
+            var userId = Guid.NewGuid();
+            var roleId = Guid.NewGuid();
+
+            modelBuilder.Entity<User>().HasData(new User()
+            {
+                UserId = userId,
+                UserName = "0021047022",
+                Password = "5azbtevuaoQ26HISs22qug==;gMy6szlOD6Tahllohab+FUajHmWdeBeYxA0FJQvv3jo=",
+                FirstName = "اشکان",
+                LastName = "مطهری امجد",
+                Gender ="M",
+                Education = "B",
+                Employment = "O",
+                MaritalStatus = "S",
+                Insurance = true,
+                PhoneNumber = "09351225600",
+                Email = "amjad.ashkan@gmial.com",
+                DateOfBirth = "۱377/۰2/20",
+                City = "کرج",
+                IsActived = true,
+                Address = "فردیس، کانال غربی",
+                LastActived = DateTime.Now,
+                RegisterDate = DateTime.Now
+            });
+
+            modelBuilder.Entity<Department>().HasData(new Department()
+            {
+                DepartmentId = Guid.NewGuid(),
+                UserId = userId,
+                Area = "0",
+                Province = "1",
+                County = "0",
+                District = "0",
+                IsActived = true,
+                RegisterDate = DateTime.Now,
+            });
+
+            modelBuilder.Entity<UserRole>().HasData(new UserRole()
+            {
+                UserRoleId = Guid.NewGuid(),
+                UserId = userId,
+                RoleId = roleId,
+                IsActived= true,
+                RegisterDate= DateTime.Now
+            });
+
             modelBuilder.Entity<Role>().HasData(new Role()
             {
-                RoleId = Guid.NewGuid(),
+                RoleId = roleId,
                 Title = "مدیریت",
                 RegisterDate = DateTime.Now,
                 IsActived = true

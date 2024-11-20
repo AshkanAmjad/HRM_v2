@@ -26,7 +26,7 @@ namespace Domain.Interfaces
         bool ResetPassword(ResetPasswordVM model, out string message);
         List<DisplayUsersVM> GetUsers(AreaVM area);
         List<DisplayUsersVM> GetArchivedUsers(AreaVM area);
-        IQueryable<User> GetUsersQuery();
+        IQueryable<User> GetUsersQuery(AreaVM area);
         UserEditVM? GetUserById(Guid userId);
         Guid GetDepartmentIdByUserId(Guid userId);
         AreaVM GetAreaUserByUserId(Guid userId);

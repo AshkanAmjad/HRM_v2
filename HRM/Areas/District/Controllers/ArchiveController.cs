@@ -53,10 +53,22 @@ namespace HRM.Areas.District.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetUsers(AreaVM arae)
+        public IActionResult GetUsers()
         {
-            var users = _userRepository.GetArchivedUsers(arae);
+            var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
 
+            if (id == "")
+            {
+                return NotFound();
+            }
+
+            var userId = new Guid(id);
+
+            var area = _userRepository.GetAreaUserByUserId(userId);
+
+            area.Display = "2";
+
+            var users = _userRepository.GetArchivedUsers(area);
             #region paging and searching
             int start = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");
             int length = int.Parse(Request.Form["length"].FirstOrDefault() ?? "10");

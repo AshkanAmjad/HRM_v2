@@ -68,10 +68,22 @@ namespace HRM.Areas.County.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetUsers(AreaVM model)
+        public IActionResult GetUsers()
         {
-            var users = _userRepository.GetUsers(model);
+            var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
 
+            if (id == "")
+            {
+                return NotFound();
+            }
+
+            var userId = new Guid(id);
+
+            var area = _userRepository.GetAreaUserByUserId(userId);
+
+            area.Display = "1";
+
+            var users = _userRepository.GetUsers(area);
             #region paging and searching
             int start = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");
             int length = int.Parse(Request.Form["length"].FirstOrDefault() ?? "10");
@@ -134,12 +146,43 @@ namespace HRM.Areas.County.Controllers
         #region Register
         public IActionResult Register()
         {
+            var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+
+            if (id == "")
+            {
+                return NotFound();
+            }
+
+            var userId = new Guid(id);
+
+            var area = _userRepository.GetAreaUserByUserId(userId);
+
+            List<SelectListItem> provinceDepartments;
+            List<SelectListItem> countyDepartments;
+
+
+            if (area.Section == "0")
+            {
+                provinceDepartments = _generalService.ProvinceDepartmentTypes();
+                countyDepartments = _generalService.CountyDepartmentTypes();
+            }
+            else
+            {
+                provinceDepartments= _generalService.ProvinceDepartmentTypes()
+                                                    .Where(d => d.Value == area.Section)
+                                                    .ToList();
+
+                countyDepartments = _generalService.CountyDepartmentTypes()
+                                                   .Where(d => d.Value == area.County)
+                                                   .ToList();
+            }
+
+
             var genders = _generalService.GenderTypes();
             var marital = _generalService.MariltalTypes();
             var employment = _generalService.EmploymentTypes();
             var education = _generalService.EducationTypes();
-            var provinceDepartments = _generalService.ProvinceDepartmentTypes();
-            var countyDepartments = _generalService.CountyDepartmentTypes();
+
 
             ViewBag.Genders = new SelectList(genders, "Value", "Text");
             ViewBag.Marital = new SelectList(marital, "Value", "Text");
@@ -228,12 +271,41 @@ namespace HRM.Areas.County.Controllers
 
                 bool IsExistAvatarOnDb = _documentService.CheckingAvatar(user.UserId, user.UserName, direction);
 
+                var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+
+                if (id == "")
+                {
+                    return NotFound();
+                }
+
+                var userId = new Guid(id);
+
+                var area = _userRepository.GetAreaUserByUserId(userId);
+
+
+                List<SelectListItem> provinceDepartments;
+                List<SelectListItem> countyDepartments;
+
+                if (area.Section == "0")
+                {
+                    provinceDepartments = _generalService.ProvinceDepartmentTypes();
+                    countyDepartments = _generalService.CountyDepartmentTypes();
+                }
+                else
+                {
+                    provinceDepartments = _generalService.ProvinceDepartmentTypes()
+                                                         .Where(d => d.Value == area.Section)
+                                                         .ToList();
+
+                    countyDepartments = _generalService.CountyDepartmentTypes()
+                                                       .Where(d => d.Value == area.County)
+                                                       .ToList();
+                }
+
                 var genders = _generalService.GenderTypes();
                 var marital = _generalService.MariltalTypes();
                 var employment = _generalService.EmploymentTypes();
                 var education = _generalService.EducationTypes();
-                var provinceDepartments = _generalService.ProvinceDepartmentTypes();
-                var countyDepartments = _generalService.CountyDepartmentTypes();
 
                 ViewBag.Genders = new SelectList(genders, "Value", "Text");
                 ViewBag.Marital = new SelectList(marital, "Value", "Text");

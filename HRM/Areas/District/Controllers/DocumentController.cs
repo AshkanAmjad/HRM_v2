@@ -1,4 +1,5 @@
-﻿using Domain.DTOs.General;
+﻿using Data.Repositores;
+using Domain.DTOs.General;
 using Domain.DTOs.Portal.Document;
 using Domain.Interfaces;
 using FluentValidation;
@@ -14,13 +15,16 @@ namespace HRM.Areas.District.Controllers
     {
         #region Constructor
         private readonly IDocumentRepository _documentRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IValidator<DownloadVM> _downloadValidator;
 
         public DocumentController(IDocumentRepository documentRepository,
-                                  IValidator<DownloadVM> downloadValidator)
+                                  IValidator<DownloadVM> downloadValidator,
+                                  IUserRepository userRepository)
         {
             _documentRepository = documentRepository;
             _downloadValidator = downloadValidator;
+            _userRepository = userRepository;
         }
         #endregion
 
@@ -51,9 +55,21 @@ namespace HRM.Areas.District.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult GetDocuments(AreaVM model, bool status)
+        public IActionResult GetDocuments(bool status)
         {
-            var documents = _documentRepository.GetDocuments(model, status);
+            var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+
+            if (id == "")
+            {
+                return NotFound();
+            }
+
+            var userId = new Guid(id);
+
+            var area = _userRepository.GetAreaUserByUserId(userId);
+            area.Display = "2";
+
+            var documents = _documentRepository.GetDocuments(area, status);
 
             #region paging and searching
             int start = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");

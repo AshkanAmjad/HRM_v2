@@ -10,7 +10,7 @@
     </div>
         <script type="text/javascript">
             var _gridUrl = '@Url.Action("FillDocumentsGrid", "Document", new { area = "District" })';
-            var _getDocumentsUrl = '@Html.Raw(@Url.Action("GetDocuments", "Document", new { Section = "2", Province = "0", County = "0", District = "0", Status = false, area = "District" }))';
+            var _getDocumentsUrl = '@Html.Raw(@Url.Action("GetDocuments", "Document", new { Status = false, area = "District" }))';
             var _downloadUrl = '@Url.Action("Download", "Document", new { area = "District" })';
         </script>
 

@@ -1,7 +1,11 @@
 ﻿using Application.Extensions;
 using Application.Services.Interfaces;
+using AutoMapper;
+using Data.Extensions;
+using Domain.DTOs.General;
 using Domain.DTOs.Security.Report;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -9,18 +13,22 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace HRM.Areas.County.Controllers
 {
     [Area("County")]
-
+    [Authorize]
     public class ReportController : Controller
     {
         #region Constructor
         private readonly IReportRepository _reportRepository;
         private readonly IGeneralService _generalService;
+        private readonly IMapper _mapper;
+
 
         public ReportController(IReportRepository reportRepository,
-                                IGeneralService generalService)
+                                IGeneralService generalService,
+                                IMapper mapper)
         {
             _generalService = generalService;
             _reportRepository = reportRepository;
+            _mapper = mapper;
         }
         #endregion
 
@@ -39,7 +47,10 @@ namespace HRM.Areas.County.Controllers
         #region Display
         public IActionResult CountUsers(DisplayReportVM model)
         {
-            var count = _reportRepository.GetCountUsers(model);
+            var area = _mapper.Map<AreaVM>(model);
+            area.Display = "1";
+
+            var count = _reportRepository.GetCountUsers(area);
 
             if (count == null)
                 return NotFound();
@@ -50,7 +61,7 @@ namespace HRM.Areas.County.Controllers
         {
             var data = _reportRepository.GetCountRoles(model);
 
-            if (data == null) 
+            if (data == null)
                 return NotFound();
 
             var colors = ColorGenerator.GenerateMultipleRandomColorHex(data.Count());
@@ -62,7 +73,9 @@ namespace HRM.Areas.County.Controllers
 
         public IActionResult DoughnutChartOfGenders(DisplayReportVM model)
         {
-            var count = _reportRepository.GetCountGenders(model);
+            var area = _mapper.Map<AreaVM>(model);
+
+            var count = _reportRepository.GetCountGenders(area);
 
             if (count == null)
                 return NotFound();
@@ -102,7 +115,7 @@ namespace HRM.Areas.County.Controllers
         {
             var history = _reportRepository.CalculateMinHistory(model);
 
-            if(history == null)
+            if (history == null)
                 return NotFound();
 
             return View(history);

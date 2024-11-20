@@ -3,7 +3,7 @@
     Layout = null;
 }
 <div class="overflow-auto">
-    <p class="mx-auto mb-4 mt-5 text-primary text-center">
+    <p class="mx-auto my-4 text-primary text-center">
         <i class="fa fa-long-arrow-down mx-1"></i>
         کمترین سابقه
     </p>
@@ -21,11 +21,20 @@
                 <td>@Model.UserName</td>
                 <td>@Model.FullName</td>
                 <td>
-                    @foreach (var role in Model.Roles)
-                    {
-                        @role
+                    @{
+                        if (Model.Roles.Count != 0)
+                        {
+                            @foreach (var role in Model.Roles)
+                            {
+                                @role
 
-                        <br />
+                                <br />
+                            }
+                        }
+                        else
+                        {
+                            <span>-</span>
+                        }
                     }
                 </td>
                 <td>@Model.History</td>
