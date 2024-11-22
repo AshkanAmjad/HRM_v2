@@ -181,15 +181,17 @@ namespace Data.Repositores
         public bool EditUserRole(UserRoleEditVM model, out string message)
         {
             string checkMessage = "";
+            if (!Similarity(model, out checkMessage))
+            {
+                UploadEditUserRoleToDb(model);
 
-            UploadEditUserRoleToDb(model);
+                message = "";
+                return true;
+            }
 
-            message = "";
-            return true;
-
-
-            message = checkMessage;
-            return false;
+                message = checkMessage;
+                return false;
+            
         }
 
         public bool DisableUserRole(UserRoleEdit_Active_DisableVM model, out string message)
@@ -247,6 +249,25 @@ namespace Data.Repositores
         }
 
         public bool Similarity(UserRoleRegisterVM model, out string message)
+        {
+            bool check = false;
+            var resultMessage = "";
+            if (model != null)
+            {
+                check = _context.UserRoles.IgnoreQueryFilters()
+                                          .Where(ur => ur.UserId == new Guid(model.UserId) &&
+                                                       ur.RoleId == new Guid(model.RoleId))
+                                          .Any();
+                if (check)
+                {
+                    resultMessage = $"دسترسی با همین عنوان معاونت، قبلا برای کاربر ثبت شده است.";
+                }
+            }
+            message = resultMessage;
+            return check;
+        }
+
+        public bool Similarity(UserRoleEditVM model, out string message)
         {
             bool check = false;
             var resultMessage = "";
@@ -335,12 +356,16 @@ namespace Data.Repositores
             }
         }
 
-        public bool GetUserRoleByUserId(Guid userId)
+        public bool IsValidUserRoleByUserId(Guid userId)
                 => _context.UserRoles.Where(ur => ur.UserId == userId &&
                                                  (ur.Role.Title == "مدیریت" ||
                                                   ur.Role.Title == "فناوری اطلاعات"))
                                      .Any();
 
+        public List<string> GetUserRoleByUserId(Guid userId)
+             => _context.UserRoles.Where(ur => ur.UserId == userId)
+                                  .Select(r => r.Role.Title)
+                                  .ToList();
 
 
 

@@ -8,7 +8,7 @@
     {
         var id = User.Claims.FirstOrDefault(u => u.Type == "userId").Value;
         Guid userId = new Guid(id);
-        IsUserInRole = _userRoleRepository.GetUserRoleByUserId(userId);
+        IsUserInRole = _userRoleRepository.IsValidUserRoleByUserId(userId);
     }
 }
 

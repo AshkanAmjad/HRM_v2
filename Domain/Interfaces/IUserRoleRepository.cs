@@ -21,8 +21,10 @@ namespace Domain.Interfaces
         bool DisableUserRole(UserRoleEdit_Active_DisableVM model, out string message);
         bool ActiveUserRole(UserRoleEdit_Active_DisableVM model, out string message);
         UserRoleEditVM? GetUserRoleById(Guid userRoleId);
-        bool GetUserRoleByUserId(Guid userId);
+        bool IsValidUserRoleByUserId(Guid userId);
+        List<string> GetUserRoleByUserId(Guid userId);
         bool Similarity(UserRoleRegisterVM model, out string message);
+        bool Similarity(UserRoleEditVM model, out string message);
         #endregion
 
         #region DB

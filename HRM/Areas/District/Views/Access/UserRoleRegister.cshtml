@@ -12,10 +12,6 @@
     var districtDepartments = ViewBag.DistrictDepartments != null
         ? ViewBag.DistrictDepartments
         : new List<SelectListItem>();
-
-    var roles = ViewBag.Roles != null
-        ? ViewBag.Roles
-        : new List<SelectListItem>();
 }
 <div class="modal-dialog modal-xl " id="modal">
     <div class="modal-content">
@@ -94,7 +90,7 @@
                                 <label class="control-label">معاونت :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <select class="form-select" aria-label=".form-select-sm" asp-items="roles" id="roleStatus" tabindex="5">
+                                <select class="form-select" aria-label=".form-select-sm"  id="roleStatus" tabindex="5">
                                     <option selected class="fs-7">معاونت مربوطه، را انتخاب کنید ...</option>
                                 </select>
                                 <span class="text-danger fs-8" id="roleError"></span>
@@ -118,6 +114,7 @@
 <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
 
     <script type="text/javascript">
+        var _getRolesUrl = '@Url.Action("GetRolesForSelectBox", "Access", new { area = "District" })';
         var _getUsersUrl = '@Url.Action("GetUsersForSelectBox", "Access", new { area = "District" })';
         var _registerUrl = '@Url.Action("UserRoleRegister", "Access", new { area = "District" })';
     </script>
@@ -138,7 +135,7 @@
             var $user = $("#districtUserStatus").find(':selected').text();
             var $role = $("#roleStatus").find(':selected').text();
 
-            var isDisabled = $("#provinceUserStatus").is('[disabled]');
+            var isDisabled = $("#districtUserStatus").is('[disabled]');
 
             if ($provinceDepartment === "شعبه سطح استان خود را انتخاب کنید ...") {
                 provinceDepartmentError.text("تکمیل ورودی شعبه استان ضروری است.");
@@ -162,6 +159,7 @@
             }
 
             if ($user === "پرسنل مورد نظر را انتخاب کنید ..." && isDisabled == true) {
+                userError.text("تکمیل ورودی پرسنل ضروری است.");
                 result = false;
             } else {
                 userError.text('');
@@ -192,12 +190,31 @@
                     result = false;
                 }
             });
+            $("#provinceDepartmentStatus").change(function () {
+                var $provinceDepartment = $("#provinceDepartmentStatus").find(':selected').text();
+                if ($provinceDepartment !== "شعبه سطح استان خود را انتخاب کنید ...") {
+                    provinceDepartmentError.text('');
+                } else {
+                    provinceDepartmentError.text("تکمیل ورودی شعبه استان ضروری است.");
+                    result = false;
+                }
+            });
             $("#roleStatus").change(function () {
                 var $role = $("#roleStatus").find(':selected').text();
                 if ($role !== "معاونت مربوطه، را انتخاب کنید ...") {
                     roleError.text('');
                 } else {
                     roleError.text("تکمیل ورودی معاونت ضروری است.");
+                    result = false;
+                }
+            });
+
+            $("#districtUserStatus").change(function () {
+                var $user = $("#districtUserStatus").find(':selected').text();
+                if ($user !== "پرسنل مورد نظر را انتخاب کنید ...") {
+                    userError.text('');
+                } else {
+                    userError.text("تکمیل ورودی پرسنل ضروری است.");
                     result = false;
                 }
             });
@@ -252,16 +269,40 @@
                                         $("#districtUserStatus").append('<option id="userStatus" value=' + this.value + '>' + this.text + '</option>');
                                     });
                                 }
-                                $('#roleStatus').attr('disabled', false);
                             });
 
                     } else {
-                        $('#districtUserStatus, #roleStatus').attr('disabled', true);
+                        $('#districtUserStatus').attr('disabled', true);
                         $("#districtUserStatus").append('<option class="fs-7" id="userStatus" >پرسنل مورد نظر را انتخاب کنید ...</option>');
                     }
                 });
             });
         });
+
+
+        //Seed data to select role
+
+        $("#districtUserStatus").change(function () {
+
+            $("#roleStatus").empty();
+
+            var districtUser = $("#districtUserStatus").find(':selected').val();
+
+            if (districtUser !== "پرسنل مورد نظر را انتخاب کنید ...") {
+                $("#roleStatus").attr('disabled', false);
+                $.post(_getRolesUrl, { userId: districtUser })
+                    .done(function (result) {
+                        if (result.success) {
+                            $.each(result.data, function () {
+                                $("#roleStatus").append('<option id="userStatus" value=' + this.value + '>' + this.text + '</option>');
+                            });
+                        }
+                    });
+            } else {
+                $('#roleStatus').attr('disabled', true);
+                $("#roleStatus").append('<option selected class="fs-7">معاونت مربوطه، را انتخاب کنید ...</option>');
+            }
+        })
 
 
         //Disable select user

@@ -5,11 +5,13 @@ using Data.Repositores;
 using Domain.DTOs.General;
 using Domain.DTOs.Portal.Transfer;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HRM.Areas.District.Controllers
 {
     [Area("District")]
+    [Authorize]
     [AreaPermissionChecker("2")]
 
     public class HomeController : Controller

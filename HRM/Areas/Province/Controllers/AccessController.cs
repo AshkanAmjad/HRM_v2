@@ -5,6 +5,7 @@ using Data.Repositores;
 using Domain.DTOs.General;
 using Domain.DTOs.Security.Role;
 using Domain.DTOs.Security.UserRole;
+using Domain.Entities.Security.Models;
 using Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -255,11 +256,6 @@ namespace HRM.Areas.Province.Controllers
             var departments = _generalService.ProvinceDepartmentTypes();
             ViewBag.Departments = new SelectList(departments, "Value", "Text");
 
-            var roles = _userRoleRepository.GetRolesForSelectBox();
-
-            ViewBag.Roles = new SelectList(roles, "Value", "Text");
-
-
             return View();
         }
 
@@ -272,6 +268,24 @@ namespace HRM.Areas.Province.Controllers
             var jsonData = new
             {
                 data = new SelectList(users, "Value", "Text"),
+                success = true
+            };
+            #endregion
+
+            return Json(jsonData);
+        }
+
+        [HttpPost]
+        public IActionResult GetRolesForSelectBox(Guid userId)
+        {
+            var userRoles = _userRoleRepository.GetUserRolesByUserId(userId);
+            var roles = _userRoleRepository.GetRolesForSelectBox()
+                                           .Where(r => !userRoles.Contains(r.Text))
+                                           .ToList();
+            #region Json data
+            var jsonData = new
+            {
+                data = new SelectList(roles, "Value", "Text"),
                 success = true
             };
             #endregion

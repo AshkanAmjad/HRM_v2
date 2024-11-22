@@ -14,6 +14,7 @@ namespace HRM.Areas.County.Controllers
 {
     [Area("County")]
     [Authorize]
+
     public class ReportController : Controller
     {
         #region Constructor

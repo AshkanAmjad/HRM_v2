@@ -335,21 +335,38 @@ namespace HRM.Areas.Province.Controllers
             bool success = false;
             var message = $"عملیات غیر فعال سازی با شکست مواجه شده است.";
             string checkMessage = "";
+
             if (userValidator.IsValid)
             {
                 try
                 {
-                    bool result = _userService.Disable(user, out checkMessage);
+                    var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
 
-                    if (result)
+                    if (id == "")
                     {
-                        _userRepository.SaveChanges();
-                        success = true;
-                        message = $"<h5>عملیات غیر فعال سازی کاربر <span class='text-primary'> {user.UserName} </span> با موفقیت انجام شد.</h5>";
+                        return NotFound();
+                    }
+
+                    var userId = new Guid(id);
+
+                    if (user.UserId != userId)
+                    {
+                        bool result = _userService.Disable(user, out checkMessage);
+
+                        if (result)
+                        {
+                            _userRepository.SaveChanges();
+                            success = true;
+                            message = $"<h5>عملیات غیر فعال سازی کاربر <span class='text-primary'> {user.UserName} </span> با موفقیت انجام شد.</h5>";
+                        }
+                        else
+                        {
+                            message = checkMessage;
+                        }
                     }
                     else
                     {
-                        message = checkMessage;
+                        message = $"امکان غیر فعال سازی کاربر وجود ندارد.";
                     }
                 }
                 catch (Exception ex)

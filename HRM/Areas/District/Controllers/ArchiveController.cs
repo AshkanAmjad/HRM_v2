@@ -6,11 +6,13 @@ using Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HRM.Areas.District.Controllers
 {
     [Area("District")]
+    [Authorize]
 
     public class ArchiveController : Controller
     {

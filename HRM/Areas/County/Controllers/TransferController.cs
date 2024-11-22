@@ -11,12 +11,15 @@ using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using HRM.Models.Validation.Portal.Document;
 using HRM.Models.Validation.Portal.Transfer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HRM.Areas.County.Controllers
 {
     [Area("County")]
+    [Authorize]
+
     public class TransferController : Controller
     {
         #region Constructor

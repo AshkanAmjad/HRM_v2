@@ -7,12 +7,15 @@ using Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HRM.Areas.County.Controllers
 {
     [Area("County")]
+    [Authorize]
+
     public class AccessController : Controller
     {
         #region Constructor
@@ -232,14 +235,38 @@ namespace HRM.Areas.County.Controllers
 
         public IActionResult UserRoleRegister()
         {
-            var proviveDepartments = _generalService.ProvinceDepartmentTypes();
-            ViewBag.ProvinceDepartments = new SelectList(proviveDepartments, "Value", "Text");
+            var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
 
-            var countyDepartments = _generalService.CountyDepartmentTypes();
+            if (id == "")
+            {
+                return NotFound();
+            }
+
+            var userId = new Guid(id);
+
+            var area = _userRepository.GetAreaUserByUserId(userId);
+
+            List<SelectListItem> provinceDepartments;
+            List<SelectListItem> countyDepartments;
+
+            if (area.Section == "0")
+            {
+                provinceDepartments = _generalService.ProvinceDepartmentTypes();
+                countyDepartments = _generalService.CountyDepartmentTypes();
+            }
+            else
+            {
+                provinceDepartments = _generalService.ProvinceDepartmentTypes()
+                                                    .Where(d => d.Value == area.Province)
+                                                    .ToList();
+
+                countyDepartments = _generalService.CountyDepartmentTypes()
+                                                   .Where(d => d.Value == area.County)
+                                                   .ToList();
+            }
+
+            ViewBag.ProvinceDepartments = new SelectList(provinceDepartments, "Value", "Text");
             ViewBag.CountyDepartments = new SelectList(countyDepartments, "Value", "Text");
-
-            var roles = _userRoleRepository.GetRolesForSelectBox();
-            ViewBag.Roles = new SelectList(roles, "Value", "Text");
 
             return View();
         }
@@ -253,6 +280,24 @@ namespace HRM.Areas.County.Controllers
             var jsonData = new
             {
                 data = new SelectList(users, "Value", "Text"),
+                success = true
+            };
+            #endregion
+
+            return Json(jsonData);
+        }
+
+        [HttpPost]
+        public IActionResult GetRolesForSelectBox(Guid userId)
+        {
+            var userRoles = _userRoleRepository.GetUserRolesByUserId(userId);
+            var roles = _userRoleRepository.GetRolesForSelectBox()
+                                           .Where(r => !userRoles.Contains(r.Text))
+                                           .ToList();
+            #region Json data
+            var jsonData = new
+            {
+                data = new SelectList(roles, "Value", "Text"),
                 success = true
             };
             #endregion

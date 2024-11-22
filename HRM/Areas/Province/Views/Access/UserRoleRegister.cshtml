@@ -4,10 +4,6 @@
     var departments = ViewBag.Departments != null
           ? ViewBag.Departments
           : new List<SelectListItem>();
-
-    var roles = ViewBag.Roles != null
-        ? ViewBag.Roles
-        : new List<SelectListItem>();
 }
 <div class="modal-dialog modal-xl " id="modal">
     <div class="modal-content">
@@ -62,7 +58,7 @@
                                 <label class="control-label">معاونت :</label>
                             </div>
                             <div class="col-7 col-lg-8">
-                                <select class="form-select" aria-label=".form-select-sm" asp-items="roles" id="roleStatus" tabindex="3">
+                                <select class="form-select" aria-label=".form-select-sm" id="roleStatus" tabindex="3">
                                     <option selected class="fs-7">معاونت مربوطه، را انتخاب کنید ...</option>
                                 </select>
                                 <span class="text-danger fs-8" id="roleError"></span>
@@ -85,6 +81,7 @@
 </div>
 
 <script type="text/javascript">
+    var _getRolesUrl = '@Url.Action("GetRolesForSelectBox", "Access", new { area = "Province" })';
     var _getUsersUrl = '@Url.Action("GetUsersForSelectBox", "Access", new { area = "Province" })';
     var _registerUrl = '@Url.Action("UserRoleRegister", "Access", new { area = "Province" })';
 </script>
@@ -111,6 +108,8 @@
 
         if ($user === "پرسنل مورد نظر را انتخاب کنید ..." && isDisabled == true) {
             result = false;
+            userError.text("تکمیل ورودی پرسنل ضروری است.")
+
         } else {
             userError.text('');
         }
@@ -131,6 +130,17 @@
                 result = false;
             }
         });
+
+        $("#provinceUserStatus").change(function () {
+            var $user = $("#provinceUserStatus").find(':selected').text();
+            if ($user !== "پرسنل مورد نظر را انتخاب کنید ...") {
+                userError.text('');
+            } else {
+                userError.text("تکمیل ورودی پرسنل ضروری است.");
+                result = false;
+            }
+        });
+
         $("#roleStatus").change(function () {
             var $role = $("#roleStatus").find(':selected').text();
             if ($role !== "معاونت مربوطه، را انتخاب کنید ...") {
@@ -167,19 +177,41 @@
                         $.each(result.data, function () {
                             $("#provinceUserStatus").append('<option id="userStatus" value=' + this.value + '>' + this.text + '</option>');
                         });
-                        $('#roleStatus').attr('disabled', false);
                     }
                 });
 
         } else {
-            $('#provinceUserStatus, #roleStatus').attr('disabled', true);
+            $('#provinceUserStatus').attr('disabled', true);
             $("#provinceUserStatus").append('<option id="userStatus" class="fs-7" >پرسنل مورد نظر را انتخاب کنید ...</option>');
         }
 
     });
 
+    //Seed data to role
+    $("#provinceUserStatus").change(function () {
+        
+        $("#roleStatus").empty();
+
+        var provinceUser = $("#provinceUserStatus").find(':selected').val();
+
+        if (provinceUser !== "پرسنل مورد نظر را انتخاب کنید ...") {
+            $("#roleStatus").attr('disabled', false);
+            $.post(_getRolesUrl, { userId: provinceUser })
+                .done(function (result) {
+                    if (result.success) {
+                        $.each(result.data, function(){
+                            $("#roleStatus").append('<option id="userStatus" value=' + this.value + '>' + this.text + '</option>');
+                        });
+                    }
+                });
+        } else {
+            $('#roleStatus').attr('disabled', true);
+            $("#roleStatus").append('<option selected class="fs-7">معاونت مربوطه، را انتخاب کنید ...</option>');
+        }
+    })
+
     //Disable select user
-    $('#provinceUserStatus,#roleStatus').attr('disabled', true);
+    $('#provinceUserStatus, #roleStatus').attr('disabled', true);
 
     $(function () {
         $("#submitBtn").off("click");

@@ -8,12 +8,14 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using HRM.Models.Validation.Security.Profile;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HRM.Areas.County.Controllers
 {
     [Area("County")]
+    [Authorize]
 
     public class ManagementController : Controller
     {
@@ -169,7 +171,7 @@ namespace HRM.Areas.County.Controllers
             else
             {
                 provinceDepartments= _generalService.ProvinceDepartmentTypes()
-                                                    .Where(d => d.Value == area.Section)
+                                                    .Where(d => d.Value == area.Province)
                                                     .ToList();
 
                 countyDepartments = _generalService.CountyDepartmentTypes()
@@ -294,7 +296,7 @@ namespace HRM.Areas.County.Controllers
                 else
                 {
                     provinceDepartments = _generalService.ProvinceDepartmentTypes()
-                                                         .Where(d => d.Value == area.Section)
+                                                         .Where(d => d.Value == area.Province)
                                                          .ToList();
 
                     countyDepartments = _generalService.CountyDepartmentTypes()
@@ -393,17 +395,33 @@ namespace HRM.Areas.County.Controllers
             {
                 try
                 {
-                    bool result = _userService.Disable(user, out checkMessage);
+                    var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
 
-                    if (result)
+                    if (id == "")
                     {
-                        _userRepository.SaveChanges();
-                        success = true;
-                        message = $"<h5>عملیات غیر فعال سازی کاربر <span class='text-primary'> {user.UserName} </span> با موفقیت انجام شد.</h5>";
+                        return NotFound();
+                    }
+
+                    var userId = new Guid(id);
+
+                    if (user.UserId != userId)
+                    {
+                        bool result = _userService.Disable(user, out checkMessage);
+
+                        if (result)
+                        {
+                            _userRepository.SaveChanges();
+                            success = true;
+                            message = $"<h5>عملیات غیر فعال سازی کاربر <span class='text-primary'> {user.UserName} </span> با موفقیت انجام شد.</h5>";
+                        }
+                        else
+                        {
+                            message = checkMessage;
+                        }
                     }
                     else
                     {
-                        message = checkMessage;
+                        message = $"امکان غیر فعال سازی کاربر وجود ندارد.";
                     }
                 }
                 catch (Exception ex)
