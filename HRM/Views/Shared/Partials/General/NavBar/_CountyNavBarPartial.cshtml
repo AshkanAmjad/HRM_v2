@@ -8,6 +8,7 @@
     var _countyReportsUrl = '@Url.Action("CountyReportsIndex", "Report", new { area = "County" })';
     var _countySendTransfersUrl = '@Url.Action("CountySendTransfersIndex", "Transfer", new { area = "County" })';
     var _countyInboxTransfersUrl = '@Url.Action("CountyInboxTransfersIndex", "Transfer", new { area = "County" })';
+    var _countyRegisterTransferUrl = '@Url.Action("UserRegister", "Transfer", new { area = "County" })';
 
 </script>
 <script type="text/javascript">
@@ -77,6 +78,14 @@
         $("#countyInboxTransfers").on("click", function (e) {
             e.preventDefault();
             $.get(_countyInboxTransfersUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
+        //------------------------------------------------------------------------
+        $("#countyUserSendTransfers").off("click");
+        $("#countyUserSendTransfers").on("click", function (e) {
+            e.preventDefault();
+            $.get(_countyRegisterTransferUrl).done(function (result) {
                 $("#main").html(result);
             });
         });

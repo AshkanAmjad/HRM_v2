@@ -251,16 +251,15 @@
                 </button>
             </div>
         </form>
-
     </div>
-
 </div>
 
 <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
-<partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPersianDatePickerPartial.cshtml" />
+    <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPersianDatePickerPartial.cshtml" />
 
     <script type="text/javascript">
         var _registerUrl = '@Url.Action("Register", "Management", new { area = "Province" })';
+        var _provinceManagementUserRolesUrl = '@Url.Action("ProvinceUserRolesIndex", "Access", new { area = "Province" })';
     </script>
 
     <script type="text/javascript">
@@ -268,6 +267,14 @@
             initialValue: false,
             format: 'YYYY/MM/DD'
         });
+
+        //Access
+        function Access() {
+            $.get(_provinceManagementUserRolesUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        }
+
 
         $.fn.Validation = function () {
             var result = true;

@@ -8,6 +8,7 @@
     var _districtReportsUrl = '@Url.Action("DistrictReportsIndex", "Report", new { area = "District" })';
     var _districtSendTransfersUrl = '@Url.Action("DistrictSendTransfersIndex", "Transfer", new { area = "District" })';
     var _districtInboxTransfersUrl = '@Url.Action("DistrictInboxTransfersIndex", "Transfer", new { area = "District" })';
+    var _districtRegisterTransferUrl = '@Url.Action("UserRegister", "Transfer", new { area = "District" })';
 
 </script>
 <script type="text/javascript">
@@ -82,6 +83,13 @@
             });
         });
         //------------------------------------------------------------------------
+        $("#districtUserSendTransfers").off("click");
+        $("#districtUserSendTransfers").on("click", function (e) {
+            e.preventDefault();
+            $.get(_districtRegisterTransferUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        });
     });
 
 </script>

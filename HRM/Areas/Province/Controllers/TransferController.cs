@@ -317,9 +317,20 @@ namespace HRM.Areas.Province.Controllers
         [AreaPermissionChecker("0")]
         public IActionResult UserRegister()
         {
-            var departments = _generalService.ProvinceDepartmentTypes();
+            var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
 
-            ViewBag.Departments = new SelectList(departments, "Value", "Text");
+            if (id == "")
+            {
+                return NotFound();
+            }
+
+            var userId = new Guid(id);
+
+            var area = _userRepository.GetAreaUserByUserId(userId);
+
+            var departments = area.Province;
+
+            ViewBag.Departments = departments;
 
             var roles = _userRoleRepository.GetRolesForSelectBox();
 

@@ -275,6 +275,7 @@
 <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPersianDatePickerPartial.cshtml" />
     <script type="text/javascript">
+        var _countyManagementUserRolesUrl = '@Url.Action("CountyUserRolesIndex", "Access", new { area = "County" })';
         var _registerUrl = '@Url.Action("Register", "Management", new { area = "County" })';
     </script>
 
@@ -283,6 +284,13 @@
             initialValue: false,
             format: 'YYYY/MM/DD'
         });
+
+        //Access
+        function Access() {
+            $.get(_countyManagementUserRolesUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        }
 
         $.fn.Validation = function () {
             var result = true;

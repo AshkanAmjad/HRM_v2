@@ -291,6 +291,7 @@
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPersianDatePickerPartial.cshtml" />
 
     <script type="text/javascript">
+        var _districtManagementUserRolesUrl = '@Url.Action("DistrictUserRolesIndex", "Access", new { area = "District" })';
         var _registerUrl = '@Url.Action("Register", "Management", new { area = "District" })';
     </script>
 
@@ -299,6 +300,13 @@
             initialValue: false,
             format: 'YYYY/MM/DD'
         });
+
+        //Access
+        function Access() {
+            $.get(_districtManagementUserRolesUrl).done(function (result) {
+                $("#main").html(result);
+            });
+        }
 
         $.fn.Validation = function () {
             var result = true;

@@ -214,8 +214,8 @@ namespace HRM.Areas.County.Controllers
                     {
                         _userRepository.SaveChanges();
                         success = true;
-                        message = $"<h5>عملیات ثبت کاربر <span class='text-primary'> {user.FirstName}  {user.LastName} </span> با موفقیت انجام شد.</h5><br/>" + 
-                            $"<h6>جهت تعیین معاونت به بخش کنترل دسترسی <span class='text-primary'>&#8592;</span> پرسنل مراجعه کنید. </h6>";
+                        message = $"<h5>عملیات ثبت کاربر <span class='text-primary'> {user.FirstName}  {user.LastName} </span> با موفقیت انجام شد.</h5><br/>" +
+                                  $"<h6>جهت تعیین معاونت <a class='text-bold text-decoration-none cursor-pointer' onclick='Access()'>این جا</a> را کلیک کنید.</h6>";
                     }
                     else
                     {

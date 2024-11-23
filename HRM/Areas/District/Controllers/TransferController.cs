@@ -1,5 +1,6 @@
 ﻿using Application.Services.Interfaces;
 using AutoMapper;
+using Data.Extensions;
 using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Portal.Transfer;
 using Domain.Interfaces;
@@ -386,6 +387,37 @@ namespace HRM.Areas.District.Controllers
             #endregion
 
             return Json(jsonData);
+        }
+
+        [AreaPermissionChecker("2")]
+        public IActionResult UserRegister()
+        {
+            var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+
+            if (id == "")
+            {
+                return NotFound();
+            }
+
+            var userId = new Guid(id);
+
+            var area = _userRepository.GetAreaUserByUserId(userId);
+
+            var proviceDepartments = area.Province;
+
+            var countyDepartments = area.County;
+
+            var districtDepartments = area.District;
+
+            var roles = _userRoleRepository.GetRolesForSelectBox();
+
+            ViewBag.ProvinceDepartments = proviceDepartments;
+            ViewBag.CountyDepartments = countyDepartments;
+            ViewBag.DistrictDepartments = districtDepartments;
+
+            ViewBag.Roles = new SelectList(roles, "Value", "Text");
+
+            return View();
         }
         #endregion
 
