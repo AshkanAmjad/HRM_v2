@@ -95,17 +95,28 @@ namespace HRM.Areas.District.Controllers
 
             var userArea = _userRepository.GetAreaUserByUserId(userId);
 
-            var transferArea = new TransferAreaVM()
+            var transferArea = new TransferAreaVM();
+
+            if (userArea.Section == "0")
             {
-                ReceiverArea = model.ReceiverArea,
-                ReceiverProvince = userArea.Province,
-                ReceiverCounty = userArea.County,
-                ReceiverDistrict = userArea.District,
-                UploaderArea = userArea.Section,
-                UploaderCounty = userArea.County,
-                UploaderDistrict = userArea.District,
-                UploaderProvince = userArea.Province
-            };
+                transferArea = new()
+                {
+                    UploaderArea = "2",
+                    Display = "0"
+                };
+            }
+            else
+            {
+                transferArea = new()
+                {
+                    ReceiverArea = "2",
+                    UploaderArea = userArea.Section,
+                    UploaderCounty = userArea.County,
+                    UploaderDistrict = userArea.District,
+                    UploaderProvince = userArea.Province,
+                    Display = "1"
+                };
+            }
 
             var transfers = _departmentTransferRepository.GetSendTransfers(transferArea);
 
@@ -152,14 +163,30 @@ namespace HRM.Areas.District.Controllers
 
             var userArea = _userRepository.GetAreaUserByUserId(userId);
 
-            var transferArea = new TransferAreaVM()
+            var transferArea = new TransferAreaVM();
+
+            if (userArea.Section == "0")
             {
-                ReceiverArea = userArea.Section,
-                ReceiverProvince = userArea.Province,
-                ReceiverCounty = userArea.County,
-                ReceiverDistrict = userArea.District,
-                UploaderArea = "2",
-            };
+                transferArea = new TransferAreaVM()
+                {
+                    ReceiverArea = "2",
+                    Display = "0"
+                };
+            }
+            else
+            {
+                transferArea = new TransferAreaVM()
+                {
+
+                    UploaderArea = "2",
+                    ReceiverArea = userArea.Section,
+                    ReceiverCounty = userArea.County,
+                    ReceiverDistrict = userArea.District,
+                    ReceiverProvince = userArea.Province,
+                    Display = "1"
+
+                };
+            }
 
             var transfers = _departmentTransferRepository.GetInboxTransfers(transferArea);
 

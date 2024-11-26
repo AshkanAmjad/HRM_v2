@@ -85,7 +85,7 @@ namespace HRM.Areas.Province.Controllers
 
         [HttpPost]
         [RolePermissionChecker("مدیریت", "فناوری اطلاعات")]
-        public IActionResult GetSendTransfers(TransferAreaVM model)
+        public IActionResult GetSendTransfers()
         {
             var id = User.Claims.Where(c => c.Type == "userId").FirstOrDefault().Value;
 
@@ -98,17 +98,31 @@ namespace HRM.Areas.Province.Controllers
 
             var userArea = _userRepository.GetAreaUserByUserId(userId);
 
-            var transferArea = new TransferAreaVM()
+            var transferArea = new TransferAreaVM();
+
+            if (userArea.Section == "0")
             {
-                ReceiverArea = model.ReceiverArea,
-                ReceiverProvince = userArea.Province,
-                ReceiverCounty = userArea.County,
-                ReceiverDistrict = userArea.District,
-                UploaderArea = userArea.Section,
-                UploaderCounty = userArea.County,
-                UploaderDistrict = userArea.District,
-                UploaderProvince = userArea.Province
-            };
+                transferArea = new()
+                {
+                    UploaderArea = "0",
+                    Display = "0"
+                };
+            }
+            else
+            {
+                transferArea = new()
+                {
+                    ReceiverArea = "0",
+                    UploaderArea = userArea.Section,
+                    UploaderCounty = userArea.County,
+                    UploaderDistrict = userArea.District,
+                    UploaderProvince = userArea.Province,
+                    Display = "1"
+                };
+            }
+
+
+
 
             var transfers = _departmentTransferRepository.GetSendTransfers(transferArea);
 
@@ -157,14 +171,29 @@ namespace HRM.Areas.Province.Controllers
 
             var userArea = _userRepository.GetAreaUserByUserId(userId);
 
-            var transferArea = new TransferAreaVM()
+            var transferArea = new TransferAreaVM();
+
+            if (userArea.Section == "0")
             {
-                ReceiverArea = userArea.Section,
-                ReceiverProvince = userArea.Province,
-                ReceiverCounty = userArea.County,
-                ReceiverDistrict = userArea.District,
-                UploaderArea = "0"
-            };
+
+                transferArea = new TransferAreaVM()
+                {
+                    ReceiverArea = "0",
+                    Display = "0"
+                };
+            }
+            else
+            {
+                transferArea = new TransferAreaVM()
+                {
+                    UploaderArea = "0",
+                    ReceiverArea = userArea.Section,
+                    ReceiverCounty = userArea.County,
+                    ReceiverDistrict = userArea.District,
+                    ReceiverProvince = userArea.Province,
+                    Display = "1"
+                };
+            }
 
             var transfers = _departmentTransferRepository.GetInboxTransfers(transferArea);
 
@@ -303,6 +332,17 @@ namespace HRM.Areas.Province.Controllers
         #region Register
         public IActionResult Register()
         {
+            var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+
+            if (id == "")
+            {
+                return NotFound();
+            }
+
+            var userId = new Guid(id);
+
+            var area = _userRepository.GetAreaUserByUserId(userId);
+
             var departments = _generalService.ProvinceDepartmentTypes();
 
             ViewBag.Departments = new SelectList(departments, "Value", "Text");
@@ -310,6 +350,9 @@ namespace HRM.Areas.Province.Controllers
             var roles = _userRoleRepository.GetRolesForSelectBox();
 
             ViewBag.Roles = new SelectList(roles, "Value", "Text");
+
+            if (area.Section != "0")
+                return View("OtherRegister");
 
             return View();
         }

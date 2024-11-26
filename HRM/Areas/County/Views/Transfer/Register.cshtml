@@ -13,6 +13,14 @@
     var roles = ViewBag.Roles != null
         ? ViewBag.Roles
         : new List<SelectListItem>();
+
+    var myCountyDepartment = ViewData["MyCountyDepartment"] != null
+         ? ViewData["MyCountyDepartment"]
+         : "-1";
+
+    var myAreaDepartment = ViewData["MyAreaDepartment"] != null
+       ? ViewData["MyAreaDepartment"]
+       : "-1";
 }
 <div class="modal-dialog modal-lg " id="modal">
     <div class="modal-content">
@@ -169,6 +177,19 @@
             } else {
                 roleError.text('');
                 userError.text('');
+                result = true;
+            }
+
+            if (@myAreaDepartment == "1" &&
+                $countyDepartment !== @myCountyDepartment &&
+                ($userStatus === "پرسنل مورد نظر را انتخاب کنید ..." &&
+                    $roleStatus === "معاونت مربوطه، را انتخاب کنید ...")) {
+                userError.text('تکمیل یکی از ورودی ها الزامی است.');
+                roleError.text('تکمیل یکی از ورودی ها الزامی است.');
+                result = false;
+            } else {
+                userError.text('');
+                roleError.text('');
                 result = true;
             }
 

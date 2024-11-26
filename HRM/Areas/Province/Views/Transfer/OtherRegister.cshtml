@@ -1,5 +1,4 @@
 ﻿@model Domain.DTOs.Portal.Transfer.TransferRegisterVM
-@using Domain.Interfaces
 @{
     Layout = null;
     var departments = ViewBag.Departments != null
@@ -31,8 +30,6 @@
             <input type="hidden" asp-for="CountyReceiver" value="0" />
             <input type="hidden" asp-for="DistrictReceiver" value="0" />
             <div class="modal-body">
-
-
                 <div class="row mt-2 px-2">
                     <div class="col-5 col-lg-4">
                         <i class="fa fa-caret-square-o-left text-primary ms-2"></i>
@@ -126,7 +123,7 @@
 
     <script type="text/javascript">
 
-        var _getUsersUrl = '@Url.Action("GetUsersForSelectBox", "Access", new { area = "Province" })';
+        var _getUsersUrl = '@Url.Action("GetUsersForSelectBox", "Access", new { area = "County" })';
         var _registerUrl = '@Url.Action("Register", "Transfer", new { area = "Province" })';
     </script>
     <script type="text/javascript">
@@ -146,8 +143,10 @@
             var $fileName = $("#fileInput")[0].files.length > 0 ? $("#fileInput")[0].files[0].name : 'سندی انتخاب کنید';
             var $description = CKEDITOR.instances.editor.getData();
 
-            if (($userStatus !== "پرسنل مورد نظر را انتخاب کنید ...") &&
-                ($roleStatus !== "معاونت مربوطه، را انتخاب کنید ...")) {
+            if (($userStatus !== "پرسنل مورد نظر را انتخاب کنید ..." &&
+                $roleStatus !== "معاونت مربوطه، را انتخاب کنید ...") ||
+                ($userStatus === "پرسنل مورد نظر را انتخاب کنید ..." &&
+                 $roleStatus === "معاونت مربوطه، را انتخاب کنید ...")) {
                 userError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
                 roleError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
                 result = false;
@@ -193,8 +192,10 @@
                 var $userStatus = $("#provinceUserStatus").find(':selected').text();
                 var $roleStatus = $("#roleStatus").find(':selected').text();
 
-                if ($userStatus !== "پرسنل مورد نظر را انتخاب کنید ..." &&
-                    $roleStatus !== "معاونت مربوطه، را انتخاب کنید ...") {
+                if (($userStatus !== "پرسنل مورد نظر را انتخاب کنید ..." &&
+                    $roleStatus !== "معاونت مربوطه، را انتخاب کنید ...") ||
+                    ($userStatus === "پرسنل مورد نظر را انتخاب کنید ..." &&
+                    $roleStatus === "معاونت مربوطه، را انتخاب کنید ...")) {
                     userError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
                     roleError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
                     result = false;
@@ -202,13 +203,13 @@
                     userError.text('');
                     roleError.text('');
                 }
+
+
             })
 
             $("#roleStatus").change(function () {
                 var $userStatus = $("#provinceUserStatus").find(':selected').text();
                 var $roleStatus = $("#roleStatus").find(':selected').text();
-
-
                 if ($userStatus !== "پرسنل مورد نظر را انتخاب کنید ..." &&
                     $roleStatus !== "معاونت مربوطه، را انتخاب کنید ...") {
                     userError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
@@ -252,6 +253,7 @@
                     County: "0",
                     District: "0"
                 };
+
                 $.post(_getUsersUrl, direction)
                     .done(function (result) {
                         if (result.success) {

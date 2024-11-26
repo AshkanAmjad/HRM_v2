@@ -87,7 +87,7 @@ namespace HRM.Areas.County.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetSendTransfers(TransferAreaVM model)
+        public IActionResult GetSendTransfers()
         {
             var id = User.Claims.Where(c => c.Type == "userId").FirstOrDefault().Value;
 
@@ -100,17 +100,28 @@ namespace HRM.Areas.County.Controllers
 
             var userArea = _userRepository.GetAreaUserByUserId(userId);
 
-            var transferArea = new TransferAreaVM()
+            var transferArea = new TransferAreaVM();
+
+            if (userArea.Section == "0")
             {
-                ReceiverArea = model.ReceiverArea,
-                ReceiverProvince = userArea.Province,
-                ReceiverCounty = userArea.County,
-                ReceiverDistrict = userArea.District,
-                UploaderArea = userArea.Section,
-                UploaderCounty = userArea.County,
-                UploaderDistrict = userArea.District,
-                UploaderProvince = userArea.Province
-            };
+                transferArea = new()
+                {
+                    UploaderArea = "1",
+                    Display = "0"
+                };
+            }
+            else
+            {
+                transferArea = new()
+                {
+                    ReceiverArea = "1",
+                    UploaderArea = userArea.Section,
+                    UploaderCounty = userArea.County,
+                    UploaderDistrict = userArea.District,
+                    UploaderProvince = userArea.Province,
+                    Display = "1"
+                };
+            }
 
             var transfers = _departmentTransferRepository.GetSendTransfers(transferArea);
 
@@ -158,14 +169,28 @@ namespace HRM.Areas.County.Controllers
 
             var userArea = _userRepository.GetAreaUserByUserId(userId);
 
-            var transferArea = new TransferAreaVM()
+            var transferArea = new TransferAreaVM();
+
+            if (userArea.Section == "0")
             {
-                ReceiverArea = userArea.Section,
-                ReceiverProvince = userArea.Province,
-                ReceiverCounty = userArea.County,
-                ReceiverDistrict = userArea.District,
-                UploaderArea = "1"
-            };
+                transferArea = new TransferAreaVM()
+                {
+                    ReceiverArea = "1",
+                    Display = "0"
+                };
+            }
+            else
+            {
+                transferArea = new TransferAreaVM()
+                {
+                    UploaderArea = "1",
+                    ReceiverArea = userArea.Section,
+                    ReceiverCounty = userArea.County,
+                    ReceiverDistrict = userArea.District,
+                    ReceiverProvince = userArea.Province,
+                    Display = "1"
+                };
+            }
 
             var transfers = _departmentTransferRepository.GetInboxTransfers(transferArea);
 
@@ -302,14 +327,32 @@ namespace HRM.Areas.County.Controllers
         #region Register
         public IActionResult Register()
         {
+            var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+
+            if (id == "")
+            {
+                return NotFound();
+            }
+
+            var userId = new Guid(id);
+
+            var area = _userRepository.GetAreaUserByUserId(userId);
+
             var proviveDepartments = _generalService.ProvinceDepartmentTypes();
             ViewBag.ProvinceDepartments = new SelectList(proviveDepartments, "Value", "Text");
 
             var countyDepartments = _generalService.CountyDepartmentTypes();
+            ViewData["MyCountyDepartment"] = area.County;
+            ViewData["MyAreaDepartment"] = area.Section;
             ViewBag.CountyDepartments = new SelectList(countyDepartments, "Value", "Text");
 
             var roles = _userRoleRepository.GetRolesForSelectBox();
             ViewBag.Roles = new SelectList(roles, "Value", "Text");
+
+            
+
+            if (area.Section == "2")
+                return View("OtherRegister");
 
             return View();
         }

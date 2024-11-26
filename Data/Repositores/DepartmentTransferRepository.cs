@@ -31,56 +31,98 @@ namespace Data.Repositores
         #endregion
 
         public IQueryable<DepartmentTransfer> GetSendTransfersQuery(TransferAreaVM area)
-          => _context.DepartmentTransfers.IgnoreQueryFilters()
-                                         .Where(dt => dt.UploaderDepartment.Area == area.UploaderArea &&
-                                                     dt.UploaderDepartment.Province == area.UploaderProvince &&
-                                                     dt.UploaderDepartment.County == area.UploaderCounty &&
-                                                     dt.UploaderDepartment.District == area.UploaderDistrict &&
-                                                     dt.ReceiverDepartment.Area == area.ReceiverArea
-                                                     )
-                                         .AsQueryable();
+        {
+            IQueryable<DepartmentTransfer> data = Enumerable.Empty<DepartmentTransfer>()
+                                                            .AsQueryable();
+
+            if (area.Display == "0")
+            {
+                data = _context.DepartmentTransfers.IgnoreQueryFilters()
+                                                   .Where(dt => dt.UploaderDepartment.Area == area.UploaderArea)
+                                                   .AsQueryable();
+            }
+            else
+            {
+                data = _context.DepartmentTransfers.IgnoreQueryFilters()
+                                                   .Where(dt => dt.UploaderDepartment.Area == area.UploaderArea &&
+                                                                dt.UploaderDepartment.Province == area.UploaderProvince &&
+                                                                dt.UploaderDepartment.County == area.UploaderCounty &&
+                                                                dt.UploaderDepartment.District == area.UploaderDistrict &&
+                                                                dt.IsActived
+                                                                )
+                                                   .AsQueryable();
+            }
+
+            return data;
+
+        }
 
         public List<DisplayTransfersVM> GetSendTransfers(TransferAreaVM area)
         {
             var context = GetSendTransfersQuery(area);
-            var transfers = (from item in context
-                             orderby item.Transfer.UploadDate descending
-                             select new DisplayTransfersVM
-                             {
-                                 TransferId = item.Transfer.TransferId,
-                                 Title = item.Transfer.Title,
-                                 NationalCodeUploader = item.UploaderDepartment.User.UserName,
-                                 RoleUploader = string.Join("\n", item.UploaderDepartment.User.UserRoles.Select(ur => ur.Role.Title)),
-                                 AreaUploader = item.UploaderDepartment.Area,
-                                 ProvinceUploader = item.UploaderDepartment.Province,
-                                 CountyUploader = item.UploaderDepartment.County,
-                                 DistrictUploader = item.UploaderDepartment.District,
-                                 NationalCodeReceiver = item.ReceiverDepartment.User.UserName,
-                                 RoleReceiver = item.ReceiverDepartment.User.UserRoles.Count != 0
-                                               ? string.Join("\n", item.ReceiverDepartment.User.UserRoles.Select(ur => ur.Role.Title))
-                                               : "-",
-                                 AreaReceiver = item.ReceiverDepartment.Area,
-                                 ProvinceReceiver = item.ReceiverDepartment.Province,
-                                 CountyReceiver = item.ReceiverDepartment.County,
-                                 DistrictReceiver = item.ReceiverDepartment.District,
-                                 FileFormat = (item.Transfer.FileFormat != null ? item.Transfer.FileFormat : "-"),
-                                 UploadDate = item.Transfer.UploadDate.ToShamsi(),
-                                 IsActived = (item.Transfer.IsActived) ? "فعال" : "غیرفعال",
-                             }).ToList();
+
+            List<DisplayTransfersVM> transfers = new();
+
+            transfers = (from item in context
+                         orderby item.Transfer.UploadDate descending
+                         select new DisplayTransfersVM
+                         {
+                             TransferId = item.Transfer.TransferId,
+                             Title = item.Transfer.Title,
+                             NationalCodeUploader = item.UploaderDepartment.User.UserName,
+                             RoleUploader = string.Join("\n", item.UploaderDepartment.User.UserRoles.Select(ur => ur.Role.Title)),
+                             AreaUploader = (item.UploaderDepartment.Area == "0" ? "استان" : (item.UploaderDepartment.Area == "1" ? "شهرستان" : "بخش")),
+                             ProvinceUploader = item.UploaderDepartment.Province,
+                             CountyUploader = item.UploaderDepartment.County,
+                             DistrictUploader = item.UploaderDepartment.District,
+                             NationalCodeReceiver = item.ReceiverDepartment.User.UserName,
+                             RoleReceiver = item.ReceiverDepartment.User.UserRoles.Count != 0
+                                           ? string.Join("\n", item.ReceiverDepartment.User.UserRoles.Select(ur => ur.Role.Title))
+                                           : "-",
+                             AreaReceiver = (item.ReceiverDepartment.Area == "0" ? "استان" : (item.ReceiverDepartment.Area == "1" ? "شهرستان" : "بخش")),
+                             ProvinceReceiver = item.ReceiverDepartment.Province,
+                             CountyReceiver = item.ReceiverDepartment.County,
+                             DistrictReceiver = item.ReceiverDepartment.District,
+                             FileFormat = (item.Transfer.FileFormat != null ? item.Transfer.FileFormat : "-"),
+                             UploadDate = item.Transfer.UploadDate.ToShamsi(),
+                             IsActived = (item.Transfer.IsActived) ? "فعال" : "غیرفعال",
+                         }).ToList();
             return transfers;
         }
 
         public IQueryable<DepartmentTransfer> GetInboxTransfersQuery(TransferAreaVM area)
-          => _context.DepartmentTransfers.IgnoreQueryFilters()
-                                         .Where(dt => dt.ReceiverDepartment.Area == area.ReceiverArea &&
-                                                      dt.UploaderDepartment.Area == area.UploaderArea &&
-                                                      dt.ReceiverDepartment.Province == area.ReceiverProvince &&
-                                                      dt.ReceiverDepartment.County == area.ReceiverCounty &&
-                                                      dt.ReceiverDepartment.District == area.ReceiverDistrict &&
-                                                      dt.IsActived
-                                         ) 
-                                         .AsQueryable();
-        
+        {
+            IQueryable<DepartmentTransfer> data = Enumerable.Empty<DepartmentTransfer>()
+                                                            .AsQueryable();
+
+            if(area.Display == "0")
+            {
+                data = _context.DepartmentTransfers.IgnoreQueryFilters()
+                                                   .Where(dt => dt.ReceiverDepartment.Area == area.ReceiverArea &&
+                                                                dt.IsActived
+                                                   )
+                                                  .AsQueryable();
+            }
+            else
+            {
+                data = _context.DepartmentTransfers.IgnoreQueryFilters()
+                                                   .Where(dt => dt.ReceiverDepartment.Area == area.ReceiverArea &&
+                                                                dt.ReceiverDepartment.Province == area.ReceiverProvince &&
+                                                                dt.ReceiverDepartment.County == area.ReceiverCounty &&
+                                                                dt.ReceiverDepartment.District == area.ReceiverDistrict &&
+                                                                dt.UploaderDepartment.Area == area.UploaderArea &&
+                                                                dt.IsActived
+                                                   )
+                                                  .AsQueryable();
+            }
+
+            return data;
+        }
+                                         
+
+
+
+
 
         public List<DisplayTransfersVM> GetInboxTransfers(TransferAreaVM area)
         {
@@ -93,7 +135,7 @@ namespace Data.Repositores
                                  Title = item.Transfer.Title,
                                  NationalCodeUploader = item.UploaderDepartment.User.UserName,
                                  RoleUploader = string.Join("\n", item.UploaderDepartment.User.UserRoles.Select(ur => ur.Role.Title)),
-                                 AreaUploader = item.UploaderDepartment.Area,
+                                 AreaUploader = (item.UploaderDepartment.Area == "0" ? "استان" : (item.UploaderDepartment.Area == "1" ? "شهرستان" : "بخش")),
                                  ProvinceUploader = item.UploaderDepartment.Province,
                                  CountyUploader = item.UploaderDepartment.County,
                                  DistrictUploader = item.UploaderDepartment.District,
@@ -101,7 +143,7 @@ namespace Data.Repositores
                                  RoleReceiver = item.ReceiverDepartment.User.UserRoles.Count != 0
                                                ? string.Join("\n", item.ReceiverDepartment.User.UserRoles.Select(ur => ur.Role.Title))
                                                : "-",
-                                 AreaReceiver = item.ReceiverDepartment.Area,
+                                 AreaReceiver = (item.ReceiverDepartment.Area == "0" ? "استان" : (item.ReceiverDepartment.Area == "1" ? "شهرستان" : "بخش")),
                                  ProvinceReceiver = item.ReceiverDepartment.Province,
                                  CountyReceiver = item.ReceiverDepartment.County,
                                  DistrictReceiver = item.ReceiverDepartment.District,
@@ -116,14 +158,14 @@ namespace Data.Repositores
         {
             var transfers = _context.DepartmentTransfers.Where(dt => dt.ReceiverDepartment.UserId == area.ReceiverUserId &&
                                                                      dt.IsActived)
-                                                         .OrderByDescending(dt => dt.Transfer.UploadDate)                             
+                                                         .OrderByDescending(dt => dt.Transfer.UploadDate)
                                                          .Select(dt => new DisplayTransfersVM
                                                          {
                                                              TransferId = dt.Transfer.TransferId,
                                                              Title = dt.Transfer.Title,
                                                              NationalCodeUploader = dt.UploaderDepartment.User.UserName,
                                                              RoleUploader = string.Join("\n", dt.UploaderDepartment.User.UserRoles.Select(ur => ur.Role.Title)),
-                                                             AreaUploader = dt.UploaderDepartment.Area,
+                                                             AreaUploader = (dt.UploaderDepartment.Area == "0" ? "استان" : (dt.UploaderDepartment.Area == "1" ? "شهرستان" : "بخش")),
                                                              ProvinceUploader = dt.UploaderDepartment.Province,
                                                              CountyUploader = dt.UploaderDepartment.County,
                                                              DistrictUploader = dt.UploaderDepartment.District,
@@ -131,7 +173,7 @@ namespace Data.Repositores
                                                              RoleReceiver = dt.ReceiverDepartment.User.UserRoles.Count != 0
                                                                                ? string.Join("\n", dt.ReceiverDepartment.User.UserRoles.Select(ur => ur.Role.Title))
                                                                                : "-",
-                                                             AreaReceiver = dt.ReceiverDepartment.Area,
+                                                             AreaReceiver = (dt.ReceiverDepartment.Area == "0" ? "استان" : (dt.ReceiverDepartment.Area == "1" ? "شهرستان" : "بخش")),
                                                              ProvinceReceiver = dt.ReceiverDepartment.Province,
                                                              CountyReceiver = dt.ReceiverDepartment.County,
                                                              DistrictReceiver = dt.ReceiverDepartment.District,
@@ -145,7 +187,7 @@ namespace Data.Repositores
 
         public async Task<List<DisplayMyLatestTaransfersVM>> GetMyLatestTransfersTransfersAsync(TransferAreaVM area)
         {
-            var transfers =await _context.DepartmentTransfers.Where(dt => dt.ReceiverDepartment.UserId == area.ReceiverUserId &&
+            var transfers = await _context.DepartmentTransfers.Where(dt => dt.ReceiverDepartment.UserId == area.ReceiverUserId &&
                                                                      dt.IsActived)
                                                          .OrderByDescending(dt => dt.Transfer.UploadDate)
                                                          .Take(5)
@@ -155,7 +197,7 @@ namespace Data.Repositores
                                                              Title = dt.Transfer.Title,
                                                              NationalCodeUploader = dt.UploaderDepartment.User.UserName,
                                                              RoleUploader = string.Join("\n", dt.UploaderDepartment.User.UserRoles.Select(ur => ur.Role.Title)),
-                                                             AreaUploader = dt.UploaderDepartment.Area,
+                                                             AreaUploader = (dt.UploaderDepartment.Area == "0" ? "استان" : (dt.UploaderDepartment.Area == "1" ? "شهرستان" : "بخش")),
                                                              ProvinceUploader = dt.UploaderDepartment.Province,
                                                              CountyUploader = dt.UploaderDepartment.County,
                                                              DistrictUploader = dt.UploaderDepartment.District,
