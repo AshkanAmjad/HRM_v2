@@ -35,23 +35,15 @@ namespace Data.Repositores
             IQueryable<DepartmentTransfer> data = Enumerable.Empty<DepartmentTransfer>()
                                                             .AsQueryable();
 
-            if (area.Display == "0")
-            {
-                data = _context.DepartmentTransfers.IgnoreQueryFilters()
-                                                   .Where(dt => dt.UploaderDepartment.Area == area.UploaderArea)
-                                                   .AsQueryable();
-            }
-            else
-            {
-                data = _context.DepartmentTransfers.IgnoreQueryFilters()
-                                                   .Where(dt => dt.UploaderDepartment.Area == area.UploaderArea &&
-                                                                dt.UploaderDepartment.Province == area.UploaderProvince &&
-                                                                dt.UploaderDepartment.County == area.UploaderCounty &&
-                                                                dt.UploaderDepartment.District == area.UploaderDistrict &&
-                                                                dt.IsActived
-                                                                )
-                                                   .AsQueryable();
-            }
+            data = _context.DepartmentTransfers.IgnoreQueryFilters()
+                                               .Where(dt => dt.UploaderDepartment.Area == area.UploaderArea &&
+                                                            dt.UploaderDepartment.Province == area.UploaderProvince &&
+                                                            dt.UploaderDepartment.County == area.UploaderCounty &&
+                                                            dt.UploaderDepartment.District == area.UploaderDistrict &&
+                                                            dt.ReceiverDepartment.Area == area.ReceiverArea &&
+                                                            dt.IsActived
+                                                            )
+                                               .AsQueryable();
 
             return data;
 
@@ -95,30 +87,19 @@ namespace Data.Repositores
             IQueryable<DepartmentTransfer> data = Enumerable.Empty<DepartmentTransfer>()
                                                             .AsQueryable();
 
-            if(area.Display == "0")
-            {
-                data = _context.DepartmentTransfers.IgnoreQueryFilters()
-                                                   .Where(dt => dt.ReceiverDepartment.Area == area.ReceiverArea &&
-                                                                dt.IsActived
-                                                   )
-                                                  .AsQueryable();
-            }
-            else
-            {
+
                 data = _context.DepartmentTransfers.IgnoreQueryFilters()
                                                    .Where(dt => dt.ReceiverDepartment.Area == area.ReceiverArea &&
                                                                 dt.ReceiverDepartment.Province == area.ReceiverProvince &&
                                                                 dt.ReceiverDepartment.County == area.ReceiverCounty &&
                                                                 dt.ReceiverDepartment.District == area.ReceiverDistrict &&
-                                                                dt.UploaderDepartment.Area == area.UploaderArea &&
-                                                                dt.IsActived
+                                                                dt.UploaderDepartment.Area == area.UploaderArea 
                                                    )
                                                   .AsQueryable();
-            }
 
             return data;
         }
-                                         
+
 
 
 

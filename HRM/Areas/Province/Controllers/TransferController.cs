@@ -100,26 +100,14 @@ namespace HRM.Areas.Province.Controllers
 
             var transferArea = new TransferAreaVM();
 
-            if (userArea.Section == "0")
+            transferArea = new()
             {
-                transferArea = new()
-                {
-                    UploaderArea = "0",
-                    Display = "0"
-                };
-            }
-            else
-            {
-                transferArea = new()
-                {
-                    ReceiverArea = "0",
-                    UploaderArea = userArea.Section,
-                    UploaderCounty = userArea.County,
-                    UploaderDistrict = userArea.District,
-                    UploaderProvince = userArea.Province,
-                    Display = "1"
-                };
-            }
+                ReceiverArea = "0",
+                UploaderArea = userArea.Section,
+                UploaderCounty = userArea.County,
+                UploaderDistrict = userArea.District,
+                UploaderProvince = userArea.Province,
+            };
 
 
 
@@ -173,27 +161,15 @@ namespace HRM.Areas.Province.Controllers
 
             var transferArea = new TransferAreaVM();
 
-            if (userArea.Section == "0")
-            {
 
-                transferArea = new TransferAreaVM()
-                {
-                    ReceiverArea = "0",
-                    Display = "0"
-                };
-            }
-            else
+            transferArea = new TransferAreaVM()
             {
-                transferArea = new TransferAreaVM()
-                {
-                    UploaderArea = "0",
-                    ReceiverArea = userArea.Section,
-                    ReceiverCounty = userArea.County,
-                    ReceiverDistrict = userArea.District,
-                    ReceiverProvince = userArea.Province,
-                    Display = "1"
-                };
-            }
+                UploaderArea = "0",
+                ReceiverArea = userArea.Section,
+                ReceiverCounty = userArea.County,
+                ReceiverDistrict = userArea.District,
+                ReceiverProvince = userArea.Province
+            };
 
             var transfers = _departmentTransferRepository.GetInboxTransfers(transferArea);
 
@@ -371,10 +347,13 @@ namespace HRM.Areas.Province.Controllers
 
             var area = _userRepository.GetAreaUserByUserId(userId);
 
-            var departments = area.Province;
+            var provinceDepartment = area.Province;
+            var countyDepartment = area.County;
+            var districtDepartment = area.District;
 
-            ViewBag.Departments = departments;
-
+            ViewBag.ProvinceDepartment = provinceDepartment;
+            ViewBag.CountyDepartment = countyDepartment;
+            ViewBag.DistrictDepartment = districtDepartment;
             var roles = _userRoleRepository.GetRolesForSelectBox();
 
             ViewBag.Roles = new SelectList(roles, "Value", "Text");
@@ -405,7 +384,16 @@ namespace HRM.Areas.Province.Controllers
 
                     model.UserIdUploader = userId;
 
-                    model.IsActived = true;
+                    var userArea = _userRepository.GetAreaUserByUserId(userId);
+
+                    if (userArea.Section == "2")
+                    {
+                        model.IsActived = false;
+                    }
+                    else
+                    {
+                        model.IsActived = true;
+                    }
 
                     bool result = _transferService.Register(model, out checkMessage);
 

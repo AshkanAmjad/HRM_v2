@@ -15,12 +15,13 @@
         : new List<SelectListItem>();
 
     var myCountyDepartment = ViewData["MyCountyDepartment"] != null
-         ? ViewData["MyCountyDepartment"]
+         ? ViewData["MyCountyDepartment"].ToString()
          : "-1";
 
     var myAreaDepartment = ViewData["MyAreaDepartment"] != null
-       ? ViewData["MyAreaDepartment"]
+       ? ViewData["MyAreaDepartment"].ToString()
        : "-1";
+
 }
 <div class="modal-dialog modal-lg " id="modal">
     <div class="modal-content">
@@ -162,6 +163,7 @@
 
             var $provinceDepartment = $("#provinceDepartmentStatus").find(':selected').text();
             var $countyDepartment = $("#countyDepartmentStatus").find(':selected').text();
+            var $countyDepartmentVal = $("#countyDepartmentStatus").find(':selected').val();
             var $userStatus = $("#countyUserStatus").find(':selected').text();
             var $roleStatus = $("#roleStatus").find(':selected').text();
             var $fileName = $("#fileInput")[0].files.length > 0 ? $("#fileInput")[0].files[0].name : 'سندی انتخاب کنید';
@@ -169,28 +171,28 @@
 
             var isDisabled = $("#countyUserStatus").is('[disabled]');
 
-            if (($userStatus !== "پرسنل مورد نظر را انتخاب کنید ...") &&
-                ($roleStatus !== "معاونت مربوطه، را انتخاب کنید ...")) {
+            if ($userStatus !== "پرسنل مورد نظر را انتخاب کنید ..." &&
+                $roleStatus !== "معاونت مربوطه، را انتخاب کنید ...") {
                 userError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
                 roleError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
                 result = false;
             } else {
                 roleError.text('');
                 userError.text('');
-                result = true;
             }
 
+            
             if (@myAreaDepartment == "1" &&
-                $countyDepartment !== @myCountyDepartment &&
-                ($userStatus === "پرسنل مورد نظر را انتخاب کنید ..." &&
-                    $roleStatus === "معاونت مربوطه، را انتخاب کنید ...")) {
-                userError.text('تکمیل یکی از ورودی ها الزامی است.');
-                roleError.text('تکمیل یکی از ورودی ها الزامی است.');
-                result = false;
-            } else {
-                userError.text('');
-                roleError.text('');
-                result = true;
+                $countyDepartmentVal != @myCountyDepartment) {
+                if ($userStatus === "پرسنل مورد نظر را انتخاب کنید ..." &&
+                    $roleStatus === "معاونت مربوطه، را انتخاب کنید ...") {
+                    userError.text('تکمیل یکی از ورودی ها الزامی است.');
+                    roleError.text('تکمیل یکی از ورودی ها الزامی است.');
+                    result = false;
+                } else {
+                    userError.text('');
+                    roleError.text('');
+                }
             }
 
             if ($provinceDepartment === "شعبه سطح استان خود را انتخاب کنید ...") {
@@ -230,14 +232,26 @@
                     result = false;
                 } else {
                     descriptionError.text('');
-                    result = true;
                 }
             }
 
             $("#countyUserStatus").change(function () {
                 var $userStatus = $("#countyUserStatus").find(':selected').text();
                 var $roleStatus = $("#roleStatus").find(':selected').text();
+                if ($userStatus !== "پرسنل مورد نظر را انتخاب کنید ..." &&
+                    $roleStatus !== "معاونت مربوطه، را انتخاب کنید ...") {
+                    userError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
+                    roleError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
+                    result = false;
+                } else {
+                    roleError.text('');
+                    userError.text('');
+                }
+            })
 
+            $("#roleStatus").change(function () {
+                var $userStatus = $("#countyUserStatus").find(':selected').text();
+                var $roleStatus = $("#roleStatus").find(':selected').text();
                 if ($userStatus !== "پرسنل مورد نظر را انتخاب کنید ..." &&
                     $roleStatus !== "معاونت مربوطه، را انتخاب کنید ...") {
                     userError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
@@ -246,7 +260,6 @@
                 } else {
                     userError.text('');
                     roleError.text('');
-                    result = true;
                 }
             })
 
@@ -254,29 +267,13 @@
                 var $countyDepartment = $("#countyDepartmentStatus").find(':selected').text();
                 if ($countyDepartment !== "شعبه سطح شهرستان خود را انتخاب کنید ...") {
                     countyDepartmentError.text('');
-                    result = true;
                 } else {
                     countyDepartmentError.text("تکمیل ورودی شعبه شهرستان ضروری است.");
                     result = false;
                 }
             });
 
-            $("#roleStatus").change(function () {
-                var $userStatus = $("#countyUserStatus").find(':selected').text();
-                var $roleStatus = $("#roleStatus").find(':selected').text();
 
-
-                if ($userStatus !== "پرسنل مورد نظر را انتخاب کنید ..." &&
-                    $roleStatus !== "معاونت مربوطه، را انتخاب کنید ...") {
-                    userError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
-                    roleError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
-                    result = false;
-                } else {
-                    userError.text('');
-                    roleError.text('');
-                    result = true;
-                }
-            })
 
 
             $("#provinceDepartmentStatus").change(function () {
@@ -301,7 +298,9 @@
 
             if (provinceDepartment !== "شعبه سطح استان خود را انتخاب کنید ...") {
                 $('#provinceDepartmentStatus').attr('disabled', true);
+                $("#provinceDepartmentError").text('');
                 $('#countyDepartmentStatus').attr('disabled', false);
+
             } else {
                 $('#countyUserStatus ,#countyDepartmentStatus ,#roleStatus').attr('disabled', true);
             }
@@ -363,8 +362,6 @@
                 }
 
                 $('#customFileLabel').text(fileName);
-
-
             });
         });
 

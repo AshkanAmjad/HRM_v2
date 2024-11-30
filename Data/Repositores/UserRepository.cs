@@ -82,9 +82,6 @@ namespace Data.Repositores
             return user;
         }
 
-        public bool IsExistUserInArea(string area, Guid userId)
-            => _context.Departments.Where(d => d.UserId == userId && d.Area == area)
-                                   .Any();
 
         public AreaVM GetAreaUserByUserId(Guid userId)
         {

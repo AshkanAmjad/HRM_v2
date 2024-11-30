@@ -2,9 +2,18 @@
 @{
     Layout = null;
 
-    var provinceDepartment = ViewBag.ProviceDepartments;
-    var countyDepartment = ViewBag.CountyDepartments;
-    var districtDepartment = ViewBag.DistrictDepartments;
+    var provinceDepartment = ViewBag.ProvinceDepartments != null
+                 ? ViewBag.ProvinceDepartments : "-1";
+
+    var countyDepartment = ViewBag.CountyDepartments != null
+                 ? ViewBag.CountyDepartments : "-1";
+
+    var districtDepartment = ViewBag.DistrictDepartments != null
+                 ? ViewBag.DistrictDepartments : "-1";
+
+    var myAreaDepartment = ViewData["MyAreaDepartment"] != null
+        ? ViewData["MyAreaDepartment"]
+        : "-1";
 
     var roles = ViewBag.Roles != null
         ? ViewBag.Roles
@@ -23,8 +32,7 @@
             <input type="hidden" asp-for="ProvinceReceiver" value="@provinceDepartment" id="provinceDepartmentStatus" />
             <input type="hidden" asp-for="CountyReceiver" value="@countyDepartment" id="countyDepartmentStatus" />
             <input type="hidden" asp-for="DistrictReceiver" value="@districtDepartment" id="districtDepartmentStatus" />
-            <input type="hidden" asp-for="AreaReceiver" value="0" />
-
+            <input type="hidden" asp-for="AreaReceiver" value="2" />
 
 
             <div class="row mt-2 px-2">
@@ -47,7 +55,7 @@
                     <label class="control-label">پرسنل <sup class="text-danger fs-6 fw-bold">*</sup> :</label>
                 </div>
                 <div class="col-7 col-lg-8">
-                    <select asp-for="UserIdReceiver" class="form-select" aria-label=".form-select-sm" id="countyUserStatus" tabindex="3">
+                    <select asp-for="UserIdReceiver" class="form-select" aria-label=".form-select-sm" id="districtUserStatus" tabindex="3">
                         <option selected class="fs-7" id="userStatus" value="@Guid.Empty">پرسنل مورد نظر را انتخاب کنید ...</option>
                     </select>
                     <span class="text-danger fs-8" id="userError"></span>
@@ -105,9 +113,9 @@
 
     <script type="text/javascript">
 
-        var _getUsersUrl = '@Url.Action("GetUsersForSelectBox", "Access", new { area = "County" })';
-        var _registerUrl = '@Url.Action("Register", "Transfer", new { area = "County" })';
-        var _provinceRegisterTransferUrl = '@Url.Action("UserRegister", "Transfer", new { area = "County" })';
+        var _getUsersUrl = '@Url.Action("GetUsersForSelectBox", "Access", new { area = "District" })';
+        var _registerUrl = '@Url.Action("Register", "Transfer", new { area = "District" })';
+        var _districtRegisterTransferUrl = '@Url.Action("UserRegister", "Transfer", new { area = "District" })';
 
     </script>
     <script type="text/javascript">
@@ -125,10 +133,21 @@
             var $fileName = $("#fileInput")[0].files.length > 0 ? $("#fileInput")[0].files[0].name : 'سندی انتخاب کنید';
             var $description = CKEDITOR.instances.editor.getData();
 
+            if (@myAreaDepartment == "2") {
+                if ((($userStatus === "پرسنل مورد نظر را انتخاب کنید ...") &&
+                    ($roleStatus === "معاونت مربوطه، را انتخاب کنید ...")) {
+                    userError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
+                    roleError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
+                    result = false;
+                } else {
+                    roleError.text('');
+                    userError.text('');
+                }
+            }
+
+
             if ((($userStatus !== "پرسنل مورد نظر را انتخاب کنید ...") &&
-                ($roleStatus !== "معاونت مربوطه، را انتخاب کنید ...")) ||
-                (($userStatus === "پرسنل مورد نظر را انتخاب کنید ...") &&
-                    ($roleStatus === "معاونت مربوطه، را انتخاب کنید ..."))) {
+                ($roleStatus !== "معاونت مربوطه، را انتخاب کنید ...")) {
                 userError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
                 roleError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
                 result = false;
@@ -228,9 +247,9 @@
         //Seed data to select user
         $(document).ready(function () {
 
-            $("#countyUserStatus").empty();
+            $("#districtUserStatus").empty();
 
-            $("#countyUserStatus").append('<option selected class="fs-7" id="userStatus" value="@Guid.Empty">پرسنل مورد نظر را انتخاب کنید ...</option>');
+            $("#districtUserStatus").append('<option selected class="fs-7" id="userStatus" value="@Guid.Empty">پرسنل مورد نظر را انتخاب کنید ...</option>');
 
             var provinceDepartment = $('#provinceDepartmentStatus').val();
             var countyDepartment = $('#countyDepartmentStatus').val();
@@ -302,7 +321,7 @@
                         contentType: false,
                         success: function (result) {
                             if (result.success) {
-                                $.get(_provinceRegisterTransferUrl).done(function (result) {
+                                $.get(_districtRegisterTransferUrl).done(function (result) {
                                     $("#main").html(result);
                                 });
                                 $("#operation-box").modal("toggle");

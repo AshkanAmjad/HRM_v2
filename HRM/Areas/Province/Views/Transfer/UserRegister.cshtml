@@ -2,7 +2,14 @@
 @{
     Layout = null;
 
-    var provinceDepartment = ViewBag.Departments;
+    var provinceDepartment = ViewBag.ProvinceDepartment != null
+                 ? ViewBag.ProvinceDepartment : "-1";
+
+    var countyDepartment = ViewBag.CountyDepartment != null
+                 ? ViewBag.CountyDepartment : "-1";
+
+    var districtDepartment = ViewBag.DistrictDepartment != null
+                 ? ViewBag.DistrictDepartment : "-1";
 
     var roles = ViewBag.Roles != null
         ? ViewBag.Roles
@@ -19,9 +26,9 @@
         <form id="registerForm" enctype="multipart/form-data" class="px-2" asp-antiforgery="true">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ProvinceReceiver" value="@provinceDepartment" id="provinceDepartmentStatus" />
+            <input type="hidden" asp-for="CountyReceiver" value="@countyDepartment" id="countyDepartmentStatus" />
+            <input type="hidden" asp-for="DistrictReceiver" value="@districtDepartment" id="districtDepartmentStatus" />
             <input type="hidden" asp-for="AreaReceiver" value="0" />
-            <input type="hidden" asp-for="CountyReceiver" value="0" />
-            <input type="hidden" asp-for="DistrictReceiver" value="0" />
 
             <div class="row mt-2 px-2">
                 <div class="col-5 col-lg-4">
@@ -124,7 +131,7 @@
             if ((($userStatus !== "پرسنل مورد نظر را انتخاب کنید ...") &&
                 ($roleStatus !== "معاونت مربوطه، را انتخاب کنید ...")) ||
                 (($userStatus === "پرسنل مورد نظر را انتخاب کنید ...") &&
-                ($roleStatus === "معاونت مربوطه، را انتخاب کنید ..."))){
+                    ($roleStatus === "معاونت مربوطه، را انتخاب کنید ..."))) {
                 userError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
                 roleError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
                 result = false;
@@ -229,23 +236,25 @@
             $("#provinceUserStatus").append('<option selected class="fs-7" id="userStatus" value="@Guid.Empty">پرسنل مورد نظر را انتخاب کنید ...</option>');
 
             var provinceDepartment = $('#provinceDepartmentStatus').val();
+            var countyDepartment = $('#countyDepartmentStatus').val();
+            var districtDepartment = $('#districtDepartmentStatus').val();
 
-                var direction = {
-                    Level: "0",
-                    Province: provinceDepartment,
-                    County: "0",
-                    District: "0"
-                };
+            var direction = {
+                Level: "0",
+                Province: provinceDepartment,
+                County: countyDepartment,
+                District: districtDepartment
+            };
 
-                $.post(_getUsersUrl, direction)
-                    .done(function (result) {
-                        if (result.success) {
-                            $.each(result.data, function () {
-                                $("#provinceUserStatus").append('<option id="userStatus" value=' + this.value + '>' + this.text + '</option>');
-                            });
-                        }
-                    });
-            });
+            $.post(_getUsersUrl, direction)
+                .done(function (result) {
+                    if (result.success) {
+                        $.each(result.data, function () {
+                            $("#provinceUserStatus").append('<option id="userStatus" value=' + this.value + '>' + this.text + '</option>');
+                        });
+                    }
+                });
+        });
 
         //Editor
         $('#editor').each(function () {

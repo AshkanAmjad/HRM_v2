@@ -1,17 +1,12 @@
 ﻿using Application.Services.Interfaces;
 using AutoMapper;
 using Data.Extensions;
-using Data.Repositores;
-using Domain.DTOs.General;
 using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Portal.Transfer;
-using Domain.DTOs.Security.User;
 using Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
-using HRM.Models.Validation.Portal.Document;
-using HRM.Models.Validation.Portal.Transfer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -102,26 +97,15 @@ namespace HRM.Areas.County.Controllers
 
             var transferArea = new TransferAreaVM();
 
-            if (userArea.Section == "0")
+
+            transferArea = new()
             {
-                transferArea = new()
-                {
-                    UploaderArea = "1",
-                    Display = "0"
-                };
-            }
-            else
-            {
-                transferArea = new()
-                {
-                    ReceiverArea = "1",
-                    UploaderArea = userArea.Section,
-                    UploaderCounty = userArea.County,
-                    UploaderDistrict = userArea.District,
-                    UploaderProvince = userArea.Province,
-                    Display = "1"
-                };
-            }
+                ReceiverArea = "1",
+                UploaderArea = userArea.Section,
+                UploaderCounty = userArea.County,
+                UploaderDistrict = userArea.District,
+                UploaderProvince = userArea.Province,
+            };
 
             var transfers = _departmentTransferRepository.GetSendTransfers(transferArea);
 
@@ -171,26 +155,15 @@ namespace HRM.Areas.County.Controllers
 
             var transferArea = new TransferAreaVM();
 
-            if (userArea.Section == "0")
+
+            transferArea = new TransferAreaVM()
             {
-                transferArea = new TransferAreaVM()
-                {
-                    ReceiverArea = "1",
-                    Display = "0"
-                };
-            }
-            else
-            {
-                transferArea = new TransferAreaVM()
-                {
-                    UploaderArea = "1",
-                    ReceiverArea = userArea.Section,
-                    ReceiverCounty = userArea.County,
-                    ReceiverDistrict = userArea.District,
-                    ReceiverProvince = userArea.Province,
-                    Display = "1"
-                };
-            }
+                UploaderArea = "1",
+                ReceiverArea = userArea.Section,
+                ReceiverCounty = userArea.County,
+                ReceiverDistrict = userArea.District,
+                ReceiverProvince = userArea.Province,
+            };
 
             var transfers = _departmentTransferRepository.GetInboxTransfers(transferArea);
 
@@ -337,22 +310,26 @@ namespace HRM.Areas.County.Controllers
             var userId = new Guid(id);
 
             var area = _userRepository.GetAreaUserByUserId(userId);
-
             var proviveDepartments = _generalService.ProvinceDepartmentTypes();
-            ViewBag.ProvinceDepartments = new SelectList(proviveDepartments, "Value", "Text");
-
             var countyDepartments = _generalService.CountyDepartmentTypes();
+            var roles = _userRoleRepository.GetRolesForSelectBox();
+
+            ViewBag.ProvinceDepartments = new SelectList(proviveDepartments, "Value", "Text");
             ViewData["MyCountyDepartment"] = area.County;
             ViewData["MyAreaDepartment"] = area.Section;
             ViewBag.CountyDepartments = new SelectList(countyDepartments, "Value", "Text");
-
-            var roles = _userRoleRepository.GetRolesForSelectBox();
             ViewBag.Roles = new SelectList(roles, "Value", "Text");
 
-            
 
             if (area.Section == "2")
+            {
+                countyDepartments = countyDepartments.Where(d => d.Value == area.County)
+                                                     .ToList();
+
+                ViewBag.CountyDepartments = new SelectList(countyDepartments, "Value", "Text");
+
                 return View("OtherRegister");
+            }
 
             return View();
         }
@@ -442,14 +419,18 @@ namespace HRM.Areas.County.Controllers
 
             var area = _userRepository.GetAreaUserByUserId(userId);
 
-            var proviceDepartments = area.Province;
+            var provinceDepartment = area.Province;
 
-            var countyDepartments = area.County;
+            var countyDepartment = area.County;
+
+            var districtDepartment = area.District;
 
             var roles = _userRoleRepository.GetRolesForSelectBox();
 
-            ViewBag.ProvinceDepartments = proviceDepartments;
-            ViewBag.CountyDepartments = countyDepartments;
+            ViewBag.ProvinceDepartment = provinceDepartment;
+            ViewBag.CountyDepartment = countyDepartment;
+            ViewBag.DistrictDepartment = districtDepartment;
+
             ViewBag.Roles = new SelectList(roles, "Value", "Text");
 
             return View();

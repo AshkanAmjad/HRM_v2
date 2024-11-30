@@ -95,7 +95,12 @@
 
                                 }
                             }
-                        ]
+                        ],
+                        "createdRow": function (row, data, dataIndex) {
+                            if (data.isActived !== "فعال") {
+                                $(row).addClass('table-danger');
+                            }
+                        }
                     })
                 };
 
