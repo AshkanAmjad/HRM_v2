@@ -10,6 +10,11 @@ namespace Application.Extensions
             #region Add Auto Mapping
             services.AddAutoMapper(typeof(UserProfile));
             services.AddAutoMapper(typeof(DocumentProfle));
+            services.AddAutoMapper(typeof(DepartmentTransferProfile));
+            services.AddAutoMapper(typeof(ReportProfile));
+            services.AddAutoMapper(typeof(RoleProfile));
+            services.AddAutoMapper(typeof(TransferProfile));
+            services.AddAutoMapper(typeof(UserRoleProfile));
             #endregion
 
             return services;

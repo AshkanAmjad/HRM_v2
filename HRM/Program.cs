@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 #region Add Services
+LogServiceExtensions.ConfigureLogging(builder.Host);
 builder.Services.AddMappingService();
 builder.Services.RegisterServices();
 builder.Services.ValidationServices();

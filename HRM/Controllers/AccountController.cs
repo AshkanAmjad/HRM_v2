@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Diagnostics;
 using System.Security.Claims;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HRM.Controllers
 {
@@ -24,18 +25,19 @@ namespace HRM.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IGeneralService _generalService;
         private readonly IValidator<LoginVM> _validator;
-
+        private readonly ILogger<AccountController> _logger;
 
         public AccountController(IUserService userService,
                                  IGeneralService generalService,
                                  IValidator<LoginVM> validator,
-                                 IUserRepository userRepository)
+                                 IUserRepository userRepository,
+                                 ILogger<AccountController> logger)
         {
 
             _userRepository = userRepository;
             _generalService = generalService;
             _validator = validator;
-
+            _logger = logger;
         }
         #endregion
 
@@ -89,6 +91,8 @@ namespace HRM.Controllers
                     ViewData["IsSuccessLogin"] = true;
                     ViewData["Area"] = model.Area;
 
+                    _logger.LogInformation($"Login is success => Area : {model.Area} - UserName : {model.UserName}  ");
+
                     return View(model);
                 }
 
@@ -116,7 +120,7 @@ namespace HRM.Controllers
             ViewData["Areas"] = areas;
             #endregion
 
-
+            _logger.LogError($"Error in logging => Area : {model.Area} - UserName : {model.UserName}  ");
 
             return View();
         }
@@ -133,7 +137,7 @@ namespace HRM.Controllers
 
             HttpContext.SignOutAsync();
             TempData["IsSuccessLogout"] = true;
-
+            _logger.LogInformation("Logout is succees.");
             return RedirectToAction("Login", "Account");
         }
         #endregion
