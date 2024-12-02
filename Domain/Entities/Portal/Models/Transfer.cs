@@ -19,6 +19,7 @@ namespace Domain.Entities.Portal.Models
         public string? FileName { get; set; }
         public string? FileFormat { get; set; }
         public byte[]? DataBytes { get; set; }
+        public bool Display { get; set; }
         public DateTime UploadDate { get; set; }
         public bool IsActived{ get; set; }
         #endregion

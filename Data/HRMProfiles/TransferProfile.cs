@@ -23,6 +23,7 @@ namespace Data.HRMProfiles
             CreateMap<TransferRegisterVM, Transfer>()
                 .ForMember(dest => dest.TransferId, opt => opt.MapFrom(src => src.TransferId))
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+                .ForMember(dest => dest.Display, opt => opt.MapFrom(src => src.Display))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.ContentType, opt => opt.MapFrom(src => src.Document.ContentType))
                 .ForMember(dest => dest.UploadDate, opt => opt.MapFrom(src => src.UploadDate))

@@ -36,6 +36,21 @@ namespace Data.Repositores
         }
         #endregion
 
+        public bool ActivingDisplay(TransferActive_Disable_DescriptionVM model, out string message)
+        {
+            string checkMessage = "عملیات انتشار تبادل با شکست مواجه شد.";
+            if (model != null)
+            {
+                ActiveDisplayTransferDb(model);
+
+                message = "";
+                return true;
+            }
+            message = checkMessage;
+            return false;
+        }
+
+
         public bool Register(TransferRegisterVM model, out string message)
         {
             string checkMessage = "اطلاعات ناقص ارسال شده است.";
@@ -227,6 +242,22 @@ namespace Data.Repositores
                 }
             }
         }
+
+        public void ActiveDisplayTransferDb(TransferActive_Disable_DescriptionVM model)
+        {
+            if (model != null)
+            {
+                var transfer = _context.Transfers
+                                       .Find(model.TransferId);
+
+                if(transfer != null)
+                {
+                    transfer.Display = true;
+                    _context.Transfers.Update(transfer);
+                }
+            }
+        }
+
 
         public GetDescriptionVM GetDescription(TransferActive_Disable_DescriptionVM model)
         {

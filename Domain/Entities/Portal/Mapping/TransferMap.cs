@@ -22,6 +22,8 @@ namespace Domain.Entities.Portal.Mapping
                 .IsRequired();
             builder.Property(t => t.IsActived)
                 .IsRequired();
+            builder.Property(t => t.Display)
+                .IsRequired();
         }
     }
 }

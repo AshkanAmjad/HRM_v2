@@ -77,6 +77,7 @@ namespace Data.Repositores
                              DistrictReceiver = item.ReceiverDepartment.District,
                              FileFormat = (item.Transfer.FileFormat != null ? item.Transfer.FileFormat : "-"),
                              UploadDate = item.Transfer.UploadDate.ToShamsi(),
+                             Display = (item.Transfer.Display == true ? "مجاز" : "در حال بررسی"),
                              IsActived = (item.Transfer.IsActived) ? "فعال" : "غیرفعال",
                          }).ToList();
             return transfers;
@@ -87,15 +88,45 @@ namespace Data.Repositores
             IQueryable<DepartmentTransfer> data = Enumerable.Empty<DepartmentTransfer>()
                                                             .AsQueryable();
 
-
+            if (area.ReceiverArea == "0")
+            {
                 data = _context.DepartmentTransfers.IgnoreQueryFilters()
                                                    .Where(dt => dt.ReceiverDepartment.Area == area.ReceiverArea &&
                                                                 dt.ReceiverDepartment.Province == area.ReceiverProvince &&
                                                                 dt.ReceiverDepartment.County == area.ReceiverCounty &&
                                                                 dt.ReceiverDepartment.District == area.ReceiverDistrict &&
-                                                                dt.UploaderDepartment.Area == area.UploaderArea 
+                                                                dt.UploaderDepartment.Area == area.UploaderArea &&
+                                                                dt.Transfer.Display
                                                    )
                                                   .AsQueryable();
+            }
+            else if (area.ReceiverArea == "1" && area.UploaderArea == "2")
+            {
+                data = _context.DepartmentTransfers.IgnoreQueryFilters()
+                                                   .Where(dt => ((dt.ReceiverDepartment.Area == area.ReceiverArea &&
+                                                                dt.ReceiverDepartment.Province == area.ReceiverProvince &&
+                                                                dt.ReceiverDepartment.County == area.ReceiverCounty &&
+                                                                dt.ReceiverDepartment.District == area.ReceiverDistrict &&
+                                                                dt.UploaderDepartment.Area == area.UploaderArea) ||
+                                                                (dt.ReceiverDepartment.Area == "0" &&
+                                                                 dt.UploaderDepartment.Area == "2" &&
+                                                                 dt.UploaderDepartment.County == area.UploaderCounty))
+
+                                                   )
+                                                  .AsQueryable();
+
+            }
+            else
+            {
+                data = _context.DepartmentTransfers.IgnoreQueryFilters()
+                                                   .Where(dt => dt.ReceiverDepartment.Area == area.ReceiverArea &&
+                                                                dt.ReceiverDepartment.Province == area.ReceiverProvince &&
+                                                                dt.ReceiverDepartment.County == area.ReceiverCounty &&
+                                                                dt.ReceiverDepartment.District == area.ReceiverDistrict &&
+                                                                dt.UploaderDepartment.Area == area.UploaderArea
+                                                   )
+                                                  .AsQueryable();
+            }
 
             return data;
         }
@@ -130,6 +161,7 @@ namespace Data.Repositores
                                  DistrictReceiver = item.ReceiverDepartment.District,
                                  FileFormat = (item.Transfer.FileFormat != null ? item.Transfer.FileFormat : "-"),
                                  UploadDate = item.Transfer.UploadDate.ToShamsi(),
+                                 Display = (item.Transfer.Display == true ? "مجاز" : "در حال بررسی"),
                                  IsActived = (item.Transfer.IsActived) ? "فعال" : "غیرفعال",
                              }).ToList();
             return transfers;
@@ -138,6 +170,7 @@ namespace Data.Repositores
         public List<DisplayTransfersVM> GetMyInboxTransfers(TransferAreaVM area)
         {
             var transfers = _context.DepartmentTransfers.Where(dt => dt.ReceiverDepartment.UserId == area.ReceiverUserId &&
+                                                                     dt.Transfer.Display &&
                                                                      dt.IsActived)
                                                          .OrderByDescending(dt => dt.Transfer.UploadDate)
                                                          .Select(dt => new DisplayTransfersVM
@@ -169,7 +202,8 @@ namespace Data.Repositores
         public async Task<List<DisplayMyLatestTaransfersVM>> GetMyLatestTransfersTransfersAsync(TransferAreaVM area)
         {
             var transfers = await _context.DepartmentTransfers.Where(dt => dt.ReceiverDepartment.UserId == area.ReceiverUserId &&
-                                                                     dt.IsActived)
+                                                                           dt.Transfer.Display &&
+                                                                           dt.IsActived)
                                                          .OrderByDescending(dt => dt.Transfer.UploadDate)
                                                          .Take(5)
                                                          .Select(dt => new DisplayMyLatestTaransfersVM

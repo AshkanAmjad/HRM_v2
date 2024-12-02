@@ -357,6 +357,7 @@ namespace HRM.Areas.County.Controllers
 
                     model.UserIdUploader = userId;
 
+                    model.Display = true;
                     model.IsActived = true;
 
                     bool result = _transferService.Register(model, out checkMessage);

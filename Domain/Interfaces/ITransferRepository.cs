@@ -18,6 +18,7 @@ namespace Domain.Interfaces
         bool Register(TransferRegisterVM model, out string message);
         bool Disable(TransferActive_Disable_DescriptionVM model, out string message);
         bool Active(TransferActive_Disable_DescriptionVM model, out string message);
+        bool ActivingDisplay(TransferActive_Disable_DescriptionVM model, out string message);
         GetDescriptionVM GetDescription(TransferActive_Disable_DescriptionVM model);
         #endregion
 
@@ -27,6 +28,7 @@ namespace Domain.Interfaces
         DownloadDocumentVM? GetTransferById(Guid transferId);
         void ActiveTransferDb(TransferActive_Disable_DescriptionVM model);
         void DisableTransferDb(TransferActive_Disable_DescriptionVM model);
+        void ActiveDisplayTransferDb(TransferActive_Disable_DescriptionVM model);
         void SaveChanges();
         #endregion
 

@@ -168,7 +168,7 @@ namespace HRM.Areas.Province.Controllers
                 ReceiverArea = userArea.Section,
                 ReceiverCounty = userArea.County,
                 ReceiverDistrict = userArea.District,
-                ReceiverProvince = userArea.Province
+                ReceiverProvince = userArea.Province,
             };
 
             var transfers = _departmentTransferRepository.GetInboxTransfers(transferArea);
@@ -388,12 +388,15 @@ namespace HRM.Areas.Province.Controllers
 
                     if (userArea.Section == "2")
                     {
-                        model.IsActived = false;
+                        model.Display = false;
                     }
                     else
                     {
-                        model.IsActived = true;
+                        model.Display = true;
                     }
+
+                    model.IsActived = true;
+
 
                     bool result = _transferService.Register(model, out checkMessage);
 

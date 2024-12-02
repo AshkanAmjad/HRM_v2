@@ -25,6 +25,7 @@ namespace Domain.DTOs.Portal.Transfer
         public string? DistrictUploader { get; set; }
         public string? ProvinceReceiver {  get; set; }
         public string? CountyReceiver {  get; set; }
+        public bool Display {  get; set; }
         public string? DistrictReceiver {  get; set; }
         public DateTime UploadDate { get; set; }
         public bool IsActived { get; set; }

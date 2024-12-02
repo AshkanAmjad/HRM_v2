@@ -3,6 +3,7 @@ using AutoMapper;
 using Data.Extensions;
 using Domain.DTOs.Portal.Document;
 using Domain.DTOs.Portal.Transfer;
+using Domain.Entities.Portal.Models;
 using Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -160,6 +161,7 @@ namespace HRM.Areas.District.Controllers
                 ReceiverCounty = userArea.County,
                 ReceiverDistrict = userArea.District,
                 ReceiverProvince = userArea.Province,
+                UploaderCounty = userArea.County,
             };
 
             var transfers = _departmentTransferRepository.GetInboxTransfers(transferArea);
@@ -366,6 +368,7 @@ namespace HRM.Areas.District.Controllers
 
                     model.UserIdUploader = userId;
 
+                    model.Display = true;
                     model.IsActived = true;
 
                     bool result = _transferService.Register(model, out checkMessage);
@@ -634,6 +637,64 @@ namespace HRM.Areas.District.Controllers
 
             return View(result);
 
+        }
+        #endregion
+
+        #region Activing Display
+        [HttpPost]
+        public IActionResult ActivingDisplay(TransferActive_Disable_DescriptionVM transfer)
+        {
+            ValidationResult transferValidator = _transferActive_Disable_DescriptionValidator.Validate(transfer);
+            bool success = false;
+            var message = $"عملیات فعال سازی با شکست مواجه شده است.";
+            string checkMessage = "";
+            if (transferValidator.IsValid)
+            {
+                try
+                {
+                    bool result = _transferRepository.ActivingDisplay(transfer, out checkMessage);
+
+                    if (result)
+                    {
+                        _transferRepository.SaveChanges();
+                        success = true;
+                        message = $"<h5>عملیات انتشار تبادل با موفقیت انجام شد.</h5>";
+                    }
+                    else
+                    {
+                        message = checkMessage;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    while (ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    message = $"خطای شکست عملیات  :  {ex.Message}";
+                }
+            }
+            else
+            {
+                message = $"{transferValidator}";
+            }
+            #region Manual Validation
+            foreach (var error in transferValidator.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+            transferValidator.AddToModelState(this.ModelState);
+            #endregion
+
+            #region Json data
+            var jsonData = new
+            {
+                success = success,
+                message = message,
+            };
+            #endregion
+
+            return Json(jsonData);
         }
         #endregion
     }
