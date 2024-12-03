@@ -2,18 +2,14 @@
 @{
     Layout = null;
 
-    var provinceDepartment = ViewBag.ProvinceDepartments != null
-                 ? ViewBag.ProvinceDepartments : "-1";
+    var provinceDepartment = ViewBag.ProvinceDepartment != null
+                 ? ViewBag.ProvinceDepartment : "-1";
 
-    var countyDepartment = ViewBag.CountyDepartments != null
-                 ? ViewBag.CountyDepartments : "-1";
+    var countyDepartment = ViewBag.CountyDepartment != null
+                 ? ViewBag.CountyDepartment : "-1";
 
-    var districtDepartment = ViewBag.DistrictDepartments != null
-                 ? ViewBag.DistrictDepartments : "-1";
-
-    var myAreaDepartment = ViewData["MyAreaDepartment"] != null
-        ? ViewData["MyAreaDepartment"]
-        : "-1";
+    var districtDepartment = ViewBag.DistrictDepartment != null
+                 ? ViewBag.DistrictDepartment : "-1";
 
     var roles = ViewBag.Roles != null
         ? ViewBag.Roles
@@ -113,7 +109,7 @@
 
     <script type="text/javascript">
 
-        var _getUsersUrl = '@Url.Action("GetUsersForSelectBox", "Access", new { area = "District" })';
+        var _getUsersUrl = '@Url.Action("GetUsersForSelectBox", "Access", new { area = "County" })';
         var _registerUrl = '@Url.Action("Register", "Transfer", new { area = "District" })';
         var _districtRegisterTransferUrl = '@Url.Action("UserRegister", "Transfer", new { area = "District" })';
 
@@ -133,21 +129,10 @@
             var $fileName = $("#fileInput")[0].files.length > 0 ? $("#fileInput")[0].files[0].name : 'سندی انتخاب کنید';
             var $description = CKEDITOR.instances.editor.getData();
 
-            if (@myAreaDepartment == "2") {
-                if ((($userStatus === "پرسنل مورد نظر را انتخاب کنید ...") &&
-                    ($roleStatus === "معاونت مربوطه، را انتخاب کنید ...")) {
-                    userError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
-                    roleError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
-                    result = false;
-                } else {
-                    roleError.text('');
-                    userError.text('');
-                }
-            }
-
-
-            if ((($userStatus !== "پرسنل مورد نظر را انتخاب کنید ...") &&
-                ($roleStatus !== "معاونت مربوطه، را انتخاب کنید ...")) {
+            if (($userStatus === "پرسنل مورد نظر را انتخاب کنید ..." &&
+                $roleStatus === "معاونت مربوطه، را انتخاب کنید ...") ||
+                ($userStatus !== "پرسنل مورد نظر را انتخاب کنید ..." &&
+                 $roleStatus !== "معاونت مربوطه، را انتخاب کنید ...")) {
                 userError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
                 roleError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
                 result = false;

@@ -301,7 +301,7 @@ namespace Data.Repositores
 
 
         public Guid GetDepartmentIdByUserId(Guid userId)
-            => _context.Departments.Where(d => d.UserId == userId)
+            => _context.Departments.Where(d => d.UserId == userId && d.IsActived)
                                    .Select(d => d.DepartmentId)
                                    .First();
 

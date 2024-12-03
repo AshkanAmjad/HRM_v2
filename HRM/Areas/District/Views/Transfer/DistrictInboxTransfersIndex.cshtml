@@ -56,11 +56,11 @@
                         {
                             "data": "transferId", "title": "توضیحات", render: function (data, type, row) {
                                 return `<div class="d-flex py-2">
-                                                                                                                <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
-                                                                                                                   onclick="Description('${data}')">
-                                                                                                                   <i class="fa fa-external-link-square my-2 mx-1"></i>
-                                                                                                                </a>
-                                                                                                             </div>`;
+                                                                                                                                <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
+                                                                                                                                   onclick="Description('${data}')">
+                                                                                                                                   <i class="fa fa-external-link-square my-2 mx-1"></i>
+                                                                                                                                </a>
+                                                                                                                             </div>`;
                             }
                         },
                         { "data": "isActived", "title": "وضعیت" },
@@ -68,19 +68,19 @@
                         {
                             "data": "transferId", "title": "عملیات", render: function (data, type, row) {
                                 return `<div class="py-2 d-flex justify-content-center">
-                                        ${row.display != "مجاز" ?
+                                                        ${row.display != "مجاز" ?
                                         `<a class="btn btn-outline-primary btn-sm rounded-circle mx-1"
-                                                          onclick="ActivingDisplay('${data}')">
-                                                                  <i class="fa fa-unlock my-2 mx-1"></i>
-                                                            </a>` : ``}
-                                    
-                                    ${row.fileFormat != "-" ?
-                                    `<a class="btn btn-outline-primary btn-sm rounded-circle mx-1"
-                                                                                                                       onclick="Download('${data}')">
-                                                                                                                       <i class="fa fa-download my-2 mx-1"></i>
-                                                                                                                    </a>` : `-`
-                                }
-                                </div>`;
+                                                                          onclick="ActivingDisplay('${data}')">
+                                                                                  <i class="fa fa-unlock my-2 mx-1"></i>
+                                                                            </a>` : ``}
+
+                                                    ${row.fileFormat != "-" ?
+                                        `<a class="btn btn-outline-primary btn-sm rounded-circle mx-1"
+                                                                                                                                       onclick="Download('${data}')">
+                                                                                                                                       <i class="fa fa-download my-2 mx-1"></i>
+                                                                                                                                    </a>` : `-`
+                                    }
+                                                </div>`;
                             }
                         }
                     ];
@@ -107,9 +107,9 @@
                             "zeroRecords": "داده ای یافت نشد.",
                             "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
                             "search": `<span class="ms-2">
-                                                                                            <i class="fa fa-search text-primary"></i>
-                                                                                            جست‌و‌جو بر اساس عنوان:
-                                                                                           </span>`,
+                                                                                                            <i class="fa fa-search text-primary"></i>
+                                                                                                            جست‌و‌جو بر اساس عنوان:
+                                                                                                           </span>`,
                             "searchPlaceholder": 'مقدار مناسبی برای عنوان وارد کنید ...',
                         },
                         "ajax": {
@@ -142,14 +142,11 @@
                         cancelButtonText: "خیر"
                     }).then((result) => {
                         if (result.isConfirmed) {
-
                             var data = {
                                 transferId: transferId
                             };
-
                             $.post(_activingDisplay, data).done(function (result) {
                                 if (result.success) {
-                                    debugger
                                     GridReload();
                                     Swal.fire({
                                         title: result.message,

@@ -1,5 +1,18 @@
-﻿@{
+﻿@using Domain.Interfaces
+@inject IUserRepository _userRepository;
+@{
     Layout = null;
+
+    string id;
+    string area = "-1";
+
+    if (User.Identity.IsAuthenticated)
+    {
+
+        id = User.Claims.Where(c => c.Type == "userId").SingleOrDefault().Value;
+        var userId = new Guid(id);
+        area = _userRepository.GetAreaUserByUserId(userId).Section;
+    }
 }
 
         <div class="card shadow mx-1">
@@ -42,17 +55,18 @@
                         GridLoad();
                     });
 
-                    //Select Row
-                    $('#tableList tbody').on('click', 'tr', function () {
-                        if ($(this).hasClass('selected')) {
-                            $(this).removeClass('selected');
-                            $('#activeBtn, #deleteBtn').attr('disabled', true);
-                        } else {
-                            table.$('tr.selected').removeClass('selected');
-                            $(this).addClass('selected');
-                            $('#activeBtn, #deleteBtn').attr('disabled', false);
-                        }
-                    })
+    if(@area != "2") {
+            //Select Row
+            $('#tableList tbody').on('click', 'tr', function() {
+            if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
                     $('#activeBtn, #deleteBtn').attr('disabled', true);
-
-                </script>
+            } else {
+                table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                    $('#activeBtn, #deleteBtn').attr('disabled', false);
+            }
+        })
+            $('#activeBtn, #deleteBtn').attr('disabled', true);
+    }
+</script>

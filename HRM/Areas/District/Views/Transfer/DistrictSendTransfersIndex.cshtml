@@ -1,18 +1,5 @@
-﻿@using Domain.Interfaces
-@inject IUserRepository _userRepository;
-
-@{
+﻿@{
     Layout = null;
-    string id;
-    string area = "-1";
-
-    if (User.Identity.IsAuthenticated)
-    {
-
-        id = User.Claims.Where(c => c.Type == "userId").SingleOrDefault().Value;
-        var userId = new Guid(id);
-        area = _userRepository.GetAreaUserByUserId(userId).Section;
-    }
 }
 <partial name="~/Views/Shared/Partials/General/Refrences/css/_DataTablesCssPartial.cshtml">
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
@@ -91,10 +78,6 @@
                             }
                         }
                     ];
-
-                    if (@area == "2") {
-                        columns.splice(13, 0, { "data": "display", "title": "بررسی" });
-                    }
 
                     table = $("#tableList").DataTable({
                         initComplete: function () {

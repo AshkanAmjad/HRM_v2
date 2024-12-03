@@ -5,228 +5,233 @@
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
         <partial name="~/Views/Shared/Partials/General/Refrences/js/_DataTablesJsPartial.cshtml">
 
-    <div id="operation-box" class="modal fade" role="dialog" aria-hidden="true">
-    </div>
-    <div class="btn btn-outline-primary btn-sm  my-3 mx-1">مدیریت معاونت ها - استان</div>
-    <div>
-        <button class="btn btn-primary text-white d-flex p-2 justify-content-center mb-3 mx-1" id="addBtn">
-            <i class="fa fa-lg fa-plus align-self-center"></i>
-        </button>
-    </div>
-    <div id="roles-box">
-    </div>
-        <script type="text/javascript">
-            var _registerUrl = '@Url.Action("RoleRegister", "Access", new { area = "Province" })';
-            var _gridUrl = '@Url.Action("FillRolesGrid", "Access", new { area = "Province" })';
-            var _getRolesUrl = '@Url.Action("GetRoles", "Access", new { area = "Province" })';
-            var _editUrl = '@Url.Action("RoleEdit", "Access", new { area = "Province" })';
-            var _disableUrl = '@Url.Action("RoleDisable", "Access", new { area = "Province" })';
-            var _activeUrl = '@Url.Action("RoleActive", "Access", new { area = "Province" })';
-        </script>
-        <script type="text/javascript">
-            //List
-            $(document).ready(function (e) {
-                $.get(_gridUrl).done(function (result) {
-                    $("#roles-box").html(result);
+            <div id="operation-box" class="modal fade" role="dialog" aria-hidden="true">
+            </div>
+            <div class="btn btn-outline-primary btn-sm  my-3 mx-1">مدیریت معاونت ها - استان</div>
+            <div>
+                <button class="btn btn-primary text-white d-flex p-2 justify-content-center mb-3 mx-1" id="addBtn">
+                    <i class="fa fa-lg fa-plus align-self-center"></i>
+                </button>
+            </div>
+            <div id="roles-box">
+            </div>
+            <script type="text/javascript">
+                var _registerUrl = '@Url.Action("RoleRegister", "Access", new { area = "Province" })';
+                var _gridUrl = '@Url.Action("FillRolesGrid", "Access", new { area = "Province" })';
+                var _getRolesUrl = '@Url.Action("GetRoles", "Access", new { area = "Province" })';
+                var _editUrl = '@Url.Action("RoleEdit", "Access", new { area = "Province" })';
+                var _disableUrl = '@Url.Action("RoleDisable", "Access", new { area = "Province" })';
+                var _activeUrl = '@Url.Action("RoleActive", "Access", new { area = "Province" })';
+            </script>
+            <script type="text/javascript">
+                //List
+                $(document).ready(function (e) {
+                    $.get(_gridUrl).done(function (result) {
+                        $("#roles-box").html(result);
+                    });
                 });
-            });
 
-            function GridLoad() {
-                table = $("#tableList").DataTable({
-                    initComplete: function () {
-                        $('div.dt-search').addClass("d-flex");
-                        $('div.dt-search input').addClass('form-control');
-                    },
-                    "paging": true,
-                    "pagingType": 'full_numbers',
-                    "pageLength": 10,
-                    "processing": false,
-                    "serverSide": true,
-                    "info": false,
-                    "lengthChange": false,
-                    "ordering": false,
-                    "language": {
-                        "emptyTable": "داده ای ثبت نشده است.",
-                        "zeroRecords": "معاونتی یافت نشد.",
-                        "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
-                        "search": `<span class="ms-2">
-                                                                      <i class="fa fa-search text-primary"></i>
-                                                                            جست‌و‌جو بر اساس عنوان معاونت:
-                                                           </span>`,
-                        "searchPlaceholder": 'مقدار مناسبی برای عنوان معاونت وارد کنید ...',
-                    },
-                    "ajax": {
-                        "url": _getRolesUrl,
-                        "type": "POST",
-                        "datatype": "json"
-                    },
-                    "columns": [
-                        { "data": "title", "title": "عنوان" },
-                        { "data": "isActived", "title": "وضعیت", "width": "10%" },
-                        { "data": "registerDate", "title": "تاریخ ثبت", "width": "10%" },
-                        {
-                            "data": "roleId", "title": "عملیات", "width": "20%", render: function (data, type, row) {
-                                if (row.title === "مدیریت" || row.title === "فناوری اطلاعات") {
-                                    return `<div class="d-flex justify-content-center">
-                                                             <i class="fa fa-lg fa-ban text-danger my-3"></i>
-                                           </div>`;
-                                }
-                                else {
-                                    return `<div class="d-flex justify-content-center">
+                function GridLoad() {
+                    table = $("#tableList").DataTable({
+                        initComplete: function () {
+                            $('div.dt-search').addClass("d-flex");
+                            $('div.dt-search input').addClass('form-control');
+                        },
+                        "paging": true,
+                        "pagingType": 'full_numbers',
+                        "pageLength": 10,
+                        "processing": false,
+                        "serverSide": true,
+                        "info": false,
+                        "lengthChange": false,
+                        "ordering": false,
+                        "language": {
+                            "emptyTable": "داده ای ثبت نشده است.",
+                            "zeroRecords": "معاونتی یافت نشد.",
+                            "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
+                            "search": `<span class="ms-2">
+                                                                                      <i class="fa fa-search text-primary"></i>
+                                                                                            جست‌و‌جو بر اساس عنوان معاونت:
+                                                                           </span>`,
+                            "searchPlaceholder": 'مقدار مناسبی برای عنوان معاونت وارد کنید ...',
+                        },
+                        "ajax": {
+                            "url": _getRolesUrl,
+                            "type": "POST",
+                            "datatype": "json"
+                        },
+                        "columns": [
+                            { "data": "title", "title": "عنوان" },
+                            { "data": "isActived", "title": "وضعیت", "width": "10%" },
+                            { "data": "registerDate", "title": "تاریخ ثبت", "width": "10%" },
+                            {
+                                "data": "roleId", "title": "عملیات", "width": "20%", render: function (data, type, row) {
+                                    if (row.title === "مدیریت" || row.title === "فناوری اطلاعات") {
+                                        return `<div class="d-flex justify-content-center">
+                                                                             <i class="fa fa-lg fa-ban text-danger my-3"></i>
+                                                           </div>`;
+                                    }
+                                    else {
+                                        return `<div class="d-flex justify-content-center">
 
-                                                              ${row.isActived === "فعال" ?
-                                            `
-                                                                    <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
-                                                                       onclick="Edit('${data}', '${row.title}')">
-                                                                    <i class="fa fa-edit my-2 mx-1" > </i>
-                                                                        </a>
-                                                                    <a class="btn btn-outline-danger btn-sm rounded-circle"
-                                                                       onclick = "Disable('${data}','${row.title}')">
-                                                                       <i class="fa fa-minus my-2 mx-1" > </i>
-                                                                      </a>`
-                                            :
-                                            `<a class="btn btn-outline-success btn-sm rounded-circle"
-                                                                    onclick = "Active('${data}','${row.title}')">
-                                                                    <i class="fa fa-check my-2 mx-1" > </i>
-                                                                     </a>`
-                                        }
-                                                              </div>`
+                                                                              ${row.isActived === "فعال" ?
+                                                `
+                                                                                    <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
+                                                                                       onclick="Edit('${data}', '${row.title}')">
+                                                                                    <i class="fa fa-edit my-2 mx-1" > </i>
+                                                                                        </a>
+                                                                                    <a class="btn btn-outline-danger btn-sm rounded-circle"
+                                                                                       onclick = "Disable('${data}','${row.title}')">
+                                                                                       <i class="fa fa-minus my-2 mx-1" > </i>
+                                                                                      </a>`
+                                                :
+                                                `<a class="btn btn-outline-success btn-sm rounded-circle"
+                                                                                    onclick = "Active('${data}','${row.title}')">
+                                                                                    <i class="fa fa-check my-2 mx-1" > </i>
+                                                                                     </a>`
+                                            }
+                                                                              </div>`
+                                    }
                                 }
+                            }
+                        ],
+                        "createdRow": function (row, data, dataIndex) {
+                            if (data.isActived !== "فعال") {
+                                $(row).addClass('table-danger');
                             }
                         }
-                    ]
-                })
-            };
-
-            //Reload
-            function GridReload() {
-                table.ajax.reload(null, false);
-            }
-
-            //Register
-            $("#addBtn").off("click").on("click", function (e) {
-                e.preventDefault();
-                $.get(_registerUrl).done(function (result) {
-                    $("#operation-box").html(result);
-                    $("#operation-box").modal("show");
-                });
-            });
-
-            //Edit
-            function Edit(roleId, title) {
-
-                var data = {
-                    roleId: roleId,
-                    title: title
+                    })
                 };
 
-                $.get(_editUrl, data).done(function (result) {
-                    $("#operation-box").html(result);
-                    $("#operation-box").modal("show");
+                //Reload
+                function GridReload() {
+                    table.ajax.reload(null, false);
+                }
+
+                //Register
+                $("#addBtn").off("click").on("click", function (e) {
+                    e.preventDefault();
+                    $.get(_registerUrl).done(function (result) {
+                        $("#operation-box").html(result);
+                        $("#operation-box").modal("show");
+                    });
                 });
-            }
 
-            //Disable
-            function Disable(roleId, title) {
-                Swal.fire({
-                    text: " آیا از غیر فعال کردن معاونت " + title + " مطمئن هستید؟ ",
-                    showCancelButton: true,
-                    icon: "warning",
-                    confirmButtonText: "تایید",
-                    confirmButtonColor: "#DC3545",
-                    cancelButtonText: "خیر"
-                }).then((result) => {
-                    if (result.isConfirmed) {
+                //Edit
+                function Edit(roleId, title) {
 
-                        var data = {
-                            roleId: roleId,
-                            title: title,
-                        };
+                    var data = {
+                        roleId: roleId,
+                        title: title
+                    };
 
-                        $.post(_disableUrl, data).done(function (result) {
-                            if (result.success) {
-                                GridReload();
-                                Swal.fire({
-                                    title: result.message,
-                                    icon: 'success',
-                                    showConfirmButton: false,
-                                    timer: 4000,
-                                    showClass: {
-                                        popup: 'animate__animated animate__fadeInDown'
-                                    },
-                                    hideClass: {
-                                        popup: 'animate__animated animate__fadeOutDown'
-                                    }
-                                });
-                            } else {
-                                Swal.fire({
-                                    title: 'خطا',
-                                    icon: 'error',
-                                    text: result.message,
-                                    showConfirmButton: false,
-                                    timer: 4000,
-                                    showClass: {
-                                        popup: 'animate__animated animate__fadeInDown'
-                                    },
-                                    hideClass: {
-                                        popup: 'animate__animated animate__fadeOutDown'
-                                    }
-                                })
-                            }
-                        });
-                    }
-                })
-            };
+                    $.get(_editUrl, data).done(function (result) {
+                        $("#operation-box").html(result);
+                        $("#operation-box").modal("show");
+                    });
+                }
 
-            //Active
-            function Active(roleId, title) {
-                Swal.fire({
-                    text: " آیا از فعال کردن معاونت " + title + " مطمئن هستید؟ ",
-                    showCancelButton: true,
-                    icon: "warning",
-                    confirmButtonText: "تایید",
-                    confirmButtonColor: "#198754",
-                    cancelButtonText: "خیر"
-                }).then((result) => {
-                    if (result.isConfirmed) {
+                //Disable
+                function Disable(roleId, title) {
+                    Swal.fire({
+                        text: " آیا از غیر فعال کردن معاونت " + title + " مطمئن هستید؟ ",
+                        showCancelButton: true,
+                        icon: "warning",
+                        confirmButtonText: "تایید",
+                        confirmButtonColor: "#DC3545",
+                        cancelButtonText: "خیر"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
 
-                        var data = {
-                            roleId: roleId,
-                            title: title,
-                        };
+                            var data = {
+                                roleId: roleId,
+                                title: title,
+                            };
 
-                        $.post(_activeUrl, data).done(function (result) {
-                            if (result.success) {
-                                GridReload();
-                                Swal.fire({
-                                    title: result.message,
-                                    icon: 'success',
-                                    showConfirmButton: false,
-                                    timer: 4000,
-                                    showClass: {
-                                        popup: 'animate__animated animate__fadeInDown'
-                                    },
-                                    hideClass: {
-                                        popup: 'animate__animated animate__fadeOutDown'
-                                    }
-                                });
-                            } else {
-                                Swal.fire({
-                                    title: 'خطا',
-                                    icon: 'error',
-                                    text: result.message,
-                                    showConfirmButton: false,
-                                    timer: 4000,
-                                    showClass: {
-                                        popup: 'animate__animated animate__fadeInDown'
-                                    },
-                                    hideClass: {
-                                        popup: 'animate__animated animate__fadeOutDown'
-                                    }
-                                })
-                            }
-                        });
-                    }
-                })
-            };
-        </script>
+                            $.post(_disableUrl, data).done(function (result) {
+                                if (result.success) {
+                                    GridReload();
+                                    Swal.fire({
+                                        title: result.message,
+                                        icon: 'success',
+                                        showConfirmButton: false,
+                                        timer: 4000,
+                                        showClass: {
+                                            popup: 'animate__animated animate__fadeInDown'
+                                        },
+                                        hideClass: {
+                                            popup: 'animate__animated animate__fadeOutDown'
+                                        }
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'خطا',
+                                        icon: 'error',
+                                        text: result.message,
+                                        showConfirmButton: false,
+                                        timer: 4000,
+                                        showClass: {
+                                            popup: 'animate__animated animate__fadeInDown'
+                                        },
+                                        hideClass: {
+                                            popup: 'animate__animated animate__fadeOutDown'
+                                        }
+                                    })
+                                }
+                            });
+                        }
+                    })
+                };
+
+                //Active
+                function Active(roleId, title) {
+                    Swal.fire({
+                        text: " آیا از فعال کردن معاونت " + title + " مطمئن هستید؟ ",
+                        showCancelButton: true,
+                        icon: "warning",
+                        confirmButtonText: "تایید",
+                        confirmButtonColor: "#198754",
+                        cancelButtonText: "خیر"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+
+                            var data = {
+                                roleId: roleId,
+                                title: title,
+                            };
+
+                            $.post(_activeUrl, data).done(function (result) {
+                                if (result.success) {
+                                    GridReload();
+                                    Swal.fire({
+                                        title: result.message,
+                                        icon: 'success',
+                                        showConfirmButton: false,
+                                        timer: 4000,
+                                        showClass: {
+                                            popup: 'animate__animated animate__fadeInDown'
+                                        },
+                                        hideClass: {
+                                            popup: 'animate__animated animate__fadeOutDown'
+                                        }
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'خطا',
+                                        icon: 'error',
+                                        text: result.message,
+                                        showConfirmButton: false,
+                                        timer: 4000,
+                                        showClass: {
+                                            popup: 'animate__animated animate__fadeInDown'
+                                        },
+                                        hideClass: {
+                                            popup: 'animate__animated animate__fadeOutDown'
+                                        }
+                                    })
+                                }
+                            });
+                        }
+                    })
+                };
+            </script>

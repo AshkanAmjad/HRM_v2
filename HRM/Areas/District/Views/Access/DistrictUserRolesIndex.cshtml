@@ -1,66 +1,51 @@
-﻿@{
+﻿@using Domain.Interfaces
+@inject IUserRepository _userRepository;
+@{
     Layout = null;
+
+    string id;
+    string area = "-1";
+
+    if (User.Identity.IsAuthenticated)
+    {
+
+        id = User.Claims.Where(c => c.Type == "userId").SingleOrDefault().Value;
+        var userId = new Guid(id);
+        area = _userRepository.GetAreaUserByUserId(userId).Section;
+    }
 }
 <partial name="~/Views/Shared/Partials/General/Refrences/css/_DataTablesCssPartial.cshtml">
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
         <partial name="~/Views/Shared/Partials/General/Refrences/js/_DataTablesJsPartial.cshtml">
-        
-            <div id="operation-box" class="modal fade" role="dialog" aria-hidden="true">
-    </div>
-    <div class="btn btn-outline-primary btn-sm  my-3 mx-1">کنترل دسترسی پرسنل - بخش</div>
-    <div>
-        <button class="btn btn-primary text-white d-flex p-2 justify-content-center mb-3 mx-1" id="addBtn">
-            <i class="fa fa-lg fa-plus align-self-center"></i>
-        </button>
-    </div>
-    <div id="userRoles-box">
-    </div>
-        <script type="text/javascript">
-            var _registerUrl = '@Url.Action("UserRoleRegister", "Access", new { area = "District" })';
-            var _gridUrl = '@Url.Action("FillUserRolesGrid", "Access", new { area = "District" })';
-            var _getUserRolesUrl = '@Url.Action("GetUserRoles", "Access", new { area ="District" })';
-            var _editUrl = '@Url.Action("UserRoleEdit", "Access", new { area = "District" })';
-            var _disableUrl = '@Url.Action("UserRoleDisable", "Access", new { area = "District" })';
-            var _activeUrl = '@Url.Action("UserRoleActive", "Access", new { area = "District" })';
-        </script>
-        <script type="text/javascript">
-            //List
-            $(document).ready(function (e) {
-                $.get(_gridUrl).done(function (result) {
-                    $("#userRoles-box").html(result);
-                });
-            });
 
-            function GridLoad() {
-                table = $("#tableList").DataTable({
-                    initComplete: function () {
-                        $('div.dt-search').addClass("d-flex");
-                        $('div.dt-search input').addClass('form-control');
-                    },
-                    "paging": true,
-                    "pagingType": 'full_numbers',
-                    "pageLength": 10,
-                    "processing": false,
-                    "serverSide": true,
-                    "info": false,
-                    "lengthChange": false,
-                    "ordering": false,
-                    "language": {
-                        "emptyTable": "داده ای ثبت نشده است.",
-                        "zeroRecords": "کاربری یافت نشد.",
-                        "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
-                        "search": `<span class="ms-2">
-                                                                                                          <i class="fa fa-search text-primary"></i>
-                                                                                                                جست‌و‌جو بر اساس عنوان معاونت یا نام کاربری:
-                                                                                               </span>`,
-                        "searchPlaceholder": 'مقدار مناسبی وارد کنید ...',
-                    },
-                    "ajax": {
-                        "url": _getUserRolesUrl,
-                        "type": "POST",
-                        "datatype": "json"
-                    },
-                    "columns": [
+            <div id="operation-box" class="modal fade" role="dialog" aria-hidden="true">
+            </div>
+            <div class="btn btn-outline-primary btn-sm  my-3 mx-1">کنترل دسترسی پرسنل - بخش</div>
+            <div>
+                <button class="btn btn-primary text-white d-flex p-2 justify-content-center mb-3 mx-1" id="addBtn">
+                    <i class="fa fa-lg fa-plus align-self-center"></i>
+                </button>
+            </div>
+            <div id="userRoles-box">
+            </div>
+            <script type="text/javascript">
+                var _registerUrl = '@Url.Action("UserRoleRegister", "Access", new { area = "District" })';
+                var _gridUrl = '@Url.Action("FillUserRolesGrid", "Access", new { area = "District" })';
+                var _getUserRolesUrl = '@Url.Action("GetUserRoles", "Access", new { area = "District" })';
+                var _editUrl = '@Url.Action("UserRoleEdit", "Access", new { area = "District" })';
+                var _disableUrl = '@Url.Action("UserRoleDisable", "Access", new { area = "District" })';
+                var _activeUrl = '@Url.Action("UserRoleActive", "Access", new { area = "District" })';
+            </script>
+            <script type="text/javascript">
+                //List
+                $(document).ready(function (e) {
+                    $.get(_gridUrl).done(function (result) {
+                        $("#userRoles-box").html(result);
+                    });
+                });
+
+                function GridLoad() {
+                    var columns = [
                         { "data": "userName", "title": "نام کاربری" },
                         { "data": "title", "title": "معاونت" },
                         { "data": "firstName", "title": "نام" },
@@ -70,161 +55,267 @@
                         { "data": "district", "title": "بخش" },
                         { "data": "isActived", "title": "فعالیت" },
                         { "data": "registerDate", "title": "تاریخ ثبت", "width": "10%" },
-                        {
-                            "data": "userRoleId", "title": "عملیات", "width": "20%", render: function (data, type, row) {
-                                return `<div class="d-flex justify-content-center">
+                        { "data": "userRoleId" ,"visible":false}
+                    ];
+                    if (@area != "2") {
+                        columns.splice(9, 0,
+                            {"data": "userRoleId", "title": "عملیات", "width": "20%", render: function (data, type, row) {
+                                    return `<div class="d-flex justify-content-center">
 
-                                                     ${row.isActived === "فعال" ?
-                                        `
-                                                                                                        <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
-                                                                                                           onclick="Edit('${data}')">
-                                                                                                        <i class="fa fa-edit my-2 mx-1" > </i>
-                                                                                                            </a>
-                                                                                                        <a class="btn btn-outline-danger btn-sm rounded-circle"
-                                                                                                           onclick = "Disable('${data}')">
-                                                                                                           <i class="fa fa-minus my-2 mx-1" > </i>
-                                                                                                          </a>`
-                                        :
-                                        `<a class="btn btn-outline-success btn-sm rounded-circle"
-                                                                                                        onclick = "Active('${data}')">
-                                                                                                        <i class="fa fa-check my-2 mx-1" > </i>
-                                                                                                         </a>`
-                                    }
-                                                                                                  </div>`
+                                               ${row.isActived === "فعال" ?
+                                            `
+                                                 <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
+                                                           onclick="Edit('${data}')">
+                                                                         <i class="fa fa-edit my-2 mx-1" > </i>
+                                                 </a>
+                                                 <a class="btn btn-outline-danger btn-sm rounded-circle"
+                                                           onclick = "Disable('${data}')">
+                                                                         <i class="fa fa-minus my-2 mx-1" > </i>
+                                                 </a>
+                                            `
+                                            :
+                                            `<a class="btn btn-outline-success btn-sm rounded-circle"
+                                                           onclick = "Active('${data}')">
+                                                 <i class="fa fa-check my-2 mx-1" > </i>
+                                                            </a>`}
+                                        
+                                          </div>` 
+                                }
+                            }
+                        )
+                    }
+
+                    table = $("#tableList").DataTable({
+                        initComplete: function () {
+                            $('div.dt-search').addClass("d-flex");
+                            $('div.dt-search input').addClass('form-control');
+                        },
+                        "paging": true,
+                        "pagingType": 'full_numbers',
+                        "pageLength": 10,
+                        "processing": false,
+                        "serverSide": true,
+                        "info": false,
+                        "lengthChange": false,
+                        "ordering": false,
+                        "language": {
+                            "emptyTable": "داده ای ثبت نشده است.",
+                            "zeroRecords": "کاربری یافت نشد.",
+                            "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
+                            "search": `<span class="ms-2">
+                                                                                                                                                                                                                                              <i class="fa fa-search text-primary"></i>
+                                                                                                                                                                                                                                                    جست‌و‌جو بر اساس عنوان معاونت یا نام کاربری:
+                                                                                                                                                                                                  </span>`,
+                            "searchPlaceholder": 'مقدار مناسبی وارد کنید ...',
+                        },
+                        "ajax": {
+                            "url": _getUserRolesUrl,
+                            "type": "POST",
+                            "datatype": "json"
+                        },
+                        "columns": columns,
+                        "createdRow": function (row, data, dataIndex) {
+                            if (data.isActived !== "فعال") {
+                                $(row).addClass('table-danger');
                             }
                         }
-                    ]
-                })
-            };
 
-            //Reload
-            function GridReload() {
-                table.ajax.reload(null, false);
-            }
+                    });
+                }
 
-            //Register
-            $("#addBtn").off("click").on("click", function (e) {
-                e.preventDefault();
-                $.get(_registerUrl).done(function (result) {
-                    $("#operation-box").html(result);
-                    $("#operation-box").modal("show");
+
+                // table = $("#tableList").DataTable({
+                //     initComplete: function () {
+                //         $('div.dt-search').addClass("d-flex");
+                //         $('div.dt-search input').addClass('form-control');
+                //     },
+                //     "paging": true,
+                //     "pagingType": 'full_numbers',
+                //     "pageLength": 10,
+                //     "processing": false,
+                //     "serverSide": true,
+                //     "info": false,
+                //     "lengthChange": false,
+                //     "ordering": false,
+                //     "language": {
+                //         "emptyTable": "داده ای ثبت نشده است.",
+                //         "zeroRecords": "کاربری یافت نشد.",
+                //         "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
+                //         "search": `<span class="ms-2">
+                //                                                                                           <i class="fa fa-search text-primary"></i>
+                //                                                                                                 جست‌و‌جو بر اساس عنوان معاونت یا نام کاربری:
+                //                                                                                </span>`,
+                //         "searchPlaceholder": 'مقدار مناسبی وارد کنید ...',
+                //     },
+                //     "ajax": {
+                //         "url": _getUserRolesUrl,
+                //         "type": "POST",
+                //         "datatype": "json"
+                //     },
+                //     "columns": [
+                //         { "data": "userName", "title": "نام کاربری" },
+                //         { "data": "title", "title": "معاونت" },
+                //         { "data": "firstName", "title": "نام" },
+                //         { "data": "lastName", "title": "نام خانوادگی" },
+                //         { "data": "area", "title": "ناحیه" },
+                //         { "data": "county", "title": "شهرستان" },
+                //         { "data": "district", "title": "بخش" },
+                //         { "data": "isActived", "title": "فعالیت" },
+                //         { "data": "registerDate", "title": "تاریخ ثبت", "width": "10%" },
+                //         {
+                //             "data": "userRoleId", "title": "عملیات", "width": "20%", render: function (data, type, row) {
+                //                 return `<div class="d-flex justify-content-center">
+
+                //                                      ${row.isActived === "فعال" ?
+                //                         `
+                //                                                                                         <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
+                //                                                                                            onclick="Edit('${data}')">
+                //                                                                                         <i class="fa fa-edit my-2 mx-1" > </i>
+                //                                                                                             </a>
+                //                                                                                         <a class="btn btn-outline-danger btn-sm rounded-circle"
+                //                                                                                            onclick = "Disable('${data}')">
+                //                                                                                            <i class="fa fa-minus my-2 mx-1" > </i>
+                //                                                                                           </a>`
+                //                         :
+                //                         `<a class="btn btn-outline-success btn-sm rounded-circle"
+                //                                                                                         onclick = "Active('${data}')">
+                //                                                                                         <i class="fa fa-check my-2 mx-1" > </i>
+                //                                                                                          </a>`
+                //                     }
+                //                                                                                   </div>`
+                //             }
+                //         }
+                //     ]
+                // })
+
+                //Reload
+                function GridReload() {
+                    table.ajax.reload(null, false);
+                }
+
+                //Register
+                $("#addBtn").off("click").on("click", function (e) {
+                    e.preventDefault();
+                    $.get(_registerUrl).done(function (result) {
+                        $("#operation-box").html(result);
+                        $("#operation-box").modal("show");
+                    });
                 });
-            });
 
-            //Edit
-            function Edit(userRoleId) {
+                //Edit
+                function Edit(userRoleId) {
 
-                var data = {
-                    userRoleId: userRoleId,
+                    var data = {
+                        userRoleId: userRoleId,
+                    };
+
+                    $.get(_editUrl, data).done(function (result) {
+                        $("#operation-box").html(result);
+                        $("#operation-box").modal("show");
+                    });
+                }
+
+                //Disable
+                function Disable(userRoleId) {
+                    Swal.fire({
+                        text: " آیا از غیر فعال کردن دسترسی انتخاب شده، مطمئن هستید؟ ",
+                        showCancelButton: true,
+                        icon: "warning",
+                        confirmButtonText: "تایید",
+                        confirmButtonColor: "#DC3545",
+                        cancelButtonText: "خیر"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+
+                            var data = {
+                                userRoleId: userRoleId
+                            };
+
+                            $.post(_disableUrl, data).done(function (result) {
+                                if (result.success) {
+                                    GridReload();
+                                    Swal.fire({
+                                        title: result.message,
+                                        icon: 'success',
+                                        showConfirmButton: false,
+                                        timer: 4000,
+                                        showClass: {
+                                            popup: 'animate__animated animate__fadeInDown'
+                                        },
+                                        hideClass: {
+                                            popup: 'animate__animated animate__fadeOutDown'
+                                        }
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'خطا',
+                                        icon: 'error',
+                                        text: result.message,
+                                        showConfirmButton: false,
+                                        timer: 4000,
+                                        showClass: {
+                                            popup: 'animate__animated animate__fadeInDown'
+                                        },
+                                        hideClass: {
+                                            popup: 'animate__animated animate__fadeOutDown'
+                                        }
+                                    })
+                                }
+                            });
+                        }
+                    })
                 };
 
-                $.get(_editUrl, data).done(function (result) {
-                    $("#operation-box").html(result);
-                    $("#operation-box").modal("show");
-                });
-            }
+                //Active
+                function Active(userRoleId) {
+                    Swal.fire({
+                        text: " آیا از فعال کردن دسترسی انتخاب شده، مطمئن هستید؟ ",
+                        showCancelButton: true,
+                        icon: "warning",
+                        confirmButtonText: "تایید",
+                        confirmButtonColor: "#198754",
+                        cancelButtonText: "خیر"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
 
-            //Disable
-            function Disable(userRoleId) {
-                Swal.fire({
-                    text: " آیا از غیر فعال کردن دسترسی انتخاب شده، مطمئن هستید؟ ",
-                    showCancelButton: true,
-                    icon: "warning",
-                    confirmButtonText: "تایید",
-                    confirmButtonColor: "#DC3545",
-                    cancelButtonText: "خیر"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-
-                        var data = {
-                            userRoleId: userRoleId
-                        };
-
-                        $.post(_disableUrl, data).done(function (result) {
-                            if (result.success) {
-                                GridReload();
-                                Swal.fire({
-                                    title: result.message,
-                                    icon: 'success',
-                                    showConfirmButton: false,
-                                    timer: 4000,
-                                    showClass: {
-                                        popup: 'animate__animated animate__fadeInDown'
-                                    },
-                                    hideClass: {
-                                        popup: 'animate__animated animate__fadeOutDown'
-                                    }
-                                });
-                            } else {
-                                Swal.fire({
-                                    title: 'خطا',
-                                    icon: 'error',
-                                    text: result.message,
-                                    showConfirmButton: false,
-                                    timer: 4000,
-                                    showClass: {
-                                        popup: 'animate__animated animate__fadeInDown'
-                                    },
-                                    hideClass: {
-                                        popup: 'animate__animated animate__fadeOutDown'
-                                    }
-                                })
-                            }
-                        });
-                    }
-                })
-            };
-
-            //Active
-            function Active(userRoleId) {
-                Swal.fire({
-                    text: " آیا از فعال کردن دسترسی انتخاب شده، مطمئن هستید؟ ",
-                    showCancelButton: true,
-                    icon: "warning",
-                    confirmButtonText: "تایید",
-                    confirmButtonColor: "#198754",
-                    cancelButtonText: "خیر"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-
-                        var data = {
-                            userRoleId: userRoleId
-                        };
+                            var data = {
+                                userRoleId: userRoleId
+                            };
 
 
-                        $.post(_activeUrl, data).done(function (result) {
-                            if (result.success) {
-                                GridReload();
-                                Swal.fire({
-                                    title: result.message,
-                                    icon: 'success',
-                                    showConfirmButton: false,
-                                    timer: 4000,
-                                    showClass: {
-                                        popup: 'animate__animated animate__fadeInDown'
-                                    },
-                                    hideClass: {
-                                        popup: 'animate__animated animate__fadeOutDown'
-                                    }
-                                });
-                            } else {
-                                Swal.fire({
-                                    title: 'خطا',
-                                    icon: 'error',
-                                    text: result.message,
-                                    showConfirmButton: false,
-                                    timer: 4000,
-                                    showClass: {
-                                        popup: 'animate__animated animate__fadeInDown'
-                                    },
-                                    hideClass: {
-                                        popup: 'animate__animated animate__fadeOutDown'
-                                    }
-                                })
-                            }
-                        });
-                    }
-                })
-            };
-        </script>
+                            $.post(_activeUrl, data).done(function (result) {
+                                if (result.success) {
+                                    GridReload();
+                                    Swal.fire({
+                                        title: result.message,
+                                        icon: 'success',
+                                        showConfirmButton: false,
+                                        timer: 4000,
+                                        showClass: {
+                                            popup: 'animate__animated animate__fadeInDown'
+                                        },
+                                        hideClass: {
+                                            popup: 'animate__animated animate__fadeOutDown'
+                                        }
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'خطا',
+                                        icon: 'error',
+                                        text: result.message,
+                                        showConfirmButton: false,
+                                        timer: 4000,
+                                        showClass: {
+                                            popup: 'animate__animated animate__fadeInDown'
+                                        },
+                                        hideClass: {
+                                            popup: 'animate__animated animate__fadeOutDown'
+                                        }
+                                    })
+                                }
+                            });
+                        }
+                    })
+                };
+            </script>
 

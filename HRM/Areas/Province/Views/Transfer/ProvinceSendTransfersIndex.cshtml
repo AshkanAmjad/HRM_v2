@@ -1,5 +1,17 @@
-﻿@{
+﻿@using Domain.Interfaces
+@inject IUserRepository _userRepository;
+@{
     Layout = null;
+    string id;
+    string area = "-1";
+
+    if (User.Identity.IsAuthenticated)
+    {
+
+        id = User.Claims.Where(c => c.Type == "userId").SingleOrDefault().Value;
+        var userId = new Guid(id);
+        area = _userRepository.GetAreaUserByUserId(userId).Section;
+    }
 }
 <partial name="~/Views/Shared/Partials/General/Refrences/css/_DataTablesCssPartial.cshtml">
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
@@ -32,6 +44,51 @@
                 });
 
                 function GridLoad() {
+                    var columns = [
+                        { "data": "title", "title": "عنوان" },
+                        { "data": "nationalCodeUploader", "title": "نام کاربری فرستنده" },
+                        { "data": "roleUploader", "title": "معاونت فرستنده" },
+                        { "data": "areaUploader", "title": "ناحیه مبدا " },
+                        { "data": "provinceUploader", "title": "استان مبدا " },
+                        { "data": "countyUploader", "title": "شهرستان مبدا " },
+                        { "data": "districtUploader", "title": "بخش مبدا " },
+                        { "data": "nationalCodeReceiver", "title": "نام کاربری گیرنده" },
+                        { "data": "roleReceiver", "title": "معاونت گیرنده" },
+                        { "data": "areaReceiver", "title": "ناحیه مقصد " },
+                        { "data": "provinceReceiver", "title": "استان مقصد " },
+                        { "data": "countyReceiver", "title": "شهرستان مقصد " },
+                        { "data": "districtReceiver", "title": "بخش مقصد " },
+                        { "data": "fileFormat", "title": "نوع", "className": "ltr" },
+                        {
+                            "data": "transferId", "title": "توضیحات", render: function (data, type, row) {
+                                return `<div class="d-flex py-2">
+                                                                                                                                                                <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
+                                                                                                                                                                   onclick="Description('${data}')">
+                                                                                                                                                                   <i class="fa fa-external-link-square my-2 mx-1"></i>
+                                                                                                                                                                </a>
+                                                                                                                                                             </div>`;
+                            }
+                        },
+                        { "data": "isActived", "title": "وضعیت" },
+                        { "data": "uploadDate", "title": "تاریخ ثبت" },
+                        {
+                            "data": "transferId", "title": "عملیات", render: function (data, type, row) {
+                                return `<div class="py-2 d-flex justify-content-center">
+                                                                                    ${row.fileFormat != "-" ?
+                                        `<a class="btn btn-outline-primary btn-sm rounded-circle mx-1"
+                                                                                                                                                                       onclick="Download('${data}')">
+                                                                                                                                                                       <i class="fa fa-download my-2 mx-1"></i>
+                                                                                                                                                                    </a>` : `-`
+                                    }
+                                                                                </div>`;
+                            }
+                        }
+                    ];
+
+                    if (@area == "2") {
+                        columns.splice(13, 0, { "data": "display", "title": "بررسی" });
+                    }
+
                     table = $("#tableList").DataTable({
                         initComplete: function () {
                             $('div.dt-search').addClass("d-flex");
@@ -50,9 +107,9 @@
                             "zeroRecords": "داده ای یافت نشد.",
                             "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
                             "search": `<span class="ms-2">
-                                                                                                                                                                                 <i class="fa fa-search text-primary"></i>
-                                                                                                                                                                                                   جست‌و‌جو بر اساس عنوان:
-                                                                                                                                                                           </span>`,
+                                                                                                                                            <i class="fa fa-search text-primary"></i>
+                                                                                                                                            جست‌و‌جو بر اساس عنوان:
+                                                                                                                                           </span>`,
                             "searchPlaceholder": 'مقدار مناسبی برای عنوان وارد کنید ...',
                         },
                         "ajax": {
@@ -60,68 +117,14 @@
                             "type": "POST",
                             "datatype": "json"
                         },
-                        "columns": [
-                            { "data": "title", "title": "عنوان" },
-                            { "data": "nationalCodeUploader", "title": "نام کاربری فرستنده" },
-                            { "data": "roleUploader", "title": "معاونت فرستنده" },
-                            { "data": "areaUploader", "title": "ناحیه مبدا " },
-                            { "data": "provinceUploader", "title": "استان مبدا " },
-                            { "data": "countyUploader", "title": "شهرستان مبدا " },
-                            { "data": "districtUploader", "title": "بخش مبدا " },
-                            { "data": "nationalCodeReceiver", "title": "نام کاربری گیرنده" },
-                            { "data": "roleReceiver", "title": "معاونت گیرنده" },
-                            { "data": "areaReceiver", "title": "ناحیه مقصد " },
-                            { "data": "provinceReceiver", "title": "استان مقصد " },
-                            { "data": "countyReceiver", "title": "شهرستان مقصد " },
-                            { "data": "districtReceiver", "title": "بخش مقصد " },
-                            { "data": "fileFormat", "title": "نوع", "className": "ltr" },
-                            {
-                                "data": "transferId", "title": "توضیحات", render: function (data, type, row) {
-                                    return `<div class="d-flex py-2">
-                                                                  <a class="btn btn-outline-primary btn-sm rounded-circle ms-1"
-                                                                         onclick="Description('${data}')">
-                                                                        <i class="fa fa-external-link-square my-2 mx-1" > </i>
-                                                                  </a>
-                                                           </div>`
-                                }
-                            },
-                            { "data": "isActived", "title": "وضعیت" },
-                            { "data": "uploadDate", "title": "تاریخ ثبت" },
-                            {
-                                "data": "transferId", "title": "عملیات", render: function (data, type, row) {
-
-                                    return `<div class="py-2 d-flex justify-content-center">
-                                                                    ${row.isActived === "فعال" ?
-                                            `
-                                                                                                    <a class="btn btn-outline-danger btn-sm rounded-circle mx-1"
-                                                                                                       onclick = "Disable('${data}')">
-                                                                                                       <i class="fa fa-minus my-2 mx-1" > </i>
-                                                                                                      </a>`
-                                            :
-                                            `<a class="btn btn-outline-success btn-sm rounded-circle"
-                                                                                                    onclick = "Active('${data}')">
-                                                                                                    <i class="fa fa-check my-2 mx-1" > </i>
-                                                                                                     </a>`
-                                        }
-                                                                 ${row.fileFormat != "-" ?
-                                            `
-                                                                        <a class="btn btn-outline-primary btn-sm rounded-circle mx-1"
-                                                                                                                                           onclick="Download('${data}')">
-                                                                                                                                              <i class="fa fa-download my-2 mx-1" > </i>
-                                                                                                                                     </a>`
-                                            : ``
-                                        }
-                                                    </div>`
-
-                                }
-                            }
-                        ],
+                        "columns": columns,
                         "createdRow": function (row, data, dataIndex) {
                             if (data.isActived !== "فعال") {
                                 $(row).addClass('table-danger');
                             }
                         }
                     })
+                    
                 };
 
                 //Reload

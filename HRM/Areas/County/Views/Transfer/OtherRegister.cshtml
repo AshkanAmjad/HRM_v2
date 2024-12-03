@@ -171,9 +171,8 @@
 
             if (($userStatus !== "پرسنل مورد نظر را انتخاب کنید ..." &&
                 $roleStatus !== "معاونت مربوطه، را انتخاب کنید ...") ||
-               ($userStatus === "پرسنل مورد نظر را انتخاب کنید ..."  &&
-                $roleStatus === "معاونت مربوطه، را انتخاب کنید ..."))
-            {
+                ($userStatus === "پرسنل مورد نظر را انتخاب کنید ..." &&
+                    $roleStatus === "معاونت مربوطه، را انتخاب کنید ...")) {
                 userError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
                 roleError.text('تکمیل فقط یکی از ورودی ها معتبر است.');
                 result = false;
@@ -183,17 +182,18 @@
                 result = true;
             }
 
-            if (@myAreaDepartment == "1" &&
-                $countyDepartment !== @myCountyDepartment &&
-                ($userStatus === "پرسنل مورد نظر را انتخاب کنید ..." &&
-                    $roleStatus === "معاونت مربوطه، را انتخاب کنید ...")) {
-                userError.text('تکمیل یکی از ورودی ها الزامی است.');
-                roleError.text('تکمیل یکی از ورودی ها الزامی است.');
-                result = false;
-            } else {
-                userError.text('');
-                roleError.text('');
-                result = true;
+            if ((@myAreaDepartment == "1" && $countyDepartment !== @myCountyDepartment ) ||
+                (@myAreaDepartment == "2")) {
+                if ($userStatus === "پرسنل مورد نظر را انتخاب کنید ..." &&
+                    $roleStatus === "معاونت مربوطه، را انتخاب کنید ...") {
+                    userError.text('تکمیل یکی از ورودی ها الزامی است.');
+                    roleError.text('تکمیل یکی از ورودی ها الزامی است.');
+                    result = false;
+                } else {
+                    userError.text('');
+                    roleError.text('');
+                    result = true;
+                }
             }
 
             if ($provinceDepartment === "شعبه سطح استان خود را انتخاب کنید ...") {

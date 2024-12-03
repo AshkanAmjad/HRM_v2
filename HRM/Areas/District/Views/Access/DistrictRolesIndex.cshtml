@@ -5,58 +5,63 @@
     <partial name="~/Views/Shared/Partials/General/Refrences/js/_JsPartial.cshtml">
         <partial name="~/Views/Shared/Partials/General/Refrences/js/_DataTablesJsPartial.cshtml">
 
-    <div class="btn btn-outline-primary btn-sm  my-3 mx-1">مشاهده معاونت ها - بخش</div>
-    <div id="roles-box">
-    </div>
-        <script type="text/javascript">
-            var _gridUrl = '@Url.Action("FillRolesGrid", "Access", new { area = "District" })';
-            var _getRolesUrl = '@Url.Action("GetRoles", "Access", new { area = "District" })';
-        </script>
-        <script type="text/javascript">
-            //List
-            $(document).ready(function (e) {
-                $.get(_gridUrl).done(function (result) {
-                    $("#roles-box").html(result);
+            <div class="btn btn-outline-primary btn-sm  my-3 mx-1">مشاهده معاونت ها - بخش</div>
+            <div id="roles-box">
+            </div>
+            <script type="text/javascript">
+                var _gridUrl = '@Url.Action("FillRolesGrid", "Access", new { area = "District" })';
+                var _getRolesUrl = '@Url.Action("GetRoles", "Access", new { area = "District" })';
+            </script>
+            <script type="text/javascript">
+                //List
+                $(document).ready(function (e) {
+                    $.get(_gridUrl).done(function (result) {
+                        $("#roles-box").html(result);
+                    });
                 });
-            });
 
-            function GridLoad() {
-                table = $("#tableList").DataTable({
-                    initComplete: function () {
-                        $('div.dt-search').addClass("d-flex");
-                        $('div.dt-search input').addClass('form-control');
-                    },
-                    "paging": true,
-                    "pagingType": 'full_numbers',
-                    "pageLength": 10,
-                    "processing": false,
-                    "serverSide": true,
-                    "info": false,
-                    "lengthChange": false,
-                    "ordering": false,
-                    "language": {
-                        "emptyTable": "داده ای ثبت نشده است.",
-                        "zeroRecords": "معاونتی یافت نشد.",
-                        "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
-                        "search": `<span class="ms-2">
-                                                                      <i class="fa fa-search text-primary"></i>
-                                                                            جست‌و‌جو بر اساس عنوان معاونت:
-                                                           </span>`,
-                        "searchPlaceholder": 'مقدار مناسبی برای عنوان معاونت وارد کنید ...',
-                    },
-                    "ajax": {
-                        "url": _getRolesUrl,
-                        "type": "POST",
-                        "datatype": "json"
-                    },
-                    "columns": [
-                        { "data": "title", "title": "عنوان" },
-                        { "data": "isActived", "title": "وضعیت", "width": "10%" },
-                        { "data": "registerDate", "title": "تاریخ ثبت", "width": "10%" }
+                function GridLoad() {
+                    table = $("#tableList").DataTable({
+                        initComplete: function () {
+                            $('div.dt-search').addClass("d-flex");
+                            $('div.dt-search input').addClass('form-control');
+                        },
+                        "paging": true,
+                        "pagingType": 'full_numbers',
+                        "pageLength": 10,
+                        "processing": false,
+                        "serverSide": true,
+                        "info": false,
+                        "lengthChange": false,
+                        "ordering": false,
+                        "language": {
+                            "emptyTable": "داده ای ثبت نشده است.",
+                            "zeroRecords": "معاونتی یافت نشد.",
+                            "loadingRecords": '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>',
+                            "search": `<span class="ms-2">
+                                                                                      <i class="fa fa-search text-primary"></i>
+                                                                                            جست‌و‌جو بر اساس عنوان معاونت:
+                                                                           </span>`,
+                            "searchPlaceholder": 'مقدار مناسبی برای عنوان معاونت وارد کنید ...',
+                        },
+                        "ajax": {
+                            "url": _getRolesUrl,
+                            "type": "POST",
+                            "datatype": "json"
+                        },
+                        "columns": [
+                            { "data": "title", "title": "عنوان" },
+                            { "data": "isActived", "title": "وضعیت", "width": "10%" },
+                            { "data": "registerDate", "title": "تاریخ ثبت", "width": "10%" }
 
-                    ]
-                })
-            };
+                        ],
+                        "createdRow": function (row, data, dataIndex) {
+                            if (data.isActived !== "فعال") {
+                                $(row).addClass('table-danger');
+                            }
+                        }
+                    })
+                };
 
-        </script>
+            </script>
 

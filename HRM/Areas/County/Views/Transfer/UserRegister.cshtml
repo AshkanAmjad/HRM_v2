@@ -2,9 +2,14 @@
 @{
     Layout = null;
 
-    var provinceDepartment = ViewBag.ProvinceDepartment;
-    var countyDepartment = ViewBag.CountyDepartment;
-    var districtDepartment = ViewBag.DistrictDepartment;
+    var provinceDepartment = ViewBag.ProvinceDepartment != null
+             ? ViewBag.ProvinceDepartment : "-1";
+
+    var countyDepartment = ViewBag.CountyDepartment != null
+                 ? ViewBag.CountyDepartment : "-1";
+
+    var districtDepartment = ViewBag.DistrictDepartment != null
+                 ? ViewBag.DistrictDepartment : "-1";
 
     var roles = ViewBag.Roles != null
         ? ViewBag.Roles
