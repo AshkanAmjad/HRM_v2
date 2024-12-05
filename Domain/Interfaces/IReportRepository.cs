@@ -11,6 +11,7 @@ namespace Domain.Interfaces
 {
     public interface IReportRepository
     {
+        #region Report
         List<DisplayChartVM>? GetCountUsers(AreaVM model);
         List<DisplayChartVM>? GetCountRoles(DisplayReportVM model);
         List<DisplayChartVM>? GetCountGenders(AreaVM model);
@@ -19,6 +20,7 @@ namespace Domain.Interfaces
         DisplayHistoriesUsersVM? CalculateMinHistory(DisplayReportVM model);
         DisplayHistoriesUsersVM? CalculateMaxHistory(DisplayReportVM model);
         HourlyWorkVM? CalculateHourlyWork(DisplayReportVM model);
+        #endregion
 
     }
 }

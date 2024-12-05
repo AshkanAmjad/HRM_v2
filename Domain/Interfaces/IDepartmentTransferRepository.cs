@@ -12,6 +12,7 @@ namespace Domain.Interfaces
 {
     public interface IDepartmentTransferRepository
     {
+        #region Department Transfer
         IQueryable<DepartmentTransfer> GetSendTransfersQuery(TransferAreaVM area);
         IQueryable<DepartmentTransfer> GetInboxTransfersQuery(TransferAreaVM area);
         List<DisplayTransfersVM> GetSendTransfers(TransferAreaVM area);
@@ -19,6 +20,8 @@ namespace Domain.Interfaces
         List<DisplayTransfersVM> GetMyInboxTransfers(TransferAreaVM area);
         List<DisplayTransfersVM> GetMySendTransfers(TransferAreaVM area);
         Task<List<DisplayMyLatestTaransfersVM>> GetMyLatestTransfersTransfersAsync(TransferAreaVM area);
+        #endregion
+
         #region Db
 
         #endregion
