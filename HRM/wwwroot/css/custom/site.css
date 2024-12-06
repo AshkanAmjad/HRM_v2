@@ -255,6 +255,10 @@ header {
         width: 100% !important;
     }
 
+    #creator{
+        order:3;
+    }
+
     #copy {
         order: 2;
     }
