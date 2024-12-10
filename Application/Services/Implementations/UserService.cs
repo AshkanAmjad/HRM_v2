@@ -8,7 +8,7 @@ using Domain.DTOs.Security.User;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Application.Services.Implrmentations
+namespace Application.Services.Implementations
 {
     public class UserService : IUserService
     {

@@ -1,10 +1,8 @@
 ﻿using Application.Extensions;
-using Application.Services.Implrmentations;
+using Application.Services.Implementations;
 using Application.Services.Interfaces;
 using Data.Repositores;
-using Domain.DTOs.Security.Login;
 using Domain.Interfaces;
-using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;

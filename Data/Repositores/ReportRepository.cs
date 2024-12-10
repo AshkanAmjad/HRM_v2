@@ -34,7 +34,6 @@ namespace Data.Repositores
         }
         #endregion
 
-
         public List<DisplayChartVM>? GetCountUsers(AreaVM model)
         {
             if (model == null)
@@ -139,7 +138,10 @@ namespace Data.Repositores
             if (model == null)
                 return null;
 
-            var context = _userRepository.GetUsersQuery(model);
+            var context = _context.Users.Where(u => u.Department.Area == model.Section &&
+                                                    u.Department.Province == model.Province &&
+                                                    u.Department.County == model.County &&
+                                                    u.Department.District == model.District);
 
             List<DisplayChartVM> result = new();
 
@@ -263,6 +265,7 @@ namespace Data.Repositores
                                              item.Department.County == model.County &&
                                              item.Department.District == model.District &&
                                              item.IsActived)
+                                      .OrderBy(u => u.RegisterDate)
                                       .ToList();
 
             if (!users.Any())
@@ -270,8 +273,8 @@ namespace Data.Repositores
 
             var dailyWorkHistories = users.Select(u => u.RegisterDate.CalculateDailyWorkHistory());
 
-            var min = dailyWorkHistories.Min();
-            var max = dailyWorkHistories.Max();
+            var min = dailyWorkHistories.LastOrDefault();
+            var max = dailyWorkHistories.FirstOrDefault();
 
             HourlyWorkVM data = new()
             {

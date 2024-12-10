@@ -1,7 +1,7 @@
 ﻿using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Application.Services.Implrmentations
+namespace Application.Services.Implementations
 {
     public class GeneralService:IGeneralService
     {
